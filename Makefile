@@ -1,7 +1,7 @@
 
 .Phony: all
 all:
-	latexmk -output-dir="build" -pdf
+	latexmk -output-directory="build" -pdf
 
 .Phony: file
 file:
