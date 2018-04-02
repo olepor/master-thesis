@@ -1,0 +1,5 @@
+# Currently needs to be sourced from within the thesis directory
+export THESIS_DIR=$(pwd)
+
+# add the thesis script dir to path
+export PATH="$PATH:${THESIS_DIR}/scripts"
