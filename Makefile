@@ -1,3 +1,4 @@
+# TODO - add synctex for pdf to editor code maneuvering
 
 .Phony: all
 all:

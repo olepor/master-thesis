@@ -1,27 +1,20 @@
-\documentclass[colophon]{phduio}
+\documentclass[a4paper]{memoir}
 
-\usepackage{phdstyle}   % Custom style
+\usepackage{style}      % Custom style
 \usepackage{kantlipsum} % Dummy text
 
-\author{Author}
-\title{Working Title}
-\department{Department}
-\faculty{Faculty}
-\affiliation
+\title{Motion Planning}
+\author
 {
-    Optional Second Affiliation
-    \and
-    Optional Further Specification
+  Ole Petter Orhagen
+  \and
+  Marius R
 }
-\ISSN{1234-5678}
-\dissertationseries{1234}
-
 
 \includeonly
 {
-    sections/dedication,
     sections/abstract,
-    sections/preface,
+    sections/acknowledgements,
     sections/introduction,
     sections/chapter2,
     sections/chapter3,
@@ -34,11 +27,12 @@
 
     \frontmatter        % Folios in Roman numerals, unnumbered chapters.
 
-    \uiotitle
+    \begin{titlingpage}
+        \maketitle
+    \end{titlingpage}
 
-    \include{sections/dedication}
     \include{sections/abstract}
-    \include{sections/preface}
+    \include{sections/acknowledgements}
 
     \cleartorecto
     \tableofcontents    % Or \tableofcontents*
@@ -58,7 +52,7 @@
     \include{sections/chapter4}
 
     \appendix           % "Chapter" is renamed "Appendix"
-    \appendixpage       % Similar to \part*{Appendices}, but appears in TOC
+    \appendixpage       % Similar to \part*{Appendices}, but appears in TOC.
 
     \include{sections/appendixA}
     \include{sections/appendixB}
