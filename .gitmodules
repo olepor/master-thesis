@@ -1,0 +1,3 @@
+[submodule "mnfrontpage"]
+	path = mnfrontpage
+	url = git@bitbucket.org:martibhe/mnfrontpage.git
