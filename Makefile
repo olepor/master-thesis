@@ -2,6 +2,7 @@
 
 .Phony: all
 all:
+	mkdir -p build/sections # Necessary for succesful compilation
 	latexmk -output-directory="build" -pdf
 
 .Phony: file
@@ -14,8 +15,8 @@ time:
 
 .Phony: draft
 draft:
-	latexmk -d
+	latexmk -d -output-dir="build"
 
 .Phony: clean
 clean:
-	latexmk -c
+	rm -rf build/*
