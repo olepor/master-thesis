@@ -1,0 +1,155 @@
+\chapter{Motion Planning}
+\label{sec:MotionPlanning}
+
+\section{Overview}
+Motion planning is the task of manipulating a robot's configurations so that,
+given an initial and goal state or posture, the planner (black box), is able
+to create a sequence of actions that gives a feasible or optimal path through
+the overarching planning environment, usually referred to as the world space.
+Thus a motion planner can be seen as a machine which given an the input: a
+world, and inital and goal states, produces a sequence of actions to move the
+robot from its initial to the desired goal configuration. This plan is then
+passed on to the trajectory generator in the system. Generally, planners can be
+separated into complete and non-complete planners, meaning that given enough
+time, all motion planning problems are solvable, only the solution is NP-Hard.
+Thus feasible solutions will have to make compromise, and a lot of planners in
+use today are what is called probabilisticly complete, meaning that they
+converge to a solution given infinite time. As such timeframes are of no use to
+us, we generally have to settle for an approximation bound. There is a
+difference between online and off-line motion planning, whereas the offline
+algorithm plans in a static environment, the online algorithm is run
+continuously. However an online algorithm can be simulated by running an offline
+algorithm repeatedly for short intervals of time. However, this comes with the
+drawback, that no guarantee can be made for completing a certain task.
+
+\subsection{Building Blocks}
+
+\subsection{The Robot and World Model}
+
+The robot is/can be represented as...
+model and transformation of a rigid body.
+
+The world as we model it contains two kinds of objects
+
+\begin{itemize}
+\item \textbf{Robot:} Body that is modelled geometrically and is controllable via
+  a motion plan.
+\item \textbf{Obstacles:} Portions of the world that are occupied by something
+  other than the robot.
+\end{itemize}
+\subsection{State Space}
+\label{subsec:State}
+Planning problems involve a state space. A state space is a set of all the
+possible configurations a model can be in at any given time during the planning
+work. The state space can be either discrete or continuous, and can be
+represented either implicitly or explicitly. Which in our case of planning for a
+
+The world model.
+
+\subsubsection{Configuration Space}
+\label{sec:configuration-space}
+The configuration space is a general abstraction used as a model for a wide
+variety of motion planning problems. It is a manifold that arise from the
+transformations applied to the robot. If the robot has n-degrees of freedom, the
+set of transformations is usually a manifold of dimension n. This manifold is
+called the configuration space of the robot, and is shortened \(\\\mathcal{C}\).
+Thus in order to solve a motion planning problem, a search must be performed in
+the configuration space. Thus the motion planning problem is now made into a
+question of finding the best path to traverse the given manifold. \cite{Lav06}.(characterise and describe the
+configuration space's structure.)
+In our case the configuration space can be modelled as a topological space of
+the type \(SE(3)\), meaning special-Euclidean three.
+
+Using generalised coordinates, the configuration of a robot can be modelled as a
+vector with n variables for the position in the configuration space, in
+literature this space is usually denoted by \(\mathcal{C}\). As is most common,
+the robot is modelled as a rigid body, in which two bodies cannot overlap, thus
+points in the configuration space is separated into two sets. One set for which
+the robot configuration overlaps with another object in the configuration space,
+and is called \(\mathcal{C}_{Obst}\), and given that the world space is
+represented as \(\mathcal{W}\), the collision free space is the given as
+,\(\mathcal{C}_{free} = \mathcal{W}\textbackslash \mathcal{C}_{Obst}\). The
+obstacle space can be represented in a number of ways, but we will stick to
+polygonal models of the obstacle space.
+
+\subsubsection{Path and Trajectory}
+
+\subsubsection{State Space}
+
+\subsubsection{... Space}
+
+Initial and Goal States
+
+\subsection{Time}
+\label{subsec:Time}
+
+\subsection{Actions}
+\label{subsec:Actions}
+
+A plan is a sequence of actions that manipulate the state of the robot.
+
+A planning problem involves a sequence of decisions made over time.
+
+
+car-like model can look something like:
+
+\section{Algorithms}
+\subsection{Grid-based Search}
+\label{subsec:gridbasedsearch}
+
+\subsection{Interval-based Search}
+\label{subsec:intervalbasedsearch}
+
+\subsection{Geometric Algorithms}
+\label{subsec:geometricalgorithms}
+
+\subsection{Artificial Potential Fields}
+\label{subsec:artificialpotentialfields}
+
+\subsection{Sampling-based}
+\label{subsec:samplingbased}
+
+
+
+
+
+
+
+
+
+\section{Piano Mover's Problem}
+
+\section{Discrete vs Continous}
+
+\section{Sampling}
+
+\section{State Space}
+
+\section{Complexity}
+
+\section{Criterions}
+
+\subsection{Feasability}
+\subsection{Optimality}
+
+\section{Completeness}
+
+\section{Probabilistic Completeness}
+
+\section{Planning Under Uncertainty (Decision Theoretic Planning)}
+
+\subsection{A Game Against Nature}
+
+Theta is nature's actions. U is the robot's action.
+
+\subsection{Information Space}
+\subsubsection{Decision Makers}
+
+\section{Optimality}
+
+
+\section{Survey of Papers}
+
+http://msl.cs.uiuc.edu/~lavalle/cs497/jokane.pdf
+
+http://robotics.cs.unc.edu/BeliefSpacePlanning/index.html
