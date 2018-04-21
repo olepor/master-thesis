@@ -1,20 +1,20 @@
 \chapter{Motion Planning}
 \label{sec:MotionPlanning}
 
-\section{Overview}
+\section{Overview/Preliminaries}
 Motion planning is the task of manipulating a robot's configurations so that,
 given an initial and goal state or posture, the planner (black box), is able
 to create a sequence of actions that gives a feasible or optimal path through
 the overarching planning environment, usually referred to as the world space.
 Thus a motion planner can be seen as a machine which given an the input: a
-world, and inital and goal states, produces a sequence of actions to move the
+world, and initial and goal states, produces a sequence of actions to move the
 robot from its initial to the desired goal configuration. This plan is then
 passed on to the trajectory generator in the system. Generally, planners can be
 separated into complete and non-complete planners, meaning that given enough
 time, all motion planning problems are solvable, only the solution is NP-Hard.
 Thus feasible solutions will have to make compromise, and a lot of planners in
-use today are what is called probabilisticly complete, meaning that they
-converge to a solution given infinite time. As such timeframes are of no use to
+use today are what is called probabilistically complete, meaning that they
+converge to a solution given infinite time. As such time-frames are of no use to
 us, we generally have to settle for an approximation bound. There is a
 difference between online and off-line motion planning, whereas the offline
 algorithm plans in a static environment, the online algorithm is run
@@ -26,25 +26,37 @@ drawback, that no guarantee can be made for completing a certain task.
 
 \subsection{The Robot and World Model}
 
-The robot is/can be represented as...
-model and transformation of a rigid body.
+The modelled world \(\mathcal{W}\), and eveything in it can be modelled
+geometrically using any number of methods -- most usually polygons or some other
+convex gemoetric structure. Thus the robot can also be modelled as a collection
+of gemoetric structures \(\mathcal{A}\). Thus in order to move the robot in the
+world space, rigid body transformations are applied. Given the robot as a subset
+of the world space, the image of a robot transformation is then given as:
+% \[
+%   h(\mathcal{A}) = \set{h(a) \in \mathcal{W} \mid a \in \mathcal{A}} \\
+%   h \colon \mathcal{A} \rightarrow \mathcal{W} \\
+%   \mathcal{A} \and h(\mathcal{A}) \subset \mathcal{W} \\
+% \]
 
 The world as we model it contains two kinds of objects
 
 \begin{itemize}
-\item \textbf{Robot:} Body that is modelled geometrically and is controllable via
+\item \textbf{Robot:} Body that is modeled geometrically and is controllable via
   a motion plan.
 \item \textbf{Obstacles:} Portions of the world that are occupied by something
   other than the robot.
 \end{itemize}
-\subsection{State Space}
-\label{subsec:State}
-Planning problems involve a state space. A state space is a set of all the
-possible configurations a model can be in at any given time during the planning
-work. The state space can be either discrete or continuous, and can be
-represented either implicitly or explicitly. Which in our case of planning for a
 
-The world model.
+\subsection{Rigid Transformations}
+\label{sec:rigidtransformations}
+
+
+% \subsection{State Space}
+% \label{subsec:State}
+% Planning problems involve a state space. A state space is a set of all the
+% possible configurations a model can be in at any given time. The state space can
+% be either discrete or continuous, and can be represented either implicitly or
+% explicitly.
 
 \subsubsection{Configuration Space}
 \label{sec:configuration-space}
@@ -52,36 +64,73 @@ The configuration space is a general abstraction used as a model for a wide
 variety of motion planning problems. It is a manifold that arise from the
 transformations applied to the robot. If the robot has n-degrees of freedom, the
 set of transformations is usually a manifold of dimension n. This manifold is
-called the configuration space of the robot, and is shortened \(\\\mathcal{C}\).
+called the configuration space of the robot, and is shortened \(\mathcal{C}\).
 Thus in order to solve a motion planning problem, a search must be performed in
 the configuration space. Thus the motion planning problem is now made into a
-question of finding the best path to traverse the given manifold. \cite{Lav06}.(characterise and describe the
-configuration space's structure.)
-In our case the configuration space can be modelled as a topological space of
+question of finding the best path to traverse the given manifold\cite{Lav06}. (characterize and describe the
+configuration space structure.)
+In our case the configuration space can be modeled as a topological space of
 the type \(SE(3)\), meaning special-Euclidean three.
 
-Using generalised coordinates, the configuration of a robot can be modelled as a
+Using generalized coordinates, the configuration of a robot can be modeled as a
 vector with n variables for the position in the configuration space, in
 literature this space is usually denoted by \(\mathcal{C}\). As is most common,
-the robot is modelled as a rigid body, in which two bodies cannot overlap, thus
+the robot is modeled as a rigid body, in which two bodies cannot overlap, thus
 points in the configuration space is separated into two sets. One set for which
 the robot configuration overlaps with another object in the configuration space,
 and is called \(\mathcal{C}_{Obst}\), and given that the world space is
 represented as \(\mathcal{W}\), the collision free space is the given as
-,\(\mathcal{C}_{free} = \mathcal{W}\textbackslash \mathcal{C}_{Obst}\). The
+,\(\mathcal{C}_{free} = \mathcal{W}\setminus \mathcal{C}_{Obst}\). The
 obstacle space can be represented in a number of ways, but we will stick to
 polygonal models of the obstacle space.
 
+\subsection{Action Space}
+The action space is the set of actions that can be applied at any given state
+the robot is located in. Thus one can model the action space as a function of
+the robot's state. e.g.
+\[
+  U(x) = \set{u \in U \mid U(x) \neq \emptyset }
+\]
+
+\subsection{Initial and Goal States}
+It is normal to define an initial state and a goal state as a starting and an
+ending point of a planning problem. Where both the initial, and goal states can
+be sets of states, meaning that it is not necessary to arrive specifically at
+the target point. A starting point consisting of multiple configuration states
+usually infers some kind of uncertainty in the robot model. The end goal can be
+reached in one of two ways, wherein the two types characterize two different
+forms of planning.
+\begin{enumerate}
+\item\textbf{Feasible:} Feasible planning has no concerns with optimality, and
+  only concerns itself with finding a plan that arrives at the goal state.
+\item\textbf{Optimal:} Optimal planning optimizes a feasible plan in some
+  specified manner, with respect to some specified cost function.
+\end{enumerate}
+
+\subsection{A Plan}
+If we are dealing with a fully deterministic model, a plan can simply be the set
+of actions applied at each state in order to reach a goal state specified for
+the problem at hand. However, if some measure of uncertainty is added to the
+model, then literature describes this as planning in the \textit{information
+  space}, and future states cannot be predicted exactly, thus some kind of
+feedback model is used in order to plan in an uncertain environment.
+
+\subsection{Model}
+let \(\mathcal{X}\) be the discrete state space, and \(\ mathcal{U}(x)\) be
+the set of actions available at each point \(x \in \mathcal{X}\).
+state transition:
+\[
+  x_{k+1} = f(x_k, u_k)
+\]
+
 \subsubsection{Path and Trajectory}
 
-\subsubsection{State Space}
-
-\subsubsection{... Space}
-
-Initial and Goal States
+Initial and Goal States. A path is a function f \ldots
 
 \subsection{Time}
 \label{subsec:Time}
+
+Discrete vs Continuous
 
 \subsection{Actions}
 \label{subsec:Actions}
@@ -119,7 +168,7 @@ car-like model can look something like:
 
 \section{Piano Mover's Problem}
 
-\section{Discrete vs Continous}
+\section{Discrete vs Continuous}
 
 \section{Sampling}
 
@@ -129,7 +178,7 @@ car-like model can look something like:
 
 \section{Criterions}
 
-\subsection{Feasability}
+\subsection{Feasibility}
 \subsection{Optimality}
 
 \section{Completeness}
@@ -138,17 +187,106 @@ car-like model can look something like:
 
 \section{Planning Under Uncertainty (Decision Theoretic Planning)}
 
+All real life motion planning problems are faced with some level of uncertainty,
+as errors can arise from a multiple of sources, whereas the most prevalent ones
+are uncertainty in:
+\begin{enumerate}
+\item motion
+\item sensing
+\item the environment
+\end{enumerate}
+Thus the exact system state is never exactly known. Therefore planning under
+uncertainty is done in a belief space. Which is a description of the state space
+using probability distributions. (Partial observability?)
+Planning is done in the information space, as opposed to the state-space.
+Uncertainties in prediction and the current state exist.
+Forward and backward projections.
+
+(probability constraint violation)
+
 \subsection{A Game Against Nature}
 
 Theta is nature's actions. U is the robot's action.
 
+\subsection{A Model of Uncertainty}
+
+If the discrete state space model is expanded to include \(\ Theta\) as the
+space of nature actions, and \(\ theta_k\) is the action selected by nature at
+step k, then a transition is modeled as
+\[
+  x_{k+1} = f(x_k,u_k,\theta_k)
+\]
+As the actions of nature are not available beforehand, that is - \(\theta_ k\) is
+not given, thus we have
+\[
+  X_{k+1} =  \set{ x_{k+1} \ in X \mid \exists\theta_k \in \Theta(x_k,u_k)
+    \text{ such that }
+    x_{k+1} = f(x_k,u_k,\theta_k)}
+\]
+\cite{Lav06}.
+
+\subsection{Discrete Planning with Nature}
+a model of discrete planning with nature: \cite[pg,496]{Lav06}
+
+A markov decision process is defined in \cite[pg.498]{Lav06} as:
+\begin{enumerate}
+\item A non empty \textit{state space} \(X\) which is a finite or countably
+  finite set of \textit{states}.
+\item For each state, \(x \in X\), a finite non-empty \textit{action space}
+  \(U(x)\). It is assumed that \(U\) contains a special \textit{termination
+    action}, which has the same effect as (cite the deterministic discrete
+  planning model).
+\item A finite non-empty \textit{nature action space} \(\Theta(x,u)\) for each
+  \(x \in X\) and \(u \in U\).
+\item A state transition function \(f\) that produces a state,
+  \(f(x,u,\theta)\), for every \(x \in X\), \(u \in U\), and \(\theta \in
+  \Theta\).
+\item A set of \textit{stages}, each denoted by k, that begins at k=1 and
+  continues indefinitely. Alternatively, there may be a fixed maximum stage \(k
+  = K+1=F\).
+\item An \textit{initial state} \(x \in X\). For some problems, this may not be
+  specified, in which case a solution plan must be found from all initial
+  states.
+
+\item A \textit{goal set} \(X_G \subset X\).
+\item A stage-additive cost functional L. Let \(\sim{\theta}_K\) denote the
+  history of nature actions up to stage K. The cost functional may be applied to
+  any combination of state, action, and nature histories to yield
+  \[
+    L(\sim{x}_F, \sim{u}_K, \sim{\theta}_K) = \sum_{k=1}^{K} l(x_k,u_k,\theta_k)
+    + l_F(x_F)
+  \]
+  in which \(F = K + 1\). The termination action \(u_T\) is applied at some
+  stage k, then for all \(i \geq k\), \(u_i = u_T\), \(x_i = x_k\), and
+  \(l(x_i,u_T, \theta_i) = 0\).
+\end{enumerate}
+\cite[pg 498]{Lav06}
+
+using this formulation either a feasible or optimal planning problem can be formulated.
+
+\subsection{Forward and Back-Projections (under uncertainty)}
+
+\subsection{Separating a plan from its execution}
+
+\subsection{Feedback}
+
 \subsection{Information Space}
+A stochastic environment.
 \subsubsection{Decision Makers}
+
+\subsection{Rewards?}
+
+\section{Data Collection and Sensors}
+
+
 
 \section{Optimality}
 
 
+
 \section{Survey of Papers}
+
+\subsection{Related Work}
 
 http://msl.cs.uiuc.edu/~lavalle/cs497/jokane.pdf
 
