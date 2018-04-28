@@ -1,6 +1,10 @@
 \chapter{Motion Planning}
 \label{sec:MotionPlanning}
 
+% Alternative outlay:
+% Overview -> Representation (discrete, cont, determ, prob, state-space
+% implici/explicit)
+
 \section{Overview/Preliminaries}
 Motion planning is the task of manipulating a robot's configurations so that,
 given an initial and goal state or posture, the planner (black box), is able
@@ -113,9 +117,16 @@ of actions applied at each state in order to reach a goal state specified for
 the problem at hand. However, if some measure of uncertainty is added to the
 model, then literature describes this as planning in the \textit{information
   space}, and future states cannot be predicted exactly, thus some kind of
-feedback model is used in order to plan in an uncertain environment.
+feedback model is used in order to plan in an uncertain environment. If we are
+merely looking at solving the problem, a feasible plan is good enough, which
+means a solution has to be found, but multiple solutions do not have to be found
+and compared. However, if time, energy or some other parameters are to be
+optimized, then a cost function has to be added into the planning model, in
+order to evaluate which plan scores best when measured up against the others.
 
 \subsection{Model}
+
+\subsubsection{Discrete}
 let \(\mathcal{X}\) be the discrete state space, and \(\ mathcal{U}(x)\) be
 the set of actions available at each point \(x \in \mathcal{X}\).
 state transition:
@@ -123,7 +134,19 @@ state transition:
   x_{k+1} = f(x_k, u_k)
 \]
 
+\subsubsection{Continuous}
+
 \subsubsection{Path and Trajectory}
+
+The motion plan takes the form of a path, or a trajectory. This is represented
+as a function \(\phi(\alpha) \colon [0,1] \rightarrow \mathcal{X}\), where
+\(\mathcal{X}\) is the configuration space of the vehichle. If the
+control-execution time is considered, then the explicit model of vehicle
+kinematics and/or dynamics, as well as the dynamics of the possible obstacles.
+Then the trajectory is represented as a time-parametrized function of the kind
+\(\pi(t) \colon [0,T] \rightarrow \mathcal{X}\), where \(T\) is the planning
+horizon. Unlike the path, the trajectory describes how the configuration of the
+vehicle evolves over time.
 
 Initial and Goal States. A path is a function f \ldots
 
@@ -143,6 +166,11 @@ A planning problem involves a sequence of decisions made over time.
 car-like model can look something like:
 
 \section{Algorithms}
+In general there are algorithms for which every motion planning problem can be
+solved explicitly, only their running time is on the order of \(O(!n)\) , and thus
+not feasible in practical applications. In the practical case it is therefore
+normal to employ methods of approximation.
+
 \subsection{Grid-based Search}
 \label{subsec:gridbasedsearch}
 
@@ -272,6 +300,20 @@ using this formulation either a feasible or optimal planning problem can be form
 
 \subsection{Information Space}
 A stochastic environment.
+The information space is a general structure for working with plans under
+conditions of uncertainty. Thus planning can be done mostly as it is done in a
+state space, albeit in a higher dimension. Thus the state transition function
+can be written as
+\[
+  \phi_{k+1} = f_{\mathcal{I}}\left( \phi_k, \mu_k, y_{k+1} \right)
+\]
+
+\subsection{Nondeterministic and Probabilistic Information Spaces}
+
+\subsection{A Plan under Uncertainty}
+Since it
+Expected-case analysis. Worst-case analysis.
+
 \subsubsection{Decision Makers}
 
 \subsection{Rewards?}
