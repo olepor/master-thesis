@@ -172,15 +172,19 @@ not feasible in practical applications. In the practical case it is therefore
 normal to employ methods of approximation.
 
 \subsection{Grid-based Search}
+\hyphenation{grid-based-search}
 \label{subsec:gridbasedsearch}
 
 \subsection{Interval-based Search}
+\hyphenation{interval-bases-search}
 \label{subsec:intervalbasedsearch}
 
 \subsection{Geometric Algorithms}
+\hyphenation{geometric-algorithms}
 \label{subsec:geometricalgorithms}
 
 \subsection{Artificial Potential Fields}
+\hyphenation{artificial-potential-fields}
 \label{subsec:artificialpotentialfields}
 
 \subsection{Sampling-based}
@@ -314,6 +318,34 @@ can be written as
 Since it
 Expected-case analysis. Worst-case analysis.
 
+Uncertainty comes from three sources in our model:
+\begin{enumerate}
+\item The Model (motion).
+\item The observation (sensor).
+\item The environment (map).
+  Grid-based problems: Navigation: A goal position is to be reached, even though
+  the map is unknown. The robot is allowed to solve the problem without fully
+  exploring the environment. Only a part of the environment is needed to solve
+  the problem.
+  Searching: A goal state can only be identified when it is reached by a
+  short-range sensor. The environment is systematically searched, but the search
+  may terminate early if the goal is found.
+
+  Problem-definition:
+  Part of the problem is map-building, as the map is not provided exactly, and
+  sensory map-information has to be used in order to successfully solve a given
+  planning problem.
+\end{enumerate}
+
+\subsection{Visibility Polygon}
+Let \(V(x)\) be the visibility polygon - that is the set of all points that are
+visible from \(x\).
+
+I-states enables us to solve problems without having a complete represenation of
+the environment! (LAV06)chp12.2
+
+
+
 \subsubsection{Decision Makers}
 
 \subsection{Rewards?}
@@ -333,3 +365,66 @@ Expected-case analysis. Worst-case analysis.
 http://msl.cs.uiuc.edu/~lavalle/cs497/jokane.pdf
 
 http://robotics.cs.unc.edu/BeliefSpacePlanning/index.html
+
+\section{Survey}
+
+Following is a survey of motion planning techniques with a focus on their
+application in unmanned ground vehichles (UGVs). First described is the relevant
+sources of uncertainty in UGV motion planning, and then describes the relevant
+techniques that have been applied to solve them in the literature. In general
+uncertainty in UGV planning can be related to three sources:
+\begin{enumerate}
+\item Uncertainty in robot sensing.
+\item Uncertainty in robot predicability.
+\item Uncertainty in environment sensing.
+\item Uncertainty in environment predicability.
+\end{enumerate}
+\cite{lavalle_framework_1995}
+
+\subsection{Uncertainty in robot predicability}
+Uncertainty in vehicle dynamics arises as the future robot configuration cannot
+be predicted exactly. This results from modelling errors and/or limited
+precision in the system's command tracking performance
+\cite{dadkhah_survey_2012}. Thus a transfer from one state to another will not
+guarantee full knowledge of the vehichle in the next state. This is referred to
+as \textit{automated sequential decision making} in the literature, and the
+mathematical framework used to tackle such uncertainty is the \textit{Markov
+  Decision Process} (MDPs), used to formulate an optimal value problem, which
+then can be solved for an optimal value function, and the corresponding optimal
+policy \cite{Cassandra:1998:EAA:926710}. The problem herein lies with the size
+of the state space when this solution strategy is applied to solving real-world
+problems -- referred to as \textit{the curse of dimensionality}. In fact
+\cite[Tsilkis]{christos_h._papadimitriou_complexity_1987} showed that solving
+such a problem is PSPACE-Complete and thus not tractable for real-life
+applications. However approximate solutions are available, as shown by
+\cite[Kaelbling et. al]{kaelbling_planning_1998}. Therefore the problem has to
+be solved by using techniques such as sampling the belief space, as shown in
+\cite[Kearns et. al]{kearns_sparse}.
+
+% \subsubsection{Optimal Control Based Approaches}
+
+\subsection{Uncertainty in Environment Predicability}
+If the robot has imperfect or non-existent a-priori maps, or noisy sensory data,
+complete deterministic knowledge of the environment is impossible.
+
+\subsubsection{Planning techniques for an uncertain environment} 
+For an UGV in an unknown environment, being able to have the situational
+awareness to avoid collisions while adhering to the global planning
+requirements, despite unpredicted obstacles appearing, is essential. Thus
+environment sensing and mapping and re-planning in real-time is required. This
+is referred to in the literature as planning in partially unknown environments.
+One solution to this problem is through incremental graph-search algorithms, as
+shown in \cite[Stentz]{stentz_optimal}, where the \textsl{D*} algorithm is
+described as a method for optimal and efficient replanning in partially unknown
+environments. Then \textit{Stentz}, a year later published the \textit{Focused
+  D*} algorithm a year later \cite{stentz1995focussed}, which incorporates
+heuristics to reduce the total time taken for re-planning. Still,\textit{D*} is computationally heavy, and algorithms have
+been created to improve on the time-bound of \textit{D*}. One notable is the
+\textit{D*-lite} algorithm presented by \cite[Koenig]{koenig2002d}. These
+incremental planners, which incorporates the previously calculated plan in the
+solution of the newly arisen planning problem speeds up the planning cycles, but
+can in many cases still not be enough for a viable real-time solution. Finding a
+new plan within the allotted planning interval may simply not be possible, in
+which case one can resort to \textit{Anytime} algorithms, like \cite[Karaman et.
+al]{karaman_anytime_2011}, or one can
+

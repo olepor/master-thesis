@@ -1,0 +1,334 @@
+
+@online{center_for_history_and_new_media_zotero_????,
+	title = {Zotero Quick Start Guide},
+	url = {http://zotero.org/support/quick_start_guide},
+	author = {{Center for History and New Media}}
+}
+
+@article{ichter_real-time_2016,
+	title = {Real-Time Stochastic Kinodynamic Motion Planning via Multiobjective Search on {GPUs}},
+	url = {http://arxiv.org/abs/1607.06886},
+	abstract = {In this paper we present the {PUMP} (Parallel Uncertainty-aware Multiobjective Planning) algorithm for addressing the stochastic kinodynamic motion planning problem, whereby one seeks a low-cost, dynamically-feasible motion plan subject to a constraint on collision probability ({CP}). To ensure exhaustive evaluation of candidate motion plans (as needed to tradeoff the competing objectives of performance and safety), {PUMP} incrementally builds the Pareto front of the problem, accounting for the optimization objective and an approximation of {CP}. This is performed by a massively parallel multiobjective search, here implemented with a focus on {GPUs}. Upon termination of the exploration phase, {PUMP} searches the Pareto set of motion plans to identify the lowest cost solution that is certified to satisfy the {CP} constraint (according to an asymptotically exact estimator). We introduce a novel particle-based {CP} approximation scheme, designed for efficient {GPU} implementation, which accounts for dependencies over the history of a trajectory execution. We present numerical experiments for quadrotor planning wherein {PUMP} identifies solutions in {\textasciitilde}100 ms, evaluating over one hundred thousand partial plans through the course of its exploration phase. The results show that this multiobjective search achieves a lower motion plan cost, for the same {CP} constraint, compared to a safety buffer-based search heuristic and repeated {RRT} trials.},
+	journaltitle = {{arXiv}:1607.06886 [cs]},
+	author = {Ichter, Brian and Schmerling, Edward and Agha-mohammadi, Ali-akbar and Pavone, Marco},
+	urldate = {2018-02-21},
+	date = {2016-07-22},
+	eprinttype = {arxiv},
+	eprint = {1607.06886},
+	keywords = {Computer Science - Robotics},
+	file = {arXiv\:1607.06886 PDF:/Users/olepor/Zotero/storage/2EUAQ9N4/Ichter et al. - 2016 - Real-Time Stochastic Kinodynamic Motion Planning v.pdf:application/pdf;arXiv.org Snapshot:/Users/olepor/Zotero/storage/VJ5X4DRF/1607.html:text/html}
+}
+
+@article{esfahani_motion_2016,
+	title = {Motion Planning for Continuous Time Stochastic Processes: A Dynamic Programming Approach},
+	volume = {61},
+	issn = {0018-9286, 1558-2523},
+	url = {http://arxiv.org/abs/1211.1138},
+	doi = {10.1109/TAC.2015.2500638},
+	shorttitle = {Motion Planning for Continuous Time Stochastic Processes},
+	abstract = {We study stochastic motion planning problems which involve a controlled process, with possibly discontinuous sample paths, visiting certain subsets of the state-space while avoiding others in a sequential fashion. For this purpose, we first introduce two basic notions of motion planning, and then establish a connection to a class of stochastic optimal control problems concerned with sequential stopping times. A weak dynamic programming principle ({DPP}) is then proposed, which characterizes the set of initial states that admit a control enabling the process to execute the desired maneuver with probability no less than some pre-specified value. The proposed {DPP} comprises auxiliary value functions defined in terms of discontinuous payoff functions. A concrete instance of the use of this novel {DPP} in the case of diffusion processes is also presented. In this case, we establish that the aforementioned set of initial states can be characterized as the level set of a discontinuous viscosity solution to a sequence of partial differential equations, for which the first one has a known boundary condition, while the boundary conditions of the subsequent ones are determined by the solutions to the preceding steps. Finally, the generality and flexibility of the theoretical results are illustrated on an example involving biological switches.},
+	pages = {2155--2170},
+	number = {8},
+	journaltitle = {{IEEE} Transactions on Automatic Control},
+	author = {Esfahani, Peyman Mohajerin and Chatterjee, Debasish and Lygeros, John},
+	urldate = {2018-02-21},
+	date = {2016-08},
+	eprinttype = {arxiv},
+	eprint = {1211.1138},
+	keywords = {Computer Science - Systems and Control, Mathematics - Optimization and Control, Mathematics - Probability},
+	file = {arXiv\:1211.1138 PDF:/Users/olepor/Zotero/storage/Z4U5Y4EN/Esfahani et al. - 2016 - Motion Planning for Continuous Time Stochastic Pro.pdf:application/pdf;arXiv.org Snapshot:/Users/olepor/Zotero/storage/AKXPBPYX/1211.html:text/html}
+}
+
+@incollection{__????
+}
+
+@book{s.m._la_valle_motion_????,
+	title = {Motion Planning},
+	author = {S.M. La Valle},
+	keywords = {book, motion planning}
+}
+
+@misc{_http://msl.cs.uiuc.edu/lavalle/cs497/jokane.pdf_????,
+	title = {http://msl.cs.uiuc.edu/{\textasciitilde}lavalle/cs497/jokane.pdf}
+}
+
+@article{_https://link.springer.com/content/pdf/10.10072fs10846-011-9642-9.pdf_????,
+	title = {https://link.springer.com/content/pdf/10.1007\%2Fs10846-011-9642-9.pdf},
+	url = {https://link.springer.com/content/pdf/10.1007%2Fs10846-011-9642-9.pdf}
+}
+
+@incollection{christensen_motion_2017,
+	location = {Cham},
+	title = {Motion Planning Under Uncertainty Using Differential Dynamic Programming in Belief Space},
+	volume = {100},
+	isbn = {978-3-319-29362-2 978-3-319-29363-9},
+	url = {http://link.springer.com/10.1007/978-3-319-29363-9_27},
+	abstract = {We present an approach to motion planning under motion and sensing uncertainty, formally described as a continuous partially-observable Markov decision process ({POMDP}). Our approach is designed for non-linear dynamics and observation models, and follows the general {POMDP} solution framework in which we represent beliefs by Gaussian distributions, approximate the belief dynamics using an extended Kalman ﬁlter ({EKF}), and represent the value function by a quadratic function that is valid in the vicinity of a nominal trajectory through belief space. Using a variant of differential dynamic programming, our approach iterates with second-order convergence towards a linear control policy over the belief space that is locally-optimal with respect to a user-deﬁned cost function. Unlike previous work, our approach does not assume maximum-likelihood observations, does not assume ﬁxed estimator or control gains, takes into account obstacles in the environment, and does not require discretization of the belief space. The running time of the algorithm is polynomial in the dimension of the state space. We demonstrate the potential of our approach in several continuous partially-observable planning domains with obstacles for robots with non-linear dynamics and observation models.},
+	pages = {473--490},
+	booktitle = {Robotics Research},
+	publisher = {Springer International Publishing},
+	author = {van den Berg, Jur and Patil, Sachin and Alterovitz, Ron},
+	editor = {Christensen, Henrik I. and Khatib, Oussama},
+	urldate = {2018-04-26},
+	date = {2017},
+	langid = {english},
+	doi = {10.1007/978-3-319-29363-9_27},
+	keywords = {promising, stochastic, {POMD}, uncertainty, mobile robotics},
+	file = {van den Berg et al. - 2017 - Motion Planning Under Uncertainty Using Differenti.pdf:/Users/olepor/Zotero/storage/6NCZMY4S/van den Berg et al. - 2017 - Motion Planning Under Uncertainty Using Differenti.pdf:application/pdf}
+}
+
+@online{_motionplanningunderuncertainty_????,
+	title = {{MotionPlanningUnderUncertainty}},
+	url = {http://sauravag.com/software-2/},
+	keywords = {uncertainty, {OMPL}, matlab, C++}
+}
+
+@inproceedings{bry_rapidly-exploring_2011,
+	title = {Rapidly-exploring Random Belief Trees for motion planning under uncertainty},
+	isbn = {978-1-61284-386-5},
+	url = {http://ieeexplore.ieee.org/document/5980508/},
+	doi = {10.1109/ICRA.2011.5980508},
+	abstract = {In this paper we address the problem of motion planning in the presence of state uncertainty, also known as planning in belief space. The work is motivated by planning domains involving nontrivial dynamics, spatially varying measurement properties, and obstacle constraints. To make the problem tractable, we restrict the motion plan to a nominal trajectory stabilized with a linear estimator and controller. This allows us to predict distributions over future states given a candidate nominal trajectory. Using these distributions to ensure a bounded probability of collision, the algorithm incrementally constructs a graph of trajectories through state space, while efﬁciently searching over candidate paths through the graph at each iteration. This process results in a search tree in belief space that provably converges to the optimal path. We analyze the algorithm theoretically and also provide simulation results demonstrating its utility for balancing information gathering to reduce uncertainty and ﬁnding low cost paths.},
+	pages = {723--730},
+	publisher = {{IEEE}},
+	author = {Bry, Adam and Roy, Nicholas},
+	urldate = {2018-05-10},
+	date = {2011-05},
+	langid = {english},
+	keywords = {promising, stochastic, {RRT}},
+	file = {Bry and Roy - 2011 - Rapidly-exploring Random Belief Trees for motion p.pdf:/Users/olepor/Zotero/storage/ZBU8CTNJ/Bry and Roy - 2011 - Rapidly-exploring Random Belief Trees for motion p.pdf:application/pdf}
+}
+
+@article{agha-mohammadi_periodic-node_????,
+	title = {Periodic-node Graph-based Framework for Stochastic Control of Non-point-stabilizable Systems},
+	abstract = {This paper presents a strategy for stochastic control of small aerial vehicles under uncertainty using graph-based methods. In planning with graph-based methods, such as the Probabilistic Roadmap Method ({PRM}) in state space or the Information {RoadMaps} ({IRM}) in information-state (belief) space, the local planners (along the edges) are responsible to drive the state/belief to the ﬁnal node of the edge. However, for aerial vehicles with minimum velocity constraints, driving the system belief to a sampled belief is a challenge. In this paper, we propose a novel method based on periodic controllers, in which instead of stabilizing the belief to a predeﬁned probability distribution, the belief is stabilized to an orbit (periodic path) of probability distributions. Choosing nodes along these orbits, the node reachability in belief space is achieved and we can form a graph in belief space that can handle higher-order-dynamics or non-stoppable systems (whose velocity cannot be zero), such as ﬁxedwing aircraft. The proposed method takes obstacles into account and provides a query-independent graph, since its edge costs are independent of each other, thus it satisﬁes the principle of optimality. Therefore, dynamic programming can be utilized to compute the best feedback on the graph. We demonstrate the method’s performance on a unicycle robot and a six degree of freedom small aerial vehicle.},
+	pages = {19},
+	author = {Agha-mohammadi, Ali-akbar and Agarwal, Saurav and Chakravorty, Suman},
+	langid = {english},
+	file = {Agha-mohammadi et al. - Periodic-node Graph-based Framework for Stochastic.pdf:/Users/olepor/Zotero/storage/BVZEIB2F/Agha-mohammadi et al. - Periodic-node Graph-based Framework for Stochastic.pdf:application/pdf}
+}
+
+@inproceedings{vitus_hierarchical_2012,
+	title = {A hierarchical method for stochastic motion planning in uncertain environments},
+	isbn = {978-1-4673-1736-8 978-1-4673-1737-5 978-1-4673-1735-1},
+	url = {http://ieeexplore.ieee.org/document/6385724/},
+	doi = {10.1109/IROS.2012.6385724},
+	abstract = {This paper considers the problem of stochastic motion planning in uncertain environments, and extends existing chance constrained optimal control solutions. Due to the imperfect knowledge of the system state caused by motion uncertainty, sensor noise and environment uncertainty, the system constraints cannot be guaranteed to be satisﬁed and consequently must be considered probabilistically. To account for the uncertainty, the constraints are formulated as convex constraints on a random variable, known as chance constraints, with the violation probability of all the constraints guaranteed to be below a threshold. Standard chance constrained stochastic motion planning methods do not incorporate environmental sensing which typically leads to overly-conservative solutions. To address this, a novel hierarchical framework is proposed that consists of two main steps: an expected shortest path problem on an uncertain graph and a chance constrained motion planning problem. The ﬁrst successful, real-time experimental demonstration of chance constrained control with uncertain constraint parameters and variables is also presented for a quadrotor equipped with a Kinect sensor navigating through an uncertain, cluttered 3D environment.},
+	pages = {2263--2268},
+	publisher = {{IEEE}},
+	author = {Vitus, Michael P. and Zhang, Wei and Tomlin, Claire J.},
+	urldate = {2018-05-10},
+	date = {2012-10},
+	langid = {english},
+	file = {Vitus et al. - 2012 - A hierarchical method for stochastic motion planni.pdf:/Users/olepor/Zotero/storage/LXVUCDXP/Vitus et al. - 2012 - A hierarchical method for stochastic motion planni.pdf:application/pdf}
+}
+
+@article{li_sampling-based_2014,
+	title = {Sampling-Based Real-Time Motion Planning under State Uncertainty for Autonomous Micro-Aerial Vehicles in {GPS}-Denied Environments},
+	volume = {14},
+	issn = {1424-8220},
+	url = {http://www.mdpi.com/1424-8220/14/11/21791},
+	doi = {10.3390/s141121791},
+	abstract = {This paper presents a real-time motion planning approach for autonomous vehicles with complex dynamics and state uncertainty. The approach is motivated by the motion planning problem for autonomous vehicles navigating in {GPS}-denied dynamic environments, which involves non-linear and/or non-holonomic vehicle dynamics, incomplete state estimates, and constraints imposed by uncertain and cluttered environments. To address the above motion planning problem, we propose an extension of the closed-loop rapid belief trees, the closed-loop random belief trees ({CL}-{RBT}), which incorporates predictions of the position estimation uncertainty, using a factored form of the covariance provided by the Kalman filter-based estimator. The proposed motion planner operates by incrementally constructing a tree of dynamically feasible trajectories using the closed-loop prediction, while selecting candidate paths with low uncertainty using efficient covariance update and propagation. The algorithm can operate in real-time, continuously providing the controller with feasible paths for execution, enabling the vehicle to account for dynamic and uncertain environments. Simulation results demonstrate that the proposed approach can generate feasible trajectories that reduce the state estimation uncertainty, while handling complex vehicle dynamics and environment constraints.},
+	pages = {21791--21825},
+	number = {11},
+	journaltitle = {Sensors},
+	author = {Li, Dachuan and Li, Qing and Cheng, Nong and Song, Jingyan},
+	urldate = {2018-05-10},
+	date = {2014-11-18},
+	langid = {english},
+	file = {Li et al. - 2014 - Sampling-Based Real-Time Motion Planning under Sta.pdf:/Users/olepor/Zotero/storage/WT8LWA39/Li et al. - 2014 - Sampling-Based Real-Time Motion Planning under Sta.pdf:application/pdf}
+}
+
+@article{dadkhah_survey_2012,
+	title = {Survey of Motion Planning Literature in the Presence of Uncertainty: Considerations for {UAV} Guidance},
+	volume = {65},
+	issn = {0921-0296, 1573-0409},
+	url = {http://link.springer.com/10.1007/s10846-011-9642-9},
+	doi = {10.1007/s10846-011-9642-9},
+	shorttitle = {Survey of Motion Planning Literature in the Presence of Uncertainty},
+	abstract = {This paper provides a survey of motion planning techniques under uncertainty with a focus on their application to autonomous guidance of unmanned aerial vehicles ({UAVs}). The paper first describes the primary sources of uncertainty arising in {UAV} guidance and then describes relevant practical techniques that have been reported in the literature. The paper makes a point of distinguishing between contributions from the field of robotics and artif icial intelligence, and the field of dynamical systems and controls. Mutual and individual contributions for these fields are highlighted providing a roadmap for tackling the {UAV} guidance problem.},
+	pages = {233--246},
+	number = {1},
+	journaltitle = {Journal of Intelligent \& Robotic Systems},
+	author = {Dadkhah, Navid and Mettler, Bérénice},
+	urldate = {2018-05-10},
+	date = {2012-01},
+	langid = {english},
+	file = {Dadkhah and Mettler - 2012 - Survey of Motion Planning Literature in the Presen.pdf:/Users/olepor/Zotero/storage/KSPGJH7F/Dadkhah and Mettler - 2012 - Survey of Motion Planning Literature in the Presen.pdf:application/pdf}
+}
+
+@article{hoy_algorithms_2015,
+	title = {Algorithms for collision-free navigation of mobile robots in complex cluttered environments: a survey},
+	volume = {33},
+	issn = {0263-5747, 1469-8668},
+	url = {http://www.journals.cambridge.org/abstract_S0263574714000289},
+	doi = {10.1017/S0263574714000289},
+	shorttitle = {Algorithms for collision-free navigation of mobile robots in complex cluttered environments},
+	abstract = {We review a range of techniques related to navigation of unmanned vehicles through unknown environments with obstacles, especially those that rigorously ensure collision avoidance (given certain assumptions about the system). This topic continues to be an active area of research, and we highlight some directions in which available approaches may be improved. The paper discusses models of the sensors and vehicle kinematics, assumptions about the environment, and performance criteria. Methods applicable to stationary obstacles, moving obstacles and multiple vehicles scenarios are all reviewed. In preference to global approaches based on full knowledge of the environment, particular attention is given to reactive methods based on local sensory data, with a special focus on recently proposed navigation laws based on model predictive and sliding mode control.},
+	pages = {463--497},
+	number = {3},
+	journaltitle = {Robotica},
+	author = {Hoy, Michael and Matveev, Alexey S. and Savkin, Andrey V.},
+	urldate = {2018-05-10},
+	date = {2015-03},
+	langid = {english},
+	file = {Hoy et al. - 2015 - Algorithms for collision-free navigation of mobile.pdf:/Users/olepor/Zotero/storage/8GAQXYLL/Hoy et al. - 2015 - Algorithms for collision-free navigation of mobile.pdf:application/pdf}
+}
+
+@incollection{christensen_motion_2017-1,
+	location = {Cham},
+	title = {Motion Planning Under Uncertainty Using Differential Dynamic Programming in Belief Space},
+	volume = {100},
+	isbn = {978-3-319-29362-2 978-3-319-29363-9},
+	url = {http://link.springer.com/10.1007/978-3-319-29363-9_27},
+	abstract = {We present an approach to motion planning under motion and sensing uncertainty, formally described as a continuous partially-observable Markov decision process ({POMDP}). Our approach is designed for non-linear dynamics and observation models, and follows the general {POMDP} solution framework in which we represent beliefs by Gaussian distributions, approximate the belief dynamics using an extended Kalman ﬁlter ({EKF}), and represent the value function by a quadratic function that is valid in the vicinity of a nominal trajectory through belief space. Using a variant of differential dynamic programming, our approach iterates with second-order convergence towards a linear control policy over the belief space that is locally-optimal with respect to a user-deﬁned cost function. Unlike previous work, our approach does not assume maximum-likelihood observations, does not assume ﬁxed estimator or control gains, takes into account obstacles in the environment, and does not require discretization of the belief space. The running time of the algorithm is polynomial in the dimension of the state space. We demonstrate the potential of our approach in several continuous partially-observable planning domains with obstacles for robots with non-linear dynamics and observation models.},
+	pages = {473--490},
+	booktitle = {Robotics Research},
+	publisher = {Springer International Publishing},
+	author = {van den Berg, Jur and Patil, Sachin and Alterovitz, Ron},
+	editor = {Christensen, Henrik I. and Khatib, Oussama},
+	urldate = {2018-05-10},
+	date = {2017},
+	langid = {english},
+	doi = {10.1007/978-3-319-29363-9_27},
+	file = {van den Berg et al. - 2017 - Motion Planning Under Uncertainty Using Differenti.pdf:/Users/olepor/Zotero/storage/RZ629YSK/van den Berg et al. - 2017 - Motion Planning Under Uncertainty Using Differenti.pdf:application/pdf}
+}
+
+@article{kurniawati_global_????,
+	title = {Global Motion Planning under Uncertain Motion, Sensing, and Environment Map},
+	abstract = {Motion planning that takes into account uncertainty in motion, sensing, and environment map, is critical for autonomous robots to operate reliably in our living spaces. Partially Observable Markov Decision Processes ({POMDPs}) is a principled and general framework for planning under uncertainty. Although recent development of point-based {POMDPs} have drastically increased the speed of {POMDP} planning, even the best {POMDP} planner today, fails to generate reasonable motion strategies when the environment map is not known exactly. This paper presents Guided Cluster Sampling ({GCS}), a new point-based {POMDP} planner for motion planning with uncertain motion, sensing, and environment map, when the robot has active sensing capability. It uses our observations that in this problem, the belief space B can be partitioned into a collection of much smaller sub-spaces, and an optimal policy can often be generated by sufﬁcient sampling of a small subset of the collection. {GCS} samples B using two-stage cluster sampling, a subspace is sampled from the collection and then a belief is sampled from the subspace. It uses information from the set of sampled sub-spaces and sampled beliefs to guide subsequent sampling. Preliminary results suggest that {GCS} generates reasonable policies for motion planning problems with uncertain motion, sensing, and environment map, that are unsolvable by the best point-based {POMDP} planner today, within reasonable time. Furthermore, {GCS} handles {POMDPs} with continuous state, action, and observation spaces. We show that for a class of {POMDPs} that often occur in robot motion planning, {GCS} converges to the optimal policy, given enough time. To the best of our knowledge, this is the ﬁrst convergence result for point-based {POMDPs} with continuous action space.},
+	pages = {8},
+	author = {Kurniawati, Hanna and Bandyopadhyay, Tirthankar and Patrikalakis, Nicholas M},
+	langid = {english},
+	file = {Kurniawati et al. - Global Motion Planning under Uncertain Motion, Sen.pdf:/Users/olepor/Zotero/storage/TBGW7TNS/Kurniawati et al. - Global Motion Planning under Uncertain Motion, Sen.pdf:application/pdf}
+}
+
+@inproceedings{agha-mohammadi_robust_2014,
+	title = {Robust online belief space planning in changing environments: Application to physical mobile robots},
+	isbn = {978-1-4799-3685-4},
+	url = {http://ieeexplore.ieee.org/document/6906602/},
+	doi = {10.1109/ICRA.2014.6906602},
+	shorttitle = {Robust online belief space planning in changing environments},
+	abstract = {Motion planning in belief space (under motion and sensing uncertainty) is a challenging problem due to the computational intractability of its exact solution. The Feedback-based Information {RoadMap} ({FIRM}) framework made an important theoretical step toward enabling roadmap-based planning in belief space and provided a computationally tractable version of belief space planning. However, there are still challenges in applying belief space planners to physical systems, such as the discrepancy between computational models and real physical models. In this paper, we propose a dynamic replanning scheme in belief space to address such challenges. Moreover, we present techniques to cope with changes in the environment (e.g., changes in the obstacle map), as well as unforeseen large deviations in the robot’s location (e.g., the kidnapped robot problem). We then utilize these techniques to implement the ﬁrst online replanning scheme in belief space on a physical mobile robot that is robust to changes in the environment and large disturbances. This method demonstrates that belief space planning is a practical tool for robot motion planning.},
+	pages = {149--156},
+	publisher = {{IEEE}},
+	author = {Agha-mohammadi, Ali-akbar and Agarwal, Saurav and Mahadevan, Aditya and Chakravorty, Suman and Tomkins, Daniel and Denny, Jory and Amato, Nancy M.},
+	urldate = {2018-05-10},
+	date = {2014-05},
+	langid = {english},
+	file = {Agha-mohammadi et al. - 2014 - Robust online belief space planning in changing en.pdf:/Users/olepor/Zotero/storage/QD528SH8/Agha-mohammadi et al. - 2014 - Robust online belief space planning in changing en.pdf:application/pdf}
+}
+
+@inproceedings{lavalle_evaluating_1996,
+	title = {Evaluating motion strategies under nondeterministic or probabilistic uncertainties in sensing and control},
+	volume = {4},
+	isbn = {978-0-7803-2988-1},
+	url = {http://ieeexplore.ieee.org/document/509173/},
+	doi = {10.1109/ROBOT.1996.509173},
+	abstract = {In this paper we provide a method for characterizing future configurations under the implementation of a motion strategy in the presence of sensing and control uncertainties. W e provide general techniques which can apply to either nondeterministic models of uncertainty (as typically considered in preimage planning research) or probabilistic models. Information-space concepts from modern control theory are utilized t o define the notion of a strategy in this general context. W e have implemented algorithms and show several computed examples that generalize the forward projection concepts f r o m tradition literature in this area.},
+	pages = {3034--3039},
+	publisher = {{IEEE}},
+	author = {{LaValle}, S.M. and Hutchinson, S.A.},
+	urldate = {2018-05-10},
+	date = {1996},
+	langid = {english},
+	file = {LaValle and Hutchinson - 1996 - Evaluating motion strategies under nondeterministi.pdf:/Users/olepor/Zotero/storage/LSNB4S2I/LaValle and Hutchinson - 1996 - Evaluating motion strategies under nondeterministi.pdf:application/pdf}
+}
+
+@article{paden_survey_2016,
+	title = {A Survey of Motion Planning and Control Techniques for Self-Driving Urban Vehicles},
+	volume = {1},
+	issn = {2379-8904, 2379-8858},
+	url = {http://ieeexplore.ieee.org/document/7490340/},
+	doi = {10.1109/TIV.2016.2578706},
+	abstract = {Self-driving vehicles are a maturing technology with the potential to reshape mobility by enhancing the safety, accessibility, efﬁciency, and convenience of automotive transportation. Safety-critical tasks that must be executed by a self-driving vehicle include planning of motions through a dynamic environment shared with other vehicles and pedestrians, and their robust executions via feedback control. The objective of this paper is to survey the current state of the art on planning and control algorithms with particular regard to the urban setting. A selection of proposed techniques is reviewed along with a discussion of their effectiveness. The surveyed approaches differ in the vehicle mobility model used, in assumptions on the structure of the environment, and in computational requirements. The side by side comparison presented in this survey helps to gain insight into the strengths and limitations of the reviewed approaches and assists with system level design choices.},
+	pages = {33--55},
+	number = {1},
+	journaltitle = {{IEEE} Transactions on Intelligent Vehicles},
+	author = {Paden, Brian and Cap, Michal and Yong, Sze Zheng and Yershov, Dmitry and Frazzoli, Emilio},
+	urldate = {2018-05-10},
+	date = {2016-03},
+	langid = {english},
+	file = {Paden et al. - 2016 - A Survey of Motion Planning and Control Techniques.pdf:/Users/olepor/Zotero/storage/AAUPYDFJ/Paden et al. - 2016 - A Survey of Motion Planning and Control Techniques.pdf:application/pdf}
+}
+
+@inproceedings{lavalle_framework_1995,
+	title = {A framework for motion planning in stochastic environments: modeling and analysis},
+	volume = {3},
+	isbn = {978-0-7803-1965-3},
+	url = {http://ieeexplore.ieee.org/document/525719/},
+	doi = {10.1109/ROBOT.1995.525719},
+	shorttitle = {A framework for motion planning in stochastic environments},
+	abstract = {W e present a framework for analyzing and determining motion plans for a robot that operates in a n environment that changes over time in a n uncertain manner. W e first classify sources of uncertainty in motion planning into four categories, and argue that the framework addressed in this paper characterizes a n important, yet little-explored category. W e treat the changing environment in a flexible manner by combining traditional configuration space concepts with a Markov process that models the environment. For this context, we then propose the use of a motion strategy, which provides a motion command for the robot for each contingency that it could be confronted with. W e allow the specification of a desired performance criterion, such as time or distance, and the goal is t o determine a motion strategy that is optimal with respect to that criterion. A motion planning problem in this framework is formulated as the design of a stochastic optimal controller. Applications and computational issues are discussed in a companion paper [12].},
+	pages = {3057--3062},
+	publisher = {{IEEE}},
+	author = {{LaValle}, S.M. and Sharma, R.},
+	urldate = {2018-05-13},
+	date = {1995},
+	langid = {english},
+	file = {LaValle and Sharma - 1995 - A framework for motion planning in stochastic envi.pdf:/Users/olepor/Zotero/storage/WEHNMJNB/LaValle and Sharma - 1995 - A framework for motion planning in stochastic envi.pdf:application/pdf}
+}
+
+@article{christos_h._papadimitriou_complexity_1987,
+	title = {The Complexity of Markov Decision Processes},
+	volume = {12},
+	url = {http://www.jstor.org/stable/3689975},
+	pages = {441--450},
+	number = {3},
+	journaltitle = {Mathematics of Operations Research},
+	author = {Christos H. Papadimitriou and John N. Tsitsiklis},
+	date = {1987},
+	langid = {english},
+	file = {Christos H. Papadimitriou and John N. Tsitsiklis - 1987 - The Complexity of Markov Decision Processes.pdf:/Users/olepor/Zotero/storage/HSH6WHI5/Christos H. Papadimitriou and John N. Tsitsiklis - 1987 - The Complexity of Markov Decision Processes.pdf:application/pdf}
+}
+
+@article{kaelbling_planning_1998,
+	title = {Planning and acting in partially observable stochastic domains},
+	volume = {101},
+	issn = {00043702},
+	url = {http://linkinghub.elsevier.com/retrieve/pii/S000437029800023X},
+	doi = {10.1016/S0004-3702(98)00023-X},
+	abstract = {In this paper, we bring techniques from operations research to bear on the problem of choosing optimal actions in partially observable stochastic domains. We begin by introducing the theory of Markov decision processes ({MDPs}) and partially observable {MDPs} ({POMDPs}). We then outline a novel algorithm for solving {POMDPs} off line and show how, in some cases, a ﬁnite-memory controller can be extracted from the solution to a {POMDP}. We conclude with a discussion of how our approach relates to previous work, the complexity of ﬁnding exact solutions to {POMDPs}, and of some possibilities for ﬁnding approximate solutions. © 1998 Elsevier Science B.V. All rights reserved.},
+	pages = {99--134},
+	number = {1},
+	journaltitle = {Artificial Intelligence},
+	author = {Kaelbling, Leslie Pack and Littman, Michael L. and Cassandra, Anthony R.},
+	urldate = {2018-05-13},
+	date = {1998-05},
+	langid = {english},
+	file = {Kaelbling et al. - 1998 - Planning and acting in partially observable stocha.pdf:/Users/olepor/Zotero/storage/GEVLUVFU/Kaelbling et al. - 1998 - Planning and acting in partially observable stocha.pdf:application/pdf}
+}
+
+@article{kearns_sparse_????,
+	title = {A Sparse Sampling Algorithm for Near-Optimal Planning in Large Markov Decision Processes},
+	abstract = {A critical issue for the application of Markov decision processes ({MDPs}) to realistic problems is how the complexity of planning scales with the size of the {MDP}. In stochastic environments with very large or inﬁnite state spaces, traditional planning and reinforcement learning algorithms may be inapplicable, since their running time typically grows linearly with the state space size in the worst case. In this paper we present a new algorithm that, given only a generative model (a natural and common type of simulator) for an arbitrary {MDP}, performs on-line, near-optimal planning with a per-state running time that has no dependence on the number of states. The running time is exponential in the horizon time (which depends only on the discount factor γ and the desired degree of approximation to the optimal policy). Our algorithm thus provides a different complexity trade-off than classical algorithms such as value iteration—rather than scaling linearly in both horizon time and state space size, our running time trades an exponential dependence on the former in exchange for no dependence on the latter.},
+	pages = {16},
+	author = {{KEARNS}, {MICHAEL}},
+	langid = {english},
+	file = {KEARNS - A Sparse Sampling Algorithm for Near-Optimal Plann.pdf:/Users/olepor/Zotero/storage/V9XTU8V9/KEARNS - A Sparse Sampling Algorithm for Near-Optimal Plann.pdf:application/pdf}
+}
+
+@article{stentz_optimal_????,
+	title = {Optimal and Efﬁcient Path Planning for Partially-Known Environments},
+	abstract = {The task of planning trajectories for a mobile robot has received considerable attention in the research literature. Most of the work assumes the robot has a complete and accurate model of its environment before it begins to move; less attention has been paid to the problem of partially known environments. This situation occurs for an exploratory robot or one that must move to a goal location without the benefit of a floorplan or terrain map. Existing approaches plan an initial path based on known information and then modify the plan locally or replan the entire path as the robot discovers obstacles with its sensors, sacriﬁcing optimality or computational efﬁciency respectively. This paper introduces a new algorithm, D*, capable of planning paths in unknown, partially known, and changing environments in an efficient, optimal, and complete manner.},
+	pages = {8},
+	author = {Stentz, Anthony},
+	langid = {english},
+	file = {Stentz - Optimal and Efﬁcient Path Planning for Partially-K.pdf:/Users/olepor/Zotero/storage/9A3N2XH8/Stentz - Optimal and Efﬁcient Path Planning for Partially-K.pdf:application/pdf}
+}
+
+@inproceedings{karaman_anytime_2011,
+	title = {Anytime Motion Planning using the {RRT}*},
+	isbn = {978-1-61284-386-5},
+	url = {http://ieeexplore.ieee.org/document/5980479/},
+	doi = {10.1109/ICRA.2011.5980479},
+	abstract = {The Rapidly-exploring Random Tree ({RRT}) algorithm, based on incremental sampling, efﬁciently computes motion plans. Although the {RRT} algorithm quickly produces candidate feasible solutions, it tends to converge to a solution that is far from optimal. Practical applications favor “anytime” algorithms that quickly identify an initial feasible plan, then, given more computation time available during plan execution, improve the plan toward an optimal solution. This paper describes an anytime algorithm based on the {RRT}⇤ which (like the {RRT}) ﬁnds an initial feasible solution quickly, but (unlike the {RRT}) almost surely converges to an optimal solution. We present two key extensions to the {RRT}⇤, committed trajectories and branch-and-bound tree adaptation, that together enable the algorithm to make more efﬁcient use of computation time online, resulting in an anytime algorithm for real-time implementation. We evaluate the method using a series of Monte Carlo runs in a high-ﬁdelity simulation environment, and compare the operation of the {RRT} and {RRT}⇤ methods. We also demonstrate experimental results for an outdoor wheeled robotic vehicle.},
+	pages = {1478--1483},
+	publisher = {{IEEE}},
+	author = {Karaman, Sertac and Walter, Matthew R. and Perez, Alejandro and Frazzoli, Emilio and Teller, Seth},
+	urldate = {2018-05-13},
+	date = {2011-05},
+	langid = {english},
+	file = {Karaman et al. - 2011 - Anytime Motion Planning using the RRT.pdf:/Users/olepor/Zotero/storage/2QC6P7XF/Karaman et al. - 2011 - Anytime Motion Planning using the RRT.pdf:application/pdf}
+}
