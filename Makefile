@@ -1,13 +1,17 @@
 # TODO - add synctex for pdf to editor code maneuvering
 
+.Phony: all
+all: setup bibfix
+	latexmk -output-directory="build" -pdf
+	open build/main.pdf
+
+.Phony: bibfix
+bibfix: zot.bib
+	cat $< | sed -E "s/[_]\?{2,}//" | tee zot.bib
+
 .Phony: setup
 setup:
 	mkdir -p build/sections # Necessary for succesful compilation
-
-.Phony: all
-all: setup
-	latexmk -output-directory="build" -pdf
-	open build/main.pdf
 
 .Phony: file
 file: setup

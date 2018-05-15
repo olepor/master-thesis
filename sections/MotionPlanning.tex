@@ -407,7 +407,7 @@ be solved by using techniques such as sampling the belief space, as shown in
 If the robot has imperfect or non-existent a-priori maps, or noisy sensory data,
 complete deterministic knowledge of the environment is impossible.
 
-\subsubsection{Planning techniques for an uncertain environment} 
+\subsubsection{Planning techniques for an uncertain environment}
 For an UGV in an unknown environment, being able to have the situational
 awareness to avoid collisions while adhering to the global planning
 requirements, despite unpredicted obstacles appearing, is essential. Thus
@@ -418,13 +418,44 @@ shown in \cite[Stentz]{stentz_optimal}, where the \textsl{D*} algorithm is
 described as a method for optimal and efficient replanning in partially unknown
 environments. Then \textit{Stentz}, a year later published the \textit{Focused
   D*} algorithm a year later \cite{stentz1995focussed}, which incorporates
-heuristics to reduce the total time taken for re-planning. Still,\textit{D*} is computationally heavy, and algorithms have
-been created to improve on the time-bound of \textit{D*}. One notable is the
-\textit{D*-lite} algorithm presented by \cite[Koenig]{koenig2002d}. These
-incremental planners, which incorporates the previously calculated plan in the
-solution of the newly arisen planning problem speeds up the planning cycles, but
-can in many cases still not be enough for a viable real-time solution. Finding a
-new plan within the allotted planning interval may simply not be possible, in
-which case one can resort to \textit{Anytime} algorithms, like \cite[Karaman et.
-al]{karaman_anytime_2011}, or one can
+heuristics to reduce the total time taken for re-planning. Still,\textit{D*} is
+computationally heavy, and algorithms have been created to improve on the
+time-bound of \textit{D*}. One such implemplemenation is the \textit{D*-lite}
+algorithm presented by \cite[Koenig]{koenig2002d}. These incremental planners,
+which incorporates the previously calculated plan in the solution of the newly
+arisen planning problem speeds up the planning cycles, but can in many cases
+still not be enough for a viable real-time solution. Finding a new plan within
+the allotted planning interval may simply not be possible, in which case one can
+resort to \textit{Anytime} algorithms, like \cite[Karaman et.
+al]{karamanAnytimeMotionPlanning2011}, which will find the approximation in the given time
+interval. Anytime planners find a solution quickly, and then spends the rest of
+the alloted time on improving it until time runs out. One such example of both
+an anytime and incremental solution is \cite[Likachev]{likhachevAnytimeSearchDynamic2008}.
+
+\subsubsection{Environment Mapping}
+In the case that the map is only globally known, the local map may be wrong or
+have errors, that the on-board local sensors will have to figure out. In order
+to incorporate this into the planning procedure the field of mapping has to be
+considered. In the literature this field is referred to as\textit{Simultaneous
+  Location and Mapping} (SLAM). First of all virtually all robotic mapping
+algorithms are probabilistic \cite{thrunRoboticMappingSurvey}. % TODO  - read
+% this survey
+A method which is called \textit{Occupancy Grid} is presented in
+\cite{elfes1989using}, in which the map is split up into cells, and each cell is
+assigned a given probability of occupancy. It can incorporate information from
+high-level maps using the same method that is used for estimating the occupancy
+of a cell in a totally unknkown environment. As the model is based on Bayesian
+estimation, the initial map-data is used ad apriori input to the probabilistic
+model. Thus the usage of a map of the area is voluntary. In this way, unknown
+cells (those that are not yet inspected by local sensors) can be assigned a high
+probability of occupancy. An old article on how this can be implemented on a
+real robot is given by \cite[Krugman]{kriegman1987mobile} More recent work on
+the Occupancy Grid method can be found in
+\cite{carrilloAutonomousRoboticExploration2015}, which explores the trade-off
+between exploring a new area, and relying on the information already obtained in
+order to solve the problem. 
+\subsubsection{Integrating Planning and Mapping}
+(maybe merge the environment mapping techniques with the work done in
+\cite[Bry]{bryRapidlyexploringRandomBelief2011}), for RRT planning in belief
+space). 
 
