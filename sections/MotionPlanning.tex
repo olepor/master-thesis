@@ -391,7 +391,7 @@ as \textit{automated sequential decision making} in the literature, and the
 mathematical framework used to tackle such uncertainty is the \textit{Markov
   Decision Process} (MDPs), used to formulate an optimal value problem, which
 then can be solved for an optimal value function, and the corresponding optimal
-policy \cite{Cassandra:1998:EAA:926710}. The problem herein lies with the size
+policy \cite{Cassandra:1998:EAA:926710}. An introduction to Markov decision processes can be found in \textit{grasping POMDs}\cite{hsiaokaebling}. This article uses apriori known probability distributions in order to model uncertainty in the robot model and in the sensors, then proceeds to use this to solve a number of different objective functions. This probabilistic representation also gives enormous savings on the computational power needed to solve a problem, by focusing on the parts of space that are most likely to be encountered. The problem of solving POMDs lies with the size
 of the state space when this solution strategy is applied to solving real-world
 problems -- referred to as \textit{the curse of dimensionality}. In fact
 \cite[Tsilkis]{christos_h._papadimitriou_complexity_1987} showed that solving
@@ -399,7 +399,7 @@ such a problem is PSPACE-Complete and thus not tractable for real-life
 applications. However approximate solutions are available, as shown by
 \cite[Kaelbling et. al]{kaelbling_planning_1998}. Therefore the problem has to
 be solved by using techniques such as sampling the belief space, as shown in
-\cite[Kearns et. al]{kearns_sparse}.
+\cite[Kearns et. al]{kearns_sparse}. Another approach, using Monte-Carlo simulation, is shown effective on large belief-spaces in \cite{silverveness}.
 
 % \subsubsection{Optimal Control Based Approaches}
 
@@ -453,9 +453,8 @@ real robot is given by \cite[Krugman]{kriegman1987mobile} More recent work on
 the Occupancy Grid method can be found in
 \cite{carrilloAutonomousRoboticExploration2015}, which explores the trade-off
 between exploring a new area, and relying on the information already obtained in
-order to solve the problem. 
+order to solve the problem. A method to integrate current map-data with the on-board filter information is given in \cite{gindelebrechtelschroderdillmann} using a Bayesian Occupancy Grid Filter for dynamic environments using prior map knowledge.
 \subsubsection{Integrating Planning and Mapping}
 (maybe merge the environment mapping techniques with the work done in
 \cite[Bry]{bryRapidlyexploringRandomBelief2011}), for RRT planning in belief
-space). 
-
+space). A method for assigning different probabilities to different paths is given in \cite{bergabbellgoldberg} and is based on \textit{Linear Quadratic Gaussian Motion Planning} LQG-MP. In \cite{kurniawatibandyopadhai} a motion planner called \textit{Guided Cluster Sampling} is used to that takes into account all three sources of uncertainty for robots with active sensing capabilities. This method builds on the POMDP framework by utilizing a more suitable sampling distribution based on the observations done by the robots active sensors. In \cite{huanggupta} the \textit{RRT-SLAM} method is introduced, where uncertainty is used in the RRT-planner by moving the state space up a dimension, then this is joined together with a \texit{Simultaneous Location and Mapping} (SLAM) procedure. A ranking given on each path, depending on its safety is given in \cite{blakebordallohawasly2018}.
