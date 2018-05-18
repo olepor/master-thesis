@@ -3,8 +3,10 @@
 \usepackage{style}      % Custom style
 \usepackage{kantlipsum} % Dummy text
 
-\usepackage[FYS,5,master]{mnfrontpage/mnfrontpage} % TODO - add the option print for a high
+\usepackage[FYS,5,master]{mnfrontpage} % TODO - add the option print for a high
                                 % resolution image before printing.
+
+\DeclareUnicodeCharacter{FB01}{\,} % FIXME - why is this necessary?
 
 \title{Motion Planning}
 \author {Ole Petter Orhagen}
@@ -35,10 +37,10 @@
         \mnfrontpage
     \end{titlingpage}
 
-    \include{sections/abstract}
-    \include{sections/acknowledgements}
-    \include{sections/problem_description}
-   
+    % \include{sections/abstract}
+    % \include{sections/acknowledgements}
+    % \include{sections/problem_description}
+
 
     \cleartorecto
     \tableofcontents    % Or \tableofcontents*
@@ -49,24 +51,24 @@
 
     \mainmatter         % Folios in Arabic numerals, numbered chapters.
 
-    \include{sections/introduction}
+    % \include{sections/introduction}
 
     \include{sections/MotionPlanning}
 
     \part{The First Part}
 
-    \include{sections/planner}
-    \include{sections/model}
+    % \include{sections/planner}
+    % \include{sections/model}
 
-    \include{sections/chapter2}
-    \include{sections/chapter3}
-    \include{sections/chapter4}
+    % \include{sections/chapter2}
+    % \include{sections/chapter3}
+    % \include{sections/chapter4}
 
-    \appendix           % "Chapter" is renamed "Appendix"
-    \appendixpage       % Similar to \part*{Appendices}, but appears in TOC.
+    % \appendix           % "Chapter" is renamed "Appendix"
+    % \appendixpage       % Similar to \part*{Appendices}, but appears in TOC.
 
-    \include{sections/appendixA}
-    \include{sections/appendixB}
+    % \include{sections/appendixA}
+    % \include{sections/appendixB}
 
     \backmatter         % Folios in Arabic numerals, unnumbered chapters.
 

@@ -379,27 +379,27 @@ uncertainty in UGV planning can be related to three sources:
 \item Uncertainty in environment sensing.
 \item Uncertainty in environment predicability.
 \end{enumerate}
-\cite{lavalle_framework_1995}
+\cite{lavalleFrameworkMotionPlanning1995}
 
 \subsection{Uncertainty in robot predicability}
 Uncertainty in vehicle dynamics arises as the future robot configuration cannot
 be predicted exactly. This results from modelling errors and/or limited
 precision in the system's command tracking performance
-\cite{dadkhah_survey_2012}. Thus a transfer from one state to another will not
+\cite{dadkhahSurveyMotionPlanning2012}. Thus a transfer from one state to another will not
 guarantee full knowledge of the vehichle in the next state. This is referred to
 as \textit{automated sequential decision making} in the literature, and the
 mathematical framework used to tackle such uncertainty is the \textit{Markov
   Decision Process} (MDPs), used to formulate an optimal value problem, which
 then can be solved for an optimal value function, and the corresponding optimal
-policy \cite{Cassandra:1998:EAA:926710}. An introduction to Markov decision processes can be found in \textit{grasping POMDs}\cite{hsiaokaebling}. This article uses apriori known probability distributions in order to model uncertainty in the robot model and in the sensors, then proceeds to use this to solve a number of different objective functions. This probabilistic representation also gives enormous savings on the computational power needed to solve a problem, by focusing on the parts of space that are most likely to be encountered. The problem of solving POMDs lies with the size
+policy \cite{Cassandra:1998:EAA:926710}. An introduction to Markov decision processes can be found in \textit{grasping POMDs}\cite{kaelblingPlanningActingPartially1998}. This article uses apriori known probability distributions in order to model uncertainty in the robot model and in the sensors, then proceeds to use this to solve a number of different objective functions. This probabilistic representation also gives enormous savings on the computational power needed to solve a problem, by focusing on the parts of space that are most likely to be encountered. The problem of solving POMDs lies with the size
 of the state space when this solution strategy is applied to solving real-world
 problems -- referred to as \textit{the curse of dimensionality}. In fact
-\cite[Tsilkis]{christos_h._papadimitriou_complexity_1987} showed that solving
+\cite[Tsilkis]{christosh.papadimitriouComplexityMarkovDecision1987} showed that solving
 such a problem is PSPACE-Complete and thus not tractable for real-life
 applications. However approximate solutions are available, as shown by
-\cite[Kaelbling et. al]{kaelbling_planning_1998}. Therefore the problem has to
+\cite[Kaelbling et. al]{kaelblingPlanningActingPartially1998}. Therefore the problem has to
 be solved by using techniques such as sampling the belief space, as shown in
-\cite[Kearns et. al]{kearns_sparse}. Another approach, using Monte-Carlo simulation, is shown effective on large belief-spaces in \cite{silverveness}.
+\cite[Kearns]{kearnsSparseSamplingAlgorithm}. Another approach, using Monte-Carlo simulation, is shown effective on large belief-spaces in \cite{silverMonteCarloPlanningLarge}.
 
 % \subsubsection{Optimal Control Based Approaches}
 
@@ -414,7 +414,7 @@ requirements, despite unpredicted obstacles appearing, is essential. Thus
 environment sensing and mapping and re-planning in real-time is required. This
 is referred to in the literature as planning in partially unknown environments.
 One solution to this problem is through incremental graph-search algorithms, as
-shown in \cite[Stentz]{stentz_optimal}, where the \textsl{D*} algorithm is
+shown in \cite[Stentz]{stentzOptimalEfficientPath}, where the \textsl{D*} algorithm is
 described as a method for optimal and efficient replanning in partially unknown
 environments. Then \textit{Stentz}, a year later published the \textit{Focused
   D*} algorithm a year later \cite{stentz1995focussed}, which incorporates
@@ -438,7 +438,7 @@ have errors, that the on-board local sensors will have to figure out. In order
 to incorporate this into the planning procedure the field of mapping has to be
 considered. In the literature this field is referred to as\textit{Simultaneous
   Location and Mapping} (SLAM). First of all virtually all robotic mapping
-algorithms are probabilistic \cite{thrunRoboticMappingSurvey}. % TODO  - read
+algorithms are probabilistic \cite{thrunRoboticMappingSurvey}. % TODO - read
 % this survey
 A method which is called \textit{Occupancy Grid} is presented in
 \cite{elfes1989using}, in which the map is split up into cells, and each cell is
@@ -453,8 +453,25 @@ real robot is given by \cite[Krugman]{kriegman1987mobile} More recent work on
 the Occupancy Grid method can be found in
 \cite{carrilloAutonomousRoboticExploration2015}, which explores the trade-off
 between exploring a new area, and relying on the information already obtained in
-order to solve the problem. A method to integrate current map-data with the on-board filter information is given in \cite{gindelebrechtelschroderdillmann} using a Bayesian Occupancy Grid Filter for dynamic environments using prior map knowledge.
+order to solve the problem. A method to integrate current map-data with the
+on-board filter information is given in \cite{gindeleBayesianOccupancyGrid2009}
+using a Bayesian Occupancy Grid Filter for dynamic environments using prior map
+knowledge.
 \subsubsection{Integrating Planning and Mapping}
 (maybe merge the environment mapping techniques with the work done in
 \cite[Bry]{bryRapidlyexploringRandomBelief2011}), for RRT planning in belief
-space). A method for assigning different probabilities to different paths is given in \cite{bergabbellgoldberg} and is based on \textit{Linear Quadratic Gaussian Motion Planning} LQG-MP. In \cite{kurniawatibandyopadhai} a motion planner called \textit{Guided Cluster Sampling} is used to that takes into account all three sources of uncertainty for robots with active sensing capabilities. This method builds on the POMDP framework by utilizing a more suitable sampling distribution based on the observations done by the robots active sensors. In \cite{huanggupta} the \textit{RRT-SLAM} method is introduced, where uncertainty is used in the RRT-planner by moving the state space up a dimension, then this is joined together with a \texit{Simultaneous Location and Mapping} (SLAM) procedure. A ranking given on each path, depending on its safety is given in \cite{blakebordallohawasly2018}.
+space). A method for assigning different probabilities to different paths is
+given in \cite{vandenbergLQGMPOptimizedPath2011} and is based on \textit{Linear
+  Quadratic Gaussian Motion Planning} LQG-MP. In
+\cite{kurniawatiGlobalMotionPlanning2012} a motion planner called \textit{Guided
+  Cluster Sampling} is used to that takes into account all three sources of
+uncertainty for robots with active sensing capabilities. This method builds on
+the POMDP framework by utilizing a more suitable sampling distribution based on
+the observations done by the robots active sensors. In
+\cite{yifenghuangRRTSLAMMotionPlanning2008} the \textit{RRT-SLAM} method is
+introduced, where uncertainty is used in the RRT-planner by moving the state
+space up a dimension, then this is joined together with a \textit{Simultaneous
+  Location and Mapping} (SLAM) procedure. A ranking given on each path,
+depending on its safety is given in
+\cite{blakeEfficientComputationCollision2018}.
+
