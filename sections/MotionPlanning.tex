@@ -67,7 +67,7 @@ The configuration space is a general abstraction used as a model for a wide
 variety of motion planning problems. It is a manifold that arise from the
 transformations applied to the robot. If the robot has n-degrees of freedom, the
 set of transformations is usually a manifold of dimension n. This manifold is
-called the configuration space of the robot, and is shortened \(\mathcal{C}\).
+called the configuration space of the robot, and is shortened \(\modelconfigurationspace{}\).
 Thus in order to solve a motion planning problem, a search must be performed in
 the configuration space. Thus the motion planning problem is now made into a
 question of finding the best path to traverse the given manifold\cite{Lav06}.
@@ -77,13 +77,13 @@ meaning special-Euclidean three.
 
 Using generalized coordinates, the configuration of a robot can be modeled as a
 vector with n variables for the position in the configuration space, in
-literature this space is usually denoted by \(\mathcal{C}\). As is most common,
+literature this space is usually denoted by \(\modelconfigurationspace{}\). As is most common,
 the robot is modeled as a rigid body, in which two bodies cannot overlap, thus
 points in the configuration space is separated into two sets. One set for which
 the robot configuration overlaps with another object in the configuration space,
-and is called \(\mathcal{C}_{Obst}\), and given that the world space is
-represented as \(\mathcal{W}\), the collision free space is the given as
-,\(\mathcal{C}_{free} = \mathcal{W}\setminus \mathcal{C}_{Obst}\). The obstacle
+and is called \(\modelconfigurationspaceobst{}\), and given that the world space is
+represented as \(\modelconfigurationspace{}\), the collision free space is the given as
+,\(\modelconfigurationspacefree = \modelconfigurationspace \setminus \modelconfigurationspaceobst\). The obstacle
 space can be represented in a number of ways, but we will stick to polygonal
 models of the obstacle space.
 

@@ -24,3 +24,7 @@ draft: setup
 .Phony: clean
 clean:
 	rm -rf build/*
+
+.Phony: log
+log:
+	less build/main.log
