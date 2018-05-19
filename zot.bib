@@ -317,7 +317,7 @@
 
 @article{stentzOptimalEfficientPath,
   langid = {english},
-  title = {Optimal and {{Efﬁcient Path Planning}} for {{Partially}}-{{Known Environments}}},
+  title = {Optimal and {{Efficient Path Planning}} for {{Partially}}-{{Known Environments}}},
   abstract = {The task of planning trajectories for a mobile robot has received considerable attention in the research literature. Most of the work assumes the robot has a complete and accurate model of its environment before it begins to move; less attention has been paid to the problem of partially known environments. This situation occurs for an exploratory robot or one that must move to a goal location without the benefit of a floorplan or terrain map. Existing approaches plan an initial path based on known information and then modify the plan locally or replan the entire path as the robot discovers obstacles with its sensors, sacriﬁcing optimality or computational efﬁciency respectively. This paper introduces a new algorithm, D*, capable of planning paths in unknown, partially known, and changing environments in an efficient, optimal, and complete manner.},
   pages = {8},
   author = {Stentz, Anthony},
@@ -431,6 +431,7 @@
 @inproceedings{yifenghuangRRTSLAMMotionPlanning2008,
   langid = {english},
   title = {{{RRT}}-{{SLAM}} for Motion Planning with Motion and Map Uncertainty for Robot Exploration},
+  isbn = {978-1-4244-2057-5 978-1-4244-2058-2},
   url = {http://ieeexplore.ieee.org/document/4651183/},
   doi = {10.1109/IROS.2008.4651183},
   abstract = {We address the motion planning (MP) subproblem that arises in a robotic exploration and mapping task. We consider sensing, localization and mapping uncertainties in the motion planning subproblem. The robot is holonomic with known size and shape, and is equipped with a laser range sensor. We use a rapidly exploring randomized tree (RRT) in conjunction with a simulated particle based Simultaneous Localization and Mapping (SLAM) algorithm to expand the tree. The simulated SLAM explicitly accounts for sensor, localization and mapping uncertainty in the planning stage. Moreover, the RRT itself is represented in the augmented conﬁguration space where an extra dimension of uncertainty is used. The collision likelihood along a planned path is explicitly computed and is used to select a planned path. Preliminary simulations show the effectiveness and beneﬁts of our integrated approach.},
@@ -535,6 +536,48 @@
 
 @article{HttpJournalsSagepub,
   title = {{{http://journals.sagepub.com/doi/full/10.1177/0278364913501564}}}
+}
+
+@inproceedings{melchiorParticleRRTPath2007,
+  langid = {english},
+  title = {Particle {{RRT}} for {{Path Planning}} with {{Uncertainty}}},
+  isbn = {978-1-4244-0602-9 978-1-4244-0601-2},
+  url = {http://ieeexplore.ieee.org/document/4209319/},
+  doi = {10.1109/ROBOT.2007.363555},
+  abstract = {This paper describes a new extension to the Rapidly–exploring Random Tree (RRT) path planning algorithm. The Particle RRT algorithm explicitly considers uncertainty in its domain, similar to the operation of a particle ﬁlter. Each extension to the search tree is treated as a stochastic process and is simulated multiple times. The behavior of the robot can be characterized based on the speciﬁed uncertainty in the environment, and guarantees can be made as to the performance under this uncertainty. Extensions to the search tree, and therefore entire paths, may be chosen based on the expected probability of successful execution. The beneﬁt of this algorithm is demonstrated in the simulation of a rover operating in rough terrain with unknown coefﬁcients of friction.},
+  publisher = {{IEEE}},
+  urldate = {2018-05-18},
+  date = {2007-04},
+  pages = {1617-1624},
+  author = {Melchior, Nik A. and Simmons, Reid},
+  file = {/Users/olepor/Zotero/storage/Y8F4XTG7/Melchior and Simmons - 2007 - Particle RRT for Path Planning with Uncertainty.pdf}
+}
+
+@article{djekouneSensorBasedNavigation2009,
+  langid = {english},
+  title = {A {{Sensor Based Navigation Algorithm}} for a {{Mobile Robot}} Using the {{DVFF Approach}}},
+  volume = {6},
+  issn = {1729-8814, 1729-8814},
+  url = {http://journals.sagepub.com/doi/10.5772/6797},
+  doi = {10.5772/6797},
+  abstract = {Often autonomous mobile robots operate in environment for which prior maps are incomplete or inaccurate. They require the safe execution for a collision free motion to a goal position. This paper addresses a complete navigation method for a mobile robot that moves in unknown environment. Thus, a novel method called DVFF combining the Virtual Force Field (VFF) obstacle avoidance approach and global path planning based on D* algorithm is proposed. While D* generates global path information towards a goal position, the VFF local controller generates the admissible trajectories that ensure safe robot motion. Results and analysis from a battery of experiments with this new method implemented on a ATRV2 mobile robot are shown.},
+  number = {2},
+  journaltitle = {International Journal of Advanced Robotic Systems},
+  urldate = {2018-05-18},
+  date = {2009-06},
+  pages = {14},
+  author = {Djekoune, A. Oualid and Achour, Karim and Toumi, Redouane},
+  file = {/Users/olepor/Zotero/storage/3NWAQB2T/Djekoune et al. - 2009 - A Sensor Based Navigation Algorithm for a Mobile R.pdf}
+}
+
+@article{noreenComparisonRRTRRT2016,
+  langid = {english},
+  title = {A {{Comparison}} of {{RRT}}, {{RRT}}* and {{RRT}}*-{{Smart Path Planning Algorithms}}},
+  abstract = {Sampling based planning algorithm such as RRT and RRT* are extensively used in recent years for path planning of mobile robots. They are probabilistic complete algorithms and have natural support for solving high dimensional complex problems. RRT*-Smart is an extension of RRT* with faster convergence as compared to its predecessors. This paper provides an analytical review of the three algorithms. Impact of different parameters on algorithm’s performance is also evaluated. Moreover, a performance comparison for different optimality criteria such as path cost, run time and total number of nodes in tree is performed through simulation based experiments. Further, the comparative analysis is concluded with future research directions.},
+  date = {2016},
+  pages = {8},
+  author = {Noreen, Iram and Khan, Amna and Habib, Zulfiqar},
+  file = {/Users/olepor/Zotero/storage/944AGSTG/Noreen et al. - 2016 - A Comparison of RRT, RRT and RRT-Smart Path Plan.pdf}
 }
 
 
