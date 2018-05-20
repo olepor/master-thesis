@@ -1,0 +1,161 @@
+\chapter{Survey of Papers}
+
+% \subsection{Related Work}
+
+% http://msl.cs.uiuc.edu/~lavalle/cs497/jokane.pdf
+
+% http://robotics.cs.unc.edu/BeliefSpacePlanning/index.html
+
+\section{Survey}
+
+Following is a survey of motion planning techniques incorporating uncertainty
+with a focus on their application to unmanned ground vehicles (UGVs). First
+described is the relevant sources of uncertainty in UGV motion planning, and
+then the relevant techniques that have been applied to solve them in the
+literature. In general uncertainty in UGV planning can be related to three
+sources:
+\begin{enumerate}
+\item Uncertainty in  sensing.
+\item Uncertainty in predictability.
+\item Uncertainty in environment sensing.
+\item Uncertainty in environment predictability.
+\end{enumerate}~\cite{lavalleFrameworkMotionPlanning1995}
+
+\subsection{Uncertainty in predictability}
+Uncertainty in vehicle dynamics arises as the future robot configuration cannot
+be predicted exactly. This results from modeling errors and/or limited precision
+in the system's command tracking
+performance~\cite{dadkhahSurveyMotionPlanning2012}. Thus a transfer from one
+state to another will not guarantee full knowledge of the vehicle in the next
+state. This is referred to as \textit{automated sequential decision making} in
+the literature, and the mathematical framework used to tackle such uncertainty
+is the \textit{Markov Decision Process} (MDPs), used to formulate an optimal
+value problem, which then can be solved for an optimal value function, and the
+corresponding optimal policy~\cite{Cassandra:1998:EAA:926710}. An introduction
+to Markov decision processes can be found in \textit{grasping
+  POMDs}\cite{kaelblingPlanningActingPartially1998}. This article uses apriori
+known probability distributions in order to model uncertainty in the robot model
+and in the sensors, then proceeds to use this to solve a number of different
+objective functions. By focusing on the parts of space that are most likely to
+be encountered, the problem is made tractable for real-life application. The
+problem of solving POMDs lies with the size of the state space when this
+solution strategy is applied to solving real-world problems - referred to as
+\textit{the curse of dimensionality}. In fact
+Tsilkis~\cite{christosh.papadimitriouComplexityMarkovDecision1987} showed that
+solving such a problem is PSPACE-Complete and thus not tractable for real-life
+applications. However approximate solutions are available, as shown by Kaelbling
+et.\ al~\cite{kaelblingPlanningActingPartially1998}. Therefore the problem has
+to be solved by using techniques such as sampling the belief space, as shown
+in~\cite{kearnsSparseSamplingAlgorithm}. Another approach, using Monte-Carlo
+simulation, is shown effective on large belief-spaces
+in~\cite{silverMonteCarloPlanningLarge}.
+
+% \subsubsection{Optimal Control Based Approaches}
+
+\subsection{Uncertainty in Environment}
+If the robot has imperfect or non-existent a-priori maps, or noisy sensory data,
+complete deterministic knowledge of the environment is impossible. For an UGV in
+an unknown environment, being able to have the situational awareness to avoid
+collisions while adhering to the global planning requirements, despite
+unpredicted obstacles appearing, is essential. Thus environment sensing and
+mapping and re-planning in real-time is required. This is referred to in the
+literature as planning in partially unknown environments. One solution to this
+problem is through incremental graph-search algorithms, as shown
+in~\cite{stentzOptimalEfficientPath}, where the \textsl{D*} algorithm is
+described as a method for optimal and efficient re-planning in partially unknown
+environments. Then \textit{Stentz}, a year later published the \textit{Focused
+  D*} algorithm~\cite{stentz1995focussed}, which incorporates heuristics to
+reduce the total time taken for re-planning. Still,\textit{D*} is
+computationally heavy, and algorithms have been created to improve on the
+time-bound of \textit{D*}. One such implementation is the \textit{D*-lite}
+algorithm presented by Koenig~\cite{koenig2002d}. These incremental planners,
+which incorporates the previously calculated plan in the solution of the newly
+arisen planning problem speeds up the planning cycles, but can in many cases
+still not be enough for a viable real-time solution. Finding a new plan within
+the allotted planning interval may simply not be possible, in which case one can
+resort to \textit{Anytime} algorithms, like Karaman et.\
+al~\cite{karamanAnytimeMotionPlanning2011}, which will find an approximation in
+the given time interval. Anytime planners find a solution quickly, and then
+spends the rest of the allotted time on improving it until time runs out. One
+such example of both an anytime and incremental solution is given
+in~\cite{likhachevAnytimeSearchDynamic2008}. Another commonly used technique in
+dealing with large state-spaces is sampling, and a popular approach to sampling,
+is the \textit{Rapidly Exploring Random Tree} (RRT), which has shown itself
+useful in dealing with high dimensional state-spaces. Several RRT-tweaks and
+etensions have been proposed over the years, where a good comparison of
+different versions of RRT (RRT*, RRT*-smart), can be found
+in~\cite{noreenComparisonRRTRRT2016}. In order to deal with uncertainty, the
+\textit{Particle-RRT} (pRRT) is proposed as an extension of the common RRT
+algorithm into belief space, and then applied to a rover driving in rough
+terrain~\cite{melchiorParticleRRTPath2007}. By propagating the uncertainty along
+the planned path, and running this procedure multiple times, a cluster of nodes
+is formed. Nodes in the search tree are then formed from these clusters, and a
+likelihood can then be assigned to each path. Another RRT-extension is given
+in~\cite{Luders_2013}, which present the \textit{Closed Loop Rapidly exploring
+  Random Tree} (CC-RRT) algorithm, which can be employed for efficient
+identification and execution of probabilistically safe paths in real-time in an
+unknown and uncertain environment.
+
+
+\subsubsection{Environment Mapping}
+In the case that the map is only globally known, the local map may be wrong or
+have errors, that the on-board local sensors will have to figure out. In order
+to incorporate this into the planning procedure the field of mapping has to be
+considered. In the literature this field is referred to as \textit{Simultaneous
+  Location and Mapping} (SLAM). First of all virtually all robotic mapping
+algorithms are probabilistic~\cite{thrunRoboticMappingSurvey}. % TODO - read
+% this survey
+A method which is called \textit{Occupancy Grid} is presented
+in~\cite{elfes1989using}, in which the map is split up into cells, and each cell
+is assigned a given probability of occupancy. It can incorporate information
+from high-level maps using the same method that is used for estimating the
+occupancy of a cell in a totally unknown environment. As the model is based on
+Bayesian estimation, the initial map-data is used ad apriori input to the
+probabilistic model. Thus the usage of a map of the area is voluntary. In this
+way, unknown cells (those that are not yet inspected by local sensors) can be
+assigned a high probability of occupancy. An old article on how this can be
+implemented on a real robot is given by~\cite[Krugman]{kriegman1987mobile} More
+recent work on the Occupancy Grid method can be found
+in~\cite{carrilloAutonomousRoboticExploration2015}, which explores the trade-off
+between exploring a new area, and relying on the information already obtained in
+order to solve the problem. A method to integrate current map-data with the
+on-board filter information is given in~\cite{gindeleBayesianOccupancyGrid2009}
+using a Bayesian Occupancy Grid Filter for dynamic environments using prior map
+knowledge.
+\subsubsection{Integrating Planning and Mapping}
+Not reasoning about the map and environment uncertainty can lead to crashes, as
+further obstacles can be hidden behind other obstacles, and moving into
+unexplored territory too fast will almost certainly lead to trouble. Thus using
+a combination of sensing, mapping and re-planning is employed in part of the
+literature on autonomous motion planning for UGVs. Using Chance constrained
+programming as a solution to a problem modeled as a POMDP Vitus et.\
+al~\cite{vitusHierarchicalMethodStochastic2012} shows that incorporating
+real-time sensing into the model, which updates the probability a link in a
+graph will be traversable depending on how well it has been sensed, then a
+method is developed for balancing exploration and apriori knowledge of the
+environment. The method is also employed experimentally on a quad-copter for
+proof of real-time applicability. A method for assigning different probabilities
+to different paths is given in~\cite{vandenbergLQGMPOptimizedPath2011} and is
+based on the \textit{Linear Quadratic Gaussian Motion Planning} LQG-MP
+algorithm. In~\cite{kurniawatiGlobalMotionPlanning2012} a motion planner called
+\textit{Guided Cluster Sampling} is used to that takes into account all three
+sources of uncertainty for robots with active sensing capabilities. This method
+builds on the POMDP framework by utilizing a more suitable sampling distribution
+based on the observations done by the robots active sensors.
+In~\cite{yifenghuangRRTSLAMMotionPlanning2008} the \textit{RRT-SLAM} method is
+introduced, where uncertainty is used in the RRT-planner by moving the state
+space up a dimension, then this is joined together with a \textit{Simultaneous
+  Location and Mapping} (SLAM) procedure. A ranking given on each path,
+depending on its safety is given
+in~\cite{blakeEfficientComputationCollision2018}.~\cite{bryRapidlyexploringRandomBelief2011}
+gives an RRT algorithm that plans in belief space, and incorporates this with an
+information region where the robot has little uncertainty, and can thus localize
+itself. In case of adhering to the \textit{Plan Globally and Act Locally}
+paradigm, a reactive planner coupled with a global path planner can provide a
+complete navigation solution, as shown
+in~\cite{djekouneSensorBasedNavigation2009}. This is useful in that a perfect
+map of the environment may not be available. Worse even, the environment may
+have changed, as nature is not static. Trees fall over, and floods move ground,
+and create hindrances that might not be seen from a map. Not knowing where a
+hindrance might lie, or whether one is located outside the sight of the onboard
+sensors.

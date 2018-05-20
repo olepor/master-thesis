@@ -1,5 +1,4 @@
 \chapter{Motion Planning}
-\label{sec:MotionPlanning}
 
 % Alternative outlay: Overview -> Representation (discrete, cont, determ, prob,
 % state-space implici/explicit)
@@ -29,16 +28,16 @@ guarantee can be made for completing a certain task.
 
 \subsection{The Robot and World Model}
 
-The modelled world \(\mathcal{W}\), and eveything in it can be modelled
-geometrically using any number of methods -- most usually polygons or some other
-convex gemoetric structure. Thus the robot can also be modelled as a collection
-of gemoetric structures \(\mathcal{A}\). Thus in order to move the robot in the
+The modeled world \(\modelworld\), and everything in it can be modeled
+geometrically using any number of methods - most usually polygons or some other
+convex geometric structure. Thus the robot can also be modeled as a collection
+of geometric structures \(\modelrobot\). Thus in order to move the robot in the
 world space, rigid body transformations are applied. Given the robot as a subset
 of the world space, the image of a robot transformation is then given as:
 % \[
-%   h(\mathcal{A}) = \set{h(a) \in \mathcal{W} \mid a \in \mathcal{A}} \\
-%   h \colon \mathcal{A} \rightarrow \mathcal{W} \\
-%   \mathcal{A} \and h(\mathcal{A}) \subset \mathcal{W} \\
+%   h(\modelrobot) = \set{h(a) \in \modelworld \mid a \in \modelrobot} \\
+%   h \colon \modelrobot \rightarrow \modelworld \\
+%   \modelrobot \and h(\modelrobot) \subset \modelworld \\
 % \]
 
 The world as we model it contains two kinds of objects
@@ -51,8 +50,6 @@ The world as we model it contains two kinds of objects
 \end{itemize}
 
 \subsection{Rigid Transformations}
-\label{sec:rigidtransformations}
-
 
 % \subsection{State Space}
 % \label{subsec:State}
@@ -62,37 +59,39 @@ The world as we model it contains two kinds of objects
 % or explicitly.
 
 \subsubsection{Configuration Space}
-\label{sec:configuration-space}
 The configuration space is a general abstraction used as a model for a wide
 variety of motion planning problems. It is a manifold that arise from the
 transformations applied to the robot. If the robot has n-degrees of freedom, the
 set of transformations is usually a manifold of dimension n. This manifold is
-called the configuration space of the robot, and is shortened \(\modelconfigurationspace{}\).
-Thus in order to solve a motion planning problem, a search must be performed in
-the configuration space. Thus the motion planning problem is now made into a
-question of finding the best path to traverse the given manifold\cite{Lav06}.
-(characterize and describe the configuration space structure.) In our case the
-configuration space can be modeled as a topological space of the type \(SE(3)\),
-meaning special-Euclidean three.
+called the configuration space of the robot, and is shortened
+\(\modelconfigurationspace{}\). Thus in order to solve a motion planning
+problem, a search must be performed in the configuration space. Thus the motion
+planning problem is now made into a question of finding the best path to
+traverse the given manifold\cite{Lav06}. (characterize and describe the
+configuration space structure.) In our case the configuration space can be
+modeled as a topological space of the type \(SE(3)\), meaning special-Euclidean
+three.
 
 Using generalized coordinates, the configuration of a robot can be modeled as a
 vector with n variables for the position in the configuration space, in
-literature this space is usually denoted by \(\modelconfigurationspace{}\). As is most common,
-the robot is modeled as a rigid body, in which two bodies cannot overlap, thus
-points in the configuration space is separated into two sets. One set for which
-the robot configuration overlaps with another object in the configuration space,
-and is called \(\modelconfigurationspaceobst{}\), and given that the world space is
-represented as \(\modelconfigurationspace{}\), the collision free space is the given as
-,\(\modelconfigurationspacefree = \modelconfigurationspace \setminus \modelconfigurationspaceobst\). The obstacle
+literature this space is usually denoted by \(\modelconfigurationspace{}\). As
+is most common, the robot is modeled as a rigid body, in which two bodies cannot
+overlap, thus points in the configuration space is separated into two sets. One
+set for which the robot configuration overlaps with another object in the
+configuration space, and is called \(\modelconfigurationspaceobst{}\), and given
+that the world space is represented as \(\modelconfigurationspace{}\), the
+collision free space is the given as, \(\modelconfigurationspacefree =
+\modelconfigurationspace \setminus \modelconfigurationspaceobst\). The obstacle
 space can be represented in a number of ways, but we will stick to polygonal
 models of the obstacle space.
 
 \subsection{Action Space}
 The action space is the set of actions that can be applied at any given state
 the robot is located in. Thus one can model the action space as a function of
-the robot's state. e.g.
+the robot's state.\ e.g.
 \[
-  U(x) = \set{u \in U \mid U(x) \neq \emptyset }
+  \modelactionspace(x) = \set{u \in \modelactionspace \mid \modelactionspace(x)
+    \neq \emptyset }
 \]
 
 \subsection{Initial and Goal States}
@@ -127,7 +126,7 @@ order to evaluate which plan scores best when measured up against the others.
 
 \subsubsection{Discrete}
 let \(\mathcal{X}\) be the discrete state space, and \(\ mathcal{U}(x)\) be the
-set of actions available at each point \(x \in \mathcal{X}\). state transition:
+set of actions available at each point \(x \in \mathcal{X}\). State transition:\
 \[
   x_{k+1} = f(x_k, u_k)
 \]
@@ -138,10 +137,10 @@ set of actions available at each point \(x \in \mathcal{X}\). state transition:
 
 The motion plan takes the form of a path, or a trajectory. This is represented
 as a function \(\phi(\alpha) \colon [0,1] \rightarrow \mathcal{X}\), where
-\(\mathcal{X}\) is the configuration space of the vehichle. If the
+\(\mathcal{X}\) is the configuration space of the vehicle. If the
 control-execution time is considered, then the explicit model of vehicle
 kinematics and/or dynamics, as well as the dynamics of the possible obstacles.
-Then the trajectory is represented as a time-parametrized function of the kind
+Then the trajectory is represented as a time-parameterized function of the kind
 \(\pi(t) \colon [0,T] \rightarrow \mathcal{X}\), where \(T\) is the planning
 horizon. Unlike the path, the trajectory describes how the configuration of the
 vehicle evolves over time.
@@ -149,54 +148,32 @@ vehicle evolves over time.
 Initial and Goal States. A path is a function f \ldots
 
 \subsection{Time}
-\label{subsec:Time}
 
 Discrete vs Continuous
 
 \subsection{Actions}
-\label{subsec:Actions}
 
-A plan is a sequence of actions that manipulate the state of the robot.
-
-A planning problem involves a sequence of decisions made over time.
-
-
-car-like model can look something like:
+A plan is a sequence of actions that manipulate the state of the robot. A
+planning problem involves a sequence of decisions made over time. car-like model
+can look something like:
 
 \section{Algorithms}
 In general there are algorithms for which every motion planning problem can be
-solved explicitly, only their running time is on the order of \(O(!n)\) , and
+solved explicitly, only their running time is on the order of \(O(!n)\), and
 thus not feasible in practical applications. In the practical case it is
 therefore normal to employ methods of approximation.
 
 \subsection{Grid-based Search}
-\hyphenation{grid-based-search}
-\label{subsec:gridbasedsearch}
 
 \subsection{Interval-based Search}
-\hyphenation{interval-bases-search}
-\label{subsec:intervalbasedsearch}
 
 \subsection{Geometric Algorithms}
-\hyphenation{geometric-algorithms}
-\label{subsec:geometricalgorithms}
 
 \subsection{Artificial Potential Fields}
-\hyphenation{artificial-potential-fields}
-\label{subsec:artificialpotentialfields}
 
 \subsection{Sampling-based}
-\label{subsec:samplingbased}
 
-
-
-
-
-
-
-
-
-\section{Piano Mover's Problem}
+\section{Piano Movers Problem}
 
 \section{Discrete vs Continuous}
 
@@ -206,7 +183,7 @@ therefore normal to employ methods of approximation.
 
 \section{Complexity}
 
-\section{Criterions}
+\section{Criterion}
 
 \subsection{Feasibility}
 \subsection{Optimality}
@@ -245,18 +222,17 @@ step k, then a transition is modeled as
 \[
   x_{k+1} = f(x_k,u_k,\theta_k)
 \]
-As the actions of nature are not available beforehand, that is - \(\theta_ k\)
+As the actions of nature are not available beforehand, that is -- \(\theta_ k\)
 is not given, thus we have
 \[
-  X_{k+1} = \set{ x_{k+1} \ in X \mid \exists\theta_k \in \Theta(x_k,u_k) \text{
-      such that } x_{k+1} = f(x_k,u_k,\theta_k)}
-\]
-\cite{Lav06}.
+  X_{k+1} = \set{ x_{k+1} \ in X \mid \exists\theta_k \in \Theta(x_k,u_k)
+    \text{such that } x_{k+1} = f(x_k,u_k,\theta_k)}
+\]\cite{Lav06}.
 
 \subsection{Discrete Planning with Nature}
-a model of discrete planning with nature: \cite[pg,496]{Lav06}
+a model of discrete planning with nature:~\cite[pg,496]{Lav06}
 
-A markov decision process is defined in \cite[pg.498]{Lav06} as:
+A Markov decision process is defined in~\cite[pg.498]{Lav06} as:
 \begin{enumerate}
 \item A non empty \textit{state space} \(X\) which is a finite or countably
   finite set of \textit{states}.
@@ -287,8 +263,7 @@ A markov decision process is defined in \cite[pg.498]{Lav06} as:
   in which \(F = K + 1\). The termination action \(u_T\) is applied at some
   stage k, then for all \(i \geq k\), \(u_i = u_T\), \(x_i = x_k\), and
   \(l(x_i,u_T, \theta_i) = 0\).
-\end{enumerate}
-\cite[pg 498]{Lav06}
+\end{enumerate}~\cite[pg 498]{Lav06}
 
 using this formulation either a feasible or optimal planning problem can be
 formulated.
@@ -331,11 +306,11 @@ Uncertainty comes from three sources in our model:
 \end{enumerate}
 
 \subsection{Visibility Polygon}
-Let \(V(x)\) be the visibility polygon - that is the set of all points that are
+Let \(V(x)\) be the visibility polygon -- that is the set of all points that are
 visible from \(x\).
 
-I-states enables us to solve problems without having a complete represenation of
-the environment! (LAV06)chp12.2
+I-states enables us to solve problems without having a complete representation
+of the environment! (LAV06) chp12.2
 
 
 
@@ -348,165 +323,3 @@ the environment! (LAV06)chp12.2
 
 
 \section{Optimality}
-
-
-
-\section{Survey of Papers}
-
-\subsection{Related Work}
-
-http://msl.cs.uiuc.edu/~lavalle/cs497/jokane.pdf
-
-http://robotics.cs.unc.edu/BeliefSpacePlanning/index.html
-
-\section{Survey}
-
-Following is a survey of motion planning techniques with a focus on their
-application in unmanned ground vehichles (UGVs). First described is the relevant
-sources of uncertainty in UGV motion planning, and then describes the relevant
-techniques that have been applied to solve them in the literature. In general
-uncertainty in UGV planning can be related to three sources:
-\begin{enumerate}
-\item Uncertainty in robot sensing.
-\item Uncertainty in robot predicability.
-\item Uncertainty in environment sensing.
-\item Uncertainty in environment predicability.
-\end{enumerate}
-\cite{lavalleFrameworkMotionPlanning1995}
-
-\subsection{Uncertainty in robot predicability}
-Uncertainty in vehicle dynamics arises as the future robot configuration cannot
-be predicted exactly. This results from modelling errors and/or limited
-precision in the system's command tracking performance
-\cite{dadkhahSurveyMotionPlanning2012}. Thus a transfer from one state to
-another will not guarantee full knowledge of the vehichle in the next state.
-This is referred to as \textit{automated sequential decision making} in the
-literature, and the mathematical framework used to tackle such uncertainty is
-the \textit{Markov Decision Process} (MDPs), used to formulate an optimal value
-problem, which then can be solved for an optimal value function, and the
-corresponding optimal policy \cite{Cassandra:1998:EAA:926710}. An introduction
-to Markov decision processes can be found in \textit{grasping
-  POMDs}\cite{kaelblingPlanningActingPartially1998}. This article uses apriori
-known probability distributions in order to model uncertainty in the robot model
-and in the sensors, then proceeds to use this to solve a number of different
-objective functions. This probabilistic representation also gives enormous
-savings on the computational power needed to solve a problem, by focusing on the
-parts of space that are most likely to be encountered. The problem of solving
-POMDs lies with the size of the state space when this solution strategy is
-applied to solving real-world problems -- referred to as \textit{the curse of
-  dimensionality}. In fact
-\cite[Tsilkis]{christosh.papadimitriouComplexityMarkovDecision1987} showed that
-solving such a problem is PSPACE-Complete and thus not tractable for real-life
-applications. However approximate solutions are available, as shown by
-\cite[Kaelbling et. al]{kaelblingPlanningActingPartially1998}. Therefore the
-problem has to be solved by using techniques such as sampling the belief space,
-as shown in \cite[Kearns]{kearnsSparseSamplingAlgorithm}. Another approach,
-using Monte-Carlo simulation, is shown effective on large belief-spaces in
-\cite{silverMonteCarloPlanningLarge}.
-
-% \subsubsection{Optimal Control Based Approaches}
-
-\subsection{Uncertainty in Environment Predicability}
-If the robot has imperfect or non-existent a-priori maps, or noisy sensory data,
-complete deterministic knowledge of the environment is impossible.
-
-\subsubsection{Planning techniques for an uncertain environment}
-For an UGV in an unknown environment, being able to have the situational
-awareness to avoid collisions while adhering to the global planning
-requirements, despite unpredicted obstacles appearing, is essential. Thus
-environment sensing and mapping and re-planning in real-time is required. This
-is referred to in the literature as planning in partially unknown environments.
-One solution to this problem is through incremental graph-search algorithms, as
-shown in \cite[Stentz]{stentzOptimalEfficientPath}, where the \textsl{D*}
-algorithm is described as a method for optimal and efficient replanning in
-partially unknown environments. Then \textit{Stentz}, a year later published the
-\textit{Focused D*} algorithm a year later \cite{stentz1995focussed}, which
-incorporates heuristics to reduce the total time taken for re-planning.
-Still,\textit{D*} is computationally heavy, and algorithms have been created to
-improve on the time-bound of \textit{D*}. One such implemplemenation is the
-\textit{D*-lite} algorithm presented by \cite[Koenig]{koenig2002d}. These
-incremental planners, which incorporates the previously calculated plan in the
-solution of the newly arisen planning problem speeds up the planning cycles, but
-can in many cases still not be enough for a viable real-time solution. Finding a
-new plan within the allotted planning interval may simply not be possible, in
-which case one can resort to \textit{Anytime} algorithms, like \cite[Karaman et.
-al]{karamanAnytimeMotionPlanning2011}, which will find the approximation in the
-given time interval. Anytime planners find a solution quickly, and then spends
-the rest of the alloted time on improving it until time runs out. One such
-example of both an anytime and incremental solution is
-\cite[Likachev]{likhachevAnytimeSearchDynamic2008}. Another commonly used
-sampling approach is the \textit{Rapidly Exploring Random Tree} (RRT), which has
-shown itself useful in dealing with high dimensional state-spaces. Several
-RRT-tweaks have been proposed over the years, where a good comparison of
-different versions of RRT (RRT*, RRT*-smart), can be found in
-\cite{noreenComparisonRRTRRT2016}. In \cite{melchiorParticleRRTPath2007} a
-\textit{Particle-RRT} (pRRT) is an extension of the common RRT algorithm into
-belief space, and then applied to a rover driving in rough terrain. By
-propagating the uncertainty along the planned path, and running this procedure
-multiple times, a cluster of nodes is formed. Nodes in the search tree are then
-formed from these clusters, and a likelihood can then be assigned to each path
-as the likelihood of succesfull execution can be quantified. Another
-RRT-extension is given in \cite{Luders_2013}, which present the \textit{Closed
-  Loop Rapidly exploring Random Tree} (CC-RRT) algorithm.
-
-
-\subsubsection{Environment Mapping}
-In the case that the map is only globally known, the local map may be wrong or
-have errors, that the on-board local sensors will have to figure out. In order
-to incorporate this into the planning procedure the field of mapping has to be
-considered. In the literature this field is referred to as\textit{Simultaneous
-  Location and Mapping} (SLAM). First of all virtually all robotic mapping
-algorithms are probabilistic \cite{thrunRoboticMappingSurvey}. % TODO - read
-% this survey
-A method which is called \textit{Occupancy Grid} is presented in
-\cite{elfes1989using}, in which the map is split up into cells, and each cell is
-assigned a given probability of occupancy. It can incorporate information from
-high-level maps using the same method that is used for estimating the occupancy
-of a cell in a totally unknkown environment. As the model is based on Bayesian
-estimation, the initial map-data is used ad apriori input to the probabilistic
-model. Thus the usage of a map of the area is voluntary. In this way, unknown
-cells (those that are not yet inspected by local sensors) can be assigned a high
-probability of occupancy. An old article on how this can be implemented on a
-real robot is given by \cite[Krugman]{kriegman1987mobile} More recent work on
-the Occupancy Grid method can be found in
-\cite{carrilloAutonomousRoboticExploration2015}, which explores the trade-off
-between exploring a new area, and relying on the information already obtained in
-order to solve the problem. A method to integrate current map-data with the
-on-board filter information is given in \cite{gindeleBayesianOccupancyGrid2009}
-using a Bayesian Occupancy Grid Filter for dynamic environments using prior map
-knowledge.
-\subsubsection{Integrating Planning and Mapping}
-Not reasoning about the map and environment uncertainty can lead to crashes, as
-further obstacles can be hidden behind other obstacles, and moving into
-unexplored territory too fast will almost certainly lead to trouble. Using
-Chance constrained programming as a solution to a problem modelled as a POMDP
-vitus et. al \cite{vitusHierarchicalMethodStochastic2012} shows that
-incorporating real-time sensing into the model, which updates the probability a
-link in a graph will be traversable depending on how well it has been sensed.
-Thus a method is developed for balancing exploration and apriori knowledge of
-the environment. The method is also employed experimantally on a quad-copter for
-proof of real-time applicability. A method for assigning different probabilities
-to different paths is given in \cite{vandenbergLQGMPOptimizedPath2011} and is
-based on the \textit{Linear Quadratic Gaussian Motion Planning} LQG-MP
-algorithm. In \cite{kurniawatiGlobalMotionPlanning2012} a motion planner called
-\textit{Guided Cluster Sampling} is used to that takes into account all three
-sources of uncertainty for robots with active sensing capabilities. This method
-builds on the POMDP framework by utilizing a more suitable sampling distribution
-based on the observations done by the robots active sensors. In
-\cite{yifenghuangRRTSLAMMotionPlanning2008} the \textit{RRT-SLAM} method is
-introduced, where uncertainty is used in the RRT-planner by moving the state
-space up a dimension, then this is joined together with a \textit{Simultaneous
-  Location and Mapping} (SLAM) procedure. A ranking given on each path,
-depending on its safety is given in
-\cite{blakeEfficientComputationCollision2018}.
-\cite{bryRapidlyexploringRandomBelief2011} gives an RRT algorithm that plans in
-belief space, and incorporates this with an information region where the robot
-has little uncertainty, and can thus localize itself. This can be a fine
-extension to loss of localization on the robot, like a loss of gps for a certain
-section of the map
-
-\subsubsection{Reactive Planning} In case of adhering to the \textit{Plan
-  Globally and Act Locally} paradigm, a reactive planner coupled with a global
-path planner can provide a complete navigation solution, as shown in
-\cite{djekouneSensorBasedNavigation2009}
-
