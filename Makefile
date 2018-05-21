@@ -23,8 +23,14 @@ draft: setup
 
 .Phony: clean
 clean:
-	rm -rf build/*
+	@rm -rf build/*
+	@latexmk -C
+	@latexmk -C pg.tex
 
 .Phony: log
 log:
-	less build/main.log
+	@less build/main.log
+
+pg: pg.tex
+	@latexmk -pdf -silent $<
+	@open pg.pdf
