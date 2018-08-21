@@ -1,0 +1,10 @@
+* Websites:
+** https://github.com/blandry/crazyflie-tools/search?q=funnel&unscoped_q=funnel
+** http://www.deepstuff.org/motion-planning-algorithms/
+** https://groups.csail.mit.edu/robotics-center/public_papers/Reist15.pdf
+** http://groups.csail.mit.edu/robotics-center/public_papers/Majumdar12a.pdf
+** https://github.com/RobotLocomotion/drake/blob/last_sha_with_original_matlab/drake/examples/Quadrotor/runOnlinePlanning.m
+** https://github.com/Kiloreux/awesome-robotics
+** http://www.robotmotionplanning.org/TeachingRobotics.html
+* Thesis':
+** http://groups.csail.mit.edu/robotics-center/public_papers/Barry16.pdf
