@@ -8,3 +8,5 @@
 ** http://www.robotmotionplanning.org/TeachingRobotics.html
 * Thesis':
 ** http://groups.csail.mit.edu/robotics-center/public_papers/Barry16.pdf
+* TODO 
+** Create and model the vehichle in the thesis using Peter Corke's book, and unicycle model. ( Pretty figures needed ). see p 100.

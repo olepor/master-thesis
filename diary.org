@@ -1,0 +1,5 @@
+* Date today
+**  Every sub-level-set of a funnel is also a funnel! This means that starting out in a sub-level-set, you are guaranteed to remain the sub-level-set, due to the nature of Lyapunov functions!
+**  Create SOS Chapter based on edX lectures in underactuated robotics with Russ Tedrake. Especially the funnel lecture! (Do cite this also!)
+**  Collision-checking for funnels can be done using a convex-quadratic-program ( for quadratic Lyapunov functions that is!).
+**  As every sub-level set of a funnel is also a funnel, the funnels can be trimmed down in case of a collision!

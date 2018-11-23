@@ -2,7 +2,6 @@
 
 \usepackage{style}      % Custom style
 \usepackage{kantlipsum} % Dummy text
-
 \usepackage[FYS,5,master]{mnfrontpage} % TODO - add the option print for a high
                                 % resolution image before printing.
 
@@ -20,10 +19,11 @@
     % sections/introduction,
     % sections/problem_description,
     % sections/planner,
-  sections/MotionPlanning,
-  sections/survey
+  % sections/MotionPlanning,
+  % sections/survey,
     % sections/model,
-    % sections/chapter2,
+  sections/RRT,
+  sections/Funnel,
     % sections/chapter3,
     % sections/chapter4,
     % sections/appendixA,
@@ -32,12 +32,12 @@
 
 \begin{document}
 
+    \mnfrontpage
     \frontmatter        % Folios in Roman numerals, unnumbered chapters.
 
-    % \mnfrontpage
-    \begin{titlingpage}
-        \mnfrontpage
-    \end{titlingpage}
+    % \begin{titlingpage}
+    %     \mnfrontpage
+    % \end{titlingpage}
 
     % \include{sections/abstract}
     % \include{sections/acknowledgements}
@@ -58,6 +58,10 @@
     \include{sections/MotionPlanning}
 
     \include{sections/survey}
+
+    \include{sections/RRT}
+
+    \include{Sections/Funnel}
 
     \part{The First Part}
 
