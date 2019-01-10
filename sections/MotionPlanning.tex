@@ -159,7 +159,7 @@ can look something like:
 
 \section{Algorithms}
 In general there are algorithms for which every motion planning problem can be
-solved explicitly, only their running time is on the order of \(O(!n)\), and
+solved explicitly, only their running time is on the order of \(O(n!)\), and
 thus not feasible in practical applications. In the practical case it is
 therefore normal to employ methods of approximation.
 
@@ -351,3 +351,83 @@ of the environment! (LAV06) chp12.2
     \hline
   \end{tabular} 
 \end{table}
+
+\section{Planning with Funnels}
+
+Funnels are another way of handling uncertainty in a dynamic system. This method
+mainly envelopes two parts:
+
+\begin{itemize}
+
+  \item Generating a nominal trajectory.
+  \item Stabilizing the nominal trajectory above through some controller.
+
+\end{itemize} 
+
+If we start out with a nonlinear system of the form:
+\begin{align}
+  \dot{x} &= f(x,u)
+        y &= h(x)
+\end{align} 
+TODO - Build on this, and paraphrase (reference the thesis, which it is built from)
+with \(f:\R^nx\R^m \rightarrow \R^n\) being a continuous function describing the
+dynamics of the system, and \(h:\R^n \rightarrow \R^p\) is another continous
+function describing the measured state of the system. Thus \(x \in \R^n\) is the
+state of the system, \(u\in\R^m\) and \(y\in\R^p\) is the measured state of the system.
+
+The nominal trajectory planning problem is concerned with finding an input
+signal over some interval of time, so that the output of the system will have
+some desireable characteristics. The normal case is requiring the system to
+start out at some known region of the world, and then the controller is required
+to take the system to some goal region within the state space within some period
+of time. 
+TODO - get the nominal trajectory definition from LaValle's book, and insert here.
+
+Next step in planning with funnels is generating 'guaranteed' safe traversal
+within some region of space surrounding the initial trajectories generated
+earlier. If we denote the inital trajectory as:
+\begin{align}
+  \dot{x}^0 &= f(x^0,u^0) \\
+  y^0 &= h(x^0)
+\end{align}
+we next need to stabilize this nominal trajectory. In our case this is done
+through searching over the space of \textit{quadratic LQR-controllers}, through
+the use of SOS-programming for verification and optimization through
+\textit{Lyapunov functions}. To see how this is done, we start out by lookin at
+the error:
+\begin{align}
+  u_{err} &= u - u^0 \\
+  x_{err} &= x - x^0 \\
+  y_{err} &= y - y^0
+\end{align} 
+Then through substitution of the error equation into the original equation (TODO
+- refere back), we get
+\begin{align}
+  \dot{x}_{err} &= f(x^0 + x_{err}, u^0 + u_{err}) - \dot{x}^0 \\
+  y_{err} &= h(x^0 + y_{err}) - y^0
+\end{align}
+
+Then the next step is finding the \textit{LQR-controllers} which stabilize this
+system in the sense of \textit{Lyapunov}. In particular we want the controller
+to force some set of initial conditions:
+we want the error to be bounded!
+
+...
+More recent developments has enabled the efficient solving of SOS-programs
+through modelling them as semi-definite programs, which is known to have
+efficient solutions (parillo?).
+
+This insight provided by Parillo, enables the computation of inner regions of
+attraction and finite-time-invariant sets. Problems can be rewritten in order to
+satisfy the positivity conditions, which can then be verified through
+SOS-programming. This then enables an efficient search for \textit{Lyapunov}
+functions, through requiring the more restrictive \textit{sum-of-square}
+conditions, instead of positivity, which is the general requirement. In other
+words, in order to find a Lyapunov function for some applica- tion, it is
+possible to construct it as a polynomial with free coefficients and define a SOS
+program which can find the coefficients such that some linear equality and/or
+inequality constraints are met. One important result of this is that we can fins
+a region in which the Lyapunov function is surely positive definite and its
+derivative is surely negative definite (or, smaller than some desired value),
+which, in turn, guarantees some desired behaviour for the system \cite{PHD-Thesis}.
+
