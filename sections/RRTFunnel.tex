@@ -77,6 +77,41 @@ the \textit{Euclidean metric} is only a proper metric for holonomic vehicles \ci
 \label{fig:non-holonomic-vehicle-euclidean-weakness}
 \end{figure}
 
+A look at the growth of the tree in the uniform sampling space \([-50,50]\) for
+\(x\) and \(y\), and \([0,pi]\) for \(\theta\), and \[[0,10]\] for
+\(\dot{\theta}\), gives:
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/rrtfunnel-10samples}
+  \caption{The growth of the \textit{RRTFunnel} tree with three motion
+    primitives, uniform sampling and the standard euclidean distance metric
+    after 10 samples.}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/rrtfunnel-100samples}
+  \caption{The growth of the \textit{RRTFunnel} tree with three motion
+    primitives, uniform sampling and the standard euclidean distance metric
+    after 100 samples. The tree grows quickly into unexplored areas of the
+    space, like expected.}
+\end{figure}
+
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/rrtfunnel-500samples}
+  \caption{The growth of the \textit{RRTFunnel} tree with three motion
+    primitives, uniform sampling and the standard euclidean distance metric
+    after 500 samples.}
+\end{figure}
+
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/rrtfunnel-500samples}
+  \caption{The growth of the \textit{RRTFunnel} tree with three motion
+    primitives, uniform sampling and the standard euclidean distance metric
+    after 1000 samples.}
+\end{figure}
+
 \subsection{Modified Euclidean distance metric}
 
 One of the problems of the euclidean metric is that is is oblivious to the
@@ -85,9 +120,66 @@ case that the point is close, in the sense of Euclidean distance in the plane,
 and started worrying about the heading as it got closer, a metric which weights
 the angle \(\theta\) in the distance metric can be considered, thus let:
 \begin{align}
-  d(x_1,x_2) &= \sqrt(x^2 + y^2 + f(x^2 + y^2)*theta) \\
+  d(x_1,x_2) &= \sqrt(x^2 + y^2 + f(x^2 + y^2)*\theta) \\
   f(a) = \frac{1}{a}
 \end{align}
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/modified-euclidean-distance-closest-funnel1}
+  \caption{Car in state space picked at random from a uniform distribution on
+    the interval \([0,10]\), for \(x\) and \(y\), and \([0,2\pi)\) for \(\theta\).}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/modified-euclidean-distance-closest-funnel2}
+  \caption{The closest funnel picked was left, and the expand operation picked
+    the right funnel to extend the tree towards the point picked, like expected,
+  and the same behaviour shown in the normal \textit{euclidean distance metric}.}
+\end{figure}
+
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/modified-euclidean-distance-closest-funnel3}
+  \caption{Another car state picked at random.}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/modified-euclidean-distance-closest-funnel4}
+  \caption{This time the extent operator chose the same funnel as in the
+    previous operation. Is this how we want our extension operator to work? can
+    they overlap?}
+\end{figure}
+
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/rrtfunnel-modified-euclidean-10samples}
+  \caption{The growth of the \textit{RRTFunnel} tree with three motion
+    primitives, uniform sampling and the modified euclidean distance metric
+    after 10 samples.}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/rrtfunnel-modified-euclidean-100samples}
+  \caption{The growth of the \textit{RRTFunnel} tree with three motion
+    primitives, uniform sampling and the modified euclidean distance metric
+    after 100 samples. The tree grows quickly into the open unexplored areas,
+    like expected.}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/rrtfunnel-modified-euclidean-500samples}
+  \caption{The growth of the \textit{RRTFunnel} tree with three motion
+    primitives, uniform sampling and the modified euclidean distance metric
+    after 500 samples.}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/rrtfunnel-modified-euclidean-1000samples}
+  \caption{The growth of the \textit{RRTFunnel} tree with three motion
+    primitives, uniform sampling and the modified euclidean distance metric
+    after 1000 samples.}
+\end{figure}
+
 
 \subsection{Lyapunov function as a distance metric}
 (TODO - is the lyapunov function a proper distance metric? It won't be symetric
