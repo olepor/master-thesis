@@ -59,7 +59,11 @@ of the Euclidean distance metric in the RRTFunnel algorithm.}
 \end{figure}
 
 This weakness is not unexpected if you take into consideration the non-holonomic
-dynamics of our model vehicle.
+dynamics of our model vehicle. Thus the \textit{Euclidean metric} is a poor
+measure of the cost-to-go of the system
+\ref{non-holonomic-vehicle-euclidean-weakness}. This is not unexpected as
+the \textit{Euclidean metric} is only a proper metric for holonomic vehicles \cite{parkFeedbackMotionPlanning2015}.
+(TODO -show this!).
 
 
 \begin{figure}
@@ -70,19 +74,45 @@ dynamics of our model vehicle.
     applicable to unicycle- type vehicles, that properly reflects the true
     cost-to-go of the system under the non-holonomic constraint. (figure
     courtesy of \cite{parkFeedbackMotionPlanning2015})}
+\label{fig:non-holonomic-vehicle-euclidean-weakness}
 \end{figure}
 
+\subsection{Modified Euclidean distance metric}
+
+One of the problems of the euclidean metric is that is is oblivious to the
+heading of the car. If the metric considered the heading only as an issue in the
+case that the point is close, in the sense of Euclidean distance in the plane,
+and started worrying about the heading as it got closer, a metric which weights
+the angle \(\theta\) in the distance metric can be considered, thus let:
+\begin{align}
+  d(x_1,x_2) &= \sqrt(x^2 + y^2 + f(x^2 + y^2)*theta) \\
+  f(a) = \frac{1}{a}
+\end{align}
+
 \subsection{Lyapunov function as a distance metric}
+(TODO - is the lyapunov function a proper distance metric? It won't be symetric
+will it?).
+
+First test is with the lyapunov function used for validating the funnels in our
+planner as a distance metric, however this was quickly abandoned after looking
+at
+\begin{figure}
+  \includegraphics[scale=.5]{figures/rrtfunnel/straight-funnel-lyapunov-level-sets}
+  \caption{The level sets of the quadratic lyapunov function at the end of the
+    straight funnel from the base set of the RRTFunnel algorithm.}
+\end{figure}
+
+
 
 The weaknesses of the Euclidean distance metric lead to the discovery of the
 \cite{parkFeedbackMotionPlanning2015} paper, in which the authors use the
 \textit{Lyapunov function} as a distance metric for the extension operator in an
 optimal \textit{RRT*} algorithm.
 
-In \cite{SomePaperIHave}, blabla uses the lyapunov function as a distance metric
-for the RRT algorithm. When this metric is applied to our RRTFunnel algorithm,
-we get the following improvement upon the euclidean distance metric. Using the
-same example as above:
+In \cite{parkFeedbackMotionPlanning2015}, the lyapunov function is used as a
+distance metric for the RRT algorithm. When this metric is applied to our
+RRTFunnel algorithm, we get the following improvement upon the euclidean
+distance metric. Using the same example as above:
 
 % \begin{figure}
 % \includegraphics{lyapunov-function-distance-closest-funnel}
@@ -91,3 +121,22 @@ same example as above:
 % \begin{figure}
 % \includegraphics{lyapunov-function-distance-extension-operator}
 % \end{figure}
+
+\section{Extending the motion primitive library}
+
+Currently the motion primitive library has held only three motion primitives:
+one straight forward motion, one left turn, and one right turn. Let's have a
+look at how adding more motion primitives to our library will influence the
+planner.
+
+\subsection{Composing funnels}
+
+Now that the library has more motion primitives, and not all of them end up with
+the wheels straight ahead, and might even still have the wheels turning at the
+end state, composing funnels requires a little more effort than just
+translating one onto the end of the other. This can be done in two ways:
+\begin{itemize}
+  \item In real time as we are planning.
+  \item Offline prior to planning, and then mark which funnels are compatible
+    for extending eachother.
+\end{itemize}
