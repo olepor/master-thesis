@@ -68,8 +68,8 @@ jobs:
       script:
         # - ./tests/scripts/test "rrtfunnel"
         - echo $(pwd)
-        # - texliveonfly -shell-escape ./main.tex
-        - make
+        - texliveonfly -shell-escape ./main.tex
+        # - make
 # script:
 # # texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
 # - texliveonfly -shell-escape ./src/main.tex
