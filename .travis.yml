@@ -48,10 +48,10 @@ language: generic
 
 # Dependency of the minted package
 before_install:
-  - sudo apt-get install python-pygments lmodern texlive-fonts-extra
+  - sudo apt-get install python-pygments lmodern texlive-fonts-extra texlive-full
 
-install:
-  - source ./texlive/texlive_install.sh
+# install:
+#   - source ./texlive/texlive_install.sh
 
 # cache:
 #   directories:
@@ -68,7 +68,8 @@ jobs:
       script:
         # - ./tests/scripts/test "rrtfunnel"
         - echo $(pwd)
-        - texliveonfly -shell-escape ./main.tex
+        # - texliveonfly -shell-escape ./main.tex
+        - make
 # script:
 # # texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
 # - texliveonfly -shell-escape ./src/main.tex
