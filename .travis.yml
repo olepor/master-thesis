@@ -50,8 +50,8 @@ language: generic
 before_install:
   - sudo apt-get install python-pygments lmodern texlive-fonts-extra
 
-# install:
-#   - source ./texlive/texlive_install.sh
+install:
+  - source ./texlive/texlive_install.sh
 
 # cache:
 #   directories:
