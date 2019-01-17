@@ -1,0 +1,13 @@
+#!/bin/bash
+# Create the correct include only from the main.tex file in /src.
+
+if [ $# -ne 2 ]; then
+    echo "Usage:\n - createIncludeOnly 'section-name' 'path/to/main.tex'"
+    exit 1
+fi
+
+awk -f tests/scripts/awkscript section_name="sections/$1" $2 > tests/$1/main.tex
+
+exit 0
+
+

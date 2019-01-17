@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Copy the original main into all the subfolders in the tets directory.
+mkdir -p tests/$1
+cp src/main.tex tests/$1/
+
+# Then generate the correct includeonly macro based on the directory name.
+
+# Run the docker script for building
+docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:small

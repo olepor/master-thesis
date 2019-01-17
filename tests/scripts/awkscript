@@ -1,0 +1,8 @@
+BEGIN {
+# Set a blank line as the record seperator
+RS=""
+}
+$1 ~ /includeonly/ {
+    printf("\\includeonly{%s}\n", section_name)
+}
+$1 !~ /includeonly/ {print $0}

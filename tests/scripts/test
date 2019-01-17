@@ -1,0 +1,18 @@
+#!/bin/bash
+# Test script employed by travis to run the tests for each section
+# of the thesis.
+echo $(pwd)
+
+for dir in $(ls tests); do
+    echo $dir
+    if [ $dir == "scripts" ]; then
+        continue
+    fi
+    tests/scripts/createIncludeOnly "$dir" 'src/main.tex'
+done
+
+# We will use the docker image from https://hub.docker.com/r/strauman/travis-latexbuild/
+# Now that all the main.tex test files have been created,
+# run all the tests from tex-config.build-pattern.
+docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:small
+

@@ -5,20 +5,54 @@ services:   docker
 # Docs of the options: https://github.com/Strauman/travis-latexbuild/tree/master#configuration-options
 tex-config:
 - tex-scheme=small
-- build-pattern=tests/*/main.tex,src/main.tex
+- build-pattern=tests/*/main.tex
 - push-type=none
 #- latexmk-flags=-dvi -f
 # Check at https://www.ctan.org/pkg/package-name in which TeX Live package a LaTeX package is contained.
 - packages=xkeyval, collection-latex, collection-langeuropean, exam, amsmath, amscls, mathtools, thmtools, stmaryrd, xcolor, pdfpages, pgf, cancel, hyperref, pgfplots, listings, scalerel, stackengine, etoolbox, listofitems, marvosym, amsfonts, opensans, slantsc, fancyhdr, ulem, algorithms, algorithmicx, float, booktabs, enumitem, polynom, fancyvrb, makecmds, multirow, chngcntr, fvextra, upquote, lineno, ifplatform, xstring, framed, caption, collection-fontsrecommended, minted, pgfgantt, geometry, beamer, translator, environ, trimspaces, imakeidx, graphics, tools, oberdiek
 
-# We will use the docker image from https://hub.docker.com/r/strauman/travis-latexbuild/
-script:
-- docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:small
 
+# Release automatically to github releases.
 file: 
-- ./src/nameofmytexfile.pdf
-- ./otherfile.pdf
+- ./src/main.pdf
+# - ./otherfile.pdf
 skip_cleanup: true
 on:
   tags: true
   branch: master
+
+# Local settings:
+
+# Safelist
+branches:
+  only:
+    - master
+
+# Build one chapter at a time, progressing numerically from one to the other as a build stage:
+jobs:
+include:
+  - stage: test
+    # Create all the main.tex test files, and run the docker command.
+    script:
+      - ./tests/scripts/test
+    # We will use the docker image from https://hub.docker.com/r/strauman/travis-latexbuild/
+    # script:
+    # - docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:small
+  # - # stage name not required, will continue to use `test`
+  #   script: ./test 2
+  # - # stage name not required, will continue to use `test`
+  #   script: ./test 2
+  # - # stage name not required, will continue to use `test`
+  #   script: ./test 2
+  # - # stage name not required, will continue to use `test`
+  #   script: ./test 2
+  # - # stage name not required, will continue to use `test`
+  #   script: ./test 2
+  # - stage: GitHub Release
+  #   script: echo "Deploying to GitHub releases ..."
+  #   deploy:
+  #     provider: releases
+  #     api_key: $GITHUB_OAUTH_TOKEN
+  #     skip_cleanup: true
+  #     on:
+  #       tags: true
