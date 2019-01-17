@@ -26,52 +26,71 @@
 #   #     skip_cleanup: true
 #   #     on:
 #   #       tags: true
-dist: xenial
+# dist: precise
 
-sudo: required
+# sudo: required
 
-language: generic
+# language: generic
 
 
-# Safelist - Only build the master branch.
-# branches:
-#   only:
-#     - master
+# # Safelist - Only build the master branch.
+# # branches:
+# #   only:
+# #     - master
 
-# file:
-#   - ./src/main.pdf
-#   ./otherfile.pdf# #
-#   skip_cleanup: true
-#   on:
-#     tags: true
-#     branch: master
+# # file:
+# #   - ./src/main.pdf
+# #   ./otherfile.pdf# #
+# #   skip_cleanup: true
+# #   on:
+# #     tags: true
+# #     branch: master
 
-# Dependency of the minted package
-before_install:
-  - sudo apt-get install python-pygments lmodern texlive-fonts-extra
+# # Dependency of the minted package
+# before_install:
+#   - sudo apt-get install python-pygments lmodern texlive-fonts-extra xzdec
 
-install:
-  - source ./texlive/texlive_install.sh
+# install:
+#   - source ./texlive/texlive_install.sh
 
 # cache:
 #   directories:
 #     - /tmp/texlive
 #     - $HOME/.texlive
 
+# # Change working directory so including files will work
+# before_script: cd $TRAVIS_BUILD_DIR/src/
+
+# jobs:
+#   include:
+#     - stage: Test
+#       # Create all the main.tex test files, and run the docker command.
+#       script:
+#         # - ./tests/scripts/test "rrtfunnel"
+#         # - echo $(pwd)
+#         - texliveonfly -shell-escape ./main.tex
+#         # - make
+# # script:
+# # # texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
+# # - texliveonfly -shell-escape ./src/main.tex
+# # # Compile twice to fix possible references
+# # - texliveonfly -shell-escape ./src/main.tex
+
+language: generic
+
+# Dependency of the minted package
+before_install:
+ - sudo apt-get install python-pygments
+install:
+ - source ./texlive/texlive_install.sh
+cache:
+  directories:
+    - /tmp/texlive
+    - $HOME/.texlive
 # Change working directory so including files will work
 before_script: cd $TRAVIS_BUILD_DIR/src/
-
-jobs:
-  include:
-    - stage: Test
-      # Create all the main.tex test files, and run the docker command.
-      script:
-        # - ./tests/scripts/test "rrtfunnel"
-        - echo $(pwd)
-        - texliveonfly -shell-escape ./main.tex
-        # - make
-# script:
-# # texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
-# - texliveonfly -shell-escape ./src/main.tex
-# # Compile twice to fix possible references
-# - texliveonfly -shell-escape ./src/main.tex
+script:
+# texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
+- texliveonfly -shell-escape ./main.tex
+# Compile twice to fix possible references
+- texliveonfly -shell-escape ./main.tex
