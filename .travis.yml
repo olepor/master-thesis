@@ -62,9 +62,9 @@ language: generic
 
 
 # Safelist - Only build the master branch.
-branches:
-  only:
-    - master
+# branches:
+#   only:
+#     - master
 
 file: 
   - ./src/main.pdf
