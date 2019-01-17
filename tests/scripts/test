@@ -37,5 +37,5 @@ ls tests/$1
 # We will use the docker image from https://hub.docker.com/r/strauman/travis-latexbuild/
 # Now that all the main.tex test files have been created,
 # run all the tests from tex-config.build-pattern.
-docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:small
+# docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:small
 
