@@ -2,16 +2,37 @@
 # Test script employed by travis to run the tests for each section
 # of the thesis.
 
+set -e
+
+if [ $# -ne 1 ]; then
+    printf "Usage:\n ./test testdirname"
+    exit 1
+fi
+
 for dir in $(ls tests); do
     if [ $dir == "scripts" ]; then
         continue
     fi
     # get the name of the tests/subdirectory and only create the
     # main.tex file for this subdir.
-    if [ $dir == tests/$1 ]; then
+    echo $dir
+    if [ $dir == $1 ]; then
+        echo "Building " $dir
         tests/scripts/createIncludeOnly "$dir" 'src/main.tex'
+        cat tests/$dir/main.tex
     fi
+    echo "----------------------------"
 done
+
+# TODO - fix this
+# But for now move the style.sty file into the test directory used.
+cp src/style.sty tests/$1/
+cp mnfrontpage.sty tests/$1/
+cp -r src/mnfrontpage-images tests/$1/
+
+echo tests/$1
+ls tests/$1
+
 
 # We will use the docker image from https://hub.docker.com/r/strauman/travis-latexbuild/
 # Now that all the main.tex test files have been created,

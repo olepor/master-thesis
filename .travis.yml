@@ -1,59 +1,77 @@
-sudo:       required
-language:   generic
-services:   docker
+# sudo:       required
+# language:   generic
+# services:   docker
 
-# Docs of the options: https://github.com/Strauman/travis-latexbuild/tree/master#configuration-options
-tex-config:
-- tex-scheme=small
-- build-pattern=tests/*/main.tex
-- push-type=none
-#- latexmk-flags=-dvi -f
-# Check at https://www.ctan.org/pkg/package-name in which TeX Live package a LaTeX package is contained.
-- packages=xkeyval, collection-latex, collection-langeuropean, exam, amsmath, amscls, mathtools, thmtools, stmaryrd, xcolor, pdfpages, pgf, cancel, hyperref, pgfplots, listings, scalerel, stackengine, etoolbox, listofitems, marvosym, amsfonts, opensans, slantsc, fancyhdr, ulem, algorithms, algorithmicx, float, booktabs, enumitem, polynom, fancyvrb, makecmds, multirow, chngcntr, fvextra, upquote, lineno, ifplatform, xstring, framed, caption, collection-fontsrecommended, minted, pgfgantt, geometry, beamer, translator, environ, trimspaces, imakeidx, graphics, tools, oberdiek
+Docs of the options: https://github.com/Strauman/travis-latexbuild/tree/master#configuration-options# # 
+# tex-config:
+# - tex-scheme=small
+# - build-pattern=tests/*/main.tex
+# - push-type=none
+- latexmk-flags=-dvi -f
+Check at https://www.ctan.org/pkg/package-name in which TeX Live package a LaTeX package is contained.# # 
+# - packages=memoir,  ifetex,  ifetex,  mem10,  keyval,  filehook-memoir,  fontenc,  t1lmr,  ec-lmr10,  lmodern,  beramono,  siunitx,  expl3,  expl3-code,  CaseFolding,  SpecialCasing,  l3xdvipdfmx,  xparse,  l3keys2e,  listings,  lstmisc,  listings,  thmtools,  thm-patch,  parseargs,  thm-kv,  thm-autoref,  aliasctr,  remreset,  thm-listof,  thm-restate,  thm-amsthm,  mathtools,  mhsetup,  mathrsfs,  dsfont,  stmaryrd,  dvipsnam,  svgnam,  tikzlibrarycalc,  tikzlibraryintersections,  pgflibraryintersections,  tikzlibrarydecorations,  pgflibrarydecorations,  comment,  todonotes,  tikzlibrarypositioning,  xspace,  textcomp,  ts1enc,  multirow,  tablefootnote,  letltxmacro,  xifthen,  varioref,  memhfixc,  cleveref, standalone, xkeyval, currfile, filehook, gincltex, svn-prov, adjustbox, collectbox, filemod, fixcmex, mensa-tex
 
+# file: 
+# - ./src/main.pdf
+- ./otherfile.pdf# # 
+# skip_cleanup: true
+# on:
+#   tags: true
+#   branch: master
 
-# Release automatically to github releases.
-file: 
-- ./src/main.pdf
-# - ./otherfile.pdf
-skip_cleanup: true
-on:
-  tags: true
-  branch: master
+Local settings:# # 
 
-# Local settings:
+Safelist# # 
+# branches:
+#   only:
+#     - master
 
-# Safelist
-branches:
-  only:
-    - master
+Build one chapter at a time, progressing numerically from one to the other as a build stage:# # 
+# jobs:
+#   include:
+#     - script: echo "Running chapter tests"
+#     - stage: Test
+#       # Create all the main.tex test files, and run the docker command.
+#       script:
+#         - ./tests/scripts/test "rrtfunnel"
+#     # We will use the docker image from https://hub.docker.com/r/strauman/travis-latexbuild/
+#     # script:
+#     # - docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:small
+#   # - # stage name not required, will continue to use `test`
+#   #   script: ./test 2
+#   # - # stage name not required, will continue to use `test`
+#   #   script: ./test 2
+#   # - # stage name not required, will continue to use `test`
+#   #   script: ./test 2
+#   # - # stage name not required, will continue to use `test`
+#   #   script: ./test 2
+#   # - # stage name not required, will continue to use `test`
+#   #   script: ./test 2
+#   # - stage: GitHub Release
+#   #   script: echo "Deploying to GitHub releases ..."
+#   #   deploy:
+#   #     provider: releases
+#   #     api_key: $GITHUB_OAUTH_TOKEN
+#   #     skip_cleanup: true
+#   #     on:
+#   #       tags: true
+dist: xenial
 
-# Build one chapter at a time, progressing numerically from one to the other as a build stage:
-jobs:
-  include:
-    - script: echo "Running chapter tests"
-    - stage: Test
-      # Create all the main.tex test files, and run the docker command.
-      script:
-        - ./tests/scripts/test
-    # We will use the docker image from https://hub.docker.com/r/strauman/travis-latexbuild/
-    # script:
-    # - docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:small
-  # - # stage name not required, will continue to use `test`
-  #   script: ./test 2
-  # - # stage name not required, will continue to use `test`
-  #   script: ./test 2
-  # - # stage name not required, will continue to use `test`
-  #   script: ./test 2
-  # - # stage name not required, will continue to use `test`
-  #   script: ./test 2
-  # - # stage name not required, will continue to use `test`
-  #   script: ./test 2
-  # - stage: GitHub Release
-  #   script: echo "Deploying to GitHub releases ..."
-  #   deploy:
-  #     provider: releases
-  #     api_key: $GITHUB_OAUTH_TOKEN
-  #     skip_cleanup: true
-  #     on:
-  #       tags: true
+language: generic
+
+# Dependency of the minted package
+before_install:
+ - sudo apt-get install python-pygments
+install:
+ - source ./texlive/texlive_install.sh
+cache:
+  directories:
+    - /tmp/texlive
+    - $HOME/.texlive
+# Change working directory so including files will work
+before_script: cd $TRAVIS_BUILD_DIR/src/
+script:
+# texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
+- texliveonfly -shell-escape ./src/main.tex
+# Compile twice to fix possible references
+- texliveonfly -shell-escape ./src/main.tex
