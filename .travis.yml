@@ -1,32 +1,3 @@
-# sudo:       required
-# language:   generic
-# services:   docker
-
-Docs of the options: https://github.com/Strauman/travis-latexbuild/tree/master#configuration-options# # 
-# tex-config:
-# - tex-scheme=small
-# - build-pattern=tests/*/main.tex
-# - push-type=none
-- latexmk-flags=-dvi -f
-Check at https://www.ctan.org/pkg/package-name in which TeX Live package a LaTeX package is contained.# # 
-# - packages=memoir,  ifetex,  ifetex,  mem10,  keyval,  filehook-memoir,  fontenc,  t1lmr,  ec-lmr10,  lmodern,  beramono,  siunitx,  expl3,  expl3-code,  CaseFolding,  SpecialCasing,  l3xdvipdfmx,  xparse,  l3keys2e,  listings,  lstmisc,  listings,  thmtools,  thm-patch,  parseargs,  thm-kv,  thm-autoref,  aliasctr,  remreset,  thm-listof,  thm-restate,  thm-amsthm,  mathtools,  mhsetup,  mathrsfs,  dsfont,  stmaryrd,  dvipsnam,  svgnam,  tikzlibrarycalc,  tikzlibraryintersections,  pgflibraryintersections,  tikzlibrarydecorations,  pgflibrarydecorations,  comment,  todonotes,  tikzlibrarypositioning,  xspace,  textcomp,  ts1enc,  multirow,  tablefootnote,  letltxmacro,  xifthen,  varioref,  memhfixc,  cleveref, standalone, xkeyval, currfile, filehook, gincltex, svn-prov, adjustbox, collectbox, filemod, fixcmex, mensa-tex
-
-# file: 
-# - ./src/main.pdf
-- ./otherfile.pdf# # 
-# skip_cleanup: true
-# on:
-#   tags: true
-#   branch: master
-
-Local settings:# # 
-
-Safelist# # 
-# branches:
-#   only:
-#     - master
-
-Build one chapter at a time, progressing numerically from one to the other as a build stage:# # 
 # jobs:
 #   include:
 #     - script: echo "Running chapter tests"
@@ -58,6 +29,7 @@ Build one chapter at a time, progressing numerically from one to the other as a 
 dist: xenial
 
 sudo: required
+
 language: generic
 
 
@@ -66,9 +38,9 @@ language: generic
 #   only:
 #     - master
 
-# file: 
+# file:
 #   - ./src/main.pdf
-#   ./otherfile.pdf# # 
+#   ./otherfile.pdf# #
 #   skip_cleanup: true
 #   on:
 #     tags: true
@@ -77,16 +49,17 @@ language: generic
 # Dependency of the minted package
 before_install:
   - sudo apt-get install python-pygments
+
 install:
   - source ./texlive/texlive_install.sh
-cache:
-  directories:
-    - /tmp/texlive
-    - $HOME/.texlive
+
+# cache:
+#   directories:
+#     - /tmp/texlive
+#     - $HOME/.texlive
 
 # Change working directory so including files will work
 before_script: cd $TRAVIS_BUILD_DIR/src/
-
 
 jobs:
   include:
