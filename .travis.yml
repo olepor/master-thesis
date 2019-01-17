@@ -66,19 +66,19 @@ language: generic
 #   only:
 #     - master
 
-file: 
-  - ./src/main.pdf
-  ./otherfile.pdf# # 
-  skip_cleanup: true
-  on:
-    tags: true
-    branch: master
+# file: 
+#   - ./src/main.pdf
+#   ./otherfile.pdf# # 
+#   skip_cleanup: true
+#   on:
+#     tags: true
+#     branch: master
 
 # Dependency of the minted package
 before_install:
- - sudo apt-get install python-pygments
+  - sudo apt-get install python-pygments
 install:
- - source ./texlive/texlive_install.sh
+  - source ./texlive/texlive_install.sh
 cache:
   directories:
     - /tmp/texlive
