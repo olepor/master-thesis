@@ -1,14 +1,16 @@
 #!/bin/bash
 # Test script employed by travis to run the tests for each section
 # of the thesis.
-echo $(pwd)
 
 for dir in $(ls tests); do
-    echo $dir
     if [ $dir == "scripts" ]; then
         continue
     fi
-    tests/scripts/createIncludeOnly "$dir" 'src/main.tex'
+    # get the name of the tests/subdirectory and only create the
+    # main.tex file for this subdir.
+    if [ $dir == tests/$1 ]; then
+        tests/scripts/createIncludeOnly "$dir" 'src/main.tex'
+    fi
 done
 
 # We will use the docker image from https://hub.docker.com/r/strauman/travis-latexbuild/
