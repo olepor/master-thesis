@@ -1,4 +1,0 @@
-#!/bin/bash
-#ls ${THESIS_DIR}/sections/*.tex
-echo "The thesis directory is: " $THESIS_DIR
-ls ${THESIS_DIR}/sections | grep ".*\.tex" | sed 's/^/sections\//' > ${THESIS_DIR}/sections.tex
