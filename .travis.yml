@@ -90,13 +90,12 @@ before_script: cd $TRAVIS_BUILD_DIR/src/
 
 jobs:
   include:
-    - script: echo "Running chapter tests"
     - stage: Test
       # Create all the main.tex test files, and run the docker command.
       script:
         # - ./tests/scripts/test "rrtfunnel"
         - echo $(pwd)
-        - texliveonfly -shell-escape ./src/main.tex
+        - texliveonfly -shell-escape ./main.tex
 # script:
 # # texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
 # - texliveonfly -shell-escape ./src/main.tex
