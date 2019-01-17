@@ -48,7 +48,7 @@ language: generic
 
 # Dependency of the minted package
 before_install:
-  - sudo apt-get install python-pygments lmodern texlive-fonts-extra texlive-full
+  - sudo apt-get install python-pygments lmodern texlive-fonts-extra
 
 # install:
 #   - source ./texlive/texlive_install.sh
