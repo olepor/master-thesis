@@ -52,11 +52,3 @@ tools
 oberdiek
 ifxetex
 memoir
-standalone
-xkeyval
-currfile
-filehook
-gincltex
-filemod
-enumitem
-siunitx
