@@ -30,7 +30,7 @@ tlmgr install texliveonfly
 tlmgr install collection-langeuropean
 
 # Common fonts with hard to debug errors if not found
-#tlmgr install collection-fontsrecommended
+tlmgr install collection-fontsrecommended
 
 # In the case you have to install packages manually, you can use an index of packages like
 # http://ctan.mirrors.hoobly.com/systems/texlive/tlnet/archive/
@@ -38,8 +38,8 @@ tlmgr install collection-langeuropean
 
 # Then you can add one package per line in the texlive_packages file
 # We need to change the working directory before including a file
-#cd "$(dirname "${BASH_SOURCE[0]}")"
-#tlmgr install $(cat texlive_packages)
+cd "$(dirname "${BASH_SOURCE[0]}")"
+tlmgr install $(cat texlive_packages)
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
