@@ -1,9 +1,42 @@
 \chapter{Funnels}
 
+The term \funnel first appears in \cite{masonMechanicsManipulation1985}. The
+\funnel definitions in this thesis is taken from a series of articles on
+\funnel's \cite{tobenkinInvariantFunnelsTrajectories2010} \cite{tedrakeLQRtreesFeedbackMotion2009} \cite{majumedar2013}
+ \cite{majumdarFunnelLibrariesRealtime2017}
+ \cite{ahmadiDSOSSDSOSOptimization2017}, with the main focus being on
+ \cite{majumdarFunnelLibrariesRealTime2017}. Here a \funnel is mathematically
+ defined as
+ \[
+  \bar{x}(0) \in \mathcal{X}_0 \Rightarrow \bar{x}(t) \in F(t), \forall t \in \sqb{0,T}
+ \]
+where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
+interval, and \(F(t)\) is the set of states that the system can be in at time
+\(t\). Although this thesis concerns itself with approximating the reachable set
+through \textit{Lyapunov} functions. A useful analogy is imagining the funnel
+created through a \textit{Monte-Carlo} simulation, where the \funnel would
+be the set of all the paths traversed by the dynamical system at hand. For a
+simple car model, this could look similar to:
 
-\section{}
+\begin{figure}
+  \includegraphics[scale=.5]{figures/funnels/montecarlofunnel}
+  \caption{The simulation of N paths starting from a random point in the
+    interval \(\sqb{-1,1}\), and controlled with a LQR controller.}
+\end{figure}
 
-\section{Lyapunov Functions}
+\subsection{Lyapunov Functions}
+
+A \textit{Lyapunov function} for an autonomous dynamical system is defined as a
+scalar function \(V: \R^n \rightarrow \R\), with continuous first derivatives,
+is locally positive definite, and \(\Delta V \dot g\) is also locally negative
+definite. The \textit{Lyapunov functions} can then be used to prove the
+\textit{Lyapunov stability} of the dynamical system. if \(\dot{x} = f(x)\) is a
+dynamical system, and \(\dot{V}\) is the time derivate of the
+\textit{Lyapunov-candidate function} \(V\), then:
+\[
+  \dot{V}(x) = \frac{d}{dt}V(x(t)) = \frac{\partial V}{\partial x} \cdot
+  \frac{dx}{dt} = \Delta V \cdot \dot{x} = \Delta \cdot f(x)
+\]
 
 \subsection{Example}
 Give example of global and local and limit-cycle stability (ref tedrake notes
@@ -20,10 +53,80 @@ function is not necessarily invariant. (Give example.).
 
 \subsection{S-procedure}
 
-The \italic{S-procedure} is used to check for positivity (SoS) over a region.
+The \textit{S-procedure} is used to check for positivity (SoS) over a region.
 
 \section{Transformation of funnels}
 
 \subsection{Cyclic coordinates?}
 
 How de we transform the funnels to different angles and coordinates.
+
+\subsection{Non-cyclic coordinates}
+
+\subsection{Adding uncertainty to the funnels}
+
+The funnels can take uncertainty into account. Adding this in accordance with
+the paper by \cite{majumedar2013}. For now adding this for dimension (?).
+
+\subsection{Scaling the funnels by the size of the vehicle simulated}
+
+The model used in this thesis is a point model. As so, it is not ready for use
+in simulations as is, whereas the vehicle used in the model has some given
+length and width. Therefore the Funnel needs to be scaled to handle the given
+size of the vehicle. TODO - how to do this proper? Check out the FunnelLibrary.m
+file for an example on how to do this proper.
+
+\subsection{Testing the funnels}
+
+After we have generated our Funnels, it is time to test them through a
+simulation. We start out by first simulating the Funnels with the uncertain
+plant dynamics, and checks if the model ever leaves the verified parametrized
+set. From this we get:
+
+\begin{figure}
+  \includegraphics[scale=0.5]{figures/funnel/straight_simulation}
+  \caption{Three simulations of the straight funnel with different initial
+    conditions, where all three funnels stayed inside the funnel. However, they
+    do seem to not converge towards the original trajectory.}
+\end{figure} 
+
+
+\begin{figure}
+  \includegraphics[scale=0.5]{figures/funnel/left_simulation}
+  \caption{Three simulations of the left funnel with different initial
+    conditions, where two out of three funnels left the inside of the funnel.
+    Right now I can only speculate as to why this is happening.}
+\end{figure} 
+
+
+\begin{figure}
+  \includegraphics[scale=0.5]{figures/funnel/right_simulation}
+  \caption{Three simulations of the right funnel with different initial
+    conditions, where two out of three funnels left the inside of the funnel.
+    Right now I can only speculate as to why this is happening.}
+\end{figure} 
+
+For the model with uncertainty added to the speed of the vehicle, we get:
+
+\subsection{Only minimizing the volume of the funnel projected down into the xy-plane}
+
+There is no need in minimizing the value of \(\dot{\theta}\), so in order to
+minimize what we care about, i.e. the actual size of the funnel where the
+physical vehicle can move, we modify our costfunction according to
+\cite{majumdarFunnelLibrariesRealtime2017}. Thus, given a projection map \(\pi :
+\R^n \rightarrow \R^{n_p}\). Given the ellipsoid \(\epsilon = \set{\bar{x} \in
+  \R^n | \bar{x}^TS_{k}\bar{x} \leq 1}\) with
+\[
+  \S_k^{(p)} = (\p{PS_k^{-1}P^T}^{-1})
+\]
+Given that minimizing the volume of the ellipsoid \(\epsilon\) using an SDP
+relies on maximizing the determinant of \(S_k\). Since \(det(S_k)\) is a
+nonlinear function of \(S_k\), the function has to be linearized in order for it
+to be handled by our solution framework (SOS-programming).
+\cite{majumdarFunnelLibrariesRealtime2017} solves this by linearizing
+\(det(S_k)\) at the solution of \(S_k\) from the previous iteration, and
+maximizes this linearization instead. In the end this translates to
+\[
+  lin\p{det\p{S_k}} = Tr\p{P^T\p{PS_{k,0}^{-1}P^T}^{-1}PS_{k,0}^{-1}S_kS_{k,0}^{-1}}
+\]
+where \(S_{k,0}\) is the nominal value.

@@ -1,8 +1,18 @@
 BEGIN {
-# Set a blank line as the record seperator
-RS=""
+      # Set a blank line as the record seperator
+      STATE="print" # State-machinery for printing includes
 }
-$1 ~ /includeonly/ {
-    printf("\\includeonly{%s}\n", section_name)
+/\\includeonly/ { STATE="noprint"; printf("\\includeonly{")}
+
+{
+    if (STATE == "print")
+        print
+    else {# noprint
+        if ($1 == sprintf("sections/%s,", section_name)) {
+            print sprintf("sections/%s}", section_name)
+        } else if ($1 == "}") {
+            STATE="print"
+        }
+    }
 }
-$1 !~ /includeonly/ {print $0}
+

@@ -13,6 +13,22 @@ setup:
 file: setup
 	latexmk -output-directory="build" -pdf # $1 add the command-line argument passed in!
 
+.Phony: section
+section: src/sections/$(section).tex
+	@echo "Building the section $(section)"
+	@mkdir -p tests/$(section)/build
+	@cp -r src/ tests/$(section)/
+	@mv tests/$(section)/main.tex tests/$(section)/maintemplate.tex
+	@tests/scripts/createIncludeOnly $(section) tests/$(section)/maintemplate.tex
+	@cd tests/$(section)/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
+	@open tests/$(section)/build/main.pdf
+
+
+section ?= "empty"
+.Phony: clean-section
+clean-section:
+	@rm -rf tests/$(section)
+
 .Phony: time
 time:
 	latexmk -output-directory="build" -time
@@ -30,6 +46,10 @@ clean:
 .Phony: log
 log:
 	@less build/main.log
+
+.Phony: check
+check:
+	chktex src/main.tex src/sections/*.tex
 
 pg: pg.tex
 	@latexmk -pdf -silent $<

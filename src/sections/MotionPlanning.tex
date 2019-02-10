@@ -8,15 +8,15 @@ Motion planning is the task of manipulating a robot's configurations so that,
 given an initial and goal state or posture, the planner (black box), is able to
 create a sequence of actions that gives a feasible or optimal path through the
 overarching planning environment, usually referred to as the world space. Thus a
-motion planner can be seen as a machine which given an the input: a world, and
+motion planner can be seen as a machine which given an input: a world, and
 initial and goal states, produces a sequence of actions to move the robot from
 its initial to the desired goal configuration. This plan is then passed on to
 the trajectory generator in the system. Generally, planners can be separated
 into complete and non-complete planners, meaning that given enough time, all
 motion planning problems are solvable, only the solution is NP-Hard. Thus
-feasible solutions will have to make compromise, and a lot of planners in use
+feasible solutions will have to make a compromise, and a lot of planners in use
 today are what is called probabilistically complete, meaning that they converge
-to a solution given infinite time. As such time-frames are of no use to us, we
+to a perfect solution given infinite time. As such time-frames are of no use to us, we
 generally have to settle for an approximation bound. There is a difference
 between online and off-line motion planning, whereas the offline algorithm plans
 in a static environment, the online algorithm is run continuously. However an
@@ -125,7 +125,7 @@ order to evaluate which plan scores best when measured up against the others.
 \subsection{Model}
 
 \subsubsection{Discrete}
-let \(\mathcal{X}\) be the discrete state space, and \(\ mathcal{U}(x)\) be the
+let \(\mathcal{X}\) be the discrete state space, and \(\mathcal{U}(x)\) be the
 set of actions available at each point \(x \in \mathcal{X}\). State transition:\
 \[
   x_{k+1} = f(x_k, u_k)
@@ -159,7 +159,7 @@ can look something like:
 
 \section{Algorithms}
 In general there are algorithms for which every motion planning problem can be
-solved explicitly, only their running time is on the order of \(O(n!)\), and
+solved explicitly, only their running time is on the order of \(O(n!)\) (TODO - cite!), and
 thus not feasible in practical applications. In the practical case it is
 therefore normal to employ methods of approximation.
 
@@ -354,80 +354,26 @@ of the environment! (LAV06) chp12.2
 
 \section{Planning with Funnels}
 
-Funnels are another way of handling uncertainty in a dynamic system. This method
-mainly envelopes two parts:
+A \textit{Funnel} is a parametrization of the reachable set of a dynamical
+system. This means that a \textit{Funnel} holds all the states the dynamical
+system can be in during a planning task. Mathematically we can define the
+reachable set of the system as
+\[
+  \bar{x}(0) \in \mathcal{X}_0 \Rightarrow \bar{x}(t) \in F(t), \forall t \in \sqb{0,T}
+\]
+where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
+interval, and \(F(t)\) is the set of states that the system can be in at time
+\(t\). Although this thesis concerns itself with approximating the reachable set
+through \textit{Lyapunov} functions, a useful analogy is imagining the funnel
+created through \textit{Monte-Carlo} simulation, where the \textit{Funnel} would
+be the set of all the paths traversed by the dynamical system at hand. For a
+simple car model, this could look similar to:
 
-\begin{itemize}
+\begin{figure}
+  \includegraphics[scale=.5]{figure/MotionPlanning/funnelmontecarlo}
+  \caption{The simulation of N paths starting from a random point in the
+    interval \sqb{-1,1}, and controlled with a LQR controller.}
+\end{figure}
 
-  \item Generating a nominal trajectory.
-  \item Stabilizing the nominal trajectory above through some controller.
-
-\end{itemize} 
-
-If we start out with a nonlinear system of the form:
-\begin{align}
-  \dot{x} &= f(x,u)
-        y &= h(x)
-\end{align} 
-TODO - Build on this, and paraphrase (reference the thesis, which it is built from)
-with \(f:\R^nx\R^m \rightarrow \R^n\) being a continuous function describing the
-dynamics of the system, and \(h:\R^n \rightarrow \R^p\) is another continous
-function describing the measured state of the system. Thus \(x \in \R^n\) is the
-state of the system, \(u\in\R^m\) and \(y\in\R^p\) is the measured state of the system.
-
-The nominal trajectory planning problem is concerned with finding an input
-signal over some interval of time, so that the output of the system will have
-some desireable characteristics. The normal case is requiring the system to
-start out at some known region of the world, and then the controller is required
-to take the system to some goal region within the state space within some period
-of time. 
-TODO - get the nominal trajectory definition from LaValle's book, and insert here.
-
-Next step in planning with funnels is generating 'guaranteed' safe traversal
-within some region of space surrounding the initial trajectories generated
-earlier. If we denote the inital trajectory as:
-\begin{align}
-  \dot{x}^0 &= f(x^0,u^0) \\
-  y^0 &= h(x^0)
-\end{align}
-we next need to stabilize this nominal trajectory. In our case this is done
-through searching over the space of \textit{quadratic LQR-controllers}, through
-the use of SOS-programming for verification and optimization through
-\textit{Lyapunov functions}. To see how this is done, we start out by lookin at
-the error:
-\begin{align}
-  u_{err} &= u - u^0 \\
-  x_{err} &= x - x^0 \\
-  y_{err} &= y - y^0
-\end{align} 
-Then through substitution of the error equation into the original equation (TODO
-- refere back), we get
-\begin{align}
-  \dot{x}_{err} &= f(x^0 + x_{err}, u^0 + u_{err}) - \dot{x}^0 \\
-  y_{err} &= h(x^0 + y_{err}) - y^0
-\end{align}
-
-Then the next step is finding the \textit{LQR-controllers} which stabilize this
-system in the sense of \textit{Lyapunov}. In particular we want the controller
-to force some set of initial conditions:
-we want the error to be bounded!
-
-...
-More recent developments has enabled the efficient solving of SOS-programs
-through modelling them as semi-definite programs, which is known to have
-efficient solutions (parillo?).
-
-This insight provided by Parillo, enables the computation of inner regions of
-attraction and finite-time-invariant sets. Problems can be rewritten in order to
-satisfy the positivity conditions, which can then be verified through
-SOS-programming. This then enables an efficient search for \textit{Lyapunov}
-functions, through requiring the more restrictive \textit{sum-of-square}
-conditions, instead of positivity, which is the general requirement. In other
-words, in order to find a Lyapunov function for some applica- tion, it is
-possible to construct it as a polynomial with free coefficients and define a SOS
-program which can find the coefficients such that some linear equality and/or
-inequality constraints are met. One important result of this is that we can fins
-a region in which the Lyapunov function is surely positive definite and its
-derivative is surely negative definite (or, smaller than some desired value),
-which, in turn, guarantees some desired behaviour for the system \cite{PHD-Thesis}.
-
+In this thesis a \textit{Funnel} will refer to the \textit{outer approximation of
+forwards reachable sets} parameterized by a \textit{Lyapunov function}.

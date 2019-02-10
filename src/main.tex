@@ -1,85 +1,61 @@
 \documentclass[a4paper, final]{memoir}
-
 \usepackage{style}      % Custom style
 \usepackage{kantlipsum} % Dummy text
 \usepackage[FYS,5,master]{mnfrontpage} % TODO - add the option print for a high
                                 % resolution image before printing.
-
 \title{Motion Planning}
 \author {Ole Petter Orhagen}
 \subtitle{The RRT-Funnel motion planning algorithm}
-
 \includeonly
 {
-    % sections/abstract,
-    % sections/acknowledgements,
-    % sections/introduction,
-    % sections/problem_description,
-    % sections/planner,
-  % sections/MotionPlanning,
-  % sections/survey,
-    % sections/model,
-  % sections/RRT,
-  % sections/Funnel,
-  sections/RRTFunnel
-    % sections/chapter3,
-    % sections/chapter4,
-    % sections/appendixA,
-    % sections/appendixB,
+    sections/abstract,
+    sections/acknowledgements,
+    sections/introduction,
+    sections/problem_description,
+    sections/planner,
+    sections/MotionPlanning,
+    sections/survey,
+    sections/model,
+    sections/RRT,
+    sections/Funnel,
+    sections/RRTFunnel
+    sections/chapter3,
+    sections/chapter4,
+    sections/appendixA,
+    sections/appendixB,
 }
-
 \begin{document}
-
     \mnfrontpage
     \frontmatter        % Folios in Roman numerals, unnumbered chapters.
-
     % \begin{titlingpage}
     %     \mnfrontpage
     % \end{titlingpage}
-
-    % \include{sections/abstract}
-    % \include{sections/acknowledgements}
-    % \include{sections/problem_description}
-
-
+    \include{sections/abstract}
+    \include{sections/acknowledgements}
+    \include{sections/problem_description}
     \cleartorecto
     \tableofcontents    % Or \tableofcontents*
     \cleartorecto
     \listoffigures      % Or \listoffigures*
     \cleartorecto
     \listoftables       % Or \listoftables*
-
     \mainmatter         % Folios in Arabic numerals, numbered chapters.
-
-    % \include{sections/introduction}
-
+    \include{sections/introduction}
     \include{sections/MotionPlanning}
-
     \include{sections/survey}
-
     \include{sections/RRT}
-
-    \include{Sections/Funnel}
-
+    \include{sections/Funnel}
     \include{sections/RRTFunnel}
-
     \part{The First Part}
-
-    % \include{sections/planner}
-    % \include{sections/model}
-
-    % \include{sections/chapter2}
-    % \include{sections/chapter3}
-    % \include{sections/chapter4}
-
-    % \appendix           % "Chapter" is renamed "Appendix"
-    % \appendixpage       % Similar to \part*{Appendices}, but appears in TOC.
-
-    % \include{sections/appendixA}
-    % \include{sections/appendixB}
-
+    \include{sections/planner}
+    \include{sections/model}
+    \include{sections/chapter2}
+    \include{sections/chapter3}
+    \include{sections/chapter4}
+    \appendix           % "Chapter" is renamed "Appendix"
+    \appendixpage       % Similar to \part*{Appendices}, but appears in TOC.
+    \include{sections/appendixA}
+    \include{sections/appendixB}
     \backmatter         % Folios in Arabic numerals, unnumbered chapters.
-
     \printbibliography
-
 \end{document}

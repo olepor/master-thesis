@@ -6,7 +6,9 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-awk -f tests/scripts/awkscript section_name="sections/$1" $2 > tests/$1/main.tex
+awk -f tests/scripts/awkscript section_name="$1" $2 > tmp.tex
+mv tmp.tex tests/$1/main.tex
+rm tmp.tex
 
 exit 0
 

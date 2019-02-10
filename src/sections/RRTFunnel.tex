@@ -237,3 +237,19 @@ translating one onto the end of the other. This can be done in two ways:
   \item Offline prior to planning, and then mark which funnels are compatible
     for extending eachother.
 \end{itemize}
+
+\subsection{The Identity Funnel}
+
+The RRTFunnel graph algorithm starts out with the identity funnel as the first
+motion primitive. This means that the initial movement does nothing. This can
+also be used as a end position, for when the vehicle needs to come to a halt.
+
+\subsection{The inital funnel library}
+
+Starting out, the initial funnel library will consist of a range of funnels
+distributed along the arc of circles with different radii, but the same distance
+spread aroung the border of the circle. Thus closer funnels will have wider
+turning radii than those further away? (Maybe test both?)
+
+TODO - describe the algorithm used for generating the points, although it is
+simple, it is kind of interesting (to me at least).
