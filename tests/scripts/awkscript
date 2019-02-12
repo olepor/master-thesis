@@ -2,7 +2,7 @@ BEGIN {
       # Set a blank line as the record seperator
       STATE="print" # State-machinery for printing includes
 }
-/\\includeonly/ { STATE="noprint"; printf("\\includeonly{")}
+/\\includeonly/ { STATE="noprint"; printf("\\includeonly{sections/Acronyms,")}
 
 {
     if (STATE == "print")

@@ -2,10 +2,10 @@
 
 The term \funnel first appears in \cite{masonMechanicsManipulation1985}. The
 \funnel definitions in this thesis is taken from a series of articles on
-\\funnel's \cite{tobenkinInvariantFunnelsTrajectories2010} \cite{tedrakeLQRtreesFeedbackMotion2009} \cite{majumedar2013}
+\funnel 's \cite{tobenkinInvariantFunnelsTrajectories2010} \cite{tedrakeLQRtreesFeedbackMotion2009} \cite{majumdarRobustOnlineMotion2013}
  \cite{majumdarFunnelLibrariesRealtime2017}
  \cite{ahmadiDSOSSDSOSOptimization2017}, with the main focus being on
- \cite{majumdarFunnelLibrariesRealTime2017}. Here a \funnel is mathematically
+ \cite{majumdarFunnelLibrariesRealtime2017}. Here a \funnel\ is mathematically
  defined as
  \[
   \bar{x}(0) \in \mathcal{X}_0 \Rightarrow \bar{x}(t) \in F(t), \forall t \in \sqb{0,T}
@@ -72,6 +72,95 @@ equilibrium at \(x = 0\). Consider a function \(V(x) \colon \R^n \rightarrow
 \end{align*}
 Then \(V(x)\) is called a \textit{Lyapunov function} candidate and the system is
 stable in the sense of Lyapunov. (semicite wikipedia).
+
+The following sections \ref{subsec:LaSalle's invariance
+  principle},\ref{subsec:LaSalle's invariance principle},\ref{subsec:Lyapunov
+  analysis for linear systems},  are based on the lecture notes from
+\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}, and are adapted slightly for
+presentation in this thesis.
+
+\subsection{LaSalle's invariance principle}
+\label{subsec:LaSalle's invariance principle}
+
+\textit{LaSalle}'s invariance principle formalizes the convergence of a
+dynamical system to an invariant set, rather than to a fixed point. Defined as:
+Given a system \(\dot{x} = f(x)\) with \(f\) continuous. If we produce a scalar
+function \(V(x)\) with continous derivatives for which over an open subset
+\(\mathcal{B} \in \R^n\) we have
+\begin{align*}
+  V(x) \geq 0, \; \dot{V}(x) \leq 0,
+\end{align*}
+and \(V(x) \rightarrow \infty\) as \(\norm{x} \rightarrow \infty\), then \(x\)
+will converge to the largest \textit{invariant set} where \(\dot{V}(x) = 0\).
+Where an \textit{invariant set}, \(\mathcal{G}\), of the dynamical system is a
+set for which \(x(0) \in \mathcal{G} \Rightarrow \forall t > 0,\, x(t) \in
+\mathcal{G}\). Meaning that once you enter the region of invariance, you never
+leave; which will be important for our funnel calculations later on.
+
+\subsection{Lyapunov analysis with convex optimization}
+\label{subsec:Lyapunov analysis with convex optimization}
+
+One of the primary limitations in Lyapunov analysis is that it is potentially
+very difficult to come up with suitable \textit{Lyapunov} function candidates
+for underactuated systems. Even if given a \textit{Lyapunov} function, simply
+checking that the \textit{Lyapunov} conditions hold for all \(x\) can be
+difficult. Imagine checking that \(\dot{V}\) is strictly negative for all \(x\),
+except at the origin, if \(\dot{V}\) is some complicated nonlinear function over
+a vector \(x\). However with recent advances in convex optimization
+\cite{parilloStructuredSemidefinitePrograms}, there now exists the opportunity
+to numerically search for these functions.
+
+A natural approach to a numerical algorithm for verifying \textit{Lyapunov}
+stability could be to evaluate \(V\) and \(\dot{V}\) at a large number of points
+and check that \(V\) is positive, and that \(\dot{V}\) is negative. Which
+\href{https://github.com/RobotLocomotion/drake/blob/master/systems/analysis/test/lyapunov_test.cc}{does in fact
+work}.
+But in reality we can do better, using optimization algorithms which rigourously
+checks these conditions \textit{for all \(x\)}, without the need for dense
+sampling. Which in actuality enables us to search for \textit{Lyapunov
+  functions} in an infinite function space (which is what makes up the space of
+all \textit{Lyapunov} functions).
+
+\subsection{Lyapunov analysis for linear systems}
+\label{subsec:Lyapunov analysis for linear systems}
+
+\begin{theorem}
+  Given a linear system of the form \(\dot{x} = Ax\) if one
+  can find a \textit{Lyapunov function}
+  \[
+    V(x) = x^TPx, \; P = P^T \geqslant 0
+  \]
+  which also satisfies
+  \[
+    \dot{V} = x^TPAx + x^TA^TPx \leqslant 0.
+  \]
+  Then the origin is globally asymptotically stable.
+\end{theorem} \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
+
+For the linear case the existence of a quadratic \textit{Lyapunov} function is
+a necesary and sufficient condition. Furthermore, a \textit{Lyapunov} function
+can always be found by finding the positive definite solution to the matrix
+Lyapunov equation
+\[
+  PA + A^TP = -Q
+\]
+for any \(Q = Q^T \geqslant 0\).
+
+\subsection{The connection between Lyapunov analysis and convex optimization}
+
+The first connection between Lyapunov analysis and convex optimization will be a
+\ac{SDP}-program. In fact the Lyapunov conditions for a linear system can be
+formulated in the form of an \ac{SDP} - which is a form of convex optimization.
+For any problem formulated as an \ac{SDP} there exists an efficient - and
+guaranteed optimal - solution. Only barring numerical difficulties.
+
+\subsection{Numerical convex optimization}
+
+\subsubsection{Linear programming}
+
+\subsubsection{Semidefinite programming}
+
+In essence 
 
 \subsection{Example}
 Give example of global and local and limit-cycle stability (ref tedrake notes
