@@ -2,7 +2,7 @@
 
 The term \funnel first appears in \cite{masonMechanicsManipulation1985}. The
 \funnel definitions in this thesis is taken from a series of articles on
-\funnel's \cite{tobenkinInvariantFunnelsTrajectories2010} \cite{tedrakeLQRtreesFeedbackMotion2009} \cite{majumedar2013}
+\\funnel's \cite{tobenkinInvariantFunnelsTrajectories2010} \cite{tedrakeLQRtreesFeedbackMotion2009} \cite{majumedar2013}
  \cite{majumdarFunnelLibrariesRealtime2017}
  \cite{ahmadiDSOSSDSOSOptimization2017}, with the main focus being on
  \cite{majumdarFunnelLibrariesRealTime2017}. Here a \funnel is mathematically
@@ -37,6 +37,41 @@ dynamical system, and \(\dot{V}\) is the time derivate of the
   \dot{V}(x) = \frac{d}{dt}V(x(t)) = \frac{\partial V}{\partial x} \cdot
   \frac{dx}{dt} = \Delta V \cdot \dot{x} = \Delta \cdot f(x)
 \]
+
+\subsection{Lyapunov Stability}
+
+A function being stable in the sense of \textit{Lyapunov}, is defined as:
+Given the autonomous nonlinear dynamical system
+\[
+  \dot{x} = f(x(t)), \, x(0) = x_0
+\]
+with \(\x(t)\) denotes the state vector of the system, with \(x(t) \in
+\mathcal{D} \subseteq \R^n\). \(\mathcal{D}\) is an open set containing the
+origin, and \(f \colon \mathcal{D} \rightarrow \R^n\) continous on
+\(\mathcal{D}\). Suppose that \(f\) has an equilibrium at \(x_e\) so that
+\(f(x_e) = 0\), then this equilibrium is \textit{Lyapunov stable} if for every
+\(\epsilon > 0\) there exists a \(\delta > 0\) such that if \(\left \lVert x(0)
+  - x_e \right \rVert < \delta\) then for every \(t \geq 0\) we have \( \left
+  \lVert x(t) - x_e \right \rVert \leq \epsilon\).
+
+Conceptually this means that a solution starting out in the vincinity of the
+equilibrium (\(\delta\)), will remain close (\(\epsilon\)) to it. Also note that
+this must be true for any \(\epsilon\) one may choose. (semicite wikipedia?).
+
+\subsection{Lyapunov's second method for stability}
+
+\textit{Lyapunov's} second method (also referred to as \textit{Lyapunov's} direct
+method) for stability makes use of the \textit{Lyapunov} function \(V\). If
+given a dynamical system of the form \(\dot{x} = f(x)\) having a point of
+equilibrium at \(x = 0\). Consider a function \(V(x) \colon \R^n \rightarrow
+\R\), such that
+\begin{align*}
+  V(x) &= 0 \text{ if and only if } x = 0 \\
+  V(x) &> 0 \text{if and only if} x \neq 0 \\
+  \dot{V}(x) &= \frac{d}{dt}V(x) = \sum_{i=0}^{n} \frac{\partial V}{\partial x_i} f_i(x) \leq 0 \text{ for all values of } x \neq 0. \\
+\end{align*}
+Then \(V(x)\) is called a \textit{Lyapunov function} candidate and the system is
+stable in the sense of Lyapunov. (semicite wikipedia).
 
 \subsection{Example}
 Give example of global and local and limit-cycle stability (ref tedrake notes
