@@ -1,7 +1,7 @@
 \chapter{Funnels}
 
-The term \funnel first appears in \cite{masonMechanicsManipulation1985}. The
-\funnel definitions in this thesis is taken from a series of articles on
+The term \funnel\ first appears in \cite{masonMechanicsManipulation1985}. The
+\funnel\ definitions in this thesis is taken from a series of articles on
 \funnel 's \cite{tobenkinInvariantFunnelsTrajectories2010} \cite{tedrakeLQRtreesFeedbackMotion2009} \cite{majumdarRobustOnlineMotion2013}
  \cite{majumdarFunnelLibrariesRealtime2017}
  \cite{ahmadiDSOSSDSOSOptimization2017}, with the main focus being on
@@ -128,11 +128,11 @@ all \textit{Lyapunov} functions).
   Given a linear system of the form \(\dot{x} = Ax\) if one
   can find a \textit{Lyapunov function}
   \[
-    V(x) = x^TPx, \; P = P^T \geqslant 0
+    V(x) = x^TPx, \; P = P^T \succeq 0
   \]
   which also satisfies
   \[
-    \dot{V} = x^TPAx + x^TA^TPx \leqslant 0.
+    \dot{V} = x^TPAx + x^TA^TPx \succeq 0.
   \]
   Then the origin is globally asymptotically stable.
 \end{theorem} \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
@@ -152,7 +152,7 @@ The first connection between Lyapunov analysis and convex optimization will be a
 \ac{SDP}-program. In fact the Lyapunov conditions for a linear system can be
 formulated in the form of an \ac{SDP} - which is a form of convex optimization.
 For any problem formulated as an \ac{SDP} there exists an efficient - and
-guaranteed optimal - solution. Only barring numerical difficulties.
+optimal - solution, barring numerical difficulties.
 
 \subsection{Numerical convex optimization}
 
@@ -160,11 +160,121 @@ guaranteed optimal - solution. Only barring numerical difficulties.
 
 \subsubsection{Semidefinite programming}
 
-In essence 
+A wide variety of nonlinear convex optimization problems can be formulated and
+efficiently solved as \ac{SDP}s. In control theory, semidefinite programming is
+a method for numerically finding the optimal solution of a linear matrix
+inequality. It is concerned with the optimization of a linear objective function
+over the intersection of the \textit{cone} of positive semidefinite matrices
+with an affine space.
 
-\subsection{Example}
-Give example of global and local and limit-cycle stability (ref tedrake notes
-underactuated robotics 2018).
+A convex cone is a subset of a vector space over an ordered field that is closed
+under linear combinations with positive coefficients.
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/funnel/Convex_cone_illust}
+  \caption{A convex cone (light blue). Inside of it, the light red convex cone
+    consists of all points \(\alpha x + \beta y \) with \(\alpha,\, \beta > 0\),
+    for the depicted \(x\) and \(y\). The curves on the upper right symbolize
+    that the regions are infinite in extent. \cite{alexandrovConvexConeIllust2019}}
+\end{figure}
+
+A semidefinite program can solve all problems of the form:
+\begin{align*}
+  \text{minimize } &TrCX \\
+  \text{subject to } &TrA_iX = b_i \text{for all i } = 1,\ldots,m\\
+           &X \succeq 0
+\end{align*} 
+where \(X \in S^n\), with \(S^n\) being the space of real symmetric \(nxn\)
+matrices. The vector \(b \in \R^m\), and the matrices \(A_i \in S^n\), and \(C
+\in S^n\) are given problem
+parameters\cite{wolkowiczHandbookSemidefiniteProgramming2000}.
+
+\subsection{A simple example}
+\label{subsec:A simple example}
+
+\begin{align*}
+  \text{min(a), subject to}
+  \begin{bmatrix}
+    a & 0 \\
+    0 & 1 \\
+  \end{bmatrix}
+  \succeq 0
+\end{align*}\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
+
+The linear Lyapunov example from above \ref{subsec:Lyapunov analysis for linear
+  systems}, can also be formulated as an \ac{SDP} like so:
+\begin{align*}
+  \text{find p, subject to } P \succeq 0, \; PA + A^TP \preceq 0.
+\end{align*}\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
+
+This formulation then provides the ground for an automatic search for a
+\ac{LQR}-controller. Shown below, is also how one can make it robust to bounded
+uncertainties.
+
+Given the system \(\dot{x} = Ax\), where \(A\) is unknown, with bounded
+uncertain parameters. This set can be described by writing \(A\) as an uncertain linear
+combination of known matrices, e.g:
+\[
+  A = \sum_{i} \beta_{i}A_{i}, \; \sum_{i}\beta_{i} = 1, \; \forall i,\beta_{i} > 0
+\]
+Geometricall the formulation descibes a polygon in the \(A\) space, with each
+vertice being one of the \(A_{i}\) which is used to describe a as a linear combination.
+
+\begin{figure}
+  \includegraphics{figures/funnel/linearuncertainlyapunov}
+  \caption{Illustration of the search space. Adapted from \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}}
+\end{figure}
+
+This problem, once formulated can the be sent to an automatic \ac{SDP}-solver,
+such as \textit{MOSEK}\cite{mosek}, which is used in this thesis.
+
+This example is important as it provides a way in which to search an infinite
+function space (The Lyapunov functions) - numerically - for a function which
+fullfills our constraints, and solves the problem. Furthermore, the solution is
+optimal as long as the problem is convex. Downside, however, is that this method
+only works on linear systems, and the problem at hand in this thesis is
+nonlinear.
+
+Fortunately, with the advent of \ac{SOS} programming, it is now possible to
+formulate the search for Lyapunov functions as a convex optimization problem.
+
+\section{SOS}
+
+The tools to search for a Lyapunov function for a nonlinear system relies on the
+algebraic geometry theory of \ac{SOS}, which is about representing
+\textit{non-negative polynomials} as a sum of squares of polynomials. In short,
+if one can write a polynomial \(p\) with indeterminates \(x_1,x_2,\ldots,x_n\)
+is \ac{SOS} if
+\[
+  p(x) = \sum_{i=1}^{m}g_i^2(x)
+\]
+for \(g_i \in \P\), where \(\P\) is the space of polynomials. The clue here is
+that every form that is \ac{SOS} is also a positive polynomial, although the
+converse is not necessarily true\cite{majumdarFunnelLibrariesRealTime2016}.
+
+This is an important detail, as the numerical search for Lyapunov functions can
+only verify \ac{SOS}-polynomials, and as such there will be a \textit{gap} in
+the Lyapunov functions we can find and verify, and the best Lyapunov functions
+for the task, as it is no guarantees that a \ac{SOS}-Lyapunov function will be
+the optimal function for the task.
+
+\ac{SOS} is the theory of
+
+As seen in section \ref{subsec:A simple example}, if one is able to
+
+\acl{SOS} polynomials are
+
+\acl{SOS} programming is
+
+\cite{parilloStructuredSemidefinitePrograms}, 
+
+\subsection{SOS programming}
+
+The procedure used for searching the space of all positive Lyapunov functions
+which can be written as a sum of squares is \ac{SOS} programming. With
+\cite[Parillo's]{parilloStructuredSemidefinitePrograms},  work, there now exists
+an efficient way of restructuring a \ac{SOS} program into an \ac{SDP} program,
+solve it, then convert it back, and get the sought solution polynomial.
 
 \subsection{Common Lyapunov functions for uncertain systems}
 \subsubsection{Robust set-invariance}
@@ -173,7 +283,6 @@ A sub-level set of the Lyapunov function is, in comparison with the system
 without uncertainties, not guaranteed that every sub-level set of the Lyapunov
 function is not necessarily invariant. (Give example.).
 
-\section{SOS}
 
 \subsection{S-procedure}
 
@@ -254,3 +363,29 @@ maximizes this linearization instead. In the end this translates to
   lin\p{det\p{S_k}} = Tr\p{P^T\p{PS_{k,0}^{-1}P^T}^{-1}PS_{k,0}^{-1}S_kS_{k,0}^{-1}}
 \]
 where \(S_{k,0}\) is the nominal value.
+
+\subsection{Checking composability of Funnels}
+
+In order for two \funnel's to be composable, the outlet of one \funnel\ needs to
+be completely contained within the inlet of the other. This means that if
+\(\mathcal{F}_1 = F_1(T)\) is the outlet of \funnel\ \(F_1\), and \(\mathcal{F}_2 = F_2(0)\) is the inlet of
+\(F_2\), then
+\[
+  \mathcal{F}_1 \subseteq \mathcal{F}_2
+\]
+in order for the funnels to be composable. In this thesis this composition
+checking is done off-line and prior to the algorithms run. First however, how to
+verify that the outlet of one \funnel\ is fully contained within the inlet of
+the other.
+
+In \cite[Majumdar and Tedrake, p.~47]{majumdarFunnelLibrariesRealtime2017}, two
+funnels are sequentially composable if
+\begin{definition}
+  An ordered pair \((F1, F2)\) of funnels \(F_1 \colon [0,T_1] \rightarrow
+  \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow
+  \mathcal{P}(\R^n)\) is sequentially composable if \(F_1(T) \subseteq F_2(0)\).
+\end{definition}
+
+TODO - make pretty funnel picture!
+
+\subsection{Shifting funnels around in the world frame}
