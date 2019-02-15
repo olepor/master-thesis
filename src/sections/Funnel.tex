@@ -1,5 +1,7 @@
 \chapter{Funnels}
 
+TODO - Create a timeline of these papers.
+
 The term \funnel\ first appears in \cite{masonMechanicsManipulation1985}. The
 \funnel\ definitions in this thesis is taken from a series of articles on
 \funnel 's \cite{tobenkinInvariantFunnelsTrajectories2010}
@@ -142,9 +144,10 @@ For the linear case the existence of a quadratic \textit{Lyapunov} function is a
 necesary and sufficient condition. Furthermore, a \textit{Lyapunov} function can
 always be found by finding the positive definite solution to the matrix Lyapunov
 equation
-\[
+\begin{equation}
+  \label{eqn:linearlyapunov}
   PA + A^TP = -Q
-\]
+\end{equation}
 for any \(Q = Q^T \geqslant 0\).
 
 \subsection{The connection between Lyapunov analysis and convex optimization}
@@ -225,10 +228,12 @@ vertice being one of the \(A_{i}\) which is used to describe a as a linear
 combination.
 
 \begin{figure}
-  \includegraphics{figures/funnel/linearuncertainlyapunov}
+  % \includegraphics{figures/funnel/linearuncertainlyapunov}
+  \input{figures/funnel/linearuncertainlyapunov}
   \caption{Illustration of the search space. Adapted from
     \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}}
 \end{figure}
+
 
 This problem, once formulated can the be sent to an automatic \ac{SDP}-solver,
 such as \textit{MOSEK}\cite{mosek}, which is used in this thesis.
@@ -467,13 +472,76 @@ as approximations of the region of attraction for a nonlinear system.
 \end{theorem}
 \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
 
+\subsubsection{Estimating the region of attraction for a one-dimensional system}
+\label{subsec:Estimating the region of attraction for a one-dimensional system}
+
+Given the system \(\dot{x} = -x + x^3\)
+% TODO - maybe this should not float? Research alternatives!
+\begin{figure}
+  \input{figures/funnel/regionofattractiononedimension.tex}
+  \caption{The dynamical system \(\dot{x} = -x + x^3\)}
+\end{figure}
+which has three fixed points. Two unstable at \(x = \pm 1\), and one stable
+fixed point at the origin. The region of attraction is \(x \in \left( -1, 1
+\right)\).
+
+By linearizing the dynamics around the origin, and using the Lyapunov function
+for a linear system as a candidate function one gets:
+\[
+  \text{lin}(\dot{x}) = -x.
+\]
+Through setting \(Q=1\), \(P=\frac{1}{2}\) as the positive definite solution to
+the linear Lyapunov equation \ref{eqn:linearlyapunov}. Thus
+\[
+  V(x) = \frac{1}{2}x^2,
+\]
+and
+\[
+  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + x^3) = -x^2 + x^4.
+\]
+which fullfills all the Lyapunov function criteria, with \(\dot{V}(0) = 0\),
+negative for \(\abs{x}<1\) and positive for \(\abs{x} > 1\). Thus the sub-level
+set \(V < \frac{1}{2}\) is invariant, and the set \(x \in \left( -1, 1 \right)\)
+is inside the region of attraction for the nonlinear system. In fact it is the
+entire region of attraction in this case.
 
 \subsection{Common Lyapunov functions for uncertain systems}
+
+Moving on to the most important sections for this thesis - the analysis and
+verification of regions of attraction in the presence of uncertainty.
+
+The general idea is based aroung \textit{common Lyapunov functions}, which, in
+contrary to regular Lyapunov analysis searches for a function which is negative
+for \textit{all values of \(w\)}, as opposed to only all values of \(x\).
+TODO - prettyfix this
+
+\begin{definition}[Common Lyapunov Function]
+TODO -
+\end{definition}
+
+\begin{example}[One-dimensional system with gain uncertainty]
+  Given the same nonlinear dynamic system as in \ref{subsec:Estimating the
+    region of attraction for a one-dimensional system}, but with a
+  \textit{bounded uncertainty term} \(w\), with 
+  \[
+    \dot{x} = -x + wx^3, \; w_{min} \leq w \leq w_{max}
+  \]
+  is 
+
+  \begin{figure}
+    \input{figures/funnel/regionofattractiononedimensionuncertaingain}
+    \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
+      where \(w\) is a bounded uncertainty parameter.}
+  \end{figure}
+\end{example}
+
 \subsubsection{Robust set-invariance}
 
 A sub-level set of the Lyapunov function is, in comparison with the system
 without uncertainties, not guaranteed that every sub-level set of the Lyapunov
 function is not necessarily invariant. (Give example.).
+
+\subsection{Cyclic coordinates and LaGrangian dynamics}
 
 
 
@@ -540,7 +608,7 @@ physical vehicle can move, we modify our costfunction according to
 \R^n \rightarrow \R^{n_p}\). Given the ellipsoid \(\epsilon = \set{\bar{x} \in
   \R^n | \bar{x}^TS_{k}\bar{x} \leq 1}\) with
 \[
-  \S_k^{(p)} = (\p{PS_k^{-1}P^T}^{-1})
+  S_k^{(p)} = \p{PS_k^{-1}P^T}^{-1}
 \]
 Given that minimizing the volume of the ellipsoid \(\epsilon\) using an SDP
 relies on maximizing the determinant of \(S_k\). Since \(det(S_k)\) is a
