@@ -9,7 +9,7 @@ The term \funnel\ first appears in \cite{masonMechanicsManipulation1985}. The
 \cite{majumdarFunnelLibrariesRealtime2017}. Here a \funnel\ is mathematically
 defined as
 \[
-  \bar{x}(0) \in \mathcal{X}_0 \Rightarrow \bar{x}(t) \in F(t), \forall t \in
+  \bar{x}(0) \in \mathcal{X}_0 \implies \bar{x}(t) \in F(t), \forall t \in
   \sqb{0,T}
 \]
 where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
@@ -95,7 +95,7 @@ function \(V(x)\) with continous derivatives for which over an open subset
 and \(V(x) \rightarrow \infty\) as \(\norm{x} \rightarrow \infty\), then \(x\)
 will converge to the largest \textit{invariant set} where \(\dot{V}(x) = 0\).
 Where an \textit{invariant set}, \(\mathcal{G}\), of the dynamical system is a
-set for which \(x(0) \in \mathcal{G} \Rightarrow \forall t > 0,\, x(t) \in
+set for which \(x(0) \in \mathcal{G} \implies \forall t > 0,\, x(t) \in
 \mathcal{G}\). Meaning that once you enter the region of invariance, you never
 leave; which will be important for our funnel calculations later on.
 
@@ -293,15 +293,15 @@ polynomial, like so
 \]
 where \(s(x)\) is a monomial in \(x\) and \(y\) of order two.In general \(s(x)\)
 is a monomial with degree less than or equal to half that of
-\(p(x)\)\cite{parilloStructuredSemidefinitePrograms}\label{monomialdegree}. The condition that
-\(s(x)\) is \ac{SOS} is much more \textit{computationally tractable} than a
-nonnegativity constraint \cite{parilloStructuredSemidefinitePrograms}. The
-methodology used in the \ac{SOS} program in this thesis is based on the
-relaxation from \cite{parilloStructuredSemidefinitePrograms}, which in turn is
-based on the \textit{Positivstellensatz} from algebraic geometry. In this type
-of problem the interest is in finding polynomials \(p_i(x), \,
-i=1,2,\ldots,\hat{N}\), and sums of squares \(p_i(x), \,
-i=(\hat{N}+1),\ldots,N\), such that
+\(p(x)\)\cite{parilloStructuredSemidefinitePrograms}\label{monomialdegree}. The
+condition that \(s(x)\) is \ac{SOS} is much more \textit{computationally
+  tractable} than a nonnegativity constraint
+\cite{parilloStructuredSemidefinitePrograms}. The methodology used in the
+\ac{SOS} program in this thesis is based on the relaxation from
+\cite{parilloStructuredSemidefinitePrograms}, which in turn is based on the
+\textit{Positivstellensatz} from algebraic geometry. In this type of problem the
+interest is in finding polynomials \(p_i(x), \, i=1,2,\ldots,\hat{N}\), and sums
+of squares \(p_i(x), \, i=(\hat{N}+1),\ldots,N\), such that
 \[
   a_{0,j}(x) + \sum_{i=1}^{N}p_{i}(x)a_{i,j}(x) = 0, \; \text{for } j =
   1,2,\ldots,J.
@@ -320,15 +320,16 @@ the kind \(f(x) \geq 0\).
 \]
 which is a sum of squares polynomial, as it can be written in the form
 \[
-  p = \sum_{i=1}^{N}g_i^2(x) = g_1^2(x) + g_2^2(x) + g_3^2(x)= 1 + (1-4x)^2 + x^2
+  p = \sum_{i=1}^{N}g_i^2(x) = g_1^2(x) + g_2^2(x) + g_3^2(x)= 1 + (1-4x)^2 +
+  x^2
 \]
-which shows that \(p(x)\) is positive for all x. In fact, \(p\) is \ac{SOS} if and only
-if there exists a \acl{PSD} matrix \(Q\), such that \(p(x) = s(x)^TQs(x)\).
-Also, the problem can be formulated using \textit{monomials} of degree one
-(square root of the degree of \(p\))\ref{monomialdegree}.
+which shows that \(p(x)\) is positive for all x. In fact, \(p\) is \ac{SOS} if
+and only if there exists a \acl{PSD} matrix \(Q\), such that \(p(x) =
+s(x)^TQs(x)\). Also, the problem can be formulated using \textit{monomials} of
+degree one (square root of the degree of \(p\))\ref{monomialdegree}.
 
-From now on, a constraint of the form \(f(x) \geq 0,\, \forall x\) will be written as \(f(x)
-\in SOS\).
+From now on, a constraint of the form \(f(x) \geq 0,\, \forall x\) will be
+written as \(f(x) \in SOS\).
 
 \subsection{Lyapunov analysis using SOS programming}
 
@@ -344,9 +345,8 @@ with \(d\) being the degree of the polynomial, a \ac{SOS} program
   \text{find \(\alpha\)}&, \text{ subject to } V(x) \text{ is SOS}\\
   -\dot{V}(x) &= -\frac{\partial V}{\partial x}f(x) \text{ is SOS}.\\
 \end{align*}
-\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
-and because this is a convex optimization problem, the solver will return a
-solution if one exists.
+\cite{tedrakeUnderactuatedRoboticsAlgorithms2019} and because this is a convex
+optimization problem, the solver will return a solution if one exists.
 
 \subsubsection{Example - The damped simple pendulum}
 
@@ -370,8 +370,8 @@ applied. There are in general two ways of dealing with this:
 First method, is to Taylor expand equation. Second, is doing a change of
 coordinates of the form \(\left[ \theta \; \dot{\theta} \right] \) to \(\left[ s
   \;c \; \dot{\theta} \right]\), where \(s = sin(\theta)\) and \(c =
-cos(\theta)\). Then with \(x = \left[ s \; c \; \dot{\theta} \right]^T\) the dynamics
-can be written as
+cos(\theta)\). Then with \(x = \left[ s \; c \; \dot{\theta} \right]^T\) the
+dynamics can be written as
 \[
   \dot{x} =
   \begin{bmatrix}
@@ -387,11 +387,12 @@ enables changing the model at hand a lot easier.
 
 Now, parametrizing a Lypunuv candidate function as
 \[
-  V = \alpha_0 + \alpha_1s + \alpha_2c + \cdots + \alpha_9s^2 + \alpha_{10}sc + \alpha_{11}s\dot{\theta}
+  V = \alpha_0 + \alpha_1s + \alpha_2c + \cdots + \alpha_9s^2 + \alpha_{10}sc +
+  \alpha_{11}s\dot{\theta}
 \]
 and formulating the search for a feasible Lyapunov function
 \begin{example}
-  find  \(\alpha\) subject to \(V\) is SOS, and \(-\dot{V}\) is SOS
+  find \(\alpha\) subject to \(V\) is SOS, and \(-\dot{V}\) is SOS
 \end{example}
 
 Actually this feasability problem can be reduced further. In fact \(V\) and
@@ -406,9 +407,66 @@ which is a standard method for proving nonnegativity of polynomials on
 semialgebraic sets (sets described by inequalities) called the
 \textit{S-procedure}, which will be the topic of the next section.
 
+\subsubsection{Why the solution is necessary, but not sufficient}
+
+There are a few details that keeps this program from proving that every
+sub-level set of \(V\) is an invariant set of \(f\). First, polynomial systems
+are not guaranteed to be verified using polynomial Lyapunov functions, no matter
+the degree of the polynomial, and here the search is over a fixed degree
+Lyapunov as well. Secondly, even though a polynomial Lyapunov function does
+exist as a solution for the system, it might not be \ac{SOS} decomposable.
+
 \subsection{S-procedure}
 
 The \textit{S-procedure} is used to check for positivity (SoS) over a region.
+
+\[
+  \beta = \set{x \in \R^n \mid g_{eq,i}(x),\,g_{ineq,i}(x) \geq 0}
+\]
+The interest is in showing that a polynomial \(p(x)\) is nonnegative on the
+given set \(\beta\)
+\[
+  x \in \beta \implies p(x) \geq 0
+\]
+which can be imposed by the following SOS constraints
+\[
+  q(x) = p(x) - \sum_{i=1}^{N_{eq}}L_{eq,i}(x)g_{eq,i}(x) -
+  \sum_{j=1}^{N_{ineq}}L_{ineq,i}(x)g_{ineq,j}(x) \\
+  L_{ineq,j}(x) \text{ is SOS } \forall j \in \set{0,\ldots,N_{ineq}}
+\]
+where the multiplier polynomials \(L_{eq}\) and \(L_{ineq}\) are multiplier
+polynomials similar to Lagrange multipliers in constrained optmization.
+
+\subsection{Estimating regions of attraction using Lyapunov functions}
+
+The fact that \textit{every sub-level set} of a Lyapunov function is also an
+\textit{invariant} set enables the use of sub-level sets of a Lyapunov function
+as approximations of the region of attraction for a nonlinear system.
+
+\begin{theorem}[Lyapunov invariant set and region of attraction theorem]
+  Given a system \(\dot{x} = f(x)\) with \(f\) continuous, if we can find a
+  scalar function \(V(x) \succeq 0 \) and a sub-level set
+  \[
+    \mathcal{G} \colon set{x \mid V(x) < \rho}
+  \]
+  on which
+  \[
+    \forall x \in \mathcal{G},\,\dot{V}(x) \preceq 0,
+  \]
+  then \(\mathcal{G}\) is an invariant set. By \textit{LaSalle}
+  \ref{subsec:LaSalle's invariance principle}, \(x\) will converge to the
+  largest invariant subset of \(\mathcal{G}\) on which \(\dot{V}(x) = 0\).
+
+  Furthermore, if \(\dot{V}(x) \prec 0\) in \(\mathcal{G}\), then the origin is
+  locally asymptotically stable and the set \(\mathcal{G}\) is inside the region
+  of attraction of this fixed point. Alternatively, if \(\dot{V}(x) \preceq 0 \)
+  in \(\mathcal{G}\) and \(x = 0\) is the only invariant subset of
+  \(\mathcal{G}\) where \(\dot{V} = 0\), then the origin is asymptotically
+  stable and the set \(\mathcal{G}\) is inside the region of attraction of this
+  fixed point.
+\end{theorem}
+\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
+
 
 \subsection{Common Lyapunov functions for uncertain systems}
 \subsubsection{Robust set-invariance}
@@ -506,6 +564,7 @@ be completely contained within the inlet of the other. This means that if
 \[
   \mathcal{F}_1 \subseteq \mathcal{F}_2
 \]
+\label{composability}
 in order for the funnels to be composable. In this thesis this composition
 checking is done off-line and prior to the algorithms run. First however, how to
 verify that the outlet of one \funnel\ is fully contained within the inlet of
@@ -520,5 +579,87 @@ funnels are sequentially composable if
 \end{definition}
 
 TODO - make pretty funnel picture!
+
+Thus
+\[
+  V_1(T_1,\bar{x}) \leq \rho_1(T_1) \implies V_2(0,\bar{x}) \leq \rho_2(0)
+\]
+is an equivalent condition to \ref{composability}, and which can be checked
+through the following \ac{SOS} program.
+\begin{align*}
+  \text{Find } \; &L(\bar{x}) \\
+  \text{s.t} \; &\rho_2(0) - V_2(0,\bar{x}) - L(\bar{x})
+                  \left( \rho_1(T_1) - V_1(T_1,\bar{x}) \right)
+\end{align*}
+\cite[Majumdar and Tedrake, p.~54]{majumdarFunnelLibrariesRealtime2017}
+
+However in \cite[Majumdar and Tedrake]{majumdarFunnelLibrariesRealtime2017}, the
+program is simply stated, and it can be helpful to take a look at the derivation
+in order to further envelop ourself in the implementation of a \ac{SOS} program.
+
+The \textit{S-procedure} enables us to limit our search to a semialgebraic set.
+In this case, that set is \(\mathcal{F}_2 = \set{x \in \R^n \mid V_2(0,\bar{x})
+  \leq \rho_2(0)}\), any \(x\) that is not in this set does not concern us,
+which is why employing the \textit{S-procedure} is valid. In more general terms
+this can be written
+\[
+  x \in \mathcal{F}_2 \implies p(x) \geq 0
+\]
+where \(p(x)\) is the \ac{SOS} polynomial that is to be verified. In this case
+\(p(x)\) is \(V_2(0,\bar{x})\). Thus in order to impose the implication define
+\[
+  q(x) = V_2(0,\bar{x}) - \rho_2(0) - L(\bar{x}) \left( \rho_1(T_1) -
+    V_1(T_1,\bar{x}) \right)
+\]
+where \(q(x)\) and \(L(\bar{x})\) needs to be SOS polynomials.
+
+\subsubsection{Example - embedding a square within a circle}
+
+As a simple example let's have a look at embedding a square within a circle. For
+good measure let's give the circle a radius of \(\sqrt{2}+\epsilon\), and the square a
+radius of \(1\), and center them both at the origin in the Euclidean plane.
+
+Starting with defining the set \(\beta\)
+\[
+  \beta = \set{x \in R^2 \mid \norm{x} \leq 2}
+\]
+using the manhattan metric. then the implication
+\[
+  x \in \beta \implies p(x) \geq 0
+\]
+which can be formulated as
+\begin{align*}
+  \beta &= \set{x \in \R^2 \mid (1 - x \wedge x + 1) \geq 0} \\
+  p(x) &= r^2 - x^2 - y^2
+\end{align*}
+where \(p(x)\) is the parametrization of the circle, and \(\beta\) is the
+parametrization of the unit square. What needs to be shown is that \(p(x)\) is
+positive on the set \(\beta\). Through the \textit{S-procedure} this can be
+written as the search for a nonnegative polynomial \(L_{ineq,i}(x)\) such that
+\(p(x) \geq \left( sg \right)(x)\). Thus
+\[
+  q(x) = p(x) - \sum_{i=1}^{2}L_{ineq,i}(x)g_{ineq,i}(x)
+\]
+is required to be a \ac{SOS} polynomial, along with \(L_{ineq,i}\). From this it
+is seen that when a point satisfies \(g_{ineq,i}\) (\ie when \(x \in \beta\))
+the term \(\sum_{i=1}^{2}L_{ineq,i}(x)g_{ineq,i}(x)\) is negative, and hence
+\(p(x)\) must be nonnegative, which gives the desired implication.
+
+Solving this problem can be done using any of a number of \ac{SOS} modelling
+software. This example will rely on \cite[Yalmip]{Lofberg2004} and its \ac{SOS}
+programming functionality \cite{Lofberg2009} for \matlab.
+
+
+\lstinputlisting{figures/funnel/embededsquare.m}
+
+Which returns ``Composition succesful!'' for circles with radii larger than
+\(sqrt{2}\) as expected. (Note, this can also be optmized for searching for the
+smallest circle which encompasses the square - TODO - do this later.)
+
+\subsection{Region of attraction along a trajectory}
+
+In order to verify regions of attraction along a trajectory, as opposed to
+around a single point, some minor modifications to the problem definition has to
+be made \cite[see Tedrake et al]{tedrakesomeyear}.
 
 \subsection{Shifting funnels around in the world frame}
