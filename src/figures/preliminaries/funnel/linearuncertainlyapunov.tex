@@ -1,0 +1,16 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{shapes.geometric}
+
+\begin{document}
+    \begin{tikzpicture}
+      \foreach \a in {5}{
+        \node[regular polygon, regular polygon sides=\a, minimum size=3cm, draw] at (\a*4,0) (A) {};
+        \node[circle, label=above:\(A_1\)] at (A.corner 1) {};
+        \node[circle, label=left:\(A_2\)] at (A.corner 2) {};
+        \node[circle, label=below:\(A_3\)] at (A.corner 3) {};
+        \node[circle, label=below:\(A_4\)] at (A.corner 4) {};
+        \node[circle, label=right:\(A_5\)] at (A.corner 5) {};
+        \node[circle, label=\(A\)] at (20,-.35) {};
+      }
+    \end{tikzpicture}
+\end{document}

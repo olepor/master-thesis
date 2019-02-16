@@ -10,3 +10,11 @@
 ** http://groups.csail.mit.edu/robotics-center/public_papers/Barry16.pdf
 * TODO 
 ** Create and model the vehichle in the thesis using Peter Corke's book, and unicycle model. ( Pretty figures needed ). see p 100.
+** Fixup the preliminaries next week!
+*** Monday: Structure the rest of the week preliminaries write up, after work!
+*** Tuesday: Thesis writing & Start on the funnel composition code.
+*** Wednesday: Thesis writing & If done with funnel composition -> Integrate into FunnelGraph code.
+*** Thursday: Thesis writing & If done with Integration into FunnelGraph code -> Create a richer funnel library.
+*** Friday: Thesis writing & If done with richer funnel library -> Start the algorithm comparisons.
+** Write the Poisson forest generation section in the thesis.
+** 

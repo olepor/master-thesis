@@ -1,4 +1,382 @@
-\chapter{Funnels}
+\chapter{Preliminaries}
+
+\section{Overview/Preliminaries}
+Motion planning is the task of manipulating a robot's configurations so that,
+given an initial and goal state or posture, the planner (black box), is able to
+create a sequence of actions that gives a feasible or optimal path through the
+overarching planning environment, usually referred to as the world space. Thus a
+motion planner can be seen as a machine which given an input: a world, and
+initial and goal states, produces a sequence of actions to move the robot from
+its initial to the desired goal configuration. This plan is then passed on to
+the trajectory generator in the system. Generally, planners can be separated
+into complete and non-complete planners, meaning that given enough time, all
+motion planning problems are solvable, only the solution is NP-Hard. Thus
+feasible solutions will have to make a compromise, and a lot of planners in use
+today are what is called probabilistically complete, meaning that they converge
+to a perfect solution given infinite time. As such time-frames are of no use to us, we
+generally have to settle for an approximation bound. There is a difference
+between online and off-line motion planning, whereas the offline algorithm plans
+in a static environment, the online algorithm is run continuously. However an
+online algorithm can be simulated by running an offline algorithm repeatedly for
+short intervals of time. However, this comes with the drawback, that no
+guarantee can be made for completing a certain task.
+
+\subsection{Building Blocks}
+
+\subsection{The Robot and World Model}
+
+The modeled world \(\modelworld\), and everything in it can be modeled
+geometrically using any number of methods - most usually polygons or some other
+convex geometric structure. Thus the robot can also be modeled as a collection
+of geometric structures \(\modelrobot\). Thus in order to move the robot in the
+world space, rigid body transformations are applied. Given the robot as a subset
+of the world space, the image of a robot transformation is then given as:
+% \[
+%   h(\modelrobot) = \set{h(a) \in \modelworld \mid a \in \modelrobot} \\
+%   h \colon \modelrobot \rightarrow \modelworld \\
+%   \modelrobot \and h(\modelrobot) \subset \modelworld \\
+% \]
+
+The world as we model it contains two kinds of objects
+
+\begin{itemize}
+\item \textbf{Robot:} Body that is modeled geometrically and is controllable via
+  a motion plan.
+\item \textbf{Obstacles:} Portions of the world that are occupied by something
+  other than the robot.
+\end{itemize}
+
+\subsection{Rigid Transformations}
+
+% \subsection{State Space}
+% \label{subsec:State}
+% Planning problems involve a state space. A state space is a set of all the
+% possible configurations a model can be in at any given time. The state space
+% can be either discrete or continuous, and can be represented either implicitly
+% or explicitly.
+
+\subsubsection{Configuration Space}
+The configuration space is a general abstraction used as a model for a wide
+variety of motion planning problems. It is a manifold that arise from the
+transformations applied to the robot. If the robot has n-degrees of freedom, the
+set of transformations is usually a manifold of dimension n. This manifold is
+called the configuration space of the robot, and is shortened
+\(\modelconfigurationspace{}\). Thus in order to solve a motion planning
+problem, a search must be performed in the configuration space. Thus the motion
+planning problem is now made into a question of finding the best path to
+traverse the given manifold\cite{Lav06}. (characterize and describe the
+configuration space structure.) In our case the configuration space can be
+modeled as a topological space of the type \(SE(3)\), meaning special-Euclidean
+three.
+
+Using generalized coordinates, the configuration of a robot can be modeled as a
+vector with n variables for the position in the configuration space, in
+literature this space is usually denoted by \(\modelconfigurationspace{}\). As
+is most common, the robot is modeled as a rigid body, in which two bodies cannot
+overlap, thus points in the configuration space is separated into two sets. One
+set for which the robot configuration overlaps with another object in the
+configuration space, and is called \(\modelconfigurationspaceobst{}\), and given
+that the world space is represented as \(\modelconfigurationspace{}\), the
+collision free space is the given as, \(\modelconfigurationspacefree =
+\modelconfigurationspace \setminus \modelconfigurationspaceobst\). The obstacle
+space can be represented in a number of ways, but we will stick to polygonal
+models of the obstacle space.
+
+\subsection{Action Space}
+The action space is the set of actions that can be applied at any given state
+the robot is located in. Thus one can model the action space as a function of
+the robot's state.\ e.g.
+\[
+  \modelactionspace(x) = \set{u \in \modelactionspace \mid \modelactionspace(x)
+    \neq \emptyset }
+\]
+
+\subsection{Initial and Goal States}
+It is normal to define an initial state and a goal state as a starting and an
+ending point of a planning problem. Where both the initial, and goal states can
+be sets of states, meaning that it is not necessary to arrive specifically at
+the target point. A starting point consisting of multiple configuration states
+usually infers some kind of uncertainty in the robot model. The end goal can be
+reached in one of two ways, wherein the two types characterize two different
+forms of planning.
+\begin{enumerate}
+\item\textbf{Feasible:} Feasible planning has no concerns with optimality, and
+  only concerns itself with finding a plan that arrives at the goal state.
+\item\textbf{Optimal:} Optimal planning optimizes a feasible plan in some
+  specified manner, with respect to some specified cost function.
+\end{enumerate}
+
+\subsection{A Plan}
+If we are dealing with a fully deterministic model, a plan can simply be the set
+of actions applied at each state in order to reach a goal state specified for
+the problem at hand. However, if some measure of uncertainty is added to the
+model, then literature describes this as planning in the \textit{information
+  space}, and future states cannot be predicted exactly, thus some kind of
+feedback model is used in order to plan in an uncertain environment. If we are
+merely looking at solving the problem, a feasible plan is good enough, which
+means a solution has to be found, but multiple solutions do not have to be found
+and compared. However, if time, energy or some other parameters are to be
+optimized, then a cost function has to be added into the planning model, in
+order to evaluate which plan scores best when measured up against the others.
+
+\subsection{Model}
+
+\subsubsection{Discrete}
+let \(\mathcal{X}\) be the discrete state space, and \(\mathcal{U}(x)\) be the
+set of actions available at each point \(x \in \mathcal{X}\). State transition:\
+\[
+  x_{k+1} = f(x_k, u_k)
+\]
+
+\subsubsection{Continuous}
+
+\subsubsection{Path and Trajectory}
+
+The motion plan takes the form of a path, or a trajectory. This is represented
+as a function \(\phi(\alpha) \colon [0,1] \rightarrow \mathcal{X}\), where
+\(\mathcal{X}\) is the configuration space of the vehicle. If the
+control-execution time is considered, then the explicit model of vehicle
+kinematics and/or dynamics, as well as the dynamics of the possible obstacles.
+Then the trajectory is represented as a time-parameterized function of the kind
+\(\pi(t) \colon [0,T] \rightarrow \mathcal{X}\), where \(T\) is the planning
+horizon. Unlike the path, the trajectory describes how the configuration of the
+vehicle evolves over time.
+
+Initial and Goal States. A path is a function f \ldots
+
+\subsection{Time}
+
+Discrete vs Continuous
+
+\subsection{Actions}
+
+A plan is a sequence of actions that manipulate the state of the robot. A
+planning problem involves a sequence of decisions made over time. car-like model
+can look something like:
+
+\section{Algorithms}
+In general there are algorithms for which every motion planning problem can be
+solved explicitly, only their running time is on the order of \(O(n!)\) (TODO - cite!), and
+thus not feasible in practical applications. In the practical case it is
+therefore normal to employ methods of approximation.
+
+\subsection{Grid-based Search}
+
+\subsection{Interval-based Search}
+
+\subsection{Geometric Algorithms}
+
+\subsection{Artificial Potential Fields}
+
+\subsection{Sampling-based}
+
+\section{Piano Movers Problem}
+
+\section{Discrete vs Continuous}
+
+\section{Sampling}
+
+\section{State Space}
+
+\section{Complexity}
+
+\section{Criterion}
+
+\subsection{Feasibility}
+\subsection{Optimality}
+
+\section{Completeness}
+
+\section{Probabilistic Completeness}
+
+\section{Planning Under Uncertainty (Decision Theoretic Planning)}
+
+All real life motion planning problems are faced with some level of uncertainty,
+as errors can arise from a multiple of sources, whereas the most prevalent ones
+are uncertainty in:
+\begin{enumerate}
+\item motion
+\item sensing
+\item the environment
+\end{enumerate}
+Thus the exact system state is never exactly known. Therefore planning under
+uncertainty is done in a belief space. Which is a description of the state space
+using probability distributions. (Partial observability?) Planning is done in
+the information space, as opposed to the state-space. Uncertainties in
+prediction and the current state exist. Forward and backward projections.
+
+(probability constraint violation)
+
+\subsection{A Game Against Nature}
+
+Theta is nature's actions. U is the robot's action.
+
+\subsection{A Model of Uncertainty}
+
+If the discrete state space model is expanded to include \(\ Theta\) as the
+space of nature actions, and \(\ theta_k\) is the action selected by nature at
+step k, then a transition is modeled as
+\[
+  x_{k+1} = f(x_k,u_k,\theta_k)
+\]
+As the actions of nature are not available beforehand, that is -- \(\theta_ k\)
+is not given, thus we have
+\[
+  X_{k+1} = \set{ x_{k+1} \ in X \mid \exists\theta_k \in \Theta(x_k,u_k)
+    \text{such that } x_{k+1} = f(x_k,u_k,\theta_k)}
+\]\cite{Lav06}.
+
+\subsection{Discrete Planning with Nature}
+a model of discrete planning with nature:~\cite[pg,496]{Lav06}
+
+A Markov decision process is defined in~\cite[pg.498]{Lav06} as:
+\begin{enumerate}
+\item A non empty \textit{state space} \(X\) which is a finite or countably
+  finite set of \textit{states}.
+\item For each state, \(x \in X\), a finite non-empty \textit{action space}
+  \(U(x)\). It is assumed that \(U\) contains a special \textit{termination
+    action}, which has the same effect as (cite the deterministic discrete
+  planning model).
+\item A finite non-empty \textit{nature action space} \(\Theta(x,u)\) for each
+  \(x \in X\) and \(u \in U\).
+\item A state transition function \(f\) that produces a state,
+  \(f(x,u,\theta)\), for every \(x \in X\), \(u \in U\), and \(\theta \in
+  \Theta\).
+\item A set of \textit{stages}, each denoted by k, that begins at k=1 and
+  continues indefinitely. Alternatively, there may be a fixed maximum stage \(k
+  = K+1=F\).
+\item An \textit{initial state} \(x \in X\). For some problems, this may not be
+  specified, in which case a solution plan must be found from all initial
+  states.
+
+\item A \textit{goal set} \(X_G \subset X\).
+\item A stage-additive cost functional L. Let \(\sim{\theta}_K\) denote the
+  history of nature actions up to stage K. The cost functional may be applied to
+  any combination of state, action, and nature histories to yield
+  \[
+    L(\sim{x}_F, \sim{u}_K, \sim{\theta}_K) = \sum_{k=1}^{K} l(x_k,u_k,\theta_k)
+    + l_F(x_F)
+  \]
+  in which \(F = K + 1\). The termination action \(u_T\) is applied at some
+  stage k, then for all \(i \geq k\), \(u_i = u_T\), \(x_i = x_k\), and
+  \(l(x_i,u_T, \theta_i) = 0\).
+\end{enumerate}~\cite[pg 498]{Lav06}
+
+using this formulation either a feasible or optimal planning problem can be
+formulated.
+
+\subsection{Forward and Back-Projections (under uncertainty)}
+
+\subsection{Separating a plan from its execution}
+
+\subsection{Feedback}
+
+\subsection{Information Space}
+A stochastic environment. The information space is a general structure for
+working with plans under conditions of uncertainty. Thus planning can be done
+mostly as it is done in a state space, albeit in a higher dimension. Thus the
+state transition function can be written as
+\[
+  \phi_{k+1} = f_{\mathcal{I}}\left( \phi_k, \mu_k, y_{k+1} \right)
+\]
+
+\subsection{Nondeterministic and Probabilistic Information Spaces}
+
+\subsection{A Plan under Uncertainty}
+Since it Expected-case analysis. Worst-case analysis.
+
+Uncertainty comes from three sources in our model:
+\begin{enumerate}
+\item The Model (motion).
+\item The observation (sensor).
+\item The environment (map). Grid-based problems: Navigation: A goal position is
+  to be reached, even though the map is unknown. The robot is allowed to solve
+  the problem without fully exploring the environment. Only a part of the
+  environment is needed to solve the problem. Searching: A goal state can only
+  be identified when it is reached by a short-range sensor. The environment is
+  systematically searched, but the search may terminate early if the goal is
+  found.
+
+  Problem-definition: Part of the problem is map-building, as the map is not
+  provided exactly, and sensory map-information has to be used in order to
+  successfully solve a given planning problem.
+\end{enumerate}
+
+\subsection{Visibility Polygon}
+Let \(V(x)\) be the visibility polygon -- that is the set of all points that are
+visible from \(x\).
+
+I-states enables us to solve problems without having a complete representation
+of the environment! (LAV06) chp12.2
+
+
+
+\subsubsection{Decision Makers}
+
+\subsection{Rewards?}
+
+\section{Data Collection and Sensors}
+
+
+
+\section{Optimality}
+
+\section{Misc}
+
+\begin{table}
+  \begin{tabular}{c c c p{4cm}}
+    \hline
+    \hline
+    Algorithm Group & Technique & Variations & Description \\
+    \hline
+                    &  Dijkstra's Algorithm & &Algorithm for finding the shortest weighted path in a graph.\\
+                    &  \\
+    Graph Search               & & D* & Capable of planning paths in unknown, partially known, and changing environments in an efficient, optimal, and complete manner..\\
+                    & A* Family & Focused-D* & Informed-incremental heuristic search.\\
+                    & & D*-Lite & Simpler to implement that Focused D*, slightly slower performance.\\
+    \hline
+                    & RRT-implementations \\
+                    & & RRT\\
+                    & & RRT*\\
+    Sampling based Planners& & RRT*-Smart\\
+                    & & RRT-SLAM\\
+                    & & CC-RRT\\
+                    & PRM \\
+                    & & BRM & A road-map implementation that plans in belief space in order to handle uncertainties in the planning model.\\
+    \hline
+    Numerical Optimization &  Function Optimization \\
+    \hline
+  \end{tabular} 
+\end{table}
+
+\section{Planning with Funnels}
+
+A \textit{Funnel} is a parametrization of the reachable set of a dynamical
+system. This means that a \textit{Funnel} holds all the states the dynamical
+system can be in during a planning task. Mathematically we can define the
+reachable set of the system as
+\[
+  \bar{x}(0) \in \mathcal{X}_0 \Rightarrow \bar{x}(t) \in F(t), \forall t \in \sqb{0,T}
+\]
+where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
+interval, and \(F(t)\) is the set of states that the system can be in at time
+\(t\). Although this thesis concerns itself with approximating the reachable set
+through \textit{Lyapunov} functions, a useful analogy is imagining the funnel
+created through \textit{Monte-Carlo} simulation, where the \textit{Funnel} would
+be the set of all the paths traversed by the dynamical system at hand. For a
+simple car model, this could look similar to:
+
+\begin{figure}
+  \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
+  \caption{The simulation of N paths starting from a random point in the
+    interval \(\sqb{-1,1}\), and controlled with a LQR controller.}
+\end{figure}
+
+In this thesis a \textit{Funnel} will refer to the \textit{outer approximation of
+forwards reachable sets} parameterized by a \textit{Lyapunov function}.
+
+
+\section{Funnels}
 
 TODO - Create a timeline of these papers.
 
@@ -452,7 +830,7 @@ as approximations of the region of attraction for a nonlinear system.
   Given a system \(\dot{x} = f(x)\) with \(f\) continuous, if we can find a
   scalar function \(V(x) \succeq 0 \) and a sub-level set
   \[
-    \mathcal{G} \colon set{x \mid V(x) < \rho}
+    \mathcal{G} \colon \set{x \mid V(x) < \rho}
   \]
   on which
   \[
@@ -640,191 +1018,3 @@ function is not necessarily invariant. (Give example.).
 
 The \funnel\'s generated in this thesis will be motion primitives for the
 \rrtfunnel\ algorithm this thesis develops.
-
-
-\section{Transformation of funnels}
-
-\subsection{Cyclic coordinates?}
-
-How de we transform the funnels to different angles and coordinates.
-
-\subsection{Non-cyclic coordinates}
-
-\subsection{Adding uncertainty to the funnels}
-
-The funnels can take uncertainty into account. Adding this in accordance with
-the paper by \cite{majumedar2013}. For now adding this for dimension (?).
-
-\subsection{Scaling the funnels by the size of the vehicle simulated}
-
-The model used in this thesis is a point model. As so, it is not ready for use
-in simulations as is, whereas the vehicle used in the model has some given
-length and width. Therefore the Funnel needs to be scaled to handle the given
-size of the vehicle. TODO - how to do this proper? Check out the FunnelLibrary.m
-file for an example on how to do this proper.
-
-\subsection{Testing the funnels}
-
-After we have generated our Funnels, it is time to test them through a
-simulation. We start out by first simulating the Funnels with the uncertain
-plant dynamics, and checks if the model ever leaves the verified parametrized
-set. From this we get:
-
-\begin{figure}
-  \includegraphics[scale=0.5]{figures/funnel/straight_simulation}
-  \caption{Three simulations of the straight funnel with different initial
-    conditions, where all three funnels stayed inside the funnel. However, they
-    do seem to not converge towards the original trajectory.}
-\end{figure}
-
-
-\begin{figure}
-  \includegraphics[scale=0.5]{figures/funnel/left_simulation}
-  \caption{Three simulations of the left funnel with different initial
-    conditions, where two out of three funnels left the inside of the funnel.
-    Right now I can only speculate as to why this is happening.}
-\end{figure}
-
-
-\begin{figure}
-  \includegraphics[scale=0.5]{figures/funnel/right_simulation}
-  \caption{Three simulations of the right funnel with different initial
-    conditions, where two out of three funnels left the inside of the funnel.
-    Right now I can only speculate as to why this is happening.}
-\end{figure}
-
-For the model with uncertainty added to the speed of the vehicle, we get:
-
-\subsection{Only minimizing the volume of the funnel projected down into the
-  xy-plane}
-
-There is no need in minimizing the value of \(\dot{\theta}\), so in order to
-minimize what we care about, i.e. the actual size of the funnel where the
-physical vehicle can move, we modify our costfunction according to
-\cite{majumdarFunnelLibrariesRealtime2017}. Thus, given a projection map \(\pi :
-\R^n \rightarrow \R^{n_p}\). Given the ellipsoid \(\epsilon = \set{\bar{x} \in
-  \R^n | \bar{x}^TS_{k}\bar{x} \leq 1}\) with
-\[
-  S_k^{(p)} = \p{PS_k^{-1}P^T}^{-1}
-\]
-Given that minimizing the volume of the ellipsoid \(\epsilon\) using an SDP
-relies on maximizing the determinant of \(S_k\). Since \(det(S_k)\) is a
-nonlinear function of \(S_k\), the function has to be linearized in order for it
-to be handled by our solution framework (SOS-programming).
-\cite{majumdarFunnelLibrariesRealtime2017} solves this by linearizing
-\(det(S_k)\) at the solution of \(S_k\) from the previous iteration, and
-maximizes this linearization instead. In the end this translates to
-\[
-  lin\p{det\p{S_k}} =
-  Tr\p{P^T\p{PS_{k,0}^{-1}P^T}^{-1}PS_{k,0}^{-1}S_kS_{k,0}^{-1}}
-\]
-where \(S_{k,0}\) is the nominal value.
-
-\subsection{Checking composability of Funnels}
-
-In order for two \funnel's to be composable, the outlet of one \funnel\ needs to
-be completely contained within the inlet of the other. This means that if
-\(\mathcal{F}_1 = F_1(T)\) is the outlet of \funnel\ \(F_1\), and
-\(\mathcal{F}_2 = F_2(0)\) is the inlet of \(F_2\), then
-\[
-  \mathcal{F}_1 \subseteq \mathcal{F}_2
-\]
-\label{composability}
-in order for the funnels to be composable. In this thesis this composition
-checking is done off-line and prior to the algorithms run. First however, how to
-verify that the outlet of one \funnel\ is fully contained within the inlet of
-the other.
-
-In \cite[Majumdar and Tedrake, p.~47]{majumdarFunnelLibrariesRealtime2017}, two
-funnels are sequentially composable if
-\begin{definition}
-  An ordered pair \((F1, F2)\) of funnels \(F_1 \colon [0,T_1] \rightarrow
-  \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
-  is sequentially composable if \(F_1(T) \subseteq F_2(0)\).
-\end{definition}
-
-TODO - make pretty funnel picture!
-
-Thus
-\[
-  V_1(T_1,\bar{x}) \leq \rho_1(T_1) \implies V_2(0,\bar{x}) \leq \rho_2(0)
-\]
-is an equivalent condition to \ref{composability}, and which can be checked
-through the following \ac{SOS} program.
-\begin{align*}
-  \text{Find } \; &L(\bar{x}) \\
-  \text{s.t} \; &\rho_2(0) - V_2(0,\bar{x}) - L(\bar{x})
-                  \left( \rho_1(T_1) - V_1(T_1,\bar{x}) \right)
-\end{align*}
-\cite[Majumdar and Tedrake, p.~54]{majumdarFunnelLibrariesRealtime2017}
-
-However in \cite[Majumdar and Tedrake]{majumdarFunnelLibrariesRealtime2017}, the
-program is simply stated, and it can be helpful to take a look at the derivation
-in order to further envelop ourself in the implementation of a \ac{SOS} program.
-
-The \textit{S-procedure} enables us to limit our search to a semialgebraic set.
-In this case, that set is \(\mathcal{F}_2 = \set{x \in \R^n \mid V_2(0,\bar{x})
-  \leq \rho_2(0)}\), any \(x\) that is not in this set does not concern us,
-which is why employing the \textit{S-procedure} is valid. In more general terms
-this can be written
-\[
-  x \in \mathcal{F}_2 \implies p(x) \geq 0
-\]
-where \(p(x)\) is the \ac{SOS} polynomial that is to be verified. In this case
-\(p(x)\) is \(V_2(0,\bar{x})\). Thus in order to impose the implication define
-\[
-  q(x) = V_2(0,\bar{x}) - \rho_2(0) - L(\bar{x}) \left( \rho_1(T_1) -
-    V_1(T_1,\bar{x}) \right)
-\]
-where \(q(x)\) and \(L(\bar{x})\) needs to be SOS polynomials.
-
-\subsubsection{Example - embedding a square within a circle}
-
-As a simple example let's have a look at embedding a square within a circle. For
-good measure let's give the circle a radius of \(\sqrt{2}+\epsilon\), and the square a
-radius of \(1\), and center them both at the origin in the Euclidean plane.
-
-Starting with defining the set \(\beta\)
-\[
-  \beta = \set{x \in R^2 \mid \norm{x} \leq 2}
-\]
-using the manhattan metric. then the implication
-\[
-  x \in \beta \implies p(x) \geq 0
-\]
-which can be formulated as
-\begin{align*}
-  \beta &= \set{x \in \R^2 \mid (1 - x \wedge x + 1) \geq 0} \\
-  p(x) &= r^2 - x^2 - y^2
-\end{align*}
-where \(p(x)\) is the parametrization of the circle, and \(\beta\) is the
-parametrization of the square with sides of length two. What needs to be shown is that \(p(x)\) is
-positive on the set \(\beta\). Through the \textit{S-procedure} this can be
-written as the search for a nonnegative polynomial \(L_{ineq,i}(x)\) such that
-\(p(x) \geq \left( sg \right)(x)\). Thus
-\[
-  q(x) = p(x) - \sum_{i=1}^{2}L_{ineq,i}(x)g_{ineq,i}(x)
-\]
-is required to be a \ac{SOS} polynomial, along with \(L_{ineq,i}\). From this it
-is seen that when a point satisfies \(g_{ineq,i}\) (\ie when \(x \in \beta\))
-the term \(\sum_{i=1}^{2}L_{ineq,i}(x)g_{ineq,i}(x)\) is negative, and hence
-\(p(x)\) must be nonnegative, which gives the desired implication.
-
-Solving this problem can be done using any of a number of \ac{SOS} modelling
-software. This example will rely on \cite[Yalmip]{Lofberg2004} and its \ac{SOS}
-programming functionality \cite{Lofberg2009} for \matlab.
-
-
-\lstinputlisting{figures/funnel/embededsquare.m}
-
-Which returns ``Composition succesful!'' for circles with radii larger than
-\(sqrt{2}\) as expected. (Note, this can also be optmized for searching for the
-smallest circle which encompasses the square - TODO - do this later.)
-
-\subsection{Region of attraction along a trajectory}
-
-In order to verify regions of attraction along a trajectory, as opposed to
-around a single point, some minor modifications to the problem definition has to
-be made \cite[see Tedrake et al]{tedrakesomeyear}.
-
-\subsection{Shifting funnels around in the world frame}
