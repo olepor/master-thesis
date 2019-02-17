@@ -12,128 +12,118 @@ the trajectory generator in the system. Generally, planners can be separated
 into complete and non-complete planners, meaning that given enough time, all
 motion planning problems are solvable, only the solution is NP-Hard. Thus
 feasible solutions will have to make a compromise, and a lot of planners in use
-today are what is called probabilistically complete, meaning that they converge
-to a perfect solution given infinite time. As such time-frames are of no use to us, we
+today are probabilistically complete, meaning that they converge to a perfect
+solution given infinite time. As such time-frames are of no use to us, we
 generally have to settle for an approximation bound. There is a difference
-between online and off-line motion planning, whereas the offline algorithm plans
-in a static environment, the online algorithm is run continuously. However an
-online algorithm can be simulated by running an offline algorithm repeatedly for
-short intervals of time. However, this comes with the drawback, that no
-guarantee can be made for completing a certain task.
+between on-line and off-line motion planning, whereas the offline algorithm
+plans in a static environment, the online algorithm is run continuously. However
+an on-line algorithm can be simulated by running an offline algorithm repeatedly
+for short intervals of time. However, this comes with the drawback, that no
+guarantee can be made for completing the task at hand.
 
 \subsection{Building Blocks}
 
 \subsection{The Robot and World Model}
 
-The modeled world \(\modelworld\), and everything in it can be modeled
-geometrically using any number of methods - most usually polygons or some other
-convex geometric structure. Thus the robot can also be modeled as a collection
-of geometric structures \(\modelrobot\). Thus in order to move the robot in the
-world space, rigid body transformations are applied. Given the robot as a subset
-of the world space, the image of a robot transformation is then given as:
-% \[
-%   h(\modelrobot) = \set{h(a) \in \modelworld \mid a \in \modelrobot} \\
-%   h \colon \modelrobot \rightarrow \modelworld \\
-%   \modelrobot \and h(\modelrobot) \subset \modelworld \\
-% \]
+In order to reason about a motion planning problem, a certain reference
+framework needs to be built. A mathematical model of the world, and the robot is
+necessary for clearly and precisely reasoning about the problem at hand.
+Therefore, in this thesis the world space (\modelworld) will be defined as
+\[
+  \modelworld = \R^2
+\]
+and obstacles are simply subsets of \modelworld. Likewise, the robot is also a
+subset of the world space
+\[
+  \modelrobot,\, \modelobstacle \subset \modelworld
+\]
 
-The world as we model it contains two kinds of objects
+Next the robot needs to be able to move around in the world space. This is done
+through a rigid body transformation on the robot model
+\[
+  h : \modelrobot\ \rightarrow \modelworld
+\]
 
-\begin{itemize}
-\item \textbf{Robot:} Body that is modeled geometrically and is controllable via
-  a motion plan.
-\item \textbf{Obstacles:} Portions of the world that are occupied by something
-  other than the robot.
-\end{itemize}
-
-\subsection{Rigid Transformations}
-
-% \subsection{State Space}
-% \label{subsec:State}
-% Planning problems involve a state space. A state space is a set of all the
-% possible configurations a model can be in at any given time. The state space
-% can be either discrete or continuous, and can be represented either implicitly
-% or explicitly.
+However, the robot is more than a set of points in the world space. For example
+a simple model of a car needs to know its heading as well. This information will
+be referred to as the configuration space of the robot
+(\modelconfigurationspace). For a simple car model this can be encoded in a
+simple three dimensional vector holding the \(x\), \(y\), and \(\theta\)
+parameters, like so
+\[
+  \modelconfigurationspace \subset SE(3),
+\]
+which encompass all the states the robot can be in during, and \(SE(3)\) stands
+for \textit{Special euclidean three}, and is defined as \(SE(3) = \R^2 \times
+\mathsf{S}\).
 
 \subsubsection{Configuration Space}
+
 The configuration space is a general abstraction used as a model for a wide
 variety of motion planning problems. It is a manifold that arise from the
 transformations applied to the robot. If the robot has n-degrees of freedom, the
 set of transformations is usually a manifold of dimension n. This manifold is
 called the configuration space of the robot, and is shortened
-\(\modelconfigurationspace{}\). Thus in order to solve a motion planning
-problem, a search must be performed in the configuration space. Thus the motion
-planning problem is now made into a question of finding the best path to
-traverse the given manifold\cite{Lav06}. (characterize and describe the
-configuration space structure.) In our case the configuration space can be
-modeled as a topological space of the type \(SE(3)\), meaning special-Euclidean
-three.
+\modelconfigurationspace{}. Thus in order to solve a motion planning problem, a
+search must be performed in the configuration space. Thus the motion planning
+problem is now made into a question of finding the best path to traverse the
+given manifold\cite{Lav06}.
 
 Using generalized coordinates, the configuration of a robot can be modeled as a
 vector with n variables for the position in the configuration space, in
-literature this space is usually denoted by \(\modelconfigurationspace{}\). As
-is most common, the robot is modeled as a rigid body, in which two bodies cannot
+literature this space is usually denoted by \modelconfigurationspace{}. As is
+most common, the robot is modeled as a rigid body, in which two bodies cannot
 overlap, thus points in the configuration space is separated into two sets. One
 set for which the robot configuration overlaps with another object in the
-configuration space, and is called \(\modelconfigurationspaceobst{}\), and given
-that the world space is represented as \(\modelconfigurationspace{}\), the
-collision free space is the given as, \(\modelconfigurationspacefree =
+configuration space, and is called \modelconfigurationspaceobst{}, and given
+that the world space is represented as \modelconfigurationspace{}, the collision
+free space is the given as, \(\modelconfigurationspacefree =
 \modelconfigurationspace \setminus \modelconfigurationspaceobst\). The obstacle
 space can be represented in a number of ways, but we will stick to polygonal
 models of the obstacle space.
 
 \subsection{Action Space}
-The action space is the set of actions that can be applied at any given state
-the robot is located in. Thus one can model the action space as a function of
-the robot's state.\ e.g.
+
+Now that the configuration space, and how the robot model can move in the world
+space is defined, the next concern is to control the movement of the robot
+model, and this is where the \textit{action space} comes in. The action space is
+the set of actions that can be applied at any given state the robot is in. Thus
+one can model the action space as a function of the robot's state.\ e.g.
 \[
   \modelactionspace(x) = \set{u \in \modelactionspace \mid \modelactionspace(x)
     \neq \emptyset }
 \]
 
 \subsection{Initial and Goal States}
-It is normal to define an initial state and a goal state as a starting and an
-ending point of a planning problem. Where both the initial, and goal states can
-be sets of states, meaning that it is not necessary to arrive specifically at
-the target point. A starting point consisting of multiple configuration states
-usually infers some kind of uncertainty in the robot model. The end goal can be
-reached in one of two ways, wherein the two types characterize two different
-forms of planning.
-\begin{enumerate}
-\item\textbf{Feasible:} Feasible planning has no concerns with optimality, and
-  only concerns itself with finding a plan that arrives at the goal state.
-\item\textbf{Optimal:} Optimal planning optimizes a feasible plan in some
-  specified manner, with respect to some specified cost function.
-\end{enumerate}
 
-\subsection{A Plan}
-If we are dealing with a fully deterministic model, a plan can simply be the set
-of actions applied at each state in order to reach a goal state specified for
-the problem at hand. However, if some measure of uncertainty is added to the
-model, then literature describes this as planning in the \textit{information
-  space}, and future states cannot be predicted exactly, thus some kind of
-feedback model is used in order to plan in an uncertain environment. If we are
-merely looking at solving the problem, a feasible plan is good enough, which
-means a solution has to be found, but multiple solutions do not have to be found
-and compared. However, if time, energy or some other parameters are to be
-optimized, then a cost function has to be added into the planning model, in
-order to evaluate which plan scores best when measured up against the others.
+A planning problem needs to have It is normal to define an initial state and a
+goal state as a starting and an ending point of a planning problem. Where both
+the initial, and goal states can be sets of states, meaning that it is not
+necessary to arrive specifically at the target point.
 
 \subsection{Model}
 
+A mathematical model of the planning problem ...
+
+The \rrtfunnel\ motion planning algorithm is discrete, therefore only the
+discrete motion planning formulation will be defined. Note however that there is
+a rich literature surrounding the continuous case also. In fact a lot of
+discrete motion planners have simply been adapted from a continous analog. Also
+even though the planner itself is discrete, the configuration space can be - and
+is in this thesis - continuous.
+
 \subsubsection{Discrete}
-let \(\mathcal{X}\) be the discrete state space, and \(\mathcal{U}(x)\) be the
+
+Let \(\mathcal{X}\) be the discrete state space, and \(\mathcal{U}(x)\) be the
 set of actions available at each point \(x \in \mathcal{X}\). State transition:\
 \[
   x_{k+1} = f(x_k, u_k)
 \]
 
-\subsubsection{Continuous}
-
 \subsubsection{Path and Trajectory}
 
-The motion plan takes the form of a path, or a trajectory. This is represented
-as a function \(\phi(\alpha) \colon [0,1] \rightarrow \mathcal{X}\), where
+A motion plan takes the form of a path, or a trajectory. This is represented as
+a function \(\phi(\alpha) \colon [0,1] \rightarrow \mathcal{X}\), where
 \(\mathcal{X}\) is the configuration space of the vehicle. If the
 control-execution time is considered, then the explicit model of vehicle
 kinematics and/or dynamics, as well as the dynamics of the possible obstacles.
@@ -143,51 +133,6 @@ horizon. Unlike the path, the trajectory describes how the configuration of the
 vehicle evolves over time.
 
 Initial and Goal States. A path is a function f \ldots
-
-\subsection{Time}
-
-Discrete vs Continuous
-
-\subsection{Actions}
-
-A plan is a sequence of actions that manipulate the state of the robot. A
-planning problem involves a sequence of decisions made over time. car-like model
-can look something like:
-
-\section{Algorithms}
-In general there are algorithms for which every motion planning problem can be
-solved explicitly, only their running time is on the order of \(O(n!)\) (TODO - cite!), and
-thus not feasible in practical applications. In the practical case it is
-therefore normal to employ methods of approximation.
-
-\subsection{Grid-based Search}
-
-\subsection{Interval-based Search}
-
-\subsection{Geometric Algorithms}
-
-\subsection{Artificial Potential Fields}
-
-\subsection{Sampling-based}
-
-\section{Piano Movers Problem}
-
-\section{Discrete vs Continuous}
-
-\section{Sampling}
-
-\section{State Space}
-
-\section{Complexity}
-
-\section{Criterion}
-
-\subsection{Feasibility}
-\subsection{Optimality}
-
-\section{Completeness}
-
-\section{Probabilistic Completeness}
 
 \section{Planning Under Uncertainty (Decision Theoretic Planning)}
 
@@ -200,20 +145,20 @@ are uncertainty in:
 \item the environment
 \end{enumerate}
 Thus the exact system state is never exactly known. Therefore planning under
-uncertainty is done in a belief space. Which is a description of the state space
-using probability distributions. (Partial observability?) Planning is done in
-the information space, as opposed to the state-space. Uncertainties in
-prediction and the current state exist. Forward and backward projections.
-
-(probability constraint violation)
-
-\subsection{A Game Against Nature}
-
-Theta is nature's actions. U is the robot's action.
+uncertainty is done in a belief space, which is a description of the state space
+using probability distributions. Planning is done in the information space, as
+opposed to the state-space. Uncertainties in prediction and the current state
+exist. The information space is a general structure for working with plans under
+conditions of uncertainty. Thus planning can be done mostly as it is done in a
+state space, albeit in a higher dimension. Thus the state transition function
+can be written as
+\[
+  \phi_{k+1} = f_{\mathcal{I}}\left( \phi_k, \mu_k, y_{k+1} \right)
+\]
 
 \subsection{A Model of Uncertainty}
 
-If the discrete state space model is expanded to include \(\ Theta\) as the
+If the discrete state space model is expanded to include \(\theta\) as the
 space of nature actions, and \(\ theta_k\) is the action selected by nature at
 step k, then a transition is modeled as
 \[
@@ -226,98 +171,42 @@ is not given, thus we have
     \text{such that } x_{k+1} = f(x_k,u_k,\theta_k)}
 \]\cite{Lav06}.
 
-\subsection{Discrete Planning with Nature}
-a model of discrete planning with nature:~\cite[pg,496]{Lav06}
-
-A Markov decision process is defined in~\cite[pg.498]{Lav06} as:
-\begin{enumerate}
-\item A non empty \textit{state space} \(X\) which is a finite or countably
-  finite set of \textit{states}.
-\item For each state, \(x \in X\), a finite non-empty \textit{action space}
-  \(U(x)\). It is assumed that \(U\) contains a special \textit{termination
-    action}, which has the same effect as (cite the deterministic discrete
-  planning model).
-\item A finite non-empty \textit{nature action space} \(\Theta(x,u)\) for each
-  \(x \in X\) and \(u \in U\).
-\item A state transition function \(f\) that produces a state,
-  \(f(x,u,\theta)\), for every \(x \in X\), \(u \in U\), and \(\theta \in
-  \Theta\).
-\item A set of \textit{stages}, each denoted by k, that begins at k=1 and
-  continues indefinitely. Alternatively, there may be a fixed maximum stage \(k
-  = K+1=F\).
-\item An \textit{initial state} \(x \in X\). For some problems, this may not be
-  specified, in which case a solution plan must be found from all initial
-  states.
-
-\item A \textit{goal set} \(X_G \subset X\).
-\item A stage-additive cost functional L. Let \(\sim{\theta}_K\) denote the
-  history of nature actions up to stage K. The cost functional may be applied to
-  any combination of state, action, and nature histories to yield
-  \[
-    L(\sim{x}_F, \sim{u}_K, \sim{\theta}_K) = \sum_{k=1}^{K} l(x_k,u_k,\theta_k)
-    + l_F(x_F)
-  \]
-  in which \(F = K + 1\). The termination action \(u_T\) is applied at some
-  stage k, then for all \(i \geq k\), \(u_i = u_T\), \(x_i = x_k\), and
-  \(l(x_i,u_T, \theta_i) = 0\).
-\end{enumerate}~\cite[pg 498]{Lav06}
-
-using this formulation either a feasible or optimal planning problem can be
-formulated.
-
-\subsection{Forward and Back-Projections (under uncertainty)}
-
-\subsection{Separating a plan from its execution}
-
-\subsection{Feedback}
-
-\subsection{Information Space}
-A stochastic environment. The information space is a general structure for
-working with plans under conditions of uncertainty. Thus planning can be done
-mostly as it is done in a state space, albeit in a higher dimension. Thus the
-state transition function can be written as
-\[
-  \phi_{k+1} = f_{\mathcal{I}}\left( \phi_k, \mu_k, y_{k+1} \right)
-\]
-
-\subsection{Nondeterministic and Probabilistic Information Spaces}
-
 \subsection{A Plan under Uncertainty}
 Since it Expected-case analysis. Worst-case analysis.
 
-Uncertainty comes from three sources in our model:
-\begin{enumerate}
-\item The Model (motion).
-\item The observation (sensor).
-\item The environment (map). Grid-based problems: Navigation: A goal position is
-  to be reached, even though the map is unknown. The robot is allowed to solve
-  the problem without fully exploring the environment. Only a part of the
-  environment is needed to solve the problem. Searching: A goal state can only
-  be identified when it is reached by a short-range sensor. The environment is
-  systematically searched, but the search may terminate early if the goal is
-  found.
+\subsection{Trajectory planning}
 
-  Problem-definition: Part of the problem is map-building, as the map is not
-  provided exactly, and sensory map-information has to be used in order to
-  successfully solve a given planning problem.
-\end{enumerate}
+The \rrtfunnel\ algorithm relies on validating robust trajectories as motion
+primitives for the planner. However, solving for a valid initial trajectory is a
+hard control problem in itself. Thus in order to surmount this obstacle
 
-\subsection{Visibility Polygon}
-Let \(V(x)\) be the visibility polygon -- that is the set of all points that are
-visible from \(x\).
+\subsection{Reachable sets}
 
-I-states enables us to solve problems without having a complete representation
-of the environment! (LAV06) chp12.2
+Of particular interest to the \rrtfunnel\ algorithm is the reachable set. A
+reachable set is all the configurations that the robot can be in if started from
+a particular point in the world space. Had there been no constraints on the
+movement of the robot the reachable set would simply be the entire configuration
+space. However, the simple car model has both \textit{kinodynamic} and
+\textit{non-holonomic} constraints. This leads to the car not necessarily being
+able to reach all the states in the state-space from a given starting position.
+At least not given a time frame. This idea is important as it leads to the
+funnel definitions that makes up the backbone of this thesis. As an example, the
+reachable set for the \textit{Dubins car} will look like this
 
+\begin{centering}
+  \input{figures/preliminaries/dubinsreachability.tex}
+\end{centering}
 
+\subsection{Motion primitives}
 
-\subsubsection{Decision Makers}
-
-\subsection{Rewards?}
-
-\section{Data Collection and Sensors}
-
-
+A motion primitive is a constant action applied over fixed time intervals. It is
+one or more actions collected into one distinct action, usually with a goal. As
+an example, the action the \textit{Dubin's car} employs is steering the angle of
+the wheels. Setting the angle to a constant over a time interval can be a motion
+primitive, however, it is more easily thought of as a collection of actions over
+time, which embodies one bigger, more abstract action. For the car this could be
+\textit{go straight}, \textit{turn left}, etc. In this way, a collection of
+actions can be thought of as one simple action.
 
 \section{Optimality}
 
@@ -356,7 +245,8 @@ system. This means that a \textit{Funnel} holds all the states the dynamical
 system can be in during a planning task. Mathematically we can define the
 reachable set of the system as
 \[
-  \bar{x}(0) \in \mathcal{X}_0 \Rightarrow \bar{x}(t) \in F(t), \forall t \in \sqb{0,T}
+  \bar{x}(0) \in \mathcal{X}_0 \Rightarrow \bar{x}(t) \in F(t), \forall t \in
+  \sqb{0,T}
 \]
 where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
 interval, and \(F(t)\) is the set of states that the system can be in at time
@@ -372,8 +262,8 @@ simple car model, this could look similar to:
     interval \(\sqb{-1,1}\), and controlled with a LQR controller.}
 \end{figure}
 
-In this thesis a \textit{Funnel} will refer to the \textit{outer approximation of
-forwards reachable sets} parameterized by a \textit{Lyapunov function}.
+In this thesis a \textit{Funnel} will refer to the \textit{outer approximation
+  of forwards reachable sets} parameterized by a \textit{Lyapunov function}.
 
 
 \section{Funnels}
@@ -401,7 +291,7 @@ the set of all the paths traversed by the dynamical system at hand. For a simple
 car model, this could look similar to:
 
 \begin{figure}
-  \includegraphics[scale=.5]{figures/funnels/montecarlofunnel}
+  \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
   \caption{The simulation of N paths starting from a random point in the
     interval \(\sqb{-1,1}\), and controlled with a LQR controller.}
 \end{figure}
@@ -553,7 +443,7 @@ A convex cone is a subset of a vector space over an ordered field that is closed
 under linear combinations with positive coefficients.
 
 \begin{figure}
-  \includegraphics[scale=.5]{figures/funnel/Convex_cone_illust}
+  \includegraphics[scale=.5]{figures/preliminaries/Convex_cone_illust}
   \caption{A convex cone (light blue). Inside of it, the light red convex cone
     consists of all points \(\alpha x + \beta y \) with \(\alpha,\, \beta > 0\),
     for the depicted \(x\) and \(y\). The curves on the upper right symbolize
@@ -607,7 +497,7 @@ combination.
 
 \begin{figure}
   % \includegraphics{figures/funnel/linearuncertainlyapunov}
-  \input{figures/funnel/linearuncertainlyapunov}
+  \input{figures/preliminaries/linearuncertainlyapunov}
   \caption{Illustration of the search space. Adapted from
     \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}}
 \end{figure}
@@ -856,7 +746,7 @@ as approximations of the region of attraction for a nonlinear system.
 Given the system \(\dot{x} = -x + x^3\)
 % TODO - maybe this should not float? Research alternatives!
 \begin{figure}
-  \input{figures/funnel/regionofattractiononedimension.tex}
+  \input{figures/preliminaries/regionofattractiononedimension.tex}
   \caption{The dynamical system \(\dot{x} = -x + x^3\)}
 \end{figure}
 which has three fixed points. Two unstable at \(x = \pm 1\), and one stable
@@ -875,7 +765,8 @@ the linear Lyapunov equation \ref{eqn:linearlyapunov}. Thus
 \]
 and
 \[
-  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + x^3) = -x^2 + x^4.
+  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + x^3) = -x^2 +
+  x^4.
 \]
 which fullfills all the Lyapunov function criteria, with \(\dot{V}(0) = 0\),
 negative for \(\abs{x}<1\) and positive for \(\abs{x} > 1\). Thus the sub-level
@@ -890,34 +781,37 @@ verification of regions of attraction in the presence of uncertainty.
 
 The general idea is based aroung \textit{common Lyapunov functions}, which, in
 contrary to regular Lyapunov analysis searches for a function which is negative
-for \textit{all values of \(w\)}, as opposed to only all values of \(x\).
-TODO - prettyfix this
+for \textit{all values of \(w\)}, as opposed to only all values of \(x\). TODO -
+prettyfix this
 
 \begin{definition}[Common Lyapunov Function]
-TODO -
+  TODO -
 \end{definition}
 
 \begin{example}[One-dimensional system with gain uncertainty]
   Given the same nonlinear dynamic system as in \ref{subsec:Estimating the
     region of attraction for a one-dimensional system}, but with a
-  \textit{bounded uncertainty term} \(w\), with 
+  \textit{bounded uncertainty term} \(w\), with
   \[
     \dot{x} = -x + wx^3, \; w_{min} \leq w \leq w_{max}
   \]
-  is 
+  is
 
-  \begin{figure}
-    \input{figures/funnel/regionofattractiononedimensionuncertaingain}
-    \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
-      where \(w\) is a bounded uncertainty parameter.}
-  \end{figure}
+  % \begin{figure}
+  \begin{centering}
+    \input{figures/preliminaries/regionofattractiononedimensionuncertaingain}
+  \end{centering}
+  % \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
+  % where \(w\) is a bounded uncertainty parameter.}
+  % \end{figure}
 \end{example}
 
 here the origin is still stable, but the \textit{robust region of attraction} is
 smaller than it was without any uncertainty. By using the same Lyapunov
 candidate as above, \(V(x) = \frac{1}{2}x^2\),
 \[
-  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + wx^3) = -x^2 + wx^4.
+  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + wx^3) = -x^2 +
+  wx^4.
 \]
 Which, when analyzed yields
 \begin{align*}
@@ -949,13 +843,15 @@ A good example of how the fixed point is not necessary at the origin is the
   is not at the origin for all values of \(w\), it moves depending on the value.
   However, utilizing an invariant set argument to guarantee that the the
   uncertain dynamical system will stay near the origin if it starts near the
-  origin. 
+  origin.
 
-\begin{figure}
-    \input{figures/funnel/regionofattractiononedimensionuncertaingain}
-    \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
-      where \(w\) is a bounded uncertainty parameter.}
-\end{figure}
+  % \begin{figure}
+  \begin{centering}
+    \input{figures/preliminaries/regionofattractiononedimensionuncertaingainadditive}
+  \end{centering}
+  % \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
+  % where \(w\) is a bounded uncertainty parameter.}
+  % \end{figure}
 \end{example}
 
 Once again, applying the same Lyapunov function \(V(x) = \frac{1}{2}x^2\),
@@ -966,9 +862,9 @@ Once again, applying the same Lyapunov function \(V(x) = \frac{1}{2}x^2\),
 However, the invariant set argument here is a little different, as every
 sub-level set of the Lyapunov function is invariant. For instance \(V \leq
 \frac{1}{3}\) is a \textit{robust invariant set}, because if \(V =
-\frac{1}{3}\), 
+\frac{1}{3}\),
 \[
- \forall w \in \left[ w_{min}, w_{max} \right], \; \dot{V}(x,w) < 0.
+  \forall w \in \left[ w_{min}, w_{max} \right], \; \dot{V}(x,w) < 0.
 \]
 Thus, \(V(x)\) can never start out at less than \(\frac{1}{3}\), and obtain
 values greater than \(\frac{1}{3}\).
@@ -980,31 +876,33 @@ values greater than \(\frac{1}{3}\).
 However, note that \(V = \frac{1}{32}\) yields
 \[
   V = \frac{1}{32} \implies x = \pm \frac{1}{4} \implies \dot{V} = -\frac{1}{4}
-  + \frac{1}{16} \pm w\frac{1}{4}, \; \not \forall w \in \left[ -\frac{1}{4}, \frac{1}{4} \right].
+  + \frac{1}{16} \pm w\frac{1}{4}, \; \not \forall w \in \left[ -\frac{1}{4},
+    \frac{1}{4} \right].
 \]
 Which shows that not all sub-level sets of an invariant set is invariant in the
-case of additive uncertainty, so the conclusion is that it is not robustly invariant.
+case of additive uncertainty, so the conclusion is that it is not robustly
+invariant.
 
-Through the \ac{SOS} procedure and the Lyapunov function theory
-outlined, a \ac{SOS} program for verifying the dynamical system utilized in the
-examples looks like
+Through the \ac{SOS} procedure and the Lyapunov function theory outlined, a
+\ac{SOS} program for verifying the dynamical system utilized in the examples
+looks like
 \begin{example}{Region of attraction for the one-dimensional cubic system}
   \[
     \dot{x} = -x + x^3
-  \] 
-Using the Lyapunov function candidate \(V = x^2\), and the multiplier polynomial
-\(L(x) = \alpha_0 + \alpha_1x + \alpha_2x^2 + \alpha_3x^3 + \alpha_4x^4\), the
-\ac{SOS} optmization problem can be defined as
+  \]
+  Using the Lyapunov function candidate \(V = x^2\), and the multiplier
+  polynomial \(L(x) = \alpha_0 + \alpha_1x + \alpha_2x^2 + \alpha_3x^3 +
+  \alpha_4x^4\), the \ac{SOS} optmization problem can be defined as
 
 \begin{align*}
   \text{find } \alpha& \\
   \text{subject to }& -\dot{V}(x) - L(x)\left[ 1 - V(x) \right] \; &\text{is SOS} \\
-  & &L(x) \text{ is SOS}.
+                     & &L(x) \text{ is SOS}.
 \end{align*}
 
 Which written in \cite[Yalmip]{Lofberg2004,Lofberg2009} yields
 
-\lstinputlisting[language=matlab]{figures/funnel/cubicregionofattraction.m}
+\lstinputlisting[language=matlab]{figures/preliminaries/cubicregionofattraction.m}
 TODO - fix this program.
 \end{example}
 

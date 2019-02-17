@@ -17,4 +17,4 @@
 *** Thursday: Thesis writing & If done with Integration into FunnelGraph code -> Create a richer funnel library.
 *** Friday: Thesis writing & If done with richer funnel library -> Start the algorithm comparisons.
 ** Write the Poisson forest generation section in the thesis.
-** 
+** Cleanup the figure directories (Figure out which one is in use in which chapter or not).

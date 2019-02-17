@@ -273,16 +273,21 @@
 \newcommand{\matlab}{\textsc{Matlab}\xspace}
 
 %% Thesis specific commands
-\newcommand{\modelworld}{\mathcal{W}}
-\newcommand{\modelrobot}{\mathcal{A}}
+% \newcommand{\modelworld}{\ifmmode
+%   \mathcal{W}
+%   else
+%   \(\mathcal{W}\)
+%   \fi}
+
+\newcommand{\modelworld}{\ensuremath{\mathcal{W}}}
+\newcommand{\modelrobot}{\ensuremath{\mathcal{A}}}
+\newcommand{\modelobstacle}{\ensuremath{\mathcal{O}}}
 \newcommand{\modelactionspace}{U}
-\newcommand{\modelconfigurationspace}{\mathcal{C}}
-\newcommand{\modelconfigurationspacesub}[1]{\mathcal{C}_{#1}}
+\newcommand{\modelconfigurationspace}{\ensuremath{\mathcal{C}}}
+\newcommand{\modelconfigurationspacesub}[1]{\ensuremath{\mathcal{C}_{#1}}}
 \newcommand{\modelconfigurationspacefree}{\modelconfigurationspacesub{free}}
 \newcommand{\modelconfigurationspaceobst}{\modelconfigurationspacesub{obst}}
 \newcommand{\funnel}{\textit{Funnel}}
 \newcommand{\rrtfunnel}{\textit{RRTFunnel}}
-
-
 
 \endinput

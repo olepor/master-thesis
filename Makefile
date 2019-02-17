@@ -56,3 +56,8 @@ check:
 pg: pg.tex
 	@latexmk -pdf -silent $<
 	@open pg.pdf
+
+.Phony: taxonomy
+taxonomy: setup
+	@cd src && latexmk -output-directory="build" -pdf taxonomy.tex # $1 add the command-line argument passed in!
+	@open src/build/taxonomy.pdf
