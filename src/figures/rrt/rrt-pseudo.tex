@@ -1,0 +1,33 @@
+\documentclass{standalone}
+\usepackage[ruled]{algorithm2e}
+\usepackage{mathtools}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{algorithm}[H]
+  \caption{Simple RRT algorithm}
+
+  \DontPrintSemicolon
+
+  \KwIn{Initial configuration, \(q_0\)}
+  \KwOut{\textit{RRT}-graph \(\mathcal{G}\)}
+
+  \SetKwFunction{RandConf}{Sample\_Random\_Configuration}
+  \SetKwFunction{NearestVertex}{Find\_Nearest\_Vertex}
+  \SetKwFunction{NewConfig}{New\_Config}
+  \SetKwFunction{AddVertex}{add\_vertex}
+  \SetKwFunction{AddEdge}{add\_edge}
+
+  \(\mathcal{G}.init(q_0)\)
+  \For{\(i \leftarrow 1\) \KwTo \(k\)}{
+    \(q_{rand} \leftarrow \) \RandConf{} \;
+    \(q_{near} \leftarrow \) \NearestVertex{\(q_{rand}, \mathcal{G}\)}\;
+    \(q_{new} \leftarrow \) \NewConfig{\(q_{near}, q_{rand} \)}\;
+    \(\mathcal{G}\).\AddVertex{\(q_{new}\)}\;
+    \(\mathcal{G}\).\AddEdge{\(q_{near}, q_{new}\)} \;
+  }
+
+\end{algorithm}
+
+\end{document}
