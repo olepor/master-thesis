@@ -1,0 +1,104 @@
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [a4paper, oneside]
+#+OPTIONS: num:nil
+#+TITLE: Disposition
+
+* Overview
+  
+* Table of Contents
+  
+* Preface
+  
+* Introduction
+  Why were the investigations done? 
+  - The investigations were done to check the effect of taking uncertainty into
+    account in a motion planner.
+  What was the hypothesis?
+  - The hypothesis was that taking uncertainty into account should prove a
+    motion planner more robust than if uncertainty is not taken into account.
+** Normal introduction
+** State of the art on the front.
+  
+** Background/Preliminaries
+   General Motion Planning Overview:
+   - General motion planning theory related to my thesis (i.e., Discrete motion
+     planning and sampling - convex optimization and uncertainty).
+   Uncertainty, robustness, and how to generate robust motion primitives:
+   - Convex Optimization, SDP's and SOS-programming.
+     e.g. Parillo and general litearture on SDP's and SOS decompositions into
+     SDP's ( Which is how they are solved).
+   - Regions of Attraction and Reachable sets.
+     General information about regions of attraction and reachable sets, and how
+     they are related to this thesis.
+   - Region of Attraction for a dynamical system with a fixed point.
+     Linearly go through the papers that build up this theory (Mostly Tedrake and
+     Majumdar), and formulate the necessary preliminaries.
+   - Region of Attraction along a trajectory.
+     Go through the expansion from a fixed point region of attraction formulation
+     to a region of attraction formulation based around trajectiores. This is
+     done in Tedrake and Majumdar's paper from 2013.
+   The Motion Planner used for verification of the robust motion primitives.
+   - RRT's and the accompanying theory needed for understanding Random Dense Trees.
+    
+* Methods
+  When, how and why were the investigations done?
+  What material was investigated?
+
+  What is made, and why is it good?
+  Made a discrete motion planner using robust motion primitives. It is good
+  because it does take uncertainty into account, and should therefore be less
+  prone to collision.
+  - Description of the RRT-Funnel algorithm.
+  - The main structure is twofold
+    - Robust Funnels as motion primitives.
+      - Tests of whether paths that start out in a funnel, stay inside a funnel.
+    - RRT as the overarching motion planner, making use of these motion primitives.
+      - Funnels as a Graph
+        - Composition of Funnels (i.e., Are they composable?)
+    - Simulations and obstacles?
+  - 
+  
+** Experiments
+   - Describe the experiment environment. E.g. The Poisson process for generating
+     the experiment's forest.
+   - Start with a table/listing of which experiments have been done.
+   - Comparison of the RRT-Funnel algorithm with an RRT using motion primitives,
+     that are not funnels.
+   - Would be nice to run the experiments on different models, with different
+     complexity, as now that the framework is up and running, it should be
+     capable of any model basically. ie.
+     - Dubin's car (Current model).
+     - A simple quadcopter model. This will introduce a lot more parameters.
+   - Optionally running the same experiment model with more uncertainty variables
+     than is currently present.
+   - Measure the effect of more motion primitives?
+   - Run the simulations with more uncertainty than is taken into account in the
+     model? Maybe even some hidden uncertainty parameters (i.e., not modeled).
+  
+* Results
+  What were the results?
+  What answers did the investigations reveal?
+  What answers did we get to our hypothesis?
+  Was the point of the thesis fulfilled?
+  
+* Discussion
+  What does the answer mean, and how important is it?
+  Are the results in accordance with other findings on the area?
+  What does the result mean to future enquieries into the field?
+  
+* Future Work
+  - The Funnel motion primitives yet lack:
+    - Input saturation.
+    - Optimization of the input controller.
+  - Removing the reliability on a bounded input uncertainty.
+  
+* Conclusions
+  
+* Appendix
+  
+* References
+  
+* Questions
+  - Where to describe the detailed theory of Funnel generation. It is not my
+    work, but a pretty big part of the thesis still.
+  - 

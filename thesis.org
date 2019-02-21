@@ -12,9 +12,14 @@
 ** Create and model the vehichle in the thesis using Peter Corke's book, and unicycle model. ( Pretty figures needed ). see p 100.
 ** Fixup the preliminaries next week!
 *** Monday: Structure the rest of the week preliminaries write up, after work!
-*** Tuesday: Thesis writing & Start on the funnel composition code.
+*** FIXED Tuesday: Thesis writing & Start on the funnel composition code.
+    CLOSED: [2019-02-19 Tue 17:41]
 *** Wednesday: Thesis writing & If done with funnel composition -> Integrate into FunnelGraph code.
+**** Create more voronoi region diagrams after multiple expansions. Currently only done 25.
 *** Thursday: Thesis writing & If done with Integration into FunnelGraph code -> Create a richer funnel library.
 *** Friday: Thesis writing & If done with richer funnel library -> Start the algorithm comparisons.
 ** Write the Poisson forest generation section in the thesis.
 ** Cleanup the figure directories (Figure out which one is in use in which chapter or not).
+** Create a latexdiff function for supervisors.
+** Do fullpage while handing in to advisors.
+   

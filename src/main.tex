@@ -1,4 +1,4 @@
-\documentclass[a4paper, final]{memoir}
+\documentclass[a4paper, oneside, draft, showtrims]{memoir}
 \usepackage{style}      % Custom style
 \usepackage{kantlipsum} % Dummy text
 \usepackage[FYS,5,master]{mnfrontpage} % TODO - add the option print for a high
@@ -13,6 +13,7 @@
     sections/acknowledgements,
     sections/introduction,
     sections/Preliminaries,
+    sections/Method,
     sections/problem_description,
     sections/planner,
     sections/MotionPlanning,
@@ -37,6 +38,7 @@
     \include{sections/acknowledgements}
     \include{sections/problem_description}
     \include{sections/Preliminaries}
+    \include{sections/Method}
     \cleartorecto
     \tableofcontents    % Or \tableofcontents*
     \cleartorecto

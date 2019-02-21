@@ -1,5 +1,7 @@
 \chapter{Preliminaries}
 
+TODO - What are the different parts? 
+
 \section{Overview/Preliminaries}
 Motion planning is the task of manipulating a robot's configurations so that,
 given an initial and goal state or posture, the planner (black box), is able to
@@ -19,7 +21,7 @@ between on-line and off-line motion planning, whereas the offline algorithm
 plans in a static environment, the online algorithm is run continuously. However
 an on-line algorithm can be simulated by running an offline algorithm repeatedly
 for short intervals of time. However, this comes with the drawback, that no
-guarantee can be made for completing the task at hand.
+guarantee can be made for completing the task at hand. \cite{LaValle09}
 
 \subsection{Building Blocks}
 
@@ -51,13 +53,15 @@ be referred to as the configuration space of the robot
 simple three dimensional vector holding the \(x\), \(y\), and \(\theta\)
 parameters, like so
 \[
-  \modelconfigurationspace \subset SE(3),
+  \modelconfigurationspace \subset SO(2),
 \]
-which encompass all the states the robot can be in during, and \(SE(3)\) stands
-for \textit{Special euclidean three}, and is defined as \(SE(3) = \R^2 \times
+which encompass all the states the robot can be in during, and \(SE(2)\) stands
+for \textit{Special Euclidean two}, and is defined as \(SE(2) = \R^2 \times
 \mathsf{S}\).
 
 \subsubsection{Configuration Space}
+
+TODO - fix shite!
 
 The configuration space is a general abstraction used as a model for a wide
 variety of motion planning problems. It is a manifold that arise from the
@@ -79,8 +83,8 @@ configuration space, and is called \modelconfigurationspaceobst{}, and given
 that the world space is represented as \modelconfigurationspace{}, the collision
 free space is the given as, \(\modelconfigurationspacefree =
 \modelconfigurationspace \setminus \modelconfigurationspaceobst\). The obstacle
-space can be represented in a number of ways, but we will stick to polygonal
-models of the obstacle space.
+region of the world space can be represented in a number of ways, but we will
+stick to polygonal models of the obstacle space.
 
 \subsection{Action Space}
 
@@ -96,10 +100,11 @@ one can model the action space as a function of the robot's state.\ e.g.
 
 \subsection{Initial and Goal States}
 
-A planning problem needs to have It is normal to define an initial state and a
-goal state as a starting and an ending point of a planning problem. Where both
-the initial, and goal states can be sets of states, meaning that it is not
-necessary to arrive specifically at the target point.
+A planning problem needs to have an initial condition, and a goal. It is normal
+to define an initial state and a goal state as a starting and an ending point of
+a planning problem. Where both the initial, and goal states can be sets of
+states, meaning that it is not necessary to arrive specifically at the target
+point.
 
 \subsection{Model}
 
@@ -193,9 +198,11 @@ At least not given a time frame. This idea is important as it leads to the
 funnel definitions that makes up the backbone of this thesis. As an example, the
 reachable set for the \textit{Dubins car} will look like this
 
+\begin{figure}
 \begin{centering}
   \input{figures/preliminaries/dubinsreachability.tex}
 \end{centering}
+\end{figure}
 
 \subsection{Motion primitives}
 
@@ -265,6 +272,7 @@ In this thesis a \textit{Funnel} will refer to the \textit{outer approximation
 
 
 \section{Funnels}
+\label{sec:Funnels}
 
 TODO - Create a timeline of these papers.
 
@@ -399,7 +407,8 @@ up the space of all \textit{Lyapunov} functions).
   \[
     V(x) = x^TPx, \; P = P^T \succeq 0
   \]
-  which also satisfies
+  where \(\succeq\) means that the matrix is \ac{PSD}}.
+  This also satisfies
   \[
     \dot{V} = x^TPAx + x^TA^TPx \succeq 0.
   \]
@@ -742,7 +751,7 @@ as approximations of the region of attraction for a nonlinear system.
 \label{subsec:Estimating the region of attraction for a one-dimensional system}
 
 Given the system \(\dot{x} = -x + x^3\)
-% TODO - maybe this should not float? Research alternatives!
+
 \begin{figure}
   \input{figures/preliminaries/regionofattractiononedimension.tex}
   \caption{The dynamical system \(\dot{x} = -x + x^3\)}
@@ -795,13 +804,13 @@ prettyfix this
   \]
   is
 
-  % \begin{figure}
+  \begin{figure}
   \begin{centering}
     \input{figures/preliminaries/regionofattractiononedimensionuncertaingain}
   \end{centering}
-  % \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
-  % where \(w\) is a bounded uncertainty parameter.}
-  % \end{figure}
+  \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
+  where \(w\) is a bounded uncertainty parameter.}
+  \end{figure}
 \end{example}
 
 here the origin is still stable, but the \textit{robust region of attraction} is
@@ -843,13 +852,13 @@ A good example of how the fixed point is not necessary at the origin is the
   uncertain dynamical system will stay near the origin if it starts near the
   origin.
 
-  % \begin{figure}
+  \begin{figure}
   \begin{centering}
     \input{figures/preliminaries/regionofattractiononedimensionuncertaingainadditive}
   \end{centering}
-  % \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
-  % where \(w\) is a bounded uncertainty parameter.}
-  % \end{figure}
+  \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
+  where \(w\) is a bounded uncertainty parameter.}
+  \end{figure}
 \end{example}
 
 Once again, applying the same Lyapunov function \(V(x) = \frac{1}{2}x^2\),
@@ -900,8 +909,11 @@ looks like
 
 Which written in \cite[Yalmip]{Lofberg2004,Lofberg2009} yields
 
+\begin{figure}
+
 \lstinputlisting[language=matlab]{figures/preliminaries/cubicregionofattraction.m}
-TODO - fix this program.
+\caption{TODO - fix this program.}
+\end{figure}
 \end{example}
 
 \subsubsection{Robust set-invariance}

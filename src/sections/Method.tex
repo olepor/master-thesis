@@ -1,0 +1,115 @@
+\chapter{Method}
+
+This chapter will introduce and develop the \rrtfunnel\ algorithm, through two
+means: Developing robust motion primitives through the \ac{SOS} programming
+framework, based on the work in \cite{majumdarFunnelLibrariesRealtime2017}, and
+second deploy these funnels as motion primitives in a discrete \ac{RRT} planner,
+based on \cite{lavalleLav98cPdf}.
+
+\section{Defining funnels}
+
+The funnel computations will be based on the \ac{SOS} theory as developed in
+\ref{sec:Funnels}. Given a trajectory, the goal is to compute a robust invariant
+set around the trajectory that will 'guarantee' that the planner is free from
+collisions during execution of the obtained motion plan. This robustly invariant
+set is parameterized through Lyapunov function candidates, that, in this case,
+will be based upon the \ac{PSD} matrix that the time-invariant \ac{LQR}
+controller produces. The following presentations will be based on
+\cite{tobenkinInvariantFunnelsTrajectories2010,
+  tedrakeLQRtreesFeedbackMotion2009, majumdarRobustOnlineMotion2013} , but
+mainly follow the formulations, and syntax from
+\cite{majumdarFunnelLibrariesRealtime2017}.
+
+Thus, given the nonlinear dynamical system
+\begin{equation}
+  \label{eq:dynamicalsystem}
+  \dot{x} = f(x(t), u(t))
+\end{equation}
+with \(x(t)\) the state of the system at time \(t\) and \(u(t)\) the control
+input. Assume that a open loop nominal trajectory \(x_0 \colon [0,T] \rightarrow
+\R^n\) with control input \(u_0 \colon [0,T] \rightarrow \R^n\) is given, and
+define a change of coordinates into the error coordinate frame
+\[
+  \bar{x}(t) = (x - x_0)(t) \\
+  \bar{u}(t) = (u - u_0)(t).
+\]
+Then, changing \ref{eq:dynamicalsystem} to these new coordinates one obtaines
+\begin{equation}
+  \dot{\bar{x}} = \dot{x} - \dot{x}_0 = f(x_0(t) + \bar{x}(t), u_0(t) + \bar{u}(t)) - \dot{x}_0(t)
+\end{equation}
+
+In order to compute a parameterized reachable set through \ac{SOS} programming
+the system \ref{eq:dynamicalsystem} needs to be polynomial, and parameterized by
+\(x\) and \(t\), since the trajectory is parametrized by \(x\) and \(t\).
+Therefore, through the use of a \ac{TV-LQR} controller, the control input can be
+eliminated from the dynamical equation, giving
+\begin{equation}
+  \label{eq:dynamicclosedloop}
+  \dot{\bar{x}} = f_{cl}(t,\bar{x}(t)).
+\end{equation}
+However, the dynamical system may still not be polynomial, which is a necessary
+condition in order for this to be verified using \ac{SOS} programming. Expanding
+the system \ref{eq:dynamicclosedloop} around the nominal trajectory \(x_0\)
+through a Taylor expansion of some degree high enough to capture the
+nonlinearities of the system.
+
+The goal is to parametrize a tight outer approximation of the set of states the
+system may transition into during the time interval \([0,T]\). Given that
+\(F(t)\) is the set of states the system (\ref{eq:dynamicclosedloop}) can be in
+at time \(t\), then
+\begin{equation}
+  \label{eq:reachableset}
+  \bar{x}(0) \in \mathcal{X}_0 \implies \x(t) \in F(t), \, \forall t \in [0,T]
+\end{equation} \cite{majumdarFunnelLibrariesRealtime2017} 
+where \(\mathcal{X}_0\) is the initial condition set, and \(F(t) \subset \R^n\).
+
+A funnel is defined in \cite{majumdarFunnelLibrariesRealtime2017} as
+\begin{definition}
+  \label{def:funnel}
+  A funnel associatied with a closed-loop dynamical system \(\dot{\bar{x}} =
+  f_{cl}(t,x(t))\) is a map \(F \colon [0,T] \rightarrow \mathcal{P}(\R^n)\),
+  from the time interval \([0,T]\) to the power set (\ie the set of subsets) of
+  \(\R^n\) so that the sets \(F(t)\) satisfy the condition.
+  \ref{eq:reachableset}.
+\end{definition}
+Thus, \(F(t)\) is the set of reachable states that the system can be in at time
+\(t\).
+
+Next, the reachable set is paramterized through the use of Lyapunov functions,
+which yields
+\begin{equation}
+  F(t) = \set{\bar{x}(t) \mid V(t, \bar{x}(t) \leq \rho (t))}
+\end{equation}
+where \(\rho (t) \colon [0,T] \rightarrow \R^+\), is a function which limits the
+size of the reachable set, and \(V(t,\bar{x}(t))\) is a Lyapunov function \(V
+\colon [0,T] \times \R^n \rightarrow \R^+\).
+
+Then, by setting \(\mathcal{X}_0 \subset F(0,\bar{x})\), one can derive the
+sufficient condition for containing the reachable \ref{eq:reachableset} set in
+the Lyapunov function paramterization
+\begin{equation}
+  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x}) < \dot{rho}(t), \, \forall t \in [0,T]
+\end{equation}
+with \(\dot{V}(t,\bar{x})\) computed as
+\begin{equation}
+  \label{eq:funnelsufficient}
+  \dot{V}(t,\bar{x}) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x}) + \frac{\partial V(t,\bar{x})}{\partial t}
+\end{equation}
+
+Currently there are no limitations on the functions \(V\) and \(\rho\), and
+hence there exists infinitely many functions with different sized reachable sets
+that satisfies \ref{eq:funnelsifficient}, and is a valid funnel in the sense of
+definition \ref{def:funnel}. In order for efficient planning to take place, the
+motion primitives, meaning the size of the funnels, should be as small as
+possible, and it is therefore that the size of the funnels is minimized using
+the following optimization problem \cite{majumdarFunnelLibrariesRealtime2017}
+
+\begin{align}
+  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} vol(F(t)) dt  \\
+  &\text{subject to} && V(t,\bar{x}) = \rho (t) \implies \dot{V}(t,\bar{x}) < \rho (t), \, \forall t \in [0,T] \\
+  && &\mathcal{X}_0 \subset F(0,\bar{x})
+\end{align} 
+
+
+\section{Computing funnels}
+
