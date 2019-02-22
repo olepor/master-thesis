@@ -4,7 +4,7 @@
 \usepackage[FYS,5,master]{mnfrontpage} % TODO - add the option print for a high
                                 % resolution image before printing.
 \title{Motion Planning}
-\author {Ole Petter Orhagen}
+\author{Ole Petter Orhagen}
 \subtitle{The RRT-Funnel motion planning algorithm}
 \includeonly
 {
@@ -28,7 +28,7 @@
     sections/appendixB,
 }
 \begin{document}
-    \mnfrontpage
+    \mnfrontpage{}
     \frontmatter        % Folios in Roman numerals, unnumbered chapters.
     % \begin{titlingpage}
     %     \mnfrontpage
@@ -39,13 +39,13 @@
     \include{sections/problem_description}
     \include{sections/Preliminaries}
     \include{sections/Method}
-    \cleartorecto
+    \cleartorecto{}
     \tableofcontents    % Or \tableofcontents*
-    \cleartorecto
+    \cleartorecto{}
     \listoffigures      % Or \listoffigures*
-    \cleartorecto
+    \cleartorecto{}
     \listoftables       % Or \listoftables*
-    \mainmatter         % Folios in Arabic numerals, numbered chapters.
+    \mainmatter{}       % Folios in Arabic numerals, numbered chapters.
     \include{sections/introduction}
     \include{sections/MotionPlanning}
     \include{sections/survey}

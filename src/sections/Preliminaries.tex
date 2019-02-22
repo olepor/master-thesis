@@ -1,6 +1,6 @@
 \chapter{Preliminaries}
 
-TODO - What are the different parts? 
+TODO -- What are the different parts? 
 
 \section{Overview/Preliminaries}
 Motion planning is the task of manipulating a robot's configurations so that,
@@ -21,7 +21,7 @@ between on-line and off-line motion planning, whereas the offline algorithm
 plans in a static environment, the online algorithm is run continuously. However
 an on-line algorithm can be simulated by running an offline algorithm repeatedly
 for short intervals of time. However, this comes with the drawback, that no
-guarantee can be made for completing the task at hand. \cite{LaValle09}
+guarantee can be made for completing the task at hand \cite{LaValle09}.
 
 \subsection{Building Blocks}
 
@@ -61,7 +61,7 @@ for \textit{Special Euclidean two}, and is defined as \(SE(2) = \R^2 \times
 
 \subsubsection{Configuration Space}
 
-TODO - fix shite!
+TODO -- fix shite!
 
 The configuration space is a general abstraction used as a model for a wide
 variety of motion planning problems. It is a manifold that arise from the
@@ -108,14 +108,14 @@ point.
 
 \subsection{Model}
 
-A mathematical model of the planning problem ...
+A mathematical model of the planning problem.
 
 The \rrtfunnel\ motion planning algorithm is discrete, therefore only the
 discrete motion planning formulation will be defined. Note however that there is
 a rich literature surrounding the continuous case also. In fact a lot of
 discrete motion planners have simply been adapted from a continous analog. Also
-even though the planner itself is discrete, the configuration space can be - and
-is in this thesis - continuous.
+even though the planner itself is discrete, the configuration space can be -- and
+is in this thesis -- continuous.
 
 \subsubsection{Discrete}
 
@@ -274,11 +274,11 @@ In this thesis a \textit{Funnel} will refer to the \textit{outer approximation
 \section{Funnels}
 \label{sec:Funnels}
 
-TODO - Create a timeline of these papers.
+TODO -- Create a timeline of these papers.
 
 The term \funnel\ first appears in \cite{masonMechanicsManipulation1985}. The
-\funnel\ definitions in this thesis is taken from a series of articles on
-\funnel 's \cite{tobenkinInvariantFunnelsTrajectories2010}
+\funnel{} definitions in this thesis is taken from a series of articles on
+\funnel{}'s \cite{tobenkinInvariantFunnelsTrajectories2010}
 \cite{tedrakeLQRtreesFeedbackMotion2009} \cite{majumdarRobustOnlineMotion2013}
 \cite{majumdarFunnelLibrariesRealtime2017}
 \cite{ahmadiDSOSSDSOSOptimization2017}, with the main focus being on
@@ -292,7 +292,7 @@ where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
 interval, and \(F(t)\) is the set of states that the system can be in at time
 \(t\). Although this thesis concerns itself with approximating the reachable set
 through \textit{Lyapunov} functions. A useful analogy is imagining the funnel
-created through a \textit{Monte-Carlo} simulation, where the \funnel would be
+created through a \textit{Monte-Carlo} simulation, where the \funnel{} would be
 the set of all the paths traversed by the dynamical system at hand. For a simple
 car model, this could look similar to:
 
@@ -308,7 +308,7 @@ A \textit{Lyapunov function} for an autonomous dynamical system is defined as a
 scalar function \(V: \R^n \rightarrow \R\), with continuous first derivatives,
 is locally positive definite, and \(\Delta V \dot g\) is also locally negative
 definite. The \textit{Lyapunov functions} can then be used to prove the
-\textit{Lyapunov stability} of the dynamical system. if \(\dot{x} = f(x)\) is a
+\textit{Lyapunov stability} of the dynamical system. If \(\dot{x} = f(x)\) is a
 dynamical system, and \(\dot{V}\) is the time derivate of the
 \textit{Lyapunov-candidate function} \(V\), then:
 \[
@@ -329,8 +329,8 @@ origin, and \(f \colon \mathcal{D} \rightarrow \R^n\) continous on
 \(\mathcal{D}\). Suppose that \(f\) has an equilibrium at \(x_e\) so that
 \(f(x_e) = 0\), then this equilibrium is \textit{Lyapunov stable} if for every
 \(\epsilon > 0\) there exists a \(\delta > 0\) such that if \(\left \lVert x(0)
-  - x_e \right \rVert < \delta\) then for every \(t \geq 0\) we have \( \left
-  \lVert x(t) - x_e \right \rVert \leq \epsilon\).
+  - x_e \right \rVert < \delta\) then for every \(t \geq 0\) we have \( \lVert
+x(t) - x_e \rVert \leq \epsilon\).
 
 Conceptually this means that a solution starting out in the vincinity of the
 equilibrium (\(\delta\)), will remain close (\(\epsilon\)) to it. Also note that
@@ -351,9 +351,9 @@ equilibrium at \(x = 0\). Consider a function \(V(x) \colon \R^n \rightarrow
 Then \(V(x)\) is called a \textit{Lyapunov function} candidate and the system is
 stable in the sense of Lyapunov. (semicite wikipedia).
 
-The following sections \ref{subsec:LaSalle's invariance
-  principle},\ref{subsec:LaSalle's invariance principle},\ref{subsec:Lyapunov
-  analysis for linear systems}, are based on the lecture notes from
+The following sections \ref{subsec:LaSalle's invariance principle},
+\ref{subsec:LaSalle's invariance principle}, \ref{subsec:Lyapunov analysis for
+  linear systems}, are based on the lecture notes from
 \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}, and are adapted slightly for
 presentation in this thesis.
 
@@ -405,12 +405,12 @@ up the space of all \textit{Lyapunov} functions).
   Given a linear system of the form \(\dot{x} = Ax\) if one can find a
   \textit{Lyapunov function}
   \[
-    V(x) = x^TPx, \; P = P^T \succeq 0
+    V(x) = x^{T}Px, \; P = P^{T} \succeq 0
   \]
-  where \(\succeq\) means that the matrix is \ac{PSD}}.
+  where \(\succeq\) means that the matrix is \ac{PSD}.
   This also satisfies
   \[
-    \dot{V} = x^TPAx + x^TA^TPx \succeq 0.
+    \dot{V} = x^{T}PAx + x^{T}A^{T}Px \succeq 0.
   \]
   Then the origin is globally asymptotically stable.
 \end{theorem} \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
@@ -421,17 +421,17 @@ always be found by finding the positive definite solution to the matrix Lyapunov
 equation
 \begin{equation}
   \label{eqn:linearlyapunov}
-  PA + A^TP = -Q
+  PA + A^{T}P = -Q
 \end{equation}
-for any \(Q = Q^T \geqslant 0\).
+for any \(Q = Q^{T} \geqslant 0\).
 
 \subsection{The connection between Lyapunov analysis and convex optimization}
 
 The first connection between Lyapunov analysis and convex optimization will be a
 \ac{SDP}-program. In fact the Lyapunov conditions for a linear system can be
 formulated in the form of an \ac{SDP} - which is a form of convex optimization.
-For any problem formulated as an \ac{SDP} there exists an efficient - and
-optimal - solution, barring numerical difficulties.
+For any problem formulated as an \ac{SDP} there exists an efficient -- and
+optimal -- solution, barring numerical difficulties.
 
 \subsection{Numerical convex optimization}
 
@@ -461,7 +461,7 @@ under linear combinations with positive coefficients.
 A semidefinite program can solve all problems of the form:
 \begin{align*}
   \text{minimize } &TrCX \\
-  \text{subject to } &TrA_iX = b_i \text{for all i } = 1,\ldots,m\\
+  \text{subject to } &TrA_{i}X = b_{i} \text{for all i } = 1,\ldots,m\\
                    &X \succeq 0
 \end{align*} 
 where \(X \in S^n\), with \(S^n\) being the space of real symmetric \(nxn\)
@@ -473,7 +473,7 @@ parameters\cite{wolkowiczHandbookSemidefiniteProgramming2000}.
 \label{subsec:A simple example}
 
 \begin{align*}
-  \text{min(a), subject to}
+  \min{a} \text{subject to}
   \begin{bmatrix}
     a & 0 \\
     0 & 1 \\
@@ -484,7 +484,7 @@ parameters\cite{wolkowiczHandbookSemidefiniteProgramming2000}.
 The linear Lyapunov example from above \ref{subsec:Lyapunov analysis for linear
   systems}, can also be formulated as an \ac{SDP} like so:
 \begin{align*}
-  \text{find p, subject to } P \succeq 0, \; PA + A^TP \preceq 0.
+  \text{find p, subject to } P \succeq 0, \; PA + A^{T}P \preceq 0.
 \end{align*}\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}
 
 This formulation then provides the ground for an automatic search for a
@@ -505,8 +505,7 @@ combination.
 \begin{figure}
   % \includegraphics{figures/funnel/linearuncertainlyapunov}
   \input{figures/preliminaries/linearuncertainlyapunov}
-  \caption{Illustration of the search space. Adapted from
-    \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}}
+  \caption{Illustration of the search space. Adapted from~\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}}
 \end{figure}
 
 
@@ -514,7 +513,7 @@ This problem, once formulated can the be sent to an automatic \ac{SDP}-solver,
 such as \textit{MOSEK}\cite{mosek}, which is used in this thesis.
 
 This example is important as it provides a way in which to search an infinite
-function space (The Lyapunov functions) - numerically - for a function which
+function space (The Lyapunov functions) -- numerically -- for a function which
 fullfills our constraints, and solves the problem. Furthermore, the solution is
 optimal as long as the problem is convex. Downside, however, is that this method
 only works on linear systems, and the problem at hand in this thesis is
@@ -545,7 +544,7 @@ the optimal function for the task.
 
 \ac{SOS} is the theory of
 
-As seen in section \ref{subsec:A simple example}, if one is able to
+As seen in section~\ref{subsec:A simple example}, if one is able to
 
 \acl{SOS} polynomials are
 
@@ -556,17 +555,17 @@ As seen in section \ref{subsec:A simple example}, if one is able to
 \subsection{SOS programming}
 
 The procedure used for searching the space of all positive Lyapunov functions
-which can be written as a sum of squares is \ac{SOS} programming. With
-\cite[Parillo's]{parilloStructuredSemidefinitePrograms}, work, there now exists
-an efficient way of restructuring a \ac{SOS} program into an \ac{SDP} program,
-solve it, then convert it back, and get the sought solution polynomial.
+which can be written as a sum of squares is \ac{SOS} programming.
+With~\cite[Parillo's]{parilloStructuredSemidefinitePrograms}, work, there now
+exists an efficient way of restructuring a \ac{SOS} program into an \ac{SDP}
+program, solve it, then convert it back, and get the sought solution polynomial.
 
 \ac{SOS} programming relies on the ability to write a SOS polynomial in the form
 \begin{align*}
-  p(x) &= s(x)^TQs(x)\\
+  p(x) &= s{(x)}^{T}Qs(x)\\
 \end{align*}
 where \(p(x)\) is a \ac{SOS} polynomial, and \(Q\) is \ac{PSD}, and \(s(x)\) is
-a vector of \textit{monomials} - meaning that its elements are the terms in a
+a vector of \textit{monomials} -- meaning that its elements are the terms in a
 polynomial, like so
 \[
   s(x) = \begin{bmatrix} 1 \\ x \\ y \\ x^2 \\ xy \\ y^2 \end{bmatrix}
@@ -575,10 +574,10 @@ where \(s(x)\) is a monomial in \(x\) and \(y\) of order two.In general \(s(x)\)
 is a monomial with degree less than or equal to half that of
 \(p(x)\)\cite{parilloStructuredSemidefinitePrograms}\label{monomialdegree}. The
 condition that \(s(x)\) is \ac{SOS} is much more \textit{computationally
-  tractable} than a nonnegativity constraint
-\cite{parilloStructuredSemidefinitePrograms}. The methodology used in the
-\ac{SOS} program in this thesis is based on the relaxation from
-\cite{parilloStructuredSemidefinitePrograms}, which in turn is based on the
+  tractable} than a nonnegativity
+constraint~\cite{parilloStructuredSemidefinitePrograms}. The methodology used in
+the \ac{SOS} program in this thesis is based on the relaxation
+from~\cite{parilloStructuredSemidefinitePrograms}, which in turn is based on the
 \textit{Positivstellensatz} from algebraic geometry. In this type of problem the
 interest is in finding polynomials \(p_i(x), \, i=1,2,\ldots,\hat{N}\), and sums
 of squares \(p_i(x), \, i=(\hat{N}+1),\ldots,N\), such that
@@ -600,12 +599,12 @@ the kind \(f(x) \geq 0\).
 \]
 which is a sum of squares polynomial, as it can be written in the form
 \[
-  p = \sum_{i=1}^{N}g_i^2(x) = g_1^2(x) + g_2^2(x) + g_3^2(x)= 1 + (1-4x)^2 +
+  p = \sum_{i=1}^{N}g_i^2(x) = g_1^2(x) + g_2^2(x) + g_3^2(x)= 1 + {(1-4x)}^2 +
   x^2
 \]
 which shows that \(p(x)\) is positive for all x. In fact, \(p\) is \ac{SOS} if
 and only if there exists a \acl{PSD} matrix \(Q\), such that \(p(x) =
-s(x)^TQs(x)\). Also, the problem can be formulated using \textit{monomials} of
+s{(x)}^{T}Qs(x)\). Also, the problem can be formulated using \textit{monomials} of
 degree one (square root of the degree of \(p\))\ref{monomialdegree}.
 
 From now on, a constraint of the form \(f(x) \geq 0,\, \forall x\) will be
@@ -618,7 +617,7 @@ time to start looking at the link between Lyapunov functions and SOS
 programming. Thus, given a dynamical system of the form \(\dot{x} = f(x)\), and
 a Lyapunov function of the form
 \[
-  V(x) = \sum_{i=0}^d a_ix_i
+  V(x) = \sum_{i=0}^{d} a_{i}x_{i}
 \]
 with \(d\) being the degree of the polynomial, a \ac{SOS} program
 \begin{align*}
@@ -628,18 +627,18 @@ with \(d\) being the degree of the polynomial, a \ac{SOS} program
 \cite{tedrakeUnderactuatedRoboticsAlgorithms2019} and because this is a convex
 optimization problem, the solver will return a solution if one exists.
 
-\subsubsection{Example - The damped simple pendulum}
+\subsubsection{Example -- The damped simple pendulum}
 
 As a simple example where a search for a polynomial Lyapunov function can be
 performed is the \textit{simple pendulum} example. The dynamics of the pendulum
 can be described as
 \[
-  ml^2\dot{\dot{\theta}} + mgl sin(\theta) = -b\dot{\theta}
+  ml^2\dot{\dot{\theta}} + mgl \sin(\theta) = -b\dot{\theta}
 \]
 which in vector form can be written as
 \begin{align*}
   \dot{\theta}_1 &= \theta_2 \\
-  \dot{\theta}_2 &= f(\theta_1,\theta_2) = -\frac{g}{l}sin(\theta_1) -\frac{b}{ml^2}\theta_2
+  \dot{\theta}_2 &= f(\theta_1,\theta_2) = -\frac{g}{l}\sin(\theta_1) -\frac{b}{ml^2}\theta_2
 \end{align*}
 with \(\theta_1 = \theta\), and \(\theta_2 = \dot{\theta}\).
 
@@ -649,8 +648,8 @@ applied. There are in general two ways of dealing with this:
 
 First method, is to Taylor expand equation. Second, is doing a change of
 coordinates of the form \(\left[ \theta \; \dot{\theta} \right] \) to \(\left[ s
-  \;c \; \dot{\theta} \right]\), where \(s = sin(\theta)\) and \(c =
-cos(\theta)\). Then with \(x = \left[ s \; c \; \dot{\theta} \right]^T\) the
+  \;c \; \dot{\theta} \right]\), where \(s = \sin(\theta)\) and \(c =
+\cos(\theta)\). Then with \(x = {\left[ s \; c \; \dot{\theta} \right]}^{T}\) the
 dynamics can be written as
 \[
   \dot{x} =
@@ -676,8 +675,8 @@ and formulating the search for a feasible Lyapunov function
 \end{example}
 
 Actually this feasability problem can be reduced further. In fact \(V\) and
-\(\dot{V}\) need only be positive in the case that \(sin(\theta)^2 +
-cos(\theta)^2 = 1\). This then means that the problem can be formulated as
+\(\dot{V}\) need only be positive in the case that \(\sin{(\theta)}^2 +
+\cos{(\theta)}^2 = 1\). This then means that the problem can be formulated as
 \begin{align*}
   &\text{find}\alpha \lambda \\
   &\text{subject to } V \text{ is SOS} \\
@@ -697,6 +696,7 @@ Lyapunov as well. Secondly, even though a polynomial Lyapunov function does
 exist as a solution for the system, it might not be \ac{SOS} decomposable.
 
 \subsection{S-procedure}
+\label{sec:s-procedure}
 
 The \textit{S-procedure} is used to check for positivity (SoS) over a region.
 
@@ -733,9 +733,10 @@ as approximations of the region of attraction for a nonlinear system.
   \[
     \forall x \in \mathcal{G},\,\dot{V}(x) \preceq 0,
   \]
-  then \(\mathcal{G}\) is an invariant set. By \textit{LaSalle}
-  \ref{subsec:LaSalle's invariance principle}, \(x\) will converge to the
-  largest invariant subset of \(\mathcal{G}\) on which \(\dot{V}(x) = 0\).
+  then \(\mathcal{G}\) is an invariant set. By
+  \textit{LaSalle}~\ref{subsec:LaSalle's invariance principle}, \(x\) will
+  converge to the largest invariant subset of \(\mathcal{G}\) on which
+  \(\dot{V}(x) = 0\).
 
   Furthermore, if \(\dot{V}(x) \prec 0\) in \(\mathcal{G}\), then the origin is
   locally asymptotically stable and the set \(\mathcal{G}\) is inside the region
@@ -766,7 +767,7 @@ for a linear system as a candidate function one gets:
   \text{lin}(\dot{x}) = -x.
 \]
 Through setting \(Q=1\), \(P=\frac{1}{2}\) as the positive definite solution to
-the linear Lyapunov equation \ref{eqn:linearlyapunov}. Thus
+the linear Lyapunov equation~\ref{eqn:linearlyapunov}. Thus
 \[
   V(x) = \frac{1}{2}x^2,
 \]
@@ -783,7 +784,7 @@ entire region of attraction in this case.
 
 \subsection{Common Lyapunov functions for uncertain systems}
 
-Moving on to the most important sections for this thesis - the analysis and
+Moving on to the most important sections for this thesis -- the analysis and
 verification of regions of attraction in the presence of uncertainty.
 
 The general idea is based aroung \textit{common Lyapunov functions}, which, in
@@ -796,7 +797,7 @@ prettyfix this
 \end{definition}
 
 \begin{example}[One-dimensional system with gain uncertainty]
-  Given the same nonlinear dynamic system as in \ref{subsec:Estimating the
+  Given the same nonlinear dynamic system as in~\ref{subsec:Estimating the
     region of attraction for a one-dimensional system}, but with a
   \textit{bounded uncertainty term} \(w\), with
   \[
@@ -907,7 +908,7 @@ looks like
                      & &L(x) \text{ is SOS}.
 \end{align*}
 
-Which written in \cite[Yalmip]{Lofberg2004,Lofberg2009} yields
+Which written in~\cite[Yalmip]{Lofberg2004,Lofberg2009} yields
 
 \begin{figure}
 

@@ -7,7 +7,7 @@ into the state-space. An \ac{RRT} algorithm is inherently biased to grow towards
 unexplored parts of the state space. A nice way of thinking about the \ac{RRT}
 algorithm is as a \textit{Monte-Carlo} method that is biased towards the largest
 \textit{Voronoi} of a graph in the configuration space, as shown
-in \label{subsec:voronoi regions}. 
+in~\ref{subsec:voronoi regions}. 
 
 \section{The RRT algorithm}
 
@@ -16,14 +16,14 @@ configuration space of the robot, starting at the base configuration of the
 robot at hand. In order to expand the tree it draws a sample at random from the
 configuration space, then tries to connect the new sample with the nearest node
 in the tree. Nearest in the sense of some predetermined distance metric. If a
-connection can be made - meaning that it is collision free, and satisfies the
-constraints of the dynamical model - then a new state is added to the tree. If
+connection can be made -- meaning that it is collision free, and satisfies the
+constraints of the dynamical model -- then a new state is added to the tree. If
 the sampling is uniform, then the tree is known to have the attribute that the
 probability of expanding from an existing node in the tree is proportional the
 the \textit{Voronoi region} of that node, and as the largest \textit{Voronoi
   regions} belongs to the states on the leaves of the tree, this means that the
 tree will quickly expand into unexplored parts of the state space, as can be
-seen in \ref{fig:rrt-expansion}, and \ref{fig:voronoi-expansion}.
+seen in~\ref{fig:rrt-expansion}, and~\ref{fig:voronoi-expansion}.
 
 \begin{figure}
   \includegraphics{figures/rrt/rrt-pseudo.tex} % TODO - this takes the here option?
@@ -64,9 +64,9 @@ seen in \ref{fig:rrt-expansion}, and \ref{fig:voronoi-expansion}.
 
 Given a number of points in the plane, their Voronoi diagram divides the plane
 according the the \textit{nearest neighbour rule}: Each point is associated with
-the region of the plane closest to it
-\cite{aurenhammerVoronoiDiagramsSurvey1991}, as can be seen in the figure
-\ref{fig:voronoi-diagram}.
+the region of the plane closest to
+it~\cite{aurenhammerVoronoiDiagramsSurvey1991}, as can be seen in the
+figure~\ref{fig:voronoi-diagram}.
 
 \begin{figure}
   \label{fig:voronoi-diagram}
@@ -77,7 +77,7 @@ the region of the plane closest to it
 
 When inspecting the Voronoi regions of a \ac{RRT} tree, it is appareant that the
 leaf nodes will have the largest Voronoi regions, and thus also the largest
-probability for getting expanded, as can be seen in figure \ref{fig:rrt-voronoi}.
+probability for getting expanded, as can be seen in figure~\ref{fig:rrt-voronoi}.
 
 \begin{figure}
   \label{fig:rrt-voronoi}
@@ -104,7 +104,7 @@ probability for getting expanded, as can be seen in figure \ref{fig:rrt-voronoi}
 
 \subsection{Funnel}
 
-A Funnel is a motion primitive that is 'guaranteed' to take the vehicle from a
+A Funnel is a motion primitive that is `guaranteed' to take the vehicle from a
 set of initial conditions to a set of goal states. 
 
 \subsubsection{Composition of funnels}
@@ -136,7 +136,7 @@ problem, as this involves solving another optimal planning problem, and will
 therefore be as, or more complex than the motion planning problem which is
 already being solved. Therefore in general we will have to limit ourselves to
 approximate distance metrics. The idea is to get as close to the optimal
-cost-to-go function without having to compute expensive computations \cite{LaValle09}.
+cost-to-go function without having to compute expensive computations~\cite{LaValle09}.
 Distance metrics candidates in the RRT-Funnel algorithm:
 \begin{itemize}
   \item Time - Since time can be found by simple summing up the time of all the
@@ -179,7 +179,7 @@ Where \(x_k = x((k-1)\delta{}t)\), and \(u_k\) is the action in
 \(\modelactionspace{}\), which is a function from an interval of time, unto
 \(modelactionspace{}\). Then by letting the interval of time start at 0 and stop
 at \(t_F(\overline{u}^p)\), which has a final time that depends on the
-particular prmitive \cite{LaValle09}.
+particular prmitive~\cite{LaValle09}.
 
 
 \subsection{Reachability Graph}
@@ -189,7 +189,7 @@ particular prmitive \cite{LaValle09}.
 
 \subsubsection{Transforming and composing the tubes}
 
-If we look at the cyclic coordinates of our model, we can see that using 'cyclic
+If we look at the cyclic coordinates of our model, we can see that using `cyclic
 coordinates', the dynamics is independent of position. Or rather:
 
 \begin{math}

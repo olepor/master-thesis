@@ -2,23 +2,23 @@
 
 This chapter will introduce and develop the \rrtfunnel\ algorithm, through two
 means: Developing robust motion primitives through the \ac{SOS} programming
-framework, based on the work in \cite{majumdarFunnelLibrariesRealtime2017}, and
+framework, based on the work in~\cite{majumdarFunnelLibrariesRealtime2017}, and
 second deploy these funnels as motion primitives in a discrete \ac{RRT} planner,
-based on \cite{lavalleLav98cPdf}.
+based on~\cite{lavalleLav98cPdf}.
 
 \section{Defining funnels}
 
-The funnel computations will be based on the \ac{SOS} theory as developed in
-\ref{sec:Funnels}. Given a trajectory, the goal is to compute a robust invariant
-set around the trajectory that will 'guarantee' that the planner is free from
-collisions during execution of the obtained motion plan. This robustly invariant
-set is parameterized through Lyapunov function candidates, that, in this case,
-will be based upon the \ac{PSD} matrix that the time-invariant \ac{LQR}
-controller produces. The following presentations will be based on
-\cite{tobenkinInvariantFunnelsTrajectories2010,
-  tedrakeLQRtreesFeedbackMotion2009, majumdarRobustOnlineMotion2013} , but
-mainly follow the formulations, and syntax from
-\cite{majumdarFunnelLibrariesRealtime2017}.
+The funnel computations will be based on the \ac{SOS} theory as developed
+in~\ref{sec:Funnels}. Given a trajectory, the goal is to compute a robust
+invariant set around the trajectory that will `guarantee' that the planner is
+free from collisions during execution of the obtained motion plan. This robustly
+invariant set is parameterized through Lyapunov function candidates, that, in
+this case, will be based upon the \ac{PSD} matrix that the time-invariant
+\ac{LQR} controller produces. The following presentations will be based
+on~\cite{tobenkinInvariantFunnelsTrajectories2010,
+  tedrakeLQRtreesFeedbackMotion2009, majumdarRobustOnlineMotion2013}, but mainly
+follow the formulations, and syntax
+from~\cite{majumdarFunnelLibrariesRealtime2017}.
 
 Thus, given the nonlinear dynamical system
 \begin{equation}
@@ -33,13 +33,13 @@ define a change of coordinates into the error coordinate frame
   \bar{x}(t) = (x - x_0)(t) \\
   \bar{u}(t) = (u - u_0)(t).
 \]
-Then, changing \ref{eq:dynamicalsystem} to these new coordinates one obtaines
+Then, changing~\ref{eq:dynamicalsystem} to these new coordinates one obtaines
 \begin{equation}
   \dot{\bar{x}} = \dot{x} - \dot{x}_0 = f(x_0(t) + \bar{x}(t), u_0(t) + \bar{u}(t)) - \dot{x}_0(t)
 \end{equation}
 
 In order to compute a parameterized reachable set through \ac{SOS} programming
-the system \ref{eq:dynamicalsystem} needs to be polynomial, and parameterized by
+the system~\ref{eq:dynamicalsystem} needs to be polynomial, and parameterized by
 \(x\) and \(t\), since the trajectory is parametrized by \(x\) and \(t\).
 Therefore, through the use of a \ac{TV-LQR} controller, the control input can be
 eliminated from the dynamical equation, giving
@@ -49,7 +49,7 @@ eliminated from the dynamical equation, giving
 \end{equation}
 However, the dynamical system may still not be polynomial, which is a necessary
 condition in order for this to be verified using \ac{SOS} programming. Expanding
-the system \ref{eq:dynamicclosedloop} around the nominal trajectory \(x_0\)
+the system~\ref{eq:dynamicclosedloop} around the nominal trajectory \(x_0\)
 through a Taylor expansion of some degree high enough to capture the
 nonlinearities of the system.
 
@@ -60,17 +60,16 @@ at time \(t\), then
 \begin{equation}
   \label{eq:reachableset}
   \bar{x}(0) \in \mathcal{X}_0 \implies \x(t) \in F(t), \, \forall t \in [0,T]
-\end{equation} \cite{majumdarFunnelLibrariesRealtime2017} 
+\end{equation}~\cite{majumdarFunnelLibrariesRealtime2017} 
 where \(\mathcal{X}_0\) is the initial condition set, and \(F(t) \subset \R^n\).
 
-A funnel is defined in \cite{majumdarFunnelLibrariesRealtime2017} as
+A funnel is defined in~\cite{majumdarFunnelLibrariesRealtime2017} as
 \begin{definition}
   \label{def:funnel}
   A funnel associatied with a closed-loop dynamical system \(\dot{\bar{x}} =
   f_{cl}(t,x(t))\) is a map \(F \colon [0,T] \rightarrow \mathcal{P}(\R^n)\),
-  from the time interval \([0,T]\) to the power set (\ie the set of subsets) of
-  \(\R^n\) so that the sets \(F(t)\) satisfy the condition.
-  \ref{eq:reachableset}.
+  from the time interval \([0,T]\) to the power set (\ie{} the set of subsets) of
+  \(\R^n\) so that the sets \(F(t)\) satisfy the condition~\ref{eq:reachableset}.
 \end{definition}
 Thus, \(F(t)\) is the set of reachable states that the system can be in at time
 \(t\).
@@ -85,7 +84,7 @@ size of the reachable set, and \(V(t,\bar{x}(t))\) is a Lyapunov function \(V
 \colon [0,T] \times \R^n \rightarrow \R^+\).
 
 Then, by setting \(\mathcal{X}_0 \subset F(0,\bar{x})\), one can derive the
-sufficient condition for containing the reachable \ref{eq:reachableset} set in
+sufficient condition for containing the reachable~\ref{eq:reachableset} set in
 the Lyapunov function paramterization
 \begin{equation}
   V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x}) < \dot{rho}(t), \, \forall t \in [0,T]
@@ -98,18 +97,182 @@ with \(\dot{V}(t,\bar{x})\) computed as
 
 Currently there are no limitations on the functions \(V\) and \(\rho\), and
 hence there exists infinitely many functions with different sized reachable sets
-that satisfies \ref{eq:funnelsifficient}, and is a valid funnel in the sense of
-definition \ref{def:funnel}. In order for efficient planning to take place, the
+that satisfies~\ref{eq:funnelsifficient}, and is a valid funnel in the sense of
+definition~\ref{def:funnel}. In order for efficient planning to take place, the
 motion primitives, meaning the size of the funnels, should be as small as
 possible, and it is therefore that the size of the funnels is minimized using
-the following optimization problem \cite{majumdarFunnelLibrariesRealtime2017}
+the following optimization problem~\cite{majumdarFunnelLibrariesRealtime2017}
 
 \begin{align}
-  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} vol(F(t)) dt  \\
+  \label{eq:funneloptimizationproblem}
+  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} vol(F(t)) dt \\
   &\text{subject to} && V(t,\bar{x}) = \rho (t) \implies \dot{V}(t,\bar{x}) < \rho (t), \, \forall t \in [0,T] \\
-  && &\mathcal{X}_0 \subset F(0,\bar{x})
+  && &\mathcal{X}_0 \subset F(0,\bar{x}) \\
 \end{align} 
 
 
 \section{Computing funnels}
 
+\subsection{Formulating the optimization problem as a SOS program}
+
+The optimization problem in~\ref{eq:funneloptimizationproblem} would prove
+impossible to solve efficiently had it not been for advances in mathematical
+convex numerical optimization, as in general the problem involves searching over
+an infinite function space. While the general optimization problem of searching
+through the infinite function space is not amenable to efficient numerical
+computation, the problem can be made computationally feasible through the use of
+a \ac{SOS} programming approach.
+
+Thus in order to make the problem amenable to a \ac{SOS} program, there are some
+assumptions that need to be met by our problem formulation. Firstly the initial
+condition set needs to be a \textit{semi-algebraic set}, (\ie{} parameterized by
+polynomial inequalities),
+
+\begin{equation}
+  \mathcal{X}_0 = \set{\bar{x} \in \R^n \mid g_{o,i}(\bar{x}) \geq 0, \, i = 1,\ldots,N_0}
+\end{equation}
+
+Then rewriting~(\ref{eq:funneloptimizationproblem})~as in terms of positivity
+and equality constraints yields
+\begin{equation}
+  V(t,\bar{x}) = \rho(t) \implies \dot{\rho}(t) - \dot{V}(t,\bar{x}) > 0
+\end{equation}
+and
+\begin{equation}
+  g_{0,i}(\bar{x}) \geq 0 \forall i \in \set{1,\ldots,N_0} \implies \rho(0) - V(0,\bar{x}) \geq 0
+\end{equation}
+which, if these functions are both polynomial, is now in the form of a \ac{SOS}
+optimization problem. Then through the use of the \textit{S-procedure} one
+arrives at the equations
+\begin{align}
+  &\dot{\rho}(t) - \dot{V}(t,\bar{x}) - L(t,\bar{x})\left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x})\left[ t\left( T - t \right) \right]  && \text{is SOS}& \label{eq:sufficient-conditions}\\
+  & \rho(0) - V(0,\bar{x}) - \sum_{i}^{N_{0}} L_{0,i}(\bar{x})g_{0,i}(\bar{x}) && \text{is SOS}& \\
+  & L_{t}(\bar{x}), \, L_{0,i}(\bar{x}) \; &&\text{are SOS}, \, \forall i \in \set{1,\ldots,N_{0}} \label{eq:sufficient-conditions3} \\
+\end{align} 
+where \(L\), \(L_{t}\), and \(L_{0,i}\) are multiplier
+polynomials~(\ref{sec:s-procedure})~.
+
+The goal is to make the parametrization of the reachable set as small as
+possible, and therefore minimizing the cost
+function~(\ref{eq:funneloptimizationproblem})~. This is done
+in~\cite{majumdarFunnelLibrariesRealtime2017}, through approximating the cost
+function by first discretizing the problem and replacing the integral with a
+finite sum
+\begin{equation}
+  \label{eq:discrete-costfunction}
+  \int_{0}^{T} vol(F(t)) dt \rightarrow \sum_{k=1}^{N} vol(F(t_{k}))
+\end{equation}
+Since the Lyapunov function \(V\) in this thesis will be quadratic, \(V\) can be
+written as
+\begin{equation}
+  V(t_{k}, \bar{x}) = {\bar{x}}^{T}S_{k}\bar{x}, \, S_{k} \succeq 0
+\end{equation}
+which means that the set \(F(t_{k})\) is an ellipsoid in which the volume can be
+minimized through maximizing the determinant of \(S_{k}\). Which in turn can be
+transformed into a \ac{SDP} problem. If an upper bound on the cost
+function~(\ref{eq:discrete-costfunction}) is introduced as
+\begin{equation}
+  \mathcal{E} (t_{k}) = \set{\bar{x} \in \R^n \mid {\bar{x}}^{T}S_{k}\bar{x} \leq 1, \, S_{k} \succeq 0}
+\end{equation}
+where \( \mathcal{E} ( t_{k} ) \) is an ellipsoid containing the reachable set \( F
+( t_{k} ) \) at time \( t_{k} \). This containment constraint can be
+equivalently expressed as
+\begin{equation}
+  V ( t_{k}, \bar{x} ) \leq \rho(t_{k})  \implies {\bar{x}}^{T}S_{k}\bar{x} \leq 1.
+\end{equation}
+Which when expressed using \ac{SOS} constraints is
+\begin{align}
+  1 - {\bar{x}}^{T}S_{k}\bar{x} - L_{\mathcal{E},k}(\bar{x})\left[ \rho(t_{k}) - V(t_{k}, \bar{x}) \right]  \qquad \text{is SOS}& \\
+   L_{\mathcal{E},k}(\bar{x}) \qquad \text{is SOS.}& \\
+\end{align}
+
+Then combining the cost function~(\ref{discrete-costfunction}) with the
+constraints~(\ref{eq:sufficient-conditions}-\ref{eq:sufficient-conditions3}),
+one arrives at
+
+% TODO - maybe use optidef?
+\begin{align}
+  \underset{\substack{V,\rho,L,L_{t},\\L_{0,i},S_{k},L_{\mathcal{E},k}}}{\inf}&  \sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))& \\
+  \sum_{k=1}^{N} vol(\set{ \bar{x} \mid {\bar{x}}^{T}S_{k}\bar{x} \leq 1})&& \\
+  \text{such that}&\\
+  \dot{\rho}(t) - \dot{V}(t,\bar{x}) - L(t,\bar{x}) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x})\left[ t\left( T - t \right) \right] \qquad \text{is SOS}& \\
+  \rho(0) - V(0,\bar{x}) - \sum_{i}^{N}L_{0,i}(\bar{x})g_{0,i}(\bar{x})& \text{is SOS}& \\
+  1 - {\bar{x}}^{T}S_{k}\bar{x} - L_{\mathcal{E},k}(\bar{x}) \left[ \rho(t_{k}) - V(t_{k},\bar{x}) \right]& \text{is SOS}& \\
+                                                      &\forall k \in \set{1,\ldots,N} \, S_{k} \succeq 0& \\
+  \forall k \in \set{1,\ldots,N} L_{t}(t,\bar{x}),\, L_{0,i}(\bar{x})& \text{are SOS}& \\
+  \forall i \in \set{1,\ldots,N},& \forall k \in \set{1,\ldots,N}& \\
+\end{align}
+Which is the finite dimensional optimization problem needed in order to search
+for a Lyapunov function candidate.
+
+However, this optimization problem is not convex in general, as the first
+constraints are \textit{bilinear} in the decision variables, since \(L\) and
+\(V\) are multiplied together. However, the problem can be solved, although not
+optimally, if \(V\) and \(\rho\) are held fixed, while the other decision
+variables are free, the problem is amenable to \ac{SOS} optimization. Likewise,
+fixing \(L\) and \(L_{\mathcal{E},k}\), creates another \ac{SOS} optimization
+program. Therefore shifting between the two sets of decision variables
+\[
+  \left( L,L_{t},L_{0,i},L_{\mathcal{E},k} \right)
+\]
+and
+\[
+  \left( V,\rho,L_{0,i},S_{k} \right)
+\]
+\cite[Majumdar]{majumdarFunnelLibrariesRealtime2017} arrives at the following
+algorithm for searching for a funnel
+
+\begin{algorithm}[H]
+  \caption{Funnel computation}
+  \DontPrintSemicolon
+  \SetAlgoNoLine
+
+  \KwIn{\(V\) and \(\rho\)}
+  \KwOut{Funnel}
+
+  \(cost_{prev} = \infty\)\;
+  converged = false \;
+  \While{\(\neq converged\)}{
+    Optimization problem 1: \;
+    \begin{align*}
+      \underset{\substack{L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))& \\    
+      \text{subject to } & V \text{ and } \rho \text{ constant.}& \\
+    \end{align*}\;
+    Optimization problem 2: \;
+    \begin{align*}
+      \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))& \\    
+      \text{subject to } & L \text{ and } L_{\mathcal{E},k} \text{ constant.}& \\
+    \end{align*}\;
+    cost = \(\sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))\) \;
+    \If{\(\frac{cost_{prev} - cost}{cost_{prev}} < \epsilon\)} {
+      converged = true
+    }\;
+    \(cost_{prev} = cost\)\;
+  }\;
+\end{algorithm}
+
+\subsection{Approximation via time-sampling}
+
+\section{Composition of funnels}
+
+* Composition at the ends
+* Composition in the middle of funnels.
+** Cutting off ends of funnels
+** Cutting of heads of funnels
+* Composing these cut off funnels at any point in time
+* Construct a graph which takes these effects into account.
+
+\subsection{Simulating the funnels, checking if the model stays within the
+  funnel at all times.}
+
+\section{Distance metric for expansion (Maybe for the RRT section?)}
+
+\section{Poisson generation of the simulated forest} (Cool section!)
+
+\section{RRT}
+
+\subsubsection{The identity funnel for starting the simulation fresh}
+
+The identity funnel is an empty placeholder for the start node of the graph,
+that does no transformations on the model at all, and thus can be seen as the
+identity element in the funnel space, or rather, the identity funnel.

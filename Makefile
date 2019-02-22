@@ -51,7 +51,7 @@ log:
 
 .Phony: check
 check:
-	chktex src/main.tex src/sections/*.tex
+	chktex src/main.tex src/sections/$(section).tex
 
 pg: pg.tex
 	@latexmk -pdf -silent $<
