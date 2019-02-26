@@ -2,8 +2,17 @@
 
 .Phony: all
 all: setup
-	latexmk -output-directory="build" -pdf -silent
-	open build/main.pdf
+	# cd ./src/ && latexmk -output-directory="build" -pdf -silent ./main.tex
+	# open build/main.pdf
+	@echo "Building the whole thesis!"
+	@mkdir -p tests/thesis/build
+	@cp -rf src/ tests/thesis/
+	# @mv tests/thesis/main.tex tests/thesis/maintemplate.tex
+	# @tests/scripts/createIncludeOnly thesis tests/thesis/maintemplate.tex
+	# @cd tests/thesis/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
+	@cp {bibliography,zot}.bib ./tests/thesis/
+	@cd tests/thesis/ && latexmk --output-directory=./build -cd -bibtex -pdf  ./main.tex
+	@open tests/thesis/build/main.pdf
 
 .Phony: setup
 setup:

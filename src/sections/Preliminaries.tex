@@ -199,9 +199,8 @@ funnel definitions that makes up the backbone of this thesis. As an example, the
 reachable set for the \textit{Dubins car} will look like this
 
 \begin{figure}
-\begin{centering}
+  \centering
   \input{figures/preliminaries/dubinsreachability.tex}
-\end{centering}
 \end{figure}
 
 \subsection{Motion primitives}
@@ -262,6 +261,7 @@ be the set of all the paths traversed by the dynamical system at hand. For a
 simple car model, this could look similar to:
 
 \begin{figure}
+  \centering
   \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
   \caption{The simulation of N paths starting from a random point in the
     interval \(\sqb{-1,1}\), and controlled with a LQR controller.}
@@ -297,6 +297,7 @@ the set of all the paths traversed by the dynamical system at hand. For a simple
 car model, this could look similar to:
 
 \begin{figure}
+  \centering
   \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
   \caption{The simulation of N paths starting from a random point in the
     interval \(\sqb{-1,1}\), and controlled with a LQR controller.}
@@ -450,6 +451,7 @@ A convex cone is a subset of a vector space over an ordered field that is closed
 under linear combinations with positive coefficients.
 
 \begin{figure}
+  \centering
   \includegraphics[scale=.5]{figures/preliminaries/Convex_cone_illust}
   \caption{A convex cone (light blue). Inside of it, the light red convex cone
     consists of all points \(\alpha x + \beta y \) with \(\alpha,\, \beta > 0\),
@@ -503,6 +505,7 @@ vertice being one of the \(A_{i}\) which is used to describe a as a linear
 combination.
 
 \begin{figure}
+  \centering
   % \includegraphics{figures/funnel/linearuncertainlyapunov}
   \input{figures/preliminaries/linearuncertainlyapunov}
   \caption{Illustration of the search space. Adapted from~\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}}
@@ -754,6 +757,7 @@ as approximations of the region of attraction for a nonlinear system.
 Given the system \(\dot{x} = -x + x^3\)
 
 \begin{figure}
+  \centering
   \input{figures/preliminaries/regionofattractiononedimension.tex}
   \caption{The dynamical system \(\dot{x} = -x + x^3\)}
 \end{figure}
@@ -805,14 +809,14 @@ prettyfix this
   \]
   is
 
-  \begin{figure}
-  \begin{centering}
-    \input{figures/preliminaries/regionofattractiononedimensionuncertaingain}
-  \end{centering}
+\end{example}
+
+\begin{figure}
+  \centering
+  \input{figures/preliminaries/regionofattractiononedimensionuncertaingain}
   \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
   where \(w\) is a bounded uncertainty parameter.}
-  \end{figure}
-\end{example}
+\end{figure}
 
 here the origin is still stable, but the \textit{robust region of attraction} is
 smaller than it was without any uncertainty. By using the same Lyapunov
@@ -852,15 +856,15 @@ A good example of how the fixed point is not necessary at the origin is the
   However, utilizing an invariant set argument to guarantee that the the
   uncertain dynamical system will stay near the origin if it starts near the
   origin.
-
-  \begin{figure}
-  \begin{centering}
-    \input{figures/preliminaries/regionofattractiononedimensionuncertaingainadditive}
-  \end{centering}
-  \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
-  where \(w\) is a bounded uncertainty parameter.}
-  \end{figure}
 \end{example}
+
+
+\begin{figure}
+  \centering
+  \input{figures/preliminaries/regionofattractiononedimensionuncertaingainadditive}
+  \caption{The region of attraction for the system \(\dot{x} = -x + x^3 + w\),
+    where \(w\) is a bounded uncertainty parameter.}
+\end{figure}
 
 Once again, applying the same Lyapunov function \(V(x) = \frac{1}{2}x^2\),
 \[
@@ -910,12 +914,13 @@ looks like
 
 Which written in~\cite[Yalmip]{Lofberg2004,Lofberg2009} yields
 
-\begin{figure}
-
-\lstinputlisting[language=matlab]{figures/preliminaries/cubicregionofattraction.m}
-\caption{TODO - fix this program.}
-\end{figure}
 \end{example}
+
+\begin{figure}
+  \centering
+  \lstinputlisting[language=matlab]{figures/preliminaries/cubicregionofattraction.m}
+  \caption{TODO - fix this program.}
+\end{figure}
 
 \subsubsection{Robust set-invariance}
 
@@ -927,3 +932,5 @@ function is not necessarily invariant. (Give example.).
 
 The \funnel\'s generated in this thesis will be motion primitives for the
 \rrtfunnel\ algorithm this thesis develops.
+
+

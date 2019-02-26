@@ -1,4 +1,4 @@
-\documentclass[a4paper, oneside, draft, showtrims]{memoir}
+\documentclass[a4paper, oneside, final, showtrims]{memoir}
 \usepackage{style}      % Custom style
 \usepackage{kantlipsum} % Dummy text
 \usepackage[FYS,5,master]{mnfrontpage} % TODO - add the option print for a high
@@ -22,10 +22,7 @@
     sections/RRT,
     sections/Funnel,
     sections/RRTFunnel
-    sections/chapter3,
-    sections/chapter4,
     sections/appendixA,
-    sections/appendixB,
 }
 \begin{document}
     \mnfrontpage{}
@@ -36,9 +33,6 @@
     \include{sections/Acronyms}
     \include{sections/abstract}
     \include{sections/acknowledgements}
-    \include{sections/problem_description}
-    \include{sections/Preliminaries}
-    \include{sections/Method}
     \cleartorecto{}
     \tableofcontents    % Or \tableofcontents*
     \cleartorecto{}
@@ -47,14 +41,19 @@
     \listoftables       % Or \listoftables*
     \mainmatter{}       % Folios in Arabic numerals, numbered chapters.
     \include{sections/introduction}
-    \include{sections/MotionPlanning}
+    \include{sections/problem_description}
     \include{sections/survey}
+    \part{Preliminaries}
+    \include{sections/Preliminaries}
     \include{sections/RRT}
-    \include{sections/Funnel}
-    \include{sections/RRTFunnel}
-    \part{The First Part}
-    \include{sections/planner}
-    \include{sections/model}
+    \include{sections/Method}
+    \part{Misc - mess}
+    % \include{sections/MotionPlanning}
+    % \include{sections/RRT}
+    % \include{sections/Funnel}
+    % \include{sections/RRTFunnel}
+    % \include{sections/planner}
+    % \include{sections/model}
     \appendix           % "Chapter" is renamed "Appendix"
     \appendixpage       % Similar to \part*{Appendices}, but appears in TOC.
     \include{sections/appendixA}
