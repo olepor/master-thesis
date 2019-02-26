@@ -13,4 +13,6 @@
 ** Create a latexdiff function for supervisors.
 ** FIXED Do fullpage while handing in to advisors.
    CLOSED: [2019-02-22 Fri 15:32]
+**  4 tomorrow Finish cleaning up the optidef definitions, also start working on a section of how the funnels themselves can be split
+   into multiple funnels through pruning, then later on this is used in the funnel-graph, which gives us a whole sloth of funnels!
    
