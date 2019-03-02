@@ -185,3 +185,20 @@ overview of how to incorporate uncertainty into the path-planning algorithm.
 A quick survey of implementations of motion planners on UGVs operating in
 terrain is~\cite{kellyReliableRoadAutonomous2006}, where the implementation of a
 hierarchichal motion planner is shown.
+
+\section{Funnels}
+
+It is similar in spirit to~\cite{tedrakeLQRtreesFeedbackMotion2009} where a tree
+of \ac{LQR}-controllers is created, in order to safely take a dynamical system
+from one intial state to a final state. The difference however is that in this
+thesis the funnels are computed off-line, and are employed as motion primitives
+to a \ac{RRT}-planner, in addition the \ac{LQR}-trees algoritm plans backwards,
+while this implementation plans forwards in time. The funnel generation is also
+slightly different, as the funnels in this thesis, which is based off of the
+formulation in~\cite{majumdarFunnelLibrariesRealtime2017} also seeks to limit
+the size of the funnels, and bound the uncertainties. Other approaches that are
+similar in spirit to this implementation
+is~\cite{lenySequentialCompositionRobust2012}, as the paper also employs an
+\ac{RRT} algorithm which builds a tree of funnels. The differences however are
+that this algorithm is discrete and the funnels are computed using a \ac{SOS}
+framework.

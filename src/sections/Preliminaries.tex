@@ -1,6 +1,6 @@
 \chapter{Preliminaries}
 
-TODO -- What are the different parts? 
+TODO -- What are the different parts?
 
 \section{Overview/Preliminaries}
 Motion planning is the task of manipulating a robot's configurations so that,
@@ -114,8 +114,8 @@ The \rrtfunnel\ motion planning algorithm is discrete, therefore only the
 discrete motion planning formulation will be defined. Note however that there is
 a rich literature surrounding the continuous case also. In fact a lot of
 discrete motion planners have simply been adapted from a continous analog. Also
-even though the planner itself is discrete, the configuration space can be -- and
-is in this thesis -- continuous.
+even though the planner itself is discrete, the configuration space can be --
+and is in this thesis -- continuous.
 
 \subsubsection{Discrete}
 
@@ -163,9 +163,9 @@ can be written as
 
 \subsection{A Model of Uncertainty}
 
-If the discrete state space model is expanded to include \(\theta\) as the
-space of nature actions, and \(\ theta_k\) is the action selected by nature at
-step k, then a transition is modeled as
+If the discrete state space model is expanded to include \(\theta\) as the space
+of nature actions, and \(\ theta_k\) is the action selected by nature at step k,
+then a transition is modeled as
 \[
   x_{k+1} = f(x_k,u_k,\theta_k)
 \]
@@ -199,8 +199,7 @@ funnel definitions that makes up the backbone of this thesis. As an example, the
 reachable set for the \textit{Dubins car} will look like this
 
 \begin{figure}
-  \centering
-  \input{figures/preliminaries/dubinsreachability.tex}
+  \centering \input{figures/preliminaries/dubinsreachability.tex}
 \end{figure}
 
 \subsection{Motion primitives}
@@ -261,8 +260,7 @@ be the set of all the paths traversed by the dynamical system at hand. For a
 simple car model, this could look similar to:
 
 \begin{figure}
-  \centering
-  \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
+  \centering \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
   \caption{The simulation of N paths starting from a random point in the
     interval \(\sqb{-1,1}\), and controlled with a LQR controller.}
 \end{figure}
@@ -297,8 +295,7 @@ the set of all the paths traversed by the dynamical system at hand. For a simple
 car model, this could look similar to:
 
 \begin{figure}
-  \centering
-  \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
+  \centering \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
   \caption{The simulation of N paths starting from a random point in the
     interval \(\sqb{-1,1}\), and controlled with a LQR controller.}
 \end{figure}
@@ -408,8 +405,7 @@ up the space of all \textit{Lyapunov} functions).
   \[
     V(x) = x^{T}Px, \; P = P^{T} \succeq 0
   \]
-  where \(\succeq\) means that the matrix is \ac{PSD}.
-  This also satisfies
+  where \(\succeq\) means that the matrix is \ac{PSD}. This also satisfies
   \[
     \dot{V} = x^{T}PAx + x^{T}A^{T}Px \succeq 0.
   \]
@@ -508,7 +504,8 @@ combination.
   \centering
   % \includegraphics{figures/funnel/linearuncertainlyapunov}
   \input{figures/preliminaries/linearuncertainlyapunov}
-  \caption{Illustration of the search space. Adapted from~\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}}
+  \caption{Illustration of the search space. Adapted
+    from~\cite{tedrakeUnderactuatedRoboticsAlgorithms2019}}
 \end{figure}
 
 
@@ -607,8 +604,8 @@ which is a sum of squares polynomial, as it can be written in the form
 \]
 which shows that \(p(x)\) is positive for all x. In fact, \(p\) is \ac{SOS} if
 and only if there exists a \acl{PSD} matrix \(Q\), such that \(p(x) =
-s{(x)}^{T}Qs(x)\). Also, the problem can be formulated using \textit{monomials} of
-degree one (square root of the degree of \(p\))\ref{monomialdegree}.
+s{(x)}^{T}Qs(x)\). Also, the problem can be formulated using \textit{monomials}
+of degree one (square root of the degree of \(p\))\ref{monomialdegree}.
 
 From now on, a constraint of the form \(f(x) \geq 0,\, \forall x\) will be
 written as \(f(x) \in SOS\).
@@ -652,8 +649,8 @@ applied. There are in general two ways of dealing with this:
 First method, is to Taylor expand equation. Second, is doing a change of
 coordinates of the form \(\left[ \theta \; \dot{\theta} \right] \) to \(\left[ s
   \;c \; \dot{\theta} \right]\), where \(s = \sin(\theta)\) and \(c =
-\cos(\theta)\). Then with \(x = {\left[ s \; c \; \dot{\theta} \right]}^{T}\) the
-dynamics can be written as
+\cos(\theta)\). Then with \(x = {\left[ s \; c \; \dot{\theta} \right]}^{T}\)
+the dynamics can be written as
 \[
   \dot{x} =
   \begin{bmatrix}
@@ -757,8 +754,7 @@ as approximations of the region of attraction for a nonlinear system.
 Given the system \(\dot{x} = -x + x^3\)
 
 \begin{figure}
-  \centering
-  \input{figures/preliminaries/regionofattractiononedimension.tex}
+  \centering \input{figures/preliminaries/regionofattractiononedimension.tex}
   \caption{The dynamical system \(\dot{x} = -x + x^3\)}
 \end{figure}
 which has three fixed points. Two unstable at \(x = \pm 1\), and one stable
@@ -815,7 +811,7 @@ prettyfix this
   \centering
   \input{figures/preliminaries/regionofattractiononedimensionuncertaingain}
   \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
-  where \(w\) is a bounded uncertainty parameter.}
+    where \(w\) is a bounded uncertainty parameter.}
 \end{figure}
 
 here the origin is still stable, but the \textit{robust region of attraction} is
@@ -1011,11 +1007,11 @@ Then, by setting \(\mathcal{X}_0 \subset F(0,\bar{x})\), one can derive the
 sufficient condition for containing the reachable~\ref{eq:reachableset} set in
 the Lyapunov function paramterization
 \begin{equation}
+  \label{eq:funnelsufficient}
   V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x}) < \dot{rho}(t), \, \forall t \in [0,T]
 \end{equation}
 with \(\dot{V}(t,\bar{x})\) computed as
 \begin{equation}
-  \label{eq:funnelsufficient}
   \dot{V}(t,\bar{x}) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x}) + \frac{\partial V(t,\bar{x})}{\partial t}
 \end{equation}
 
@@ -1119,7 +1115,7 @@ one arrives at
   \underset{\substack{V,\rho,L,L_{t},\\L_{0,i},S_{k},L_{\mathcal{E},k}}}{\inf}&  \sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))& \\
   \sum_{k=1}^{N} vol(\set{ \bar{x} \mid {\bar{x}}^{T}S_{k}\bar{x} \leq 1})&& \\
   \text{such that}&\\
-  \dot{\rho}(t) - \dot{V}(t,\bar{x}) - L(t,\bar{x}) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x})\left[ t\left( T - t \right) \right] \qquad \text{is SOS}& \\
+  \dot{\rho}(t) - \dot{V}(t,\bar{x}) - L(t,\bar{x}) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x})\left[ t\left( T - t \right) \right] \qquad \text{is SOS}& \label{eq:optimizationconditionsos}\\
   \rho(0) - V(0,\bar{x}) - \sum_{i}^{N}L_{0,i}(\bar{x})g_{0,i}(\bar{x})& \text{is SOS}& \\
   1 - {\bar{x}}^{T}S_{k}\bar{x} - L_{\mathcal{E},k}(\bar{x}) \left[ \rho(t_{k}) - V(t_{k},\bar{x}) \right]& \text{is SOS}& \\
                                                                               &\forall k \in \set{1,\ldots,N} \, S_{k} \succeq 0& \\
@@ -1147,6 +1143,7 @@ and
 algorithm for searching for a funnel
 
 \begin{algorithm}[H]
+  \label{alg:funnelalgorithm}
   \caption{Funnel computation}
   \DontPrintSemicolon \SetAlgoNoLine
 
@@ -1181,35 +1178,57 @@ save a lot of time, but exactness will be
 lost~\cite{majumdarFunnelLibrariesRealtime2017}. If \(t_{k} \in [0,T]\), where
 \(k \in \set{1,\ldots,N}\), the optimization equations will turn into
 \begin{mini}
-  {\substack{V_{k}, \rho, L_{k},\\ L_{0,i}, S_{k}, L_{\mathcal{E},k}}} % Optimization variables
-  {\sum_{k=1}^{N}\mathrm{vol}(\mathcal{E}(t_{k})) =
-  \sum_{k=1}^{N} \mathrm{vol}\left( \set{\bar{x} \mid {\bar{x}}^{T} S_{k}
-      \bar{x} \leq 1} \right)} % Optimization function
+  {\substack{V_{k}, \rho, L_{k},\\ L_{0,i}, S_{k},
+      L_{\mathcal{E},k}}} % Optimization variables
+  {\sum_{k=1}^{N}\mathrm{vol}(\mathcal{E}(t_{k})) = \sum_{k=1}^{N}
+    \mathrm{vol}\left( \set{\bar{x} \mid {\bar{x}}^{T} S_{k} \bar{x} \leq 1}
+    \right)} % Optimization function
   {\label{optidef:discrete}} % Label optimization problem
   {} % Optimization result
   % Constraints
   \addConstraint{\dot{\rho}(t_{k}) - \dot{V}_{k}(\bar{x}) - L_{k}(\bar{x})
-    \left( V_{k}(\bar{x}) - \rho(t_{k}) \right)}
-  {\qquad}
-  {\forall k \in \set{1,\ldots,N}}
-  \addConstraint{\rho(t_{1}) - V_{1}(\bar{x}) - \sum_{i}^{N_{0}}
-    L_{0,i}g_{0,i}(\bar{x})}
-  {\, \text{is SOS}}
-  {}
-  \addConstraint{1 - {\bar{x}}^{T} S_{k} \bar{x} - L_{\mathcal{E,k}}
-    \left(
-      \rho(t_{k}) - V_{k}(\bar{x})
-    \right)}
-  {\, \text{is SOS}}
-  {\forall k \in \set{1,\ldots,N}}
-  \addConstraint{S_{k} \succeq 0}
-  {}
-  {\forall k \in \set{1,\ldots,N}}
-  \addConstraint{L_{0,i}(\bar{x}), L_{\mathcal{E},k}}
-  {\, \text{are SOS}}
-  {\forall i \in \set{1,\ldots,N} \quad \forall k \in \set{1,\ldots,N}}
+    \left( V_{k}(\bar{x}) - \rho(t_{k}) \right)} {\qquad} {\forall k \in
+    \set{1,\ldots,N}} \addConstraint{\rho(t_{1}) - V_{1}(\bar{x}) -
+    \sum_{i}^{N_{0}} L_{0,i}g_{0,i}(\bar{x})} {\, \text{is SOS}} {}
+  \addConstraint{1 - {\bar{x}}^{T} S_{k} \bar{x} - L_{\mathcal{E,k}} \left(
+      \rho(t_{k}) - V_{k}(\bar{x}) \right)} {\, \text{is SOS}} {\forall k \in
+    \set{1,\ldots,N}} \addConstraint{S_{k} \succeq 0} {} {\forall k \in
+    \set{1,\ldots,N}} \addConstraint{L_{0,i}(\bar{x}), L_{\mathcal{E},k}} {\,
+    \text{are SOS}} {\forall i \in \set{1,\ldots,N} \quad \forall k \in
+    \set{1,\ldots,N}}
 \end{mini}
 
+\subsection{Adding uncertainty to the funnel calculation}
+
+Following are the changes to the formulations so that a funnel takes into
+account a bounded uncertainty term of the form \(\mathcal{W}) = \set{ w(t) \in
+  R^d \mid g_{w,j}(w) \geq 0 \forall j = 1,\ldots,N_w}\). Adding an extra term
+to the closed-loop dynamics equation
+\[
+  \dot{\bar{x}} = f_{cl}(t, \bar{x}(t), w(t))
+\]
+the requirement~(\ref{eq:reachableset}) is slightly modified so that
+\begin{equation}
+  \label{eq:uncertain-reachableset}
+  \bar{x}(0) \in \mathcal{X} \implies \bar{x}(t) \in F(t),\, \forall t \in
+  [0,T], \, \forall w \colon [0,T] \rightarrow \mathcal{W}
+\end{equation} 
+\(F(t)\) is the new reachable set for the uncertain system. Thus the sufficient
+condition~(\ref{eq:funnelsufficient}) turns into
+\begin{equation}
+  \label{eq:funneluncertain-sufficient}
+  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x},w) < \dot{rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W}.
+\end{equation}
+The Lyapunov function is calculated as
+\begin{equation}
+  \dot{V}(t,\bar{x}, w) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x},w) + \frac{\partial V(t,\bar{x})}{\partial t},
+\end{equation}
+and the optimization problem~(\ref{eq:optimizationconditionsos}) turns into
+\begin{align}
+  \label{eq:optimizationconditionuncertain}
+  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w)\qquad \text{is SOS} \\
+  \L_{w,j}(t,\bar{x},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w
+\end{align}
 
 \subsection{Only minimizing the volume of the funnel projected down into the
   xy-plane}
@@ -1300,8 +1319,9 @@ where \(q(x)\) and \(L(\bar{x})\) needs to be SOS polynomials.
 \subsubsection{Example - embedding a square within a circle}
 
 As a simple example let's have a look at embedding a square within a circle. For
-good measure let's give the circle a radius of \(\sqrt{2}+\epsilon\), and the square a
-radius of \(1\), and center them both at the origin in the Euclidean plane.
+good measure let's give the circle a radius of \(\sqrt{2}+\epsilon\), and the
+square a radius of \(1\), and center them both at the origin in the Euclidean
+plane.
 
 Starting with defining the set \(\beta\)
 \[
@@ -1317,10 +1337,10 @@ which can be formulated as
   p(x) &= r^2 - x^2 - y^2
 \end{align*}
 where \(p(x)\) is the parametrization of the circle, and \(\beta\) is the
-parametrization of the square with sides of length two. What needs to be shown is that \(p(x)\) is
-positive on the set \(\beta\). Through the \textit{S-procedure} this can be
-written as the search for a nonnegative polynomial \(L_{ineq,i}(x)\) such that
-\(p(x) \geq \left( sg \right)(x)\). Thus
+parametrization of the square with sides of length two. What needs to be shown
+is that \(p(x)\) is positive on the set \(\beta\). Through the
+\textit{S-procedure} this can be written as the search for a nonnegative
+polynomial \(L_{ineq,i}(x)\) such that \(p(x) \geq \left( sg \right)(x)\). Thus
 \[
   q(x) = p(x) - \sum_{i=1}^{2}L_{ineq,i}(x)g_{ineq,i}(x)
 \]
