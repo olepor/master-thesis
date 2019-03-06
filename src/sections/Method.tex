@@ -250,8 +250,6 @@ variables.
 
 \section{Distance metric for expansion (Maybe for the RRT section?)}
 
-\section{Poisson generation of the simulated forest} (Cool section!)
-
 \section{RRT}
 
 \subsection{Rapidly exploring the state-space}
@@ -285,6 +283,13 @@ and shorter subfunnels for use in the \rrtfunnel{} algorithm.
   \centering
   \caption{Two funnels composed.}
 \end{figure}
+
+\subsection{Composition of funnels}
+
+In order to ensure that the motion primitives in the \ac{RRT} can be added onto
+eachother, and that this addition does not remove the robustness guarantess
+embroidered in a single funnel. Thus in order to ensure that two motion
+primitives are composable.
 
 \section{TVLQR}
 
