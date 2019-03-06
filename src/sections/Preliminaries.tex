@@ -10,15 +10,14 @@ its initial to the desired goal configuration. This plan is then passed on to
 the trajectory generator in the system. Generally, planners can be separated
 into complete and non-complete planners, meaning that given enough time, all
 motion planning problems are solvable, only the solution is NP-Hard. Thus
-feasible solutions will have to make a compromise, and a lot of planners in use
-today are probabilistically complete, meaning that they converge to a perfect
-solution given infinite time. As such time-frames are of no use to us, we
-generally have to settle for an approximation bound. There is a difference
-between on-line and off-line motion planning, whereas the offline algorithm
-plans in a static environment, the online algorithm is run continuously. However
-an on-line algorithm can be simulated by running an offline algorithm repeatedly
-for short intervals of time. However, this comes with the drawback, that no
-guarantee can be made for completing the task at hand \cite{Lav06}.
+feasible solutions will have to make a compromise. A lot of planners in use
+today are probabilistically complete, meaning that they converge to a optimal
+solution given infinite time. There is a difference between on-line and off-line
+motion planning, whereas the offline algorithm plans in a static environment,
+the online algorithm is run continuously. However an on-line algorithm can be
+simulated by running an offline algorithm repeatedly for short intervals of
+time. However, this comes with the drawback, that no guarantee can be made for
+completing the task at hand \cite{Lav06}.
 
 
 \section{General motion planning building blocks}

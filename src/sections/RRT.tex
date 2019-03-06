@@ -69,8 +69,8 @@ figure~\ref{fig:voronoi-diagram}.
 
 \begin{figure}
   \includegraphics[scale=.3]{figures/rrt/voronoi-diagram}
-  \caption{Pictured: The Voronoi regions for a collection of points in the plane,
-    using the standard Euclidean metric.}
+  \caption{Pictured: The Voronoi regions for a collection of points in the
+    plane, using the standard Euclidean metric.}
   \label{fig:voronoi-diagram}
 \end{figure}
 
@@ -80,7 +80,8 @@ probability for getting expanded, as can be seen in
 figure~\ref{fig:rrt-voronoi}.
 
 \begin{figure}
-  \frame{\includegraphics[clip, trim=5cm 9cm 5cm 9cm, scale=.5]{figures/rrt/rrtvoronoi}}
+  \frame{\includegraphics[clip, trim=5cm 9cm 5cm 9cm,
+    scale=.5]{figures/rrt/rrtvoronoi}}
   \caption{Pictured: The voronoi regions for each node in a simple RRT tree,
     which shows how the voronoi bias will lead the algorithm towards unexplored
     areas quickly.}
@@ -115,7 +116,7 @@ holonomic vehicles \cite{parkFeedbackMotionPlanning2015}.
     applicable to unicycle- type vehicles, that properly reflects the true
     cost-to-go of the system under the non-holonomic constraint. (figure
     courtesy of \cite{parkFeedbackMotionPlanning2015})}
-\label{fig:non-holonomic-vehicle-euclidean-weakness}
+  \label{fig:non-holonomic-vehicle-euclidean-weakness}
 \end{figure}
 
 \subsection{BiDirectional}
@@ -144,7 +145,27 @@ In general, even though the \ac{RRT} algorithm is sampling based, it will, as
 time goes to infinity achieve probabilistic completeness in the state-space,
 meaning that.
 
+\subsection{Discrete RRT}
+
 \subsection{RRT's with motion primitives}
+
+
+\subsection{Motion Primitives}
+
+A motion primitive is a discrete action chosen from some action set
+\(\modelactionspace{}\), and applied as a constant action over a fixed period of
+time. The time periods can vary in length, as the primitives do not need to have
+the same time length. Thus in the model:
+\[
+  x_{k+1} = f_d(x_k,u_k)
+\]
+Where \(x_k = x((k-1)\delta{}t)\), and \(u_k\) is the action in
+\(\modelactionspace{}_d\) that is applied from time \((k-1)\delta{}t\) to
+\(k\delta{}t\). If we let \(\overline{u}^p\) be a motion primitive in
+\(\modelactionspace{}\), which is a function from an interval of time, unto
+\(modelactionspace{}\). Then by letting the interval of time start at 0 and stop
+at \(t_F(\overline{u}^p)\), which has a final time that depends on the
+particular prmitive~\cite{Lav06}.
 
 The performance of the \ac{RRT} algorithm is dependent upon the control inputs
 employed to search the state-space. For systems with few control inputs, random
@@ -156,28 +177,43 @@ task~\cite{vonasekGlobalMotionPlanning2013}. An example of this employed on a
 humanoid robot can be found in~\cite{hauserUsingMotionPrimitives2008}. A simple
 basis of motion primitives for a vehicle can therefore be 'turn-left',
 'go-straight', or 'turn-right'. By chaining these basic smooth motion primitves
-together a smooth path from the intial- to the goal-state can be found.
+together a smooth path from the intial- to the goal-state can be found. A figure
+displaying a tree built up from the tree motion primitives can be seen
+in~(\ref{fig:motion-primitive-tree}).
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=.5]{figures/preliminaries/motion-primitive-tree}
+  \caption{A simple motion primitive tree from the
+    paper~\cite{vonasekHighlevelMotionPlanning2015}, displaying the composition
+    of a left, right and a straight motion primitive.}
+  \label{fig:motion-primitive-tree}
+\end{figure}
+
+Thus in essence robust motion primitives are beneficial as they seperate the
+dynamics from the planner, enabling the planner to reason about what actions to
+take, and not in what manner they should be executed.
 
 \subsection{Funnel}
 
 A Funnel is a motion primitive that is `guaranteed' to take the vehicle from a
-set of initial conditions to a set of goal states. 
+set of initial conditions to a set of goal states.
 
 \subsubsection{Composition of funnels}
 
-In essence the 
-Each funnel solves the subgoal of getting from the initial set of the funnel to
-the goal set. Thus in essence each funnel solves the subproblem of getting from
-one funnel to the next, and therefore composing funnels from some global initial
-state to the goal state will have solve the motion planning problem with the
-guarantees given by the tubes used for the planning task at hand.
+In essence the Each funnel solves the subgoal of getting from the initial set of
+the funnel to the goal set. Thus in essence each funnel solves the subproblem of
+getting from one funnel to the next, and therefore composing funnels from some
+global initial state to the goal state will have solve the motion planning
+problem with the guarantees given by the tubes used for the planning task at
+hand.
 
 TODO - insert pretty picture of funnel with the integral curves of the extremal
 paths embedded in beautiful red.
 
 \subsubsection{Reachability plot for the Ground-Vehicle}
 TODO - plot the reachability for the ground-vehicle in some time interval using
-simulations. 
+simulations.
 
 TODO - plot A reachability tree in 3D using funnels - because different theta's
 can exists at the same x,y positiions.
@@ -192,20 +228,23 @@ problem, as this involves solving another optimal planning problem, and will
 therefore be as, or more complex than the motion planning problem which is
 already being solved. Therefore in general we will have to limit ourselves to
 approximate distance metrics. The idea is to get as close to the optimal
-cost-to-go function without having to compute expensive computations~\cite{Lav06}.
-Distance metrics candidates in the RRT-Funnel algorithm:
+cost-to-go function without having to compute expensive
+computations~\cite{Lav06}. Distance metrics candidates in the RRT-Funnel
+algorithm:
 \begin{itemize}
-  \item Time - Since time can be found by simple summing up the time of all the
-    funnels which need be added to get to the certain point in the configuration space.
-  \item Lyapunov function - As the Lyapunov function can be seen as an energy
-    function, the cost to go to a point can (probably) be used as a metric in
-    the planning.
-  \item Length of the shortest path between two configurations - ignoring collisions.
-  \item A* search heuristics.
-  \item Geometric - Stacking Funnels, where the shortest funnel of funnels wins.
-    e.g. if the point is not in the cone projected out from the current state by
-    the current motion primitives, pick the most extreme turn, and start over
-    once again. If it can be reached by a turn, turn, then go straight for N-Funnels.
+\item Time - Since time can be found by simple summing up the time of all the
+  funnels which need be added to get to the certain point in the configuration
+  space.
+\item Lyapunov function - As the Lyapunov function can be seen as an energy
+  function, the cost to go to a point can (probably) be used as a metric in the
+  planning.
+\item Length of the shortest path between two configurations - ignoring
+  collisions.
+\item A* search heuristics.
+\item Geometric - Stacking Funnels, where the shortest funnel of funnels wins.
+  e.g. if the point is not in the cone projected out from the current state by
+  the current motion primitives, pick the most extreme turn, and start over once
+  again. If it can be reached by a turn, turn, then go straight for N-Funnels.
 \end{itemize}
 
 Note that most of these metrics are not metrics in the full sense, as they do
@@ -215,27 +254,8 @@ nonholonomic vehicle.
 
 \subsubsection{How to extend the tree?}
 
-Should it be expanded into the dynamic Voronoi regions? If so, what are these regions?
-
-
-\subsection{Motion Primitives}
-
-A motion primitive is a discrete action chosen from some action set
-\(\modelactionspace{}\), and applied as a constant action over a fixed period of
-time. The time periods can vary in length, as the primitives do not need to have
-the same time length. Thus in the model:
-
-\begin{math}
-  x_{k+1} = f_d(x_k,u_k)
-\end{math} 
-
-Where \(x_k = x((k-1)\delta{}t)\), and \(u_k\) is the action in
-\(\modelactionspace{}_d\) that is applied from time \((k-1)\delta{}t\) to
-\(k\delta{}t\). If we let \(\overline{u}^p\) be a motion primitive in
-\(\modelactionspace{}\), which is a function from an interval of time, unto
-\(modelactionspace{}\). Then by letting the interval of time start at 0 and stop
-at \(t_F(\overline{u}^p)\), which has a final time that depends on the
-particular prmitive~\cite{Lav06}.
+Should it be expanded into the dynamic Voronoi regions? If so, what are these
+regions?
 
 
 \subsection{Reachability Graph}

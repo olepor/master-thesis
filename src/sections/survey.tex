@@ -202,3 +202,15 @@ is~\cite{lenySequentialCompositionRobust2012}, as the paper also employs an
 \ac{RRT} algorithm which builds a tree of funnels. The differences however are
 that this algorithm is discrete and the funnels are computed using a \ac{SOS}
 framework.
+
+\subsection{Motion primitives}
+
+Applying motion primitives in a \ac{RRT} planner is shown to be beneficial for
+generating smoother paths, and offers a significant speedup on the planning
+process if the motion primitive library is
+sparse~\cite{vonasekGlobalMotionPlanning2013}. An example of motion primitives
+offering an advantage to continuously generated motion trajectories is shown
+in~\cite{vonasekHighlevelMotionPlanning2015}, where a modular robot is given the
+motion primitives \(\set{\mathrm{'left'}, \mathrm{'right'},
+  \mathrm{'straight'}}\), and the robot is able to get from the initial to the
+goal state in reasonable time, despite very complicated dynamics.
