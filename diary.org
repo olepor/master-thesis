@@ -3,3 +3,33 @@
 **  Create SOS Chapter based on edX lectures in underactuated robotics with Russ Tedrake. Especially the funnel lecture! (Do cite this also!)
 **  Collision-checking for funnels can be done using a convex-quadratic-program ( for quadratic Lyapunov functions that is!).
 **  As every sub-level set of a funnel is also a funnel, the funnels can be trimmed down in case of a collision!
+   
+* 5/3/19
+** Start the Experiments section
+*** FIXED Deciding on vehicle and obstacle relative sizes and measuremeants and scaling (Have it all in m?) How big is a tree?
+    CLOSED: [2019-03-05 Tue 14:59]
+**** Should this go in the method section also? 
+*** FIXED Moving the funnel expansion part here (First decide on the size of the vehicle.)
+    CLOSED: [2019-03-05 Tue 14:59]
+*** FIXED Write the poisson tree generation part.
+    CLOSED: [2019-03-05 Tue 14:59]
+*** DONE Create the benchmark RRT-planner which optimizes the distance to the nearest obstacle in the Euclidean metric.
+    CLOSED: [2019-03-05 Tue 10:41]
+    - State "DONE"       from "PR"         [2019-03-05 Tue 10:41]
+**** Currently no max distance to obstacles. 
+     - State "DONE"       from "MERGED"     [2019-03-05 Tue 16:02]
+** General
+*** FIXED Organize the intro section properly. Move some funnel parts to the first appendix.
+    CLOSED: [2019-03-06 Wed 09:01]
+*  6/3/19
+**  Experiments
+*** What more to do with the benchmark planner?
+****  Is it necessary to have max-dist to obstacles? Why not leave it as is?
+*** Have a look at the essay, and figure out what has to be done with it before the final submission.
+*** Need literature on RRT with motion primitives -> Find!
+** Write RRT-Intro part.
+***  Need to find more sources to build this on. What is to be included in it?
+**** Find literature on general rrt's. Master and doctoral thesis' probably a good place to start.
+** General
+*** Cleanup all the double references from multiple zot and bib files (What a mess!).
+*** The optimization problems needs to be cleaned up!

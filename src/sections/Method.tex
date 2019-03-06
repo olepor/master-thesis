@@ -244,6 +244,8 @@ coordinates of the system has to be determined. ex:
 which shows that the LaGrangian is invariant to shifts in the \((x,y,\theta)\)
 variables. 
 
+\subsection{The Identity funnel}
+
 \subsection{Simulating the funnels, checking if the model stays within the
   funnel at all times.}
 
@@ -304,50 +306,6 @@ current state into the quadratic Lyapunov function
 \[
   {\bar{x}}^{T}S_{k}\bar{x} + \bar{x}s_{1} \bar{x} s_{2}
 \]
-
-\subsection{Expanding the size of the funnel by the size of the simulated vehicle}
-
-The size of the vehicle in the model is in the original vehicle model in
-\ref{TODO}, a single point, and as such, not accounted for in the funnel before
-running simulations. Therefore the funnels have to be expanded in order for them
-to accomodate the necessary robustness guarantees that are expected. However,
-the size of the vehicle only affects the size of the funnel ellipsis projected
-down into the xy-plane. Therefore first getting the projected size of the funnel
-where \(P \colon \R^4 \rightarrow \R^2\) is a projection map with a
-projection matrix 
-\[
-  P =
-  \begin{bmatrix}
-    I & \mathbf{0} \\
-    \mathbf{0} & \mathbf{0} \\
-\end{bmatrix}
-\]
-such that for the projected ellipsoid
-\[
-  \mathcal{E}_{p} = \set{\bar{x} \in \R^{2} \mid {\bar{x}}^{T}S_{k}^{(p)}\bar{x}
-  \leq 1}
-\]
-and
-\[
-  S_{k}^{(p)} = \left( PS_{k}^{-1}P^T \right)^{-1}
-\]
-and \(\mathcal{E}_{p}\) is the projected set of the ellipsoid projected down
-into the xy-plane~\cite{majumdarFunnelLibrariesRealtime2017}. In general an
-ellipse centered at the origin is a linear transformation of the unit
-circle~\cite{lay2005linear}. Exploiting this fact, expanding the radius of the
-circle to encompass the vehicle model. Also taking into account that the matrix
-\(S_{k}\) is \textit{Positive semidefinite}, and hence can be cholezky
-factorized~\cite{lay2005linear}. The expanded ellipsis (which now contains all
-the possible states of the vehicle model) is:
-
-\begin{align*}
-  S_{k}^{\mathcal{P}} &= R^{T}R \\
-  \mathcal{C} &= \set{y \in \R^2 \mid y^{T}y \leq 1 + r_{vehicle}} \\
-  S_{k}^{p'} &= R^{-1}y \\
-\end{align*}
-
-where \(S_{k}^{'}\) is the ellipsoid which contains the volume of the vehicle
-for all verfied states in the funnel.
 
 \section{Creating more motion primitives}
 

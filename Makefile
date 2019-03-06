@@ -10,7 +10,7 @@ all: setup
 	# @mv tests/thesis/main.tex tests/thesis/maintemplate.tex
 	# @tests/scripts/createIncludeOnly thesis tests/thesis/maintemplate.tex
 	# @cd tests/thesis/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
-	@cp {bibliography,zot}.bib ./tests/thesis/
+	@cp zot.bib ./tests/thesis/
 	@cd tests/thesis/ && latexmk --output-directory=./build -cd -bibtex -pdf  ./main.tex
 	@open tests/thesis/build/main.pdf
 
@@ -30,7 +30,7 @@ section: src/sections/$(section).tex
 	@mv tests/$(section)/main.tex tests/$(section)/maintemplate.tex
 	@tests/scripts/createIncludeOnly $(section) tests/$(section)/maintemplate.tex
 	# @cd tests/$(section)/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
-	@cp {bibliography,zot}.bib ./tests/$(section)/
+	@cp zot.bib ./tests/$(section)/
 	@cd tests/$(section)/ && latexmk --output-directory=./build -cd -bibtex -pdf  ./main.tex
 	@open tests/$(section)/build/main.pdf
 
