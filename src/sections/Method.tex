@@ -39,13 +39,12 @@ which is a second-order unicycle model with constant speed. A picture of the
 model can be found in figure~(\ref{fig:second-order-unicycle}).
 
 \begin{figure}
-  \label{fig:second-order-unicycle}
   \centering
-  \Huge
   \resizebox{10em}{!}{
     \import{figures/method/}{unicycle-model.pdf_tex}
   }
   \caption{The unicycle model of a vehicle.}
+  \label{fig:second-order-unicycle}
 \end{figure} 
 
 Although this is the only model used in this thesis, the framework and the code
@@ -62,11 +61,10 @@ Using a cost function of the type
   J = \int_{0}^{T} \left[ 1 + {u_{0}}^{T}Ru_{0} \right] dt
 \end{equation}
 
-The initial trajectory set is pictured in~\ref{fig:intial-trajectories}, and
+The initial trajectory set is pictured in~\ref{fig:initial-trajectories}, and
 consists of a left-turn, a straight-forward, and a right-turn motion.
 
 \begin{figure}
-  \label{fig:initial-trajectories}
   \centering
   \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{figures/method/straight-trajector}
@@ -81,6 +79,7 @@ consists of a left-turn, a straight-forward, and a right-turn motion.
   \end{minipage}
   \caption{The three motion primitives for the \rrtfunnel{} algorithm, one
     straight, one left, and one right turn.}
+  \label{fig:initial-trajectories}
 \end{figure}
 
 
@@ -129,7 +128,7 @@ With the nominal trajectories, and the initial Lyapunov functions now ready, the
 funnels around the nominal trajectories can be calculated using the
 algorithm~\ref{alg:funnelalgorithm}. The implementation is an expansion upon
 code from the~\cite[Drake toolbox]{drake}, whereas the \ac{SOS} implementation
-is kicked out to a \ac{SOS} solver built upon~\[sostools\]cite{sostools}.
+is kicked out to a \ac{SOS} solver built upon~\[sostools\]\cite{sostools}.
 
 First of all the system dynamics for the model~\ref{eq:model-dynamics} are still
 not polynomial, so the polynomial system needed for the \ac{SOS}-verification is
@@ -318,13 +317,13 @@ the original \ac{RRT} algorithm.
 
 (Downsides -- does not necessarily expand into other parts than the xy-plane?).
 
-A collection of the added motion primitives is shown in~(\ref{fig:expanded-motion-primtives}).
+A collection of the added motion primitives is shown in~(\ref{fig:expanded-motion-primitives}).
 
 \begin{figure}
-  \label{fig:expanded-motion-primitives}
   % \includegraphics[scale=.5]{figures/method/expanded-motion-primitives}
   \caption{A collection of motion primitives built from the base set of
     primitives.}
+  \label{fig:expanded-motion-primitives}
 \end{figure}
 
 \subsection{}

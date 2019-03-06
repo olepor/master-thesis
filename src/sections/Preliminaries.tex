@@ -18,7 +18,7 @@ between on-line and off-line motion planning, whereas the offline algorithm
 plans in a static environment, the online algorithm is run continuously. However
 an on-line algorithm can be simulated by running an offline algorithm repeatedly
 for short intervals of time. However, this comes with the drawback, that no
-guarantee can be made for completing the task at hand \cite{LaValle09}.
+guarantee can be made for completing the task at hand \cite{Lav06}.
 
 
 \section{General motion planning building blocks}
@@ -257,10 +257,10 @@ simple car model, monte-carlo simulation of nine starting points along the
 y-axis looks like~(\ref{fig:monte-carlo-sim}).
 
 \begin{figure}
-  \label{fig:monte-carlo-sim}
   \centering \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
   \caption{The simulation of N paths starting from a random point in the
     interval \(\sqb{-.5,.5}\), and controlled with a LQR controller.}
+  \label{fig:monte-carlo-sim}
 \end{figure}
 
 In this thesis a \textit{Funnel} will refer to the \textit{outer approximation
@@ -380,7 +380,7 @@ with \(\dot{V}(t,\bar{x})\) computed as
 
 Currently there are no limitations on the functions \(V\) and \(\rho\), and
 hence there exists infinitely many functions with different sized reachable sets
-that satisfies~\ref{eq:funnelsifficient}, and is a valid funnel in the sense of
+that satisfies~\ref{eq:funnelsufficient}, and is a valid funnel in the sense of
 definition~\ref{def:funnel}. In order for efficient planning to take place, the
 motion primitives, meaning the size of the funnels, should be as small as
 possible, and it is therefore that the size of the funnels is minimized using
@@ -442,8 +442,7 @@ in~\cite{majumdarFunnelLibrariesRealtime2017}, through approximating the cost
 function by first discretizing the problem and replacing the integral with a
 finite sum
 \begin{equation}
-  \label{eq:discrete-costfunction}
-  \int_{0}^{T} vol(F(t)) dt \rightarrow \sum_{k=1}^{N} vol(F(t_{k}))
+  \int_{0}^{T} vol(F(t)) dt \rightarrow \sum_{k=1}^{N} vol(F(t_{k})) \label{eq:discrete-costfunction}
 \end{equation}
 Since the Lyapunov function \(V\) in this thesis will be quadratic, \(V\) can be
 written as
@@ -469,7 +468,7 @@ Which when expressed using \ac{SOS} constraints is
   L_{\mathcal{E},k}(\bar{x}) \qquad \text{is SOS.}& \\
 \end{align}
 
-Then combining the cost function~(\ref{discrete-costfunction}) with the
+Then combining the cost function~(\ref{eq:discrete-costfunction}) with the
 constraints~(\ref{eq:sufficient-conditions}-\ref{eq:sufficient-conditions3}),
 one arrives at
 
@@ -727,7 +726,7 @@ smallest circle which encompasses the square - TODO - do this later.)
 
 In order to verify regions of attraction along a trajectory, as opposed to
 around a single point, some minor modifications to the problem definition has to
-be made \cite[see Tedrake et al]{tedrakesomeyear}.
+be made~\cite{tobenkinInvariantFunnelsTrajectories2010}.
 
 \subsection{Shifting funnels around in the world frame}
 

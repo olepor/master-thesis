@@ -30,6 +30,13 @@
 ** Write RRT-Intro part.
 ***  Need to find more sources to build this on. What is to be included in it?
 **** Find literature on general rrt's. Master and doctoral thesis' probably a good place to start.
+*** Write the RRT distance metric section in the method chapter.
 ** General
-*** Cleanup all the double references from multiple zot and bib files (What a mess!).
+*** FIXED Cleanup all the double references from multiple zot and bib files (What a mess!).
+*** FIXED Fixup the dead cite keys in all chapters.
+*** Some ISBN's in the bibliography are dead. Have a look at this.
+*** FIXED Even after the duplicate bib files are merged, I get duplicate entries. Why?
+    CLOSED: [2019-03-06 Wed 09:52]
 *** The optimization problems needs to be cleaned up!
+*** FIXED Fix undefined references in compilation of whole thesis. Why is this happening?
+    CLOSED: [2019-03-06 Wed 10:48]

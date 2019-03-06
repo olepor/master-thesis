@@ -23,40 +23,41 @@ probability of expanding from an existing node in the tree is proportional the
 the \textit{Voronoi region} of that node, and as the largest \textit{Voronoi
   regions} belongs to the states on the leaves of the tree, this means that the
 tree will quickly expand into unexplored parts of the state space, as can be
-seen in~\ref{fig:rrt-expansion}, and~\ref{fig:voronoi-expansion}.
+seen in~\ref{fig:rrt-expansion}, and~\ref{fig:rrt-voronoi}.
 
 \begin{figure}
-  \includegraphics{figures/rrt/rrt-pseudo.tex} % TODO - this takes the here option?
+  \includegraphics{figures/rrt/rrt-pseudo.tex}
 \end{figure}
 
 \begin{figure}
-  \label{fig:rrt-expansion}
   \centering
-  \begin{subfigure}[b]{0.3\textwidth}
+  \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{plainRRT10}
     \caption{RRT-tree after 10 iterations.}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{plainRRT50}
     \caption{RRT-tree after 50 iterations.}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{plainRRT100}
     \caption{RRT-tree after 100 iterations.}
-  \end{subfigure}
+  \end{minipage}
   \newline % Start the new line of plainRRT10.
-  \begin{subfigure}[b]{0.3\textwidth}
+  \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{plainRRT500}
     \caption{RRT-tree after 500 iterations.}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{plainRRT1000}
     \caption{RRT-tree after 1000 iterations.}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{plainRRT10000}
     \caption{RRT-tree after 10000 iterations.}
-  \end{subfigure}
+  \end{minipage}
+  \caption{How the \ac{RRT} algorithm explores the state space.}
+  \label{fig:rrt-expansion}
 \end{figure}
 
 \subsection{Voronoi diagrams}
@@ -69,10 +70,10 @@ it~\cite{aurenhammerVoronoiDiagramsSurvey1991}, as can be seen in the
 figure~\ref{fig:voronoi-diagram}.
 
 \begin{figure}
-  \label{fig:voronoi-diagram}
   \includegraphics[scale=.3]{figures/rrt/voronoi-diagram}
   \caption{Pictured: The Voronoi regions for a collection of points in the plane,
     using the standard Euclidean metric.}
+  \label{fig:voronoi-diagram}
 \end{figure}
 
 When inspecting the Voronoi regions of a \ac{RRT} tree, it is appareant that the
@@ -80,11 +81,11 @@ leaf nodes will have the largest Voronoi regions, and thus also the largest
 probability for getting expanded, as can be seen in figure~\ref{fig:rrt-voronoi}.
 
 \begin{figure}
-  \label{fig:rrt-voronoi}
   \frame{\includegraphics[clip, trim=5cm 9cm 5cm 9cm, scale=.5]{figures/rrt/rrtvoronoi}}
   \caption{Pictured: The voronoi regions for each node in a simple RRT tree,
     which shows how the voronoi bias will lead the algorithm towards unexplored
     areas quickly.}
+  \label{fig:rrt-voronoi}
 \end{figure}
 
 \subsection{BiDirectional}
@@ -136,7 +137,7 @@ problem, as this involves solving another optimal planning problem, and will
 therefore be as, or more complex than the motion planning problem which is
 already being solved. Therefore in general we will have to limit ourselves to
 approximate distance metrics. The idea is to get as close to the optimal
-cost-to-go function without having to compute expensive computations~\cite{LaValle09}.
+cost-to-go function without having to compute expensive computations~\cite{Lav06}.
 Distance metrics candidates in the RRT-Funnel algorithm:
 \begin{itemize}
   \item Time - Since time can be found by simple summing up the time of all the
@@ -179,7 +180,7 @@ Where \(x_k = x((k-1)\delta{}t)\), and \(u_k\) is the action in
 \(\modelactionspace{}\), which is a function from an interval of time, unto
 \(modelactionspace{}\). Then by letting the interval of time start at 0 and stop
 at \(t_F(\overline{u}^p)\), which has a final time that depends on the
-particular prmitive~\cite{LaValle09}.
+particular prmitive~\cite{Lav06}.
 
 
 \subsection{Reachability Graph}
