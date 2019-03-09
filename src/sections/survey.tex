@@ -139,11 +139,11 @@ faster path, with higher uncertainty when time is short. A method for doing so
 is given in~\cite{vandenbergLQGMPOptimizedPath2011} and is based on the
 \textit{Linear Quadratic Gaussian Motion Planning} LQG-MP algorithm. Another
 more recent implementation is~\cite{blakeEfficientComputationCollision2018}.
-In~\cite{kurniawatiGlobalMotionPlanning} a motion planner called
-\textit{Guided Cluster Sampling} is used to that takes into account all three
-sources of uncertainty for robots with active sensing capabilities. This method
-builds on the POMDP framework by utilizing a more suitable sampling distribution
-based on the observations done by the robots active sensors.
+In~\cite{kurniawatiGlobalMotionPlanning} a motion planner called \textit{Guided
+  Cluster Sampling} is used that takes into account all three sources of
+uncertainty for robots with active sensing capabilities. This method builds on
+the POMDP framework by utilizing a more suitable sampling distribution based on
+the observations done by the robots active sensors.
 In~\cite{huangRRTSLAMMotionPlanning2008} the \textit{RRT-SLAM} method is
 introduced, where uncertainty is used in the RRT-planner by moving the state
 space up a dimension, then this is joined together with a \textit{Simultaneous
@@ -179,7 +179,8 @@ paper building on the traversal of rough terrain method given previously
 is~\cite{iagnemmaRapidPhysicsbasedRoughterrain1999}. It also gives a nice
 overview of how to incorporate uncertainty into the path-planning algorithm.
 
-% TODO - implement automatic update of table-1 similar to that presented in:https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7339478
+% TODO - implement automatic update of table-1 similar to that presented
+% in:https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7339478
 
 \section{Implementations}
 A quick survey of implementations of motion planners on UGVs operating in

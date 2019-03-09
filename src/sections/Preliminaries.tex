@@ -240,8 +240,8 @@ actions can be thought of as one simple action.
 
 A \textit{Funnel} is a parametrization of the reachable set of a dynamical
 system. This means that a \textit{Funnel} holds all the states the dynamical
-system can be in during a planning task. Mathematically the
-reachable set of the system is defined as
+system can be in during a planning task. Mathematically the reachable set of the
+system is defined as
 \[
   \bar{x}(0) \in \mathcal{X}_0 \implies \bar{x}(t) \in F(t), \forall t \in
   \sqb{0,T}
@@ -285,7 +285,7 @@ defined as
 \]
 where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
 interval, and \(F(t)\) is the set of states that the system can be in at time
-\(t\). 
+\(t\).
 
 \subsection{Defining funnels}
 
@@ -471,18 +471,22 @@ Then combining the cost function~(\ref{eq:discrete-costfunction}) with the
 constraints~(\ref{eq:sufficient-conditions}-\ref{eq:sufficient-conditions3}),
 one arrives at
 
-% TODO - maybe use optidef?
-\begin{align}
-  \underset{\substack{V,\rho,L,L_{t},\\L_{0,i},S_{k},L_{\mathcal{E},k}}}{\inf}&  \sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))& \\
-  \sum_{k=1}^{N} vol(\set{ \bar{x} \mid {\bar{x}}^{T}S_{k}\bar{x} \leq 1})&& \\
-  \text{such that}&\\
-  \dot{\rho}(t) - \dot{V}(t,\bar{x}) - L(t,\bar{x}) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x})\left[ t\left( T - t \right) \right] \qquad \text{is SOS}& \label{eq:optimizationconditionsos}\\
-  \rho(0) - V(0,\bar{x}) - \sum_{i}^{N}L_{0,i}(\bar{x})g_{0,i}(\bar{x})& \text{is SOS}& \\
-  1 - {\bar{x}}^{T}S_{k}\bar{x} - L_{\mathcal{E},k}(\bar{x}) \left[ \rho(t_{k}) - V(t_{k},\bar{x}) \right]& \text{is SOS}& \\
-                                                                              &\forall k \in \set{1,\ldots,N} \, S_{k} \succeq 0& \\
-  \forall k \in \set{1,\ldots,N} L_{t}(t,\bar{x}),\, L_{0,i}(\bar{x})& \text{are SOS}& \\
-  \forall i \in \set{1,\ldots,N},& \forall k \in \set{1,\ldots,N}& \\
-\end{align}
+\begin{mini!}|s|[3]
+  {\substack{V,\rho,L,L_{t},\\L_{0,i},S_{k},L_{\mathcal{E},k}}}{\sum_{k=1}^{N}
+    \mathrm{vol}(\mathcal{E}(t_{k})) = \sum_{k=1}^{N} \mathrm{vol}(\set{ \bar{x}
+      \mid {\bar{x}}^{T}S_{k}\bar{x} \leq 1 }} {\label{eq:Example1}}{}
+  \addConstraint{\dot{\rho}(t) - \dot{V}(t,\bar{x}) - L(t,\bar{x}) \left[
+      V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x})\left[ t\left( T - t
+      \right) \right] \label{eq:optimizationconditionsos}}{&\text{is SOS}}
+  \addConstraint{\rho(0) - V(0,\bar{x}) -
+    \sum_{i}^{N}L_{0,i}(\bar{x})g_{0,i}(\bar{x}) }{&\text{is SOS}}
+  \addConstraint{1 - {\bar{x}}^{T}S_{k}\bar{x} - L_{\mathcal{E},k}(\bar{x})
+    \left[ \rho(t_{k}) - V(t_{k},\bar{x}) \right] }{&\text{is SOS}}
+  \addConstraint{S_{k} \succeq 0}{}{\forall k \in \set{1,\ldots,N}}
+  \addConstraint{L_{t}(t,\bar{x}),\, L_{0,i}(\bar{x})}{&\text{are SOS}}
+  \addConstraint{}{}{\forall i \in \set{1,\ldots,N_{0}}\forall k \in
+    \set{1,\ldots,N}}
+\end{mini!}
 Which is the finite dimensional optimization problem needed in order to search
 for a Lyapunov function candidate.
 
@@ -578,16 +582,17 @@ the requirement~(\ref{eq:reachableset}) is slightly modified so that
 condition~(\ref{eq:funnelsufficient}) turns into
 \begin{equation}
   \label{eq:funneluncertain-sufficient}
-  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x},w) < \dot{rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W}.
+  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x},w) < \dot{\rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W}.
 \end{equation}
 The Lyapunov function is calculated as
 \begin{equation}
   \dot{V}(t,\bar{x}, w) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x},w) + \frac{\partial V(t,\bar{x})}{\partial t},
 \end{equation}
-and the optimization problem~(\ref{eq:optimizationconditionsos}) turns into
+and the optimization condition~(\ref{eq:optimizationconditionsos}) turns into
 \begin{align}
   \label{eq:optimizationconditionuncertain}
-  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w)\qquad \text{is SOS} \\
+  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  & \\
+  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w)& \qquad \text{is SOS}  \\
   \L_{w,j}(t,\bar{x},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w
 \end{align}
 
@@ -737,6 +742,6 @@ at any point in time * Construct a graph which takes these effects into account.
 \subsection{Cyclic coordinates and LaGrangian dynamics}
 
 The \funnel\'s generated in this thesis will be motion primitives for the
-\rrtfunnel\ algorithm this thesis develops.
+\rrtfunnel{} algorithm this thesis develops.
 
 

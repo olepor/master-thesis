@@ -29,10 +29,11 @@
 *** FIXED Write the RRT motion primitves section in the introduction.
     CLOSED: [2019-03-06 Wed 16:28]
 **  Experiments
-*** What more to do with the benchmark planner?
+*** FIXED What more to do with the benchmark planner?
+    CLOSED: [2019-03-06 Wed 18:57]
 ****  Is it necessary to have max-dist to obstacles? Why not leave it as is?
-*** Have a look at the essay, and figure out what has to be done with it before the final submission.
-*** Add a nice picture showing the size of the vehicle used in the experiments, to the determine the size section.
+*** FIXED Add wheels to the vehicle visualizer. 
+    CLOSED: [2019-03-06 Wed 18:41]
 ** FIXED General
    CLOSED: [2019-03-06 Wed 13:21]
 *** FIXED Cleanup all the double references from multiple zot and bib files (What a mess!).
@@ -41,20 +42,31 @@
     CLOSED: [2019-03-06 Wed 09:52]
  
 * 7/3/19
-**  Write RRT-Intro part.
-*** Cleanup the RRT-motion primitives section.
-*** Continue writing the RRT-Intro. 
-*** Write the RRT distance metric section in the method chapter.
 ** Experiments
-*** Need a few longer motion primitives for the RRTFunnel algorithm
-*** The motion primitives themselves must be able to be broken down into sub-motion-primitives.
-** Method
-*** Add the RRT-Funnel motion primitive algorithm design to the method section.
-*** Need literature on RRT with motion primitives -> Find more!
-****  ~\cite{vonasekGlobalMotionPlanning2013}
-****  \cite{vonasekHighlevelMotionPlanning2015}
-*** Start adding sub-funnels as motion primitives to the RRT-Funnel algorithm!
+*** FIXED [#A] The motion primitives themselves must be able to be broken down into sub-motion-primitives.
+    CLOSED: [2019-03-07 Thu 13:37]
+*** FIXED The optimization problems needs to be cleaned up!
+    CLOSED: [2019-03-07 Thu 15:16]
+
+* 8/3/19
 ** General
-*** The optimization problems needs to be cleaned up!
 *** Maybe base the general introduction on  http://msl.cs.uiuc.edu/~pcheng1/papers/thesis.pdf (p15-16)
 *** Some ISBN's in the bibliography are dead. Have a look at this.
+*** Have a look at the essay, and figure out what has to be done with it before the final submission.
+*** Have a look at this repo and code: https://web.stanford.edu/~ssingh19/software.html
+**  Write RRT-Intro part.
+*** [#B] Cleanup the RRT-motion primitives section.
+*** [#B] Continue writing the RRT-Intro. 
+*** [#A] Start adding sub-funnels as motion primitives to the RRT-Funnel algorithm!
+**** The cutBeginning funtions are not working correctly. Why?
+** General
+*** [#B] Add a nice picture showing the size of the vehicle used in the experiments, to the determine the size section.
+**** The general size of the funels must be expanded prior to storage. That would probably be easiest!.
+** Experiments
+*** [#A] Fixup the bugz in the subfunnel algorithm part.
+** Method
+*** [#B] Add the RRT-Funnel motion primitive algorithm design to the method section.
+*** [#C] Need literature on RRT with motion primitives -> Find more!
+****  ~\cite{vonasekGlobalMotionPlanning2013}
+****  \cite{vonasekHighlevelMotionPlanning2015}
+*** Write the RRT distance metric section in the method chapter.
