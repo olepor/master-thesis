@@ -48,7 +48,7 @@
 *** FIXED The optimization problems needs to be cleaned up!
     CLOSED: [2019-03-07 Thu 15:16]
 
-* 8/3/19
+* 13/3/19
 ** General
 *** Maybe base the general introduction on  http://msl.cs.uiuc.edu/~pcheng1/papers/thesis.pdf (p15-16)
 *** Some ISBN's in the bibliography are dead. Have a look at this.
@@ -57,16 +57,23 @@
 **  Write RRT-Intro part.
 *** [#B] Cleanup the RRT-motion primitives section.
 *** [#B] Continue writing the RRT-Intro. 
-*** [#A] Start adding sub-funnels as motion primitives to the RRT-Funnel algorithm!
+*** [Rejected] Start adding sub-funnels as motion primitives to the RRT-Funnel algorithm!
+    - State "DONE"       from "MERGED"     [2019-03-13 Wed 13:03]
 **** The cutBeginning funtions are not working correctly. Why?
 ** General
-*** [#B] Add a nice picture showing the size of the vehicle used in the experiments, to the determine the size section.
+*** FIXED [#B] Add a nice picture showing the size of the vehicle used in the experiments, to the determine the size section.
+    CLOSED: [2019-03-13 Wed 17:08]
 **** The general size of the funels must be expanded prior to storage. That would probably be easiest!.
+***  Uniform sampling in SO(2), add and how to?.
+***  Add more motion primitives (Long, medium and short ones).
+***  Make sure that only composable funnels are composed together.
 ** Experiments
-*** [#A] Fixup the bugz in the subfunnel algorithm part.
+*** [Rejected] Fixup the bugz in the subfunnel algorithm part.
+*** Add a datastructure for checking which funnels are composable and not.
 ** Method
 *** [#B] Add the RRT-Funnel motion primitive algorithm design to the method section.
 *** [#C] Need literature on RRT with motion primitives -> Find more!
+***  Change the create funnel graph algorithm to only check at the ends. No sub-times.
 ****  ~\cite{vonasekGlobalMotionPlanning2013}
 ****  \cite{vonasekHighlevelMotionPlanning2015}
 *** Write the RRT distance metric section in the method chapter.

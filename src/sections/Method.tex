@@ -202,7 +202,7 @@ Funnels with
 The initial code in the~\cite[Drake toolbox]{drake} did not take uncertainty
 into account, and hence had to be added to the implementation.
 
-When addind uncertainty to the speed of the vehicle, so that the speed is now in
+When adding uncertainty to the speed of the vehicle, so that the speed is now in
 \([9,11]\) m/s.
 
 Adding uncertainty to the speed where the uncertainty was greater than or equal
@@ -213,7 +213,17 @@ to two, neither of the three motion primitives were verified using the program.
 
 In order for the funnel to be valid, it needs to be expanded from the point
 model used, to contain the entire vehicle in it's \ac{ROA}. This is done through
-expanding the size of the funnel by the radius of the vehicle.
+expanding the size of the funnel by the radius of the vehicle, and can be seen
+in~(\ref{fig:expanded-funnel}).
+
+\begin{figure}
+\centering
+\includegraphics[clip, trim=6cm 8cm 6cm 8cm, scale=.5]{figures/method/expanded-funnel}
+\caption{The original funnel created from the point model, with a funnel
+  expanded by a radius of 0.2 surrounding it.(TODO)- maybe draw this in inkscape
+instead?}
+\label{fig:expanded-funnel}
+\end{figure}
 
 \subsubsection{Shifting funnels and invariance}
 
@@ -242,6 +252,13 @@ coordinates of the system has to be determined. ex:
 \end{align}
 which shows that the LaGrangian is invariant to shifts in the \((x,y,\theta)\)
 variables. 
+
+\subsection{Checking which funnels can be composed and not}
+
+If two funnels are composable as per definition~(\ref{def:funnel-composition}),
+then it is safe to build one as a motion primitive on top of the other. This
+definition can be translated into a \ac{SOS}-program, to ensure that the outlet
+of one funnel is fully contained in the outlet of the other.
 
 \subsection{The Identity funnel}
 
@@ -408,6 +425,30 @@ Which means that the funnels can freely be shifted around in the coordinates
 \(\left( x, y, \theta \right)\), without it changing the dynamics of the vehicle
 in any regard.
 
+\subsection{Uniform sampling in SO(2)}
+
+How to sample uniformly in the SO(2) space?
+
 
 \section{RRT-section}
 
+\subsection{The \rrtfunnel{} algorithm}
+
+The \rrtfunnel{} algorithm is a modified \ac{RRT} graph algorithm which employs
+the precomputed funnels as motion primitives for it's expansion operator.
+
+\begin{algorithm}
+  \caption{Check funnel composability}
+  \label{alg:create-funnel-graph}
+  \DontPrintSemicolon \SetAlgoNoLine
+
+  \KwIn{\(\mathcal{F}\) -- The basis set of funnels computed around the nominal
+    trajectories.} \KwOut{\(\mathcal{G}(\mathcal{F})\) -- Directed graph
+    representing the composability of funnels.}
+
+  \ForEach{\(F_{i} \in \mathcal{F}\)} { \ForEach{\(F_{j} \in \mathcal{F}\)} {
+          \If{\(F_{i}(t_{0}) \subset F_{j}(t_{end})\)} { \(\mathcal{G}
+            \leftarrow{} \left( F_{i}(t_{0}), F_{j}(t_{end}) \right)\) }
+      \; }\; }\;
+
+\end{algorithm}
