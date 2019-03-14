@@ -429,6 +429,34 @@ in any regard.
 
 How to sample uniformly in the SO(2) space?
 
+Sampling uniformly in state space is important so that certaint parts of
+state-space will neither be over or under-represented, which could negatively
+impact the planning algorithm at hand.
+
+From~\cite{kuffnerEffectiveSamplingDistance2004} the samples can be genrated
+uniformly on the Euclidean plane through
+\[
+  (x,y) = (\mathnormal{X}_{dim}rand, \mathnormal{Y}_{dim}rand)
+\]
+where \(rand\) is a random variable in the interval \([0,1)\).
+
+\subsection{Choosing a distance metric}
+
+Which distance metric to use?
+
+A modified Euclidean metric which weights the theta depending on how close the
+vehicle is to the final configuration is defined as
+\[
+  \rho(x_{1},x_{2}) = w_{1}\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}} + w_{2}f(\theta{1},\theta{2})
+\]
+in~\cite{kuffnerEffectiveSamplingDistance2004}, where \(\norm{\mathnormal{X_{1}}
+  - \mathnormal{X_{2}}}\) is the standard Euclidean metric, and \(f\) is a
+function, giving the distance between headings, and the rotations and distance
+is scaled relative to the translation distance.
+
+In~\cite{parkFeedbackMotionPlanning2015}, a distance metric of a
+control-Lyapunov function. (interesting).
+
 
 \section{RRT-section}
 
@@ -450,5 +478,60 @@ the precomputed funnels as motion primitives for it's expansion operator.
           \If{\(F_{i}(t_{0}) \subset F_{j}(t_{end})\)} { \(\mathcal{G}
             \leftarrow{} \left( F_{i}(t_{0}), F_{j}(t_{end}) \right)\) }
       \; }\; }\;
+
+\end{algorithm}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=.5]{figures/method/funnel-tree}
+  \caption{Picutred: A tree of funnels built by the \rrtfunnel{} algorithm.}
+\end{figure}
+
+The \rrtfunnel{} algorithm is defined as
+
+
+\begin{algorithm}[H]
+  \caption{\rrtfunnel{} algorithm}
+
+  \DontPrintSemicolon
+
+  \KwIn{Initial configuration, \(q_0\)}
+  \KwOut{\textit{RRT}-Funnel-graph \(\mathcal{G}\)}
+
+  \SetKwFunction{RandConf}{Sample\_Random\_Configuration}
+  \SetKwFunction{NearestVertex}{Find\_Nearest\_Vertex}
+  \SetKwFunction{Extend}{Extend}
+  \SetKwFunction{AddVertex}{add\_vertex}
+  \SetKwFunction{AddEdge}{add\_edge}
+  \SetKwFunction{ExtractBranch}{Extract\_Branch}
+
+  \(\mathcal{G}.init(q_0)\)
+  \For{\(i \leftarrow 1\) \KwTo \(k\)}{
+    \(q_{rand} \leftarrow \) \RandConf{} \;
+    \(q_{near} \leftarrow \) \NearestVertex{\(q_{rand}, \mathcal{G}\)}\;
+    \(q_{new} \leftarrow \) \Extend{\(q_{near}, q_{rand} \)}\;
+    \If{\(q_{new} \in \modelconfigurationspacefree{} \) } {
+      \(\mathcal{G}\).\AddVertex{\(q_{new}\)}\;
+      \(\mathcal{G}\).\AddEdge{\(q_{near}, q_{new}\)} \;
+      \If{\(q_{new} \in \mathcal{X}_{goal}\)}{
+        return \ExtractBranch{\(\mathcal{G}\)} \;
+      }\;
+    }
+  }
+
+  \SetKwProg{Def}{def}{:}{end}
+  \Def{\RandConf{}}{
+    return 0\;
+  }
+  \Def{\NearestVertex{\(q_{rand}, \mathcal{G}\)}}{
+    return 0\;
+  }
+  \Def{\Extend{\(q_{near}, q_{rand} \)}}{
+    return 0\;
+  }
+
+  \Def{\ExtractBranch{}}{
+    return 0\;
+  }
 
 \end{algorithm}

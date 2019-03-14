@@ -64,9 +64,9 @@
 *** FIXED [#B] Add a nice picture showing the size of the vehicle used in the experiments, to the determine the size section.
     CLOSED: [2019-03-13 Wed 17:08]
 **** The general size of the funels must be expanded prior to storage. That would probably be easiest!.
-***  Uniform sampling in SO(2), add and how to?.
 ***  Add more motion primitives (Long, medium and short ones).
-***  Make sure that only composable funnels are composed together.
+*** FIXED Make sure that only composable funnels are composed together.
+    CLOSED: [2019-03-14 Thu 11:29]
 ** Experiments
 *** [Rejected] Fixup the bugz in the subfunnel algorithm part.
 *** Add a datastructure for checking which funnels are composable and not.
@@ -77,3 +77,6 @@
 ****  ~\cite{vonasekGlobalMotionPlanning2013}
 ****  \cite{vonasekHighlevelMotionPlanning2015}
 *** Write the RRT distance metric section in the method chapter.
+*** BUG Uniform sampling in SO(2), add and how to?.
+    - State "DONE"       from "PR"         [2019-03-14 Thu 11:29]
+*** Write the rrtfunnel algorithm in the method section.

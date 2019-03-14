@@ -120,12 +120,71 @@ the possible states of the vehicle model) is:
 where \(S_{k}^{'}\) is the ellipsoid which contains the volume of the vehicle
 for all verfied states in the funnel.
 
+\subsection{The initial motion primitive set}
+
+The basis set of motion primitives should be small, yet cover enough of the
+finer movements of the vehicle, so that the motion of the vehicle can be near
+continuous when composed together. Thus in order to generate a 'dense' set of
+motion primitives the algorithm~(\ref{alg:initial-motion-primitives-generation})
+is employed to generate points along the arch of a circle with \(N\) different
+radii.
+
+
+\begin{algorithm}[H]
+  \label{alg:initial-motion-primitives-generation}
+  \caption{Generating the initial motion primitives}
+  \DontPrintSemicolon \SetAlgoNoLine
+
+  \KwIn{
+    \(n\) - Number of points along the arch \\
+    \(r_{0}\) - Initial radius \\
+    \(r_{f}\) - Final radius \\
+    \(s\) - Stepsize (\(r_{n+1} = r_{n} + s\))
+  }
+  \KwOut{\(\mathbf{X}\) - Endpoints matrix for the trajectory generator}
+
+  \(\theta_{0} = \pi\) \;
+
+  \For{\(r_{k+1} = r_{k} + s\)}{
+    \(\theta_{j} = \frac{\theta{0}}{2r}\) \;
+    \(\theta_{stepsize} = \frac{\theta{j}}{(n-1)/2}\) \;
+    \(\mathbf{X} \leftarrow (r_{k+1}, \theta=0)\) \;
+    \For{\(i = 1 \) \KwTo \(\frac{n-1}{2}\)}{
+      \(\theta_{ki} = i*\theta_{stepsize}\) \;
+      \(\mathbf{X} \leftarrow (r, \pm \theta_{ki})\) \;
+    }\;
+  }\;
+\end{algorithm}
+
+The initial trajectories employed in the experiments can be seen in
+figure~(\ref{fig:intial-trajectories-exp}), and the projected funnels overlaid a
+sample in~(\ref{fig:sample-funnel-overlay}).
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=.5]{figures/experiments/initial-trajectories}
+  \caption{The initial trajectories used in the \rrtfunnel{} algorithm.}
+  \label{fig:intial-trajectories-exp}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=.5]{figures/experiments/sample-funnel-overlay}
+  \caption{Three funnels from the initial trajectories with the projected
+    funnels overlaid.}
+  \label{fig:sample-funnel-overlay}
+\end{figure}
+
 \subsection{Terrors of errors}
 
 The funnel compuatations error out if too much uncertainty is added. In this
 case that is velocity higher than two (which to be fair is a bit). Also, the
 length of the funnels error out, meaning that funnels longer than approximately
-.3 seconds, which is what they are now, will error out. Had there
-been more time this should probably be resolved. A guess is that increasing the
-sampling frequency, and/or increasing the initial size of the \(\rho\) guess
-would help.
+.3 seconds, which is what they are now, will error out. Had there been more time
+this should probably be resolved. A guess is that increasing the sampling
+frequency, and/or increasing the initial size of the \(\rho\) guess would help.
+
+\subsection{What funnels are most oftenly(not a word) employed?}
+
+Track and add some statistics on the most commonly employed funnels when testing
+the algorithm.
