@@ -133,7 +133,8 @@ radii.
 
 \begin{algorithm}[H]
   \label{alg:initial-motion-primitives-generation}
-  \caption{Generating the initial motion primitives}
+  \caption{Generating the initial motion primitives (TODO) - update with the new
+    primitives!}
   \DontPrintSemicolon \SetAlgoNoLine
 
   \KwIn{
@@ -248,9 +249,9 @@ with \(\randomSpeedVar{}\) a random variable \(\randomSpeedVar{} \colon
 \rightarrow [-2,2]\)
 
 Uncertainties:
-\begin{table}{|c|c|}
+\begin{tabular}{ |c|c| }
   \randomSpeedVar{} & 1 \\
-\end{table}
+\end{tabular}
 
 \subsubsection{Uncertainty in speed and input}
 Model:
@@ -276,13 +277,10 @@ Model:
 \end{equation}
 
 Uncertainties:
-\begin{table}{|c|c|}
+\begin{tabular}{|c|c|}
   \randomSpeedVar{} & 1 \\
-  \randomPosXVar{} & 1\si{\centi\metre} \\
-  \randomPosYVar{} & 1\si{\centi\metre}\\
-  \randomPosThetaVar{} 1 \\
-  \randomInputVar{} 5 \\
-\end{table}
+  \randomInputVar{} & 5 \\
+\end{tabular}
 
 \subsubsection{Uncertainty in speed, input and pos}
 
@@ -312,10 +310,12 @@ The model
 \end{equation}
 
 Uncertainties:
-\begin{table}{|c|c|}
+\begin{tabular}{|c|c|}
   \randomSpeedVar{} & 1 \\
   \randomPosXVar{} & 1\si{\centi\metre} \\
   \randomPosYVar{} & 1\si{\centi\metre}\\
-  \randomPosThetaVar{} 1 \\
-  \randomInputVar{} 5 \\
-\end{table}
+  \randomPosThetaVar{} & 1 \\
+  \randomInputVar{} & 5 \\
+\end{tabular}
+
+TODO - maybe record a movie or two of the vehicle driving?
