@@ -1,6 +1,7 @@
 \chapter{Experiments}
 
 \section{Generating the obstacle forest (Poisson processes)}
+\label{sec:Poisson-Process}
 
 In order to generate the obstacle field for the experiments, which is to
 resemble a forest, a spatial process called a \textit{Poisson process} is
@@ -139,21 +140,16 @@ radii.
     \(n\) - Number of points along the arch \\
     \(r_{0}\) - Initial radius \\
     \(r_{f}\) - Final radius \\
-    \(s\) - Stepsize (\(r_{n+1} = r_{n} + s\))
-  }
-  \KwOut{\(\mathbf{X}\) - Endpoints matrix for the trajectory generator}
+    \(s\) - Stepsize (\(r_{n+1} = r_{n} + s\)) } \KwOut{\(\mathbf{X}\) -
+    Endpoints matrix for the trajectory generator}
 
   \(\theta_{0} = \pi\) \;
 
-  \For{\(r_{k+1} = r_{k} + s\)}{
-    \(\theta_{j} = \frac{\theta{0}}{2r}\) \;
-    \(\theta_{stepsize} = \frac{\theta{j}}{(n-1)/2}\) \;
-    \(\mathbf{X} \leftarrow (r_{k+1}, \theta=0)\) \;
-    \For{\(i = 1 \) \KwTo \(\frac{n-1}{2}\)}{
-      \(\theta_{ki} = i*\theta_{stepsize}\) \;
-      \(\mathbf{X} \leftarrow (r, \pm \theta_{ki})\) \;
-    }\;
-  }\;
+  \For{\(r_{k+1} = r_{k} + s\)}{ \(\theta_{j} = \frac{\theta{0}}{2r}\) \;
+    \(\theta_{stepsize} = \frac{\theta{j}}{(n-1)/2}\) \; \(\mathbf{X} \leftarrow
+    (r_{k+1}, \theta=0)\) \; \For{\(i = 1 \) \KwTo \(\frac{n-1}{2}\)}{
+      \(\theta_{ki} = i*\theta_{stepsize}\) \; \(\mathbf{X} \leftarrow (r, \pm
+      \theta_{ki})\) \; }\; }\;
 \end{algorithm}
 
 The initial trajectories employed in the experiments can be seen in
@@ -184,7 +180,142 @@ length of the funnels error out, meaning that funnels longer than approximately
 this should probably be resolved. A guess is that increasing the sampling
 frequency, and/or increasing the initial size of the \(\rho\) guess would help.
 
+From~\cite{tobenkinInvariantFunnelsTrajectories2010}, it is suggested that in
+case a funnel is not verified using the \ac{SOS} programming method, one option
+is to increase the size of \(\rho\) (the limiting factor on the size of the
+funnel), and optionally increase the number of knot points (sampling points).
+
 \subsection{What funnels are most oftenly(not a word) employed?}
 
 Track and add some statistics on the most commonly employed funnels when testing
 the algorithm.
+
+
+\subsection{Experiments}
+
+All three of the experiments will run with the motion primitive set pictured
+in~(\ref{fig:intial-trajectories-exp}), with funnels surrounding them. Still all
+three will have different uncertainty parameters.
+
+The \rrtfunnel{} algorithm is benchmarked against the same algorithm, only the
+funnels will not be surrounding the trajectories in the benchmark planner. Each
+experiment will do a testrun of a hundred runs from
+
+The end goal will not take pose into account, and will only be concerned with
+getting within an \(\epsilon\) of the \((x,y)\) in the test map. For all the
+experiments below, an \(\epsilon\) of 2\si{\metre} is given to the planners.
+
+Each testrun will be run in a forest generated with the \textit{Poisson process}
+method from~(\ref{sec:Poisson-Process}), and an intensity parameter (\(\lambda =
+0.9\)), which should yield a pretty dense forest, and hence make collisions more
+likely to happen.
+
+The endgoal will be picked uniformly at random from the map, which is a 2D
+Euclidean space (\ie \(\in (-\alpha,\alpha)\times(-\alpha,\alpha)\)), where
+\(\alpha\) is the size of the map. The experiments will record the number of
+collisions for each algorithm across all testruns, and the distance penalty
+obtained total (which is the distance from the target, if the planner failed to
+make it ther). The planners will run in the same environment at each test, with
+the same initial seed, but the environments will be different from each run, as
+the Poisson process generating the obstacle forest is random in nature. With
+this test setup the difference between a planner which takes into account
+uncertainty should become evident, and increasingly superior as more
+uncertanties are added to the test environment.
+
+Below are the results from a hundred testruns across all the different test
+parameters.
+
+\subsubsection{Uncertainty in speed}
+
+For the experiment
+
+Model: (TODO) - syntax for the random variables -- choose one.
+\begin{equation}
+  \label{eq:model-dynamics}
+  \mathbf{x} =
+  \begin{bmatrix}
+    x \\ y \\ \theta \\ \dot{\theta} \\
+  \end{bmatrix}, \, \dot{\mathbf{x}} =
+  \begin{bmatrix}
+    -(v(t) + \randomSpeedVar{}) \sin(\theta) \\
+    (v(t) + \randomSpeedVar{}) \cos(\theta) \\
+    \dot{\theta} \\
+    u \\
+  \end{bmatrix}
+\end{equation}
+
+with \(\randomSpeedVar{}\) a random variable \(\randomSpeedVar{} \colon
+\rightarrow [-2,2]\)
+
+Uncertainties:
+\begin{table}{|c|c|}
+  \randomSpeedVar{} & 1 \\
+\end{table}
+
+\subsubsection{Uncertainty in speed and input}
+Model:
+\begin{equation}
+  \label{eq:model-dynamics}
+  \mathbf{x} =
+  \begin{bmatrix}
+    x \\ y \\ \theta \\ \dot{\theta} \\
+  \end{bmatrix}, \, \dot{\mathbf{x}} =
+  \begin{bmatrix}
+    -(v(t) + \randomSpeedVar{}) \sin(\theta) \\
+    (v(t) + \randomSpeedVar{}) \cos(\theta) \\
+    \dot{\theta} \\
+    u \\
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    0 \\
+    0 \\
+    0 \\
+    \randomInputVar{} \\
+  \end{bmatrix}
+\end{equation}
+
+Uncertainties:
+\begin{table}{|c|c|}
+  \randomSpeedVar{} & 1 \\
+  \randomPosXVar{} & 1\si{\centi\metre} \\
+  \randomPosYVar{} & 1\si{\centi\metre}\\
+  \randomPosThetaVar{} 1 \\
+  \randomInputVar{} 5 \\
+\end{table}
+
+\subsubsection{Uncertainty in speed, input and pos}
+
+A nice combination of multiplicative and additive noise.
+
+The model
+
+\begin{equation}
+  \label{eq:model-dynamics}
+  \mathbf{x} =
+  \begin{bmatrix}
+    x \\ y \\ \theta \\ \dot{\theta} \\
+  \end{bmatrix}, \, \dot{\mathbf{x}} =
+  \begin{bmatrix}
+    -v(t)\sin(\theta) \\
+    v(t)\cos(\theta) \\
+    \dot{\theta} \\
+    u \\
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    \randomPosXVar{}  \\
+    \randomPosYVar{} \\
+    \randomPosThetaVar{} \\
+    \randomInputVar{} \\
+  \end{bmatrix}
+\end{equation}
+
+Uncertainties:
+\begin{table}{|c|c|}
+  \randomSpeedVar{} & 1 \\
+  \randomPosXVar{} & 1\si{\centi\metre} \\
+  \randomPosYVar{} & 1\si{\centi\metre}\\
+  \randomPosThetaVar{} 1 \\
+  \randomInputVar{} 5 \\
+\end{table}

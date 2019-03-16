@@ -55,6 +55,8 @@ planning.
 \subsubsection{Generating the trajectories}
 
 The trajectories are generated through the \textit{Direct collocation method}.
+(For what reason? Other methods such as RRT* could also be used, or other
+optimal trajectory solvers.)
 
 Using a cost function of the type
 \begin{equation}
@@ -82,6 +84,7 @@ consists of a left-turn, a straight-forward, and a right-turn motion.
   \label{fig:initial-trajectories}
 \end{figure}
 
+TODO - maybe add the initial point generation algorithm here?
 
 \subsubsection{Initializing the funnel calculations with a TVLQR candidate as
   the initial Lyapunov function}
@@ -208,13 +211,19 @@ When adding uncertainty to the speed of the vehicle, so that the speed is now in
 Adding uncertainty to the speed where the uncertainty was greater than or equal
 to two, neither of the three motion primitives were verified using the program.
 
+\begin{figure}
+  \centering
+  \includegraphics[scale=.3]{figures/rrtfunnel/straight-funnel-lyapunov-3d}
+  \caption{A visualization of a funnel for a straight motion primitive.}
+\end{figure}
+
 
 \subsubsection{Expanding the funnels with the size of the vehicle model}
 
 In order for the funnel to be valid, it needs to be expanded from the point
 model used, to contain the entire vehicle in it's \ac{ROA}. This is done through
 expanding the size of the funnel by the radius of the vehicle, and can be seen
-in~(\ref{fig:expanded-funnel}).
+in~(\ref{fig:expanded-funnel}) and~(\ref{fig:expanded-and-unexpanded}).
 
 \begin{figure}
 \centering
@@ -223,6 +232,20 @@ in~(\ref{fig:expanded-funnel}).
   expanded by a radius of 0.2 surrounding it.(TODO)- maybe draw this in inkscape
 instead?}
 \label{fig:expanded-funnel}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{minipage}{0.4\textwidth}
+    \includegraphics[scale=.3]{figures/method/unexpanded-funnel}
+    \caption{The funnel around a straight trajector for the point model.}
+  \end{minipage}
+  \begin{minipage}{0.4\textwidth}
+    \includegraphics[scale=.3]{figures/method/expanded-funnel-with-car}
+    \caption{The funnel around a straight trajector for the point model.}
+  \end{minipage}
+  \caption{blablablal}
+  \label{fig:expanded-and-unexpanded}
 \end{figure}
 
 \subsubsection{Shifting funnels and invariance}
@@ -442,6 +465,25 @@ where \(rand\) is a random variable in the interval \([0,1)\).
 
 \subsection{Choosing a distance metric}
 
+The ideal metric would have been the actual \textit{cost-to-go} function for the
+system at hand. However this calculating the actual cost to go is equivalent to
+solving the motion planning problem at hand, and is hence not
+viable~\cite{pengchengReducingMetricSensitivity2001}. Thus, in order for a
+mobile robot to efficiently navigate an environment, it must have a good measure
+of distance between different poses in space, without actually solving the
+planning problem anew. For a problem in the Cartesian plane - it is common to
+use the Euclidean distance, however, this is not a good distance metric for
+non-holonomic vehicles, as it does not incorporate the possible constraints of
+the system function, and has little bearing on the actual cost-to-go of the
+system~\cite{parkFeedbackMotionPlanning2015}. In fact, for sampling based
+planners such as the \ac{RRT}, the configuration space is only sufficiently
+explored in the case where the distance function reflects the true cost-to-go
+function~\cite{pengchengReducingMetricSensitivity2001}. Hence, all other metrics
+will be a compromise of complexity and time vs efficiency.
+
+TODO - maybe implement the~\cite{parkFeedbackMotionPlanning2015} distance
+metric. Or optionally, maybe use the current Lyapunov function value?
+
 Which distance metric to use?
 
 A modified Euclidean metric which weights the theta depending on how close the
@@ -456,6 +498,13 @@ is scaled relative to the translation distance.
 
 In~\cite{parkFeedbackMotionPlanning2015}, a distance metric of a
 control-Lyapunov function. (interesting).
+
+\cite{perezLQRRRTOptimalSamplingbased2012a} LQR as distance metric.
+
+\subsubsection{Metric for nearest node}
+\subsubsection{Metric for extension operator}
+
+\ie which funnel to choose as an extension. What factors are considered here?
 
 
 \section{RRT-section}

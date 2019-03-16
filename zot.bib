@@ -69,7 +69,7 @@
   urldate = {2018-04-26},
   date = {2017},
   pages = {473-490},
-  keywords = {mobile robotics,POMD,promising,stochastic,uncertainty},
+  keywords = {promising,stochastic,POMD,uncertainty,mobile robotics},
   author = {van den Berg, Jur and Patil, Sachin and Alterovitz, Ron},
   editor = {Christensen, Henrik I. and Khatib, Oussama},
   options = {useprefix=true},
@@ -412,7 +412,7 @@
   booktitle = {2008 {{IEEE}}/{{RSJ International Conference}} on {{Intelligent Robots}} and {{Systems}}},
   date = {2008-09},
   pages = {1077-1082},
-  keywords = {Collision avoidance,Computational modeling,Distance measurement,map uncertainty,motion planning,motion uncertainty,path planning,rapidly exploring randomized tree,robot exploration,Robot sensing systems,Robots,RRT-SLAM,Sensors,SLAM (robots),trees (mathematics),uncertain systems,Uncertainty},
+  keywords = {motion planning,Collision avoidance,Computational modeling,Distance measurement,map uncertainty,motion uncertainty,path planning,rapidly exploring randomized tree,robot exploration,Robot sensing systems,Robots,RRT-SLAM,Sensors,SLAM (robots),trees (mathematics),uncertain systems,Uncertainty},
   author = {Huang, Yifeng and Gupta, K.},
   file = {/Users/olepor/Zotero/storage/LPB45SX7/Yifeng Huang and Gupta - 2008 - RRT-SLAM for motion planning with motion and map u.pdf;/Users/olepor/Zotero/storage/L6SVNNJZ/4651183.html}
 }
@@ -1258,6 +1258,82 @@ http://www.mit.edu/parrilo/sostools}
   pages = {3993-3998 Vol.4},
   author = {Kuffner, J.J.},
   file = {/Users/olepor/Zotero/storage/QPZ7K4LL/Kuffner - 2004 - Effective sampling and distance metrics for 3D rig.pdf}
+}
+
+@inproceedings{pengchengReducingMetricSensitivity2001,
+  langid = {english},
+  location = {{Maui, HI, USA}},
+  title = {Reducing Metric Sensitivity in Randomized Trajectory Design},
+  volume = {1},
+  isbn = {978-0-7803-6612-1},
+  url = {http://ieeexplore.ieee.org/document/973334/},
+  doi = {10.1109/IROS.2001.973334},
+  abstract = {This paper addresses trajectory design for generic problems that involve: 1) complicated global constraints that include nonconvex obstacles, 2) nonlinear equations of motion that involve substantial drift due to momentum, 3) a high-dimensional state space. Our approach to this challenging problems is to develop randomized planning algorithms on the basis of Rapidlyexploring Random Trees (RRTs). RRTs use metricinduced heuristics to conduct a greedy exploration of the state space; however, performance substantially degrades when the chosen metric does not adequately reﬂect the true cost-to-go. In this paper, we present an adaptive version of the RRT that is capable of reﬁning its exploration strategy in the presence of a poor metric. Initial experiments on problems in vehicle dynamics and spacecraft navigation indicate substantial performance improvement over existing techniques.},
+  eventtitle = {{{RSJ}}/{{IEEE International Conference}} on {{Intelligent Robots}} and {{Systems}}},
+  booktitle = {Proceedings 2001 {{IEEE}}/{{RSJ International Conference}} on {{Intelligent Robots}} and {{Systems}}. {{Expanding}} the {{Societal Role}} of {{Robotics}} in the the {{Next Millennium}} ({{Cat}}. {{No}}.{{01CH37180}})},
+  publisher = {{IEEE}},
+  urldate = {2019-03-15},
+  date = {2001},
+  pages = {43-48},
+  author = {{Peng Cheng} and LaValle, S.M.},
+  file = {/Users/olepor/Zotero/storage/6UDSLNVL/Peng Cheng and LaValle - 2001 - Reducing metric sensitivity in randomized trajecto.pdf}
+}
+
+@inproceedings{perezLQRRRTOptimalSamplingbased2012,
+  langid = {english},
+  location = {{St Paul, MN, USA}},
+  title = {{{LQR}}-{{RRT}}*: {{Optimal}} Sampling-Based Motion Planning with Automatically Derived Extension Heuristics},
+  isbn = {978-1-4673-1405-3 978-1-4673-1403-9 978-1-4673-1578-4 978-1-4673-1404-6},
+  url = {http://ieeexplore.ieee.org/document/6225177/},
+  doi = {10.1109/ICRA.2012.6225177},
+  shorttitle = {{{LQR}}-{{RRT}}*},
+  abstract = {The RRT∗ algorithm has recently been proposed as an optimal extension to the standard RRT algorithm [1]. However, like RRT, RRT∗ is difﬁcult to apply in problems with complicated or underactuated dynamics because it requires the design of a two domain-speciﬁc extension heuristics: a distance metric and node extension method. We propose automatically deriving these two heuristics for RRT∗ by locally linearizing the domain dynamics and applying linear quadratic regulation (LQR). The resulting algorithm, LQR-RRT∗, ﬁnds optimal plans in domains with complex or underactuated dynamics without requiring domain-speciﬁc design choices. We demonstrate its application in domains that are successively torquelimited, underactuated, and in belief space.},
+  eventtitle = {2012 {{IEEE International Conference}} on {{Robotics}} and {{Automation}} ({{ICRA}})},
+  booktitle = {2012 {{IEEE International Conference}} on {{Robotics}} and {{Automation}}},
+  publisher = {{IEEE}},
+  urldate = {2019-03-15},
+  date = {2012-05},
+  pages = {2537-2542},
+  author = {Perez, Alejandro and Platt, Robert and Konidaris, George and Kaelbling, Leslie and Lozano-Perez, Tomas},
+  file = {/Users/olepor/Zotero/storage/N3HWK5I4/Perez et al. - 2012 - LQR-RRT Optimal sampling-based motion planning w.pdf}
+}
+
+@inproceedings{pengchengReducingMetricSensitivity2001a,
+  langid = {english},
+  location = {{Maui, HI, USA}},
+  title = {Reducing Metric Sensitivity in Randomized Trajectory Design},
+  volume = {1},
+  isbn = {978-0-7803-6612-1},
+  url = {http://ieeexplore.ieee.org/document/973334/},
+  doi = {10.1109/IROS.2001.973334},
+  abstract = {This paper addresses trajectory design for generic problems that involve: 1) complicated global constraints that include nonconvex obstacles, 2) nonlinear equations of motion that involve substantial drift due to momentum, 3) a high-dimensional state space. Our approach to this challenging problems is to develop randomized planning algorithms on the basis of Rapidlyexploring Random Trees (RRTs). RRTs use metricinduced heuristics to conduct a greedy exploration of the state space; however, performance substantially degrades when the chosen metric does not adequately reﬂect the true cost-to-go. In this paper, we present an adaptive version of the RRT that is capable of reﬁning its exploration strategy in the presence of a poor metric. Initial experiments on problems in vehicle dynamics and spacecraft navigation indicate substantial performance improvement over existing techniques.},
+  eventtitle = {{{RSJ}}/{{IEEE International Conference}} on {{Intelligent Robots}} and {{Systems}}},
+  booktitle = {Proceedings 2001 {{IEEE}}/{{RSJ International Conference}} on {{Intelligent Robots}} and {{Systems}}. {{Expanding}} the {{Societal Role}} of {{Robotics}} in the the {{Next Millennium}} ({{Cat}}. {{No}}.{{01CH37180}})},
+  publisher = {{IEEE}},
+  urldate = {2019-03-15},
+  date = {2001},
+  pages = {43-48},
+  author = {{Peng Cheng} and LaValle, S.M.},
+  file = {/Users/olepor/Zotero/storage/RAS7BSXR/Peng Cheng and LaValle - 2001 - Reducing metric sensitivity in randomized trajecto.pdf}
+}
+
+@inproceedings{perezLQRRRTOptimalSamplingbased2012a,
+  langid = {english},
+  location = {{St Paul, MN, USA}},
+  title = {{{LQR}}-{{RRT}}*: {{Optimal}} Sampling-Based Motion Planning with Automatically Derived Extension Heuristics},
+  isbn = {978-1-4673-1405-3 978-1-4673-1403-9 978-1-4673-1578-4 978-1-4673-1404-6},
+  url = {http://ieeexplore.ieee.org/document/6225177/},
+  doi = {10.1109/ICRA.2012.6225177},
+  shorttitle = {{{LQR}}-{{RRT}}*},
+  abstract = {The RRT∗ algorithm has recently been proposed as an optimal extension to the standard RRT algorithm [1]. However, like RRT, RRT∗ is difﬁcult to apply in problems with complicated or underactuated dynamics because it requires the design of a two domain-speciﬁc extension heuristics: a distance metric and node extension method. We propose automatically deriving these two heuristics for RRT∗ by locally linearizing the domain dynamics and applying linear quadratic regulation (LQR). The resulting algorithm, LQR-RRT∗, ﬁnds optimal plans in domains with complex or underactuated dynamics without requiring domain-speciﬁc design choices. We demonstrate its application in domains that are successively torquelimited, underactuated, and in belief space.},
+  eventtitle = {2012 {{IEEE International Conference}} on {{Robotics}} and {{Automation}} ({{ICRA}})},
+  booktitle = {2012 {{IEEE International Conference}} on {{Robotics}} and {{Automation}}},
+  publisher = {{IEEE}},
+  urldate = {2019-03-15},
+  date = {2012-05},
+  pages = {2537-2542},
+  author = {Perez, Alejandro and Platt, Robert and Konidaris, George and Kaelbling, Leslie and Lozano-Perez, Tomas},
+  file = {/Users/olepor/Zotero/storage/6FYE97RK/Perez et al. - 2012 - LQR-RRT Optimal sampling-based motion planning w.pdf}
 }
 
 

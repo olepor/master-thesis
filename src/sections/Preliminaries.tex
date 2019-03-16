@@ -471,22 +471,59 @@ Then combining the cost function~(\ref{eq:discrete-costfunction}) with the
 constraints~(\ref{eq:sufficient-conditions}-\ref{eq:sufficient-conditions3}),
 one arrives at
 
-\begin{mini!}|s|[3]
-  {\substack{V,\rho,L,L_{t},\\L_{0,i},S_{k},L_{\mathcal{E},k}}}{\sum_{k=1}^{N}
-    \mathrm{vol}(\mathcal{E}(t_{k})) = \sum_{k=1}^{N} \mathrm{vol}(\set{ \bar{x}
-      \mid {\bar{x}}^{T}S_{k}\bar{x} \leq 1 }} {\label{eq:Example1}}{}
-  \addConstraint{\dot{\rho}(t) - \dot{V}(t,\bar{x}) - L(t,\bar{x}) \left[
-      V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x})\left[ t\left( T - t
-      \right) \right] \label{eq:optimizationconditionsos}}{&\text{is SOS}}
-  \addConstraint{\rho(0) - V(0,\bar{x}) -
-    \sum_{i}^{N}L_{0,i}(\bar{x})g_{0,i}(\bar{x}) }{&\text{is SOS}}
-  \addConstraint{1 - {\bar{x}}^{T}S_{k}\bar{x} - L_{\mathcal{E},k}(\bar{x})
-    \left[ \rho(t_{k}) - V(t_{k},\bar{x}) \right] }{&\text{is SOS}}
-  \addConstraint{S_{k} \succeq 0}{}{\forall k \in \set{1,\ldots,N}}
-  \addConstraint{L_{t}(t,\bar{x}),\, L_{0,i}(\bar{x})}{&\text{are SOS}}
-  \addConstraint{}{}{\forall i \in \set{1,\ldots,N_{0}}\forall k \in
-    \set{1,\ldots,N}}
-\end{mini!}
+{ % Mini environment scope
+
+\newcommand{\E}{\mathcal{E}}
+\renewcommand{\x}{\bar{x}}
+\begin{mini*}[1]
+    {
+        \substack
+        {
+            V, \rho, L, L_t,
+            \\
+            L_{0, i}, S_{k}, L_{\E, k}
+        }
+    }
+    {
+        \sum_{k = 1}^{N}
+        \vol(\E(t_{k}))
+        =
+        \sum_{k = 1}^{N} \vol \p{\set{\x \mid \x^T S_k \x \le 1}}
+    }
+    {}
+    {}
+    \addConstraint
+        {
+            \dot{\rho}(t)
+            -
+            \dot{V}(t,\x)
+            -
+            L(t,\x) \sqb*{ V(t,\x) - \rho(t) }
+            -
+            L_t (t,\x) \sqb*{t \p*{T - t}}
+        }%
+        {\text{ is SOS}}
+    \addConstraint
+        {\rho(0) - V(0, \x) - \sum_i^N L_{0, i}(\x) g_{0, i}(\x)}%
+        {\text{ is SOS}}
+    \addConstraint
+        {
+            1 - \x^T S_k \x - L_{\E, k}(\x)
+            \sqb*{\rho(t_k) - V(t_k, \x)}
+        }%
+        {\text{ is SOS}}
+    \addConstraint
+        {S_k}%
+        {\succeq 0}%
+        {\quad \forall k \in \set{1, \ldots, N}}
+    \addConstraint
+        {L_t (t, \x),\, L_{0,i}(\x)}%
+        {\text{ are SOS}}%
+        {\quad \forall i \in \set{1, \ldots, N_0}}
+    \addConstraint{}{}{\quad \forall k \in \set{1, \ldots, N}.}
+\end{mini*}
+} % End optimization problem scope.
+
 Which is the finite dimensional optimization problem needed in order to search
 for a Lyapunov function candidate.
 
