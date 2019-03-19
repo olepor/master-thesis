@@ -223,6 +223,17 @@ this test setup the difference between a planner which takes into account
 uncertainty should become evident, and increasingly superior as more
 uncertanties are added to the test environment.
 
+Before the benchmark is run, all individual funnels in the base set are run with
+a hundred simulations runs from random starting positions in its inlet, to check
+if the invariant holds, and that the vehicle stays within the funnel at all
+times. This, along with the check whether or not funnels are composable, as
+in~(\ref{sec:composable-funnels}), then the invariant that the vehicle never leaves
+multiple funnels composed holds.
+
+Adding uncertainty to the testruns.
+
+\(w = 2*wmax*rand - wmax\), in order to normalize around zero.
+
 Below are the results from a hundred testruns across all the different test
 parameters.
 
@@ -250,7 +261,9 @@ with \(\randomSpeedVar{}\) a random variable \(\randomSpeedVar{} \colon
 
 Uncertainties:
 \begin{tabular}{ |c|c| }
+  \hline
   \randomSpeedVar{} & 1 \\
+  \hline
 \end{tabular}
 
 \subsubsection{Uncertainty in speed and input}
@@ -278,8 +291,10 @@ Model:
 
 Uncertainties:
 \begin{tabular}{|c|c|}
+  \hline
   \randomSpeedVar{} & 1 \\
   \randomInputVar{} & 5 \\
+  \hline
 \end{tabular}
 
 \subsubsection{Uncertainty in speed, input and pos}
@@ -311,11 +326,16 @@ The model
 
 Uncertainties:
 \begin{tabular}{|c|c|}
+  \hline
   \randomSpeedVar{} & 1 \\
   \randomPosXVar{} & 1\si{\centi\metre} \\
   \randomPosYVar{} & 1\si{\centi\metre}\\
   \randomPosThetaVar{} & 1 \\
   \randomInputVar{} & 5 \\
+  \hline
 \end{tabular}
 
 TODO - maybe record a movie or two of the vehicle driving?
+
+What happens if we add more uncertainty than what is modelled? - Run a simple
+experiment, to check the robustness of both benchmark algorithms to unmodelled noise.

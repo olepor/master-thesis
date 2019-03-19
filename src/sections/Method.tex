@@ -214,7 +214,7 @@ to two, neither of the three motion primitives were verified using the program.
 \begin{figure}
   \centering
   \includegraphics[scale=.3]{figures/rrtfunnel/straight-funnel-lyapunov-3d}
-  \caption{A visualization of a funnel for a straight motion primitive.}
+  \caption{A visualization of the Lyapunov function values around a straight motion primitive.}
 \end{figure}
 
 
@@ -277,6 +277,7 @@ which shows that the LaGrangian is invariant to shifts in the \((x,y,\theta)\)
 variables. 
 
 \subsection{Checking which funnels can be composed and not}
+\label{sec:composable-funnels}
 
 If two funnels are composable as per definition~(\ref{def:funnel-composition}),
 then it is safe to build one as a motion primitive on top of the other. This
@@ -402,12 +403,14 @@ creation as shown in figure \ref{fig:somefig}.
 \end{figure}
 
 For each funnel, in order to not only be able to compose funnels, but
-sub-funnels, which means that at every point of every node in every funnel
-composability with every other sample point in every other funnel has to be
+sub-funnels, which means that at every point of every node in every funnel is
+composable with every other sample point in every other funnel has to be
 checked. This is summed up more orderly in algorithm
 \ref{alg:create-funnel-graph}, where a funnel is a vertice in the graph, and an
 ordered pair of funnels \(\left( F_{i}, F_{j} \right)\) is an edge. Composition
-of funnels is checked in the same way as in \ref{def:funnel-composition}.
+of funnels is checked in the same way as in \ref{def:funnel-composition}, and a
+\ac{SOS}-program which implements the algorithm can be found
+in~(\ref{sec:funnel-composability-program-sos}).
 
 \begin{algorithm}
   \caption{Create Funnel Graph}
