@@ -263,7 +263,7 @@ y-axis looks like~(\ref{fig:monte-carlo-sim}).
 \end{figure}
 
 In this thesis a \textit{Funnel} will refer to the \textit{outer approximation
-  of forwards reachable sets} parameterized by a \textit{Lyapunov function}.
+  of forward reachable sets} parameterized by a \textit{Lyapunov function}.
 
 
 \subsection{Funnels}
@@ -387,7 +387,7 @@ the following optimization problem~\cite{majumdarFunnelLibrariesRealtime2017}
 
 \begin{align}
   \label{eq:funneloptimizationproblem}
-  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} vol(F(t)) dt \\
+  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol(F(t)) dt \\
   &\text{subject to} && V(t,\bar{x}) = \rho (t) \implies \dot{V}(t,\bar{x}) < \rho (t), \, \forall t \in [0,T] \\
   && &\mathcal{X}_0 \subset F(0,\bar{x}) \\
 \end{align} 
@@ -441,9 +441,9 @@ in~\cite{majumdarFunnelLibrariesRealtime2017}, through approximating the cost
 function by first discretizing the problem and replacing the integral with a
 finite sum
 \begin{equation}
-  \int_{0}^{T} vol(F(t)) dt \rightarrow \sum_{k=1}^{N} vol(F(t_{k})) \label{eq:discrete-costfunction}
+  \int_{0}^{T} \vol(F(t)) dt \rightarrow \sum_{k=1}^{N} \vol(F(t_{k})) \label{eq:discrete-costfunction}
 \end{equation}
-Since the Lyapunov function \(V\) in this thesis will be quadratic, \(V\) can be
+Since the Lyapunov function \(V\) in this thesis is quadratic, \(V\) can be
 written as
 \begin{equation}
   V(t_{k}, \bar{x}) = {\bar{x}}^{T}S_{k}\bar{x}, \, S_{k} \succeq 0
@@ -469,7 +469,7 @@ Which when expressed using \ac{SOS} constraints is
 
 Then combining the cost function~(\ref{eq:discrete-costfunction}) with the
 constraints~(\ref{eq:sufficient-conditions}-\ref{eq:sufficient-conditions3}),
-one arrives at
+one arrives at the optimization problem
 
 { % Mini environment scope
 
@@ -542,7 +542,7 @@ and
   \left( V,\rho,L_{0,i},S_{k} \right)
 \]
 \cite[Majumdar]{majumdarFunnelLibrariesRealtime2017} arrives at the following
-algorithm for searching for a funnel
+algorithm for funnel computation
 
 \begin{algorithm}[H]
   \label{alg:funnelalgorithm}
@@ -554,15 +554,15 @@ algorithm for searching for a funnel
   \(cost_{prev} = \infty\)\; converged = false \; \While{\(\neq converged\)}{
     Optimization problem 1: \;
     \begin{align*}
-      \underset{\substack{L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))& \\    
+      \underset{\substack{L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
       \text{subject to } & V \text{ and } \rho \text{ constant.}& \\
     \end{align*}\;
     Optimization problem 2: \;
     \begin{align*}
-      \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))& \\    
+      \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
       \text{subject to } & L \text{ and } L_{\mathcal{E},k} \text{ constant.}& \\
     \end{align*}\;
-    cost = \(\sum_{k=1}^{N} \mathrm{vol}(\mathcal{E}(t_{k}))\) \;
+    cost = \(\sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))\) \;
     \If{\(\frac{cost_{prev} - cost}{cost_{prev}} < \epsilon\)} {
       converged = true
     }\;
@@ -576,14 +576,16 @@ It is often the case that the nomial trajectory \(x_{0} \colon [0,T] \rightarrow
 \R^n\) is difficult to approximate with a low degree polynomial in
 time~\cite{majumdarFunnelLibrariesRealtime2017}. As this can cause funnel
 computation to take a lot of time, approximating the polynomial discretely can
-save a lot of time, but exactness will be
-lost~\cite{majumdarFunnelLibrariesRealtime2017}. If \(t_{k} \in [0,T]\), where
-\(k \in \set{1,\ldots,N}\), the optimization equations will turn into
+save a lot of time, but exactness will be lost, however the resulting funnels
+are shown to be acceptable approximations, where exactness can be regained
+through increasing the sampling
+rate~\cite{tobenkinInvariantFunnelsTrajectories2010}. If \(t_{k} \in [0,T]\),
+where \(k \in \set{1,\ldots,N}\), the optimization equations become
 \begin{mini}
   {\substack{V_{k}, \rho, L_{k},\\ L_{0,i}, S_{k},
       L_{\mathcal{E},k}}} % Optimization variables
-  {\sum_{k=1}^{N}\mathrm{vol}(\mathcal{E}(t_{k})) = \sum_{k=1}^{N}
-    \mathrm{vol}\left( \set{\bar{x} \mid {\bar{x}}^{T} S_{k} \bar{x} \leq 1}
+  {\sum_{k=1}^{N}\vol(\mathcal{E}(t_{k})) = \sum_{k=1}^{N}
+    \vol\left( \set{\bar{x} \mid {\bar{x}}^{T} S_{k} \bar{x} \leq 1}
     \right)} % Optimization function
   {\label{optidef:discrete}} % Label optimization problem
   {} % Optimization result
@@ -603,7 +605,7 @@ lost~\cite{majumdarFunnelLibrariesRealtime2017}. If \(t_{k} \in [0,T]\), where
 \subsection{Adding uncertainty to the funnel calculation}
 
 Following are the changes to the formulations so that a funnel takes into
-account a bounded uncertainty term of the form \(\mathcal{W}) = \set{ w(t) \in
+account a bounded uncertainty term of the form \(\mathcal{W} = \set{ w(t) \in
   R^d \mid g_{w,j}(w) \geq 0 \forall j = 1,\ldots,N_w}\). Adding an extra term
 to the closed-loop dynamics equation
 \[

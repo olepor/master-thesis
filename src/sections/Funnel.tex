@@ -116,13 +116,12 @@ to numerically search for these functions.
 
 A natural approach to a numerical algorithm for verifying \textit{Lyapunov}
 stability could be to evaluate \(V\) and \(\dot{V}\) at a large number of points
-and check that \(V\) is positive, and that \(\dot{V}\) is negative. Which
-\href{https://github.com/RobotLocomotion/drake/blob/master/systems/analysis/test/lyapunov_test.cc}{does
-  in fact work}. But in reality we can do better, using optimization algorithms
-which rigourously checks these conditions \textit{for all \(x\)}, without the
-need for dense sampling. Which in actuality enables us to search for
-\textit{Lyapunov functions} in an infinite function space (which is what makes
-up the space of all \textit{Lyapunov} functions).
+and check that \(V\) is positive, and that \(\dot{V}\) is negative. But in
+reality we can do better, using optimization algorithms which rigourously checks
+these conditions \textit{for all \(x\)}, without the need for dense sampling.
+Which in actuality enables us to search for \textit{Lyapunov functions} in an
+infinite function space (which is what makes up the space of all
+\textit{Lyapunov} functions).
 
 \subsection{Lyapunov analysis for linear systems}
 \label{subsec:Lyapunov analysis for linear systems}
@@ -148,7 +147,7 @@ equation
   \label{eqn:linearlyapunov}
   PA + A^TP = -Q
 \end{equation}
-for any \(Q = Q^T \geqslant 0\).
+for any \(Q = Q^T \succeq 0\).
 
 \subsection{The connection between Lyapunov analysis and convex optimization}
 
@@ -189,7 +188,7 @@ A semidefinite program can solve all problems of the form:
   \text{subject to } &TrA_iX = b_i \text{for all i } = 1,\ldots,m\\
                    &X \succeq 0
 \end{align*} 
-where \(X \in S^n\), with \(S^n\) being the space of real symmetric \(nxn\)
+where \(X \in S^n\), with \(S^n\) being the space of real symmetric \(n \times n\)
 matrices. The vector \(b \in \R^m\), and the matrices \(A_i \in S^n\), and \(C
 \in S^n\) are given problem
 parameters\cite{wolkowiczHandbookSemidefiniteProgramming2000}.
@@ -248,7 +247,7 @@ nonlinear.
 Fortunately, with the advent of \ac{SOS} programming, it is now possible to
 formulate the search for Lyapunov functions as a convex optimization problem.
 
-\section{SOS}
+\subsection{SOS}
 
 The tools to search for a Lyapunov function for a nonlinear system relies on the
 algebraic geometry theory of \ac{SOS}, which is about representing
