@@ -7,7 +7,7 @@ second deploy these funnels as motion primitives in a discrete \ac{RRT} planner,
 based on~\cite{lavalleLav98cPdf}. This is beneficial, as using \textit{robust}
 motion primitives has several advantages. Firstly, they are robust to
 uncertainty, and thus, as long as the uncertainties in the system are akin to
-our assumptions, the vehicle will not leave the funnel path. Secondly, with the
+our assumptions, the vehicle will not leave the funnel. Secondly, with the
 assumption that the primitives are robust, there is no need for more
 conservative maneuvers and heuristics, such as maximizing the distance to an
 obstacle. This means that a robust motion primitive algorithm can perform more
@@ -36,14 +36,12 @@ modified slightly into
 \end{equation}
 which is a second-order unicycle model with constant speed. A picture of the
 model can be found in figure~(\ref{fig:second-order-unicycle}).
-
 \begin{figure}
   \centering \resizebox{10em}{!}{
     \import{figures/method/}{unicycle-model.pdf_tex} }
   \caption{The unicycle model of a vehicle.}
   \label{fig:second-order-unicycle}
 \end{figure}
-
 Although this is the only model used in this thesis, the framework and the code
 is easily adapted into accommodating a different and more complicated model for
 planning.
@@ -52,31 +50,41 @@ planning.
 \subsubsection{Generating the trajectories}
 
 The trajectories are generated through the \textit{Direct collocation method}.
-(For what reason? Other methods such as RRT* could also be used, or other
-optimal trajectory solvers.)
+This is choses because it fits well with the sampling that is done along the
+nominal trajectory for in this case, optimal trajectory planning, but also fits
+well with the sampling that is done when generating the invariant regions around
+the sampled paths along the trajectory for the funnel generation. The chosen
+method is nonlinear, and any other number of methods could have been used in
+order to generate the initial trajectories, however the direct collocation
+method filled the needs for the initial trajectory library well.
 
-Using a cost function of the type
+Since it is an optimal trajectory planner, a cost function has to be chosen for
+the solver to minimize. The cost function of the type
 \begin{equation}
   J = \int_{0}^{T} \left[ 1 + {u_{0}}^{T}Ru_{0} \right] dt
 \end{equation}
+from~\cite{majumdarFunnelLibrariesRealtime2017} was chosen as it gives the
+vehicle a dependence upon the input, and will generate input graphs, which is
+beneficial for not having the vehicle act too aggressively, while it also gives
+a depence upon the time spent.
 
-The initial trajectory set is pictured in~\ref{fig:initial-trajectories}, and
+An initial trajectory set is pictured in~\ref{fig:initial-trajectories}, and
 consists of a left-turn, a straight-forward, and a right-turn motion.
 
 \begin{figure}
   \centering
-  \begin{minipage}[b]{0.4\textwidth}
+  \begin{minipage}[b]{0.2\textwidth}
     \includegraphics[width=\textwidth]{figures/method/straight-trajector}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.4\textwidth}
+  \begin{minipage}[b]{0.2\textwidth}
     \includegraphics[width=\textwidth]{figures/method/left-trajector}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.4\textwidth}
+  \begin{minipage}[b]{0.2\textwidth}
     \includegraphics[width=\textwidth]{figures/method/right-trajector}
   \end{minipage}
-  \caption{The three motion primitives for the \rrtfunnel{} algorithm, one
+  \caption{Three motion primitives for the \rrtfunnel{} algorithm, one
     straight, one left, and one right turn.}
   \label{fig:initial-trajectories}
 \end{figure}
@@ -87,11 +95,11 @@ TODO - maybe add the initial point generation algorithm here?
   the initial Lyapunov function}
 
 The funnel calculation algorithm has to be initialized with a Lyapunov candidate
-in the same way as~\cite[Majumdar]{majumdarFunnelLibrariesRealtime2017}, funnels
-will be initialized with a \ac{TV-LQR} controller. The \ac{LQR}-controller has a
-cost function of the form
+in the same way as~\cite[Majumdar]{majumdarFunnelLibrariesRealtime2017}, the
+funnel generation algorithm will be initialized with a \ac{TV-LQR} controller,
+employing a cost function of the form
 \begin{equation}
-  J = x^{T}(t_1)F(t_1)x + \int_{t_{0}}^{t_{1}} \left( x^{T}Qx + u^{T}Ru + 2x^TNu \right) \mathrm{d}t,
+  J = x^{T}(t_1)F(t_1)x(t_1) + \int_{t_{0}}^{t_{1}} \left( x^{T}Qx + u^{T}Ru + 2x^TNu \right) \mathrm{dt},
 \end{equation}
 which when employed on the linearization of the system dynamics
 \begin{equation}
@@ -104,15 +112,16 @@ gives an initial candidate Lyapunov function
 
 Although the focus of this thesis is not on fine-tuning the controller, some
 amount of effort has to go into getting the cost parameters acceptable. In
-general penalizing the vehicle's distance from the nominal path in
-\((x,y,\theta)\), and not caring for the energy expended, the control input will
-be penalized very little. More specifically the cost matrices employed are
+general the strategy is penalizing the vehicle's distance from the nominal path
+in \((x,y,\theta)\), and not caring for the energy expended by the control
+input. Thus path divergence is penalized hard, and input divergence is not. More
+specifically the cost matrices employed are
 \begin{align*}
   R &= 0.01 \\
   Q &= \begin{bmatrix}
     40 & 0 & 0 & 0 \\
     0 & 40 & 0 & 0 \\
-    0 & 0 & 0 & 40 \\
+    0 & 0 & 40 & 0 \\
     0 & 0 & 0 & 4 \\
   \end{bmatrix}
   \\
@@ -129,23 +138,20 @@ be penalized very little. More specifically the cost matrices employed are
 where the control input is only penalized \(\frac{1}{10}\)th of the other
 variables.
 
-Tuning of the LQR paramaeters, and why the costs were chosen!
-
 \subsubsection{Generating the funnels around the trajectories}
 
 With the nominal trajectories, and the initial Lyapunov functions now ready, the
 funnels around the nominal trajectories can be calculated using the
-algorithm~\ref{alg:funnelalgorithm}. The implementation is an expansion upon
-code from the~\cite[Drake toolbox]{drake}, whereas the \ac{SOS} implementation
-is kicked out to a \ac{SOS} solver built upon~\[sostools\]\cite{sostools}.
+algorithm~\ref{alg:funnelalgorithm}. % The implementation is an expansion upon
+% code from the~\cite[Drake toolbox]{drake}, whereas the \ac{SOS} implementation
+% is kicked out to a \ac{SOS} solver built upon~\[sostools\]\cite{sostools}.
 
-First of all the system dynamics for the model~\ref{eq:model-dynamics} are still
-not polynomial, so the polynomial system needed for the \ac{SOS}-verification is
-obtained through a Taylor-expansion of degree three around the nominal
-trajectory.
-
-Secondly the function limiting the size of the funnel \(\rho(t_{k})\) has to be
-initialized by a feasible \(\rho(t)\) as well. This is done through the equation
+However, two obstacles remains, as the dynamics for the
+model~\ref{eq:model-dynamics} are still not polynomial. Thus in order to obtain
+the needed polynomial dynamics, the system is expanded around the nominal
+trajectory with a Taylor expansion of degree three. Secondly the function
+limiting the size of the funnel \(\rho(t_{k})\) has to be initialized by a
+feasible \(\rho(t)\) as well. This is done through the equation
 \begin{equation}
   \rho(t_{k}) = \mathrm{exp}\left( \rho_{\tau}\frac{\left( t_{f} - t \right)}{\left( t_{f} - t_{0}  \right)}\right)
 \end{equation}
@@ -174,9 +180,9 @@ example: For the vehicle model in this thesis the size of the funnel projected
 down into the xy-plane will be the most important metric. Whether or not the
 vehicle's orientation parameter \(\theta\) is close to the nominal heading is of
 less concern, and is therefore down-prioritized, along with the cost on the
-control input \(u\). Having a large \(theta\) and \(\dot{\theta}\) semi-axis in
+control input \(u\). Having a large \(\theta\) and \(\dot{\theta}\) semi-axis in
 the hyperellipsoid can also be beneficial, as it increases the inlet of the
-funnel at hand. This leads to the cost function
+ellipsoid at hand. All this taken together then gives the cost function
 \begin{equation}
   P_{k} = W_{k}P_{k}W_{k}^{T}
 \end{equation}
@@ -191,68 +197,12 @@ where
   \end{bmatrix}
 \end{equation}
 
-Initially the modified cost function
-from~\cite{majumdarFunnelLibrariesRealtime2017} was added, but the
-
-Plot figures with different weightings of the cost functions.
-
-Running the funnel calculations with the plots of the funnels generated.
-
-Funnels with different degree LaGrangian multipliers.
-
-Funnels with different sampling density?
-
-Funnels with different cost functions.
-
-Funnels with
-
-\subsubsection{Adding uncertainty to the Funnels}
-
-The initial code in the~\cite[Drake toolbox]{drake} did not take uncertainty
-into account, and hence had to be added to the implementation.
-
-When adding uncertainty to the speed of the vehicle, so that the speed is now in
-\([9,11]\) m/s.
-
-Adding uncertainty to the speed where the uncertainty was greater than or equal
-to two, neither of the three motion primitives were verified using the program.
-
 \begin{figure}
   \centering
   \includegraphics[scale=.3]{figures/rrtfunnel/straight-funnel-lyapunov-3d}
   \caption{A visualization of the Lyapunov function values around a straight
     motion primitive.}
-\end{figure}
-
-
-\subsubsection{Expanding the funnels with the size of the vehicle model}
-
-In order for the funnel to be valid, it needs to be expanded from the point
-model used, to contain the entire vehicle in it's \ac{ROA}. This is done through
-expanding the size of the funnel by the radius of the vehicle, and can be seen
-in~(\ref{fig:expanded-funnel}) and~(\ref{fig:expanded-and-unexpanded}).
-
-\begin{figure}
-  \centering \includegraphics[clip, trim=6cm 8cm 6cm 8cm,
-  scale=.5]{figures/method/expanded-funnel}
-  \caption{The original funnel created from the point model, with a funnel
-    expanded by a radius of 0.2 surrounding it.(TODO)- maybe draw this in
-    inkscape instead?}
-  \label{fig:expanded-funnel}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \begin{minipage}{0.4\textwidth}
-    \includegraphics[scale=.3]{figures/method/unexpanded-funnel}
-    \caption{The funnel around a straight trajector for the point model.}
-  \end{minipage}
-  \begin{minipage}{0.4\textwidth}
-    \includegraphics[scale=.3]{figures/method/expanded-funnel-with-car}
-    \caption{The funnel around a straight trajector for the point model.}
-  \end{minipage}
-  \caption{blablablal}
-  \label{fig:expanded-and-unexpanded}
+  \label{fig:visualized-lyapunov}
 \end{figure}
 
 \subsubsection{Shifting funnels and invariance}
@@ -265,57 +215,156 @@ coordinates of the system has to be determined. ex:
                 m\begin{bmatrix}
                   -v\sin \theta \\ 
                   v \cos \theta \\
-                  \dot{\theta} \\
-                  u \\
                 \end{bmatrix}^{T}
   \begin{bmatrix}
     -v\sin \theta \\
     v \cos \theta \\
-    \dot{\theta} \\
-    u \\
   \end{bmatrix}
-  - I\dot{\theta}^2 \\
+  + I\dot{\theta}^2 \\
               &= m \left(
-                v^2 \sin^2 \theta + v^2 \cos^2 \theta + {\dot{\theta}}^2 + u^2
+                v^2 \sin^2 \theta + v^2 \cos^2
                 \right)  + I {\dot{\theta}}^2 \\
-              &= m(v^2 + {\dot{\theta}}^2 + u^2) + I {\dot{\theta}}^2 \\
+              &= mv^2 + I {\dot{\theta}}^2 \\
 \end{align}
 which shows that the LaGrangian is invariant to shifts in the \((x,y,\theta)\)
-variables.
+variables, since \(\frac{\partial\mathcal{L}}{\partial q_i} = 0 \, q_i =
+x,y,\theta\). Hence now, any funnel in the base set can be shifted around, and
+thus create an infinite set of funnels in the state space. Through the
+partitioning of coordinates into cyclic- and non-cyclic coordinates, of the form
+\(x = [x_c x_{nc}]\), the state dynamics \(\dot{x} = f(x(t), u(t))\) only
+depends on the non-cyclic coordinates of the system. Thus, a trajector of the
+form \(t \rightarrow (x(t),u(t))\) which solves \(\dot{x} = f(x(t),u(t))\) can
+then be transformed through a shift \(\Psi_c\) along the cyclic coordinates of
+the system to yield a valid solution of the form
+\[
+  t \rightarrow (\Psi_{x}(x(t)), u(t))
+\]
+which is a trajector shifted to a different place in the state space, but is
+still valid. The transform \(\Psi\) is given by
+\[
+  \Psi([x_c, x_{nc}]) =  
+  \begin{cases}
+    x_c \rightarrow \hat{x}_{c} \\
+    x_{nc} \rightarrow x_{nc} \\
+  \end{cases}.
+\]
 
 \subsection{Checking which funnels can be composed and not}
 \label{sec:composable-funnels}
 
-If two funnels are composable as per definition~(\ref{def:funnel-composition}),
-then it is safe to build one as a motion primitive on top of the other. This
-definition can be translated into a \ac{SOS}-program, to ensure that the outlet
-of one funnel is fully contained in the outlet of the other.
+Now that funnels can be shifted freely around the state space to create new
+motion primitives it is time to chain funnels together to create chains, and
+eventually trees of funnels that span out into the planning environment to
+create robust maneuvers that the vehicle can follow. An abstract pictorial
+representaion of two funnels composed together can be seen
+in~(\ref{fig:two-funnels-composed}). The mathematical definition of funnel
+composition~(\ref{def:funnel-composition}), is used to verify that two funnels
+are composable, and implemented as a \ac{SOS}-program which can be found
+in~(\ref{AppendixB}). However, take note that the definition has to be modified
+slightly in order to take into account the translation along the cyclic
+coordinates. Hence the definition used
+is~\cite[definition~3,sec~5]{majumdarFunnelLibrariesRealtime2017} which states
+\begin{definition}
+  An ordered pair \(F_1,F_2\) of funnels \(F_1 \colon [0,T_1] \rightarrow
+  \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
+  is \textit{sequentially composable modulo invariances} if there exists a shift
+  along cyclic coordinates such that \(F_{1}(T_1) \subset
+  \Psi_{c}\left(F_2(0)\right)\)
+\end{definition}
+In laymans terms this means that if a funnel \(F_2\) can be shifted along cyclic
+coordinates to stack up against the outlet of funnel \(F_2\) so that they are
+composable in the sense of definition~(\ref{def:funnel-composition}). Hence,
+basically any funnel in the state space can be seen as a set consisting of the
+funnel from the basic set, along with a transformation along the cyclic
+coordinates of the system \(F_n \in \R^n \mid \Psi_{c,i}(F_i), F_i \in
+\mathcal{F}\), where \(\mathcal{F}\) is the basic set of funnels.
 
-\subsubsection{The different kinds of composition}
-
-Sequential composition
-
-Sequential composition Modulo Invariances
-
-(Runtime composition)
-
-\subsection{The Identity funnel}
-
-\subsection{Simulating the funnels, checking if the model stays within the
-  funnel at all times.}
-
-\section{Distance metric for expansion (Maybe for the RRT section?)}
+\begin{figure}
+  \includegraphics[scale=.2]{figures/method/funnel-composition} \centering
+  \caption{Two funnels composed.}
+  \label{fig:two-funnels-composed}
+\end{figure}
 
 \section{RRT}
 
-\subsection{Rapidly exploring the state-space}
+With the basic framework for dealing with funnels as motion primitives built, it
+is time to build the \ac{RRT} part of the \rrtfunnel{} algorithm. The reason for
+choosing to base the global path planning framework on the \ac{RRT} motion
+planning algorithm are as follows. One, it has the ability ot quickly expand
+deep into the search-space, and then later progress towards a finer sampling,
+which is valuable as it avoids local minima. The \ac{RRT} is also relatively
+simple to implement, and has only three main components that needs to be in
+place in order for successful path planning to happen in an arbitrary state
+space.
 
-One of the attributes of an \ac{RRT} is it's ability to quickly expand deep into
-the search-space, and later on start the finer search TODO - cite. In order to
-enable this behaviour for the \rrtfunnel{} algorithm, a couple of longer motion
-primitives are needed. These are easily built by composing several of the longer
-primitives from the base set. Still, they will not be made infinitely long,
-which adds the familiar constraint of.. TODO - cite.
+\subsection{Uniform sampling in SO(2)}
+
+One, as mentioned in~(\ref{sec:rrt-sampling}), the \ac{RRT} algorithm needs
+uniform sampling of the state space in order for it to function optimally. As
+over- or under-sampling certain parts of the state space can lead to poor
+performance.
+
+From~\cite{kuffnerEffectiveSamplingDistance2004} the samples can be generated
+uniformly on the Euclidean plane through
+\[
+  (x,y) = (\mathnormal{X}_{dim}rand, \mathnormal{Y}_{dim}rand)
+\]
+where \(rand\) is a random variable in the interval \([0,1)\).
+
+\subsection{Distance metric}
+
+Secondly, a distance metric has to be chosen for choosing the closest node in
+the tree. TODO - is this mentioned in the preliminaries?
+
+\subsection{Extension operator}
+
+Thirdly, the extension operator for the tree has to be chosen. This
+implementation settled on the non-holonomic distance function for unicycle type
+vehicles from~\cite{parkFeedbackMotionPlanning2015}.
+
+\subsection{Choosing a distance metric}
+
+The ideal metric would have been the actual \textit{cost-to-go} function for the
+system at hand. However this calculating the actual cost to go is equivalent to
+solving the motion planning problem at hand, and is hence not
+viable~\cite{pengchengReducingMetricSensitivity2001}. Thus, in order for a
+mobile robot to efficiently navigate an environment, it must have a good measure
+of distance between different poses in space, without actually solving the
+planning problem anew. For a problem in the Cartesian plane - it is common to
+use the Euclidean distance, however, this is not a good distance metric for
+non-holonomic vehicles, as it does not incorporate the possible constraints of
+the system function, and has little bearing on the actual cost-to-go of the
+system~\cite{parkFeedbackMotionPlanning2015}. In fact, for sampling based
+planners such as the \ac{RRT}, the configuration space is only sufficiently
+explored in the case where the distance function reflects the true cost-to-go
+function~\cite{pengchengReducingMetricSensitivity2001}. Hence, all other metrics
+will be a compromise of complexity and time vs efficiency.
+
+TODO - maybe implement the~\cite{parkFeedbackMotionPlanning2015} distance
+metric. Or optionally, maybe use the current Lyapunov function value?
+
+Which distance metric to use?
+
+A modified Euclidean metric which weights the theta depending on how close the
+vehicle is to the final configuration is defined as
+\[
+  \rho(x_{1},x_{2}) = w_{1}\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}} +
+  w_{2}f(\theta{1},\theta{2})
+\]
+in~\cite{kuffnerEffectiveSamplingDistance2004}, where \(\norm{\mathnormal{X_{1}}
+  - \mathnormal{X_{2}}}\) is the standard Euclidean metric, and \(f\) is a
+function, giving the distance between headings, and the rotations and distance
+is scaled relative to the translation distance.
+
+In~\cite{parkFeedbackMotionPlanning2015}, a distance metric of a
+control-Lyapunov function. (interesting).
+
+\cite{perezLQRRRTOptimalSamplingbased2012a} LQR as distance metric.
+
+\subsubsection{Metric for nearest node}
+\subsubsection{Metric for extension operator}
+
+\ie which funnel to choose as an extension. What factors are considered here?
 
 \subsubsection{The identity funnel for starting the simulation fresh}
 
@@ -334,26 +383,8 @@ pruned. Therefore, cutting off the end, or the beginning of a funnel, will in
 fact create two new funnels. This fact can be exploited in order to create new
 and shorter subfunnels for use in the \rrtfunnel{} algorithm.
 
-\begin{figure}
-  \includegraphics[scale=.2]{figures/method/funnel-composition} \centering
-  \caption{Two funnels composed.}
-\end{figure}
-
 Look at ~\cite{vonasekGlobalMotionPlanning2013} (Algorithm3) for a way of
 building an RRT with motion primitives.
-
-\subsection{Composition of funnels}
-
-In order to ensure that the motion primitives in the \ac{RRT} can be added onto
-eachother, and that this addition does not remove the robustness guarantess
-embroidered in a single funnel. Thus in order to ensure that two motion
-primitives are composable.
-
-\section{TVLQR}
-
-Tuning of the parameters in the \textit{TVLQR} algorithm.
-
-\section{Simulations}
 
 \subsection{Collision checking}
 
@@ -368,29 +399,6 @@ current state into the quadratic Lyapunov function
 \[
   {\bar{x}}^{T}S_{k}\bar{x} + \bar{x}s_{1} \bar{x} s_{2}
 \]
-
-\section{Creating more motion primitives}
-
-Although the base motion primitive library is pretty sparse, just like the
-\rrtfunnel{} algorithm creates paths from stacking motion primitives, longer
-motion primitives can be built \textit{for} the \rrtfunnel{} algorithm. This is
-beneficial also, as it helps the algorithm expand quickly into the unsearched
-parts of the searchspace, and therefore helps it regain some of the benefits of
-the original \ac{RRT} algorithm.
-
-(Downsides -- does not necessarily expand into other parts than the xy-plane?).
-
-A collection of the added motion primitives is shown
-in~(\ref{fig:expanded-motion-primitives}).
-
-\begin{figure}
-  % \includegraphics[scale=.5]{figures/method/expanded-motion-primitives}
-  \caption{A collection of motion primitives built from the base set of
-    primitives.}
-  \label{fig:expanded-motion-primitives}
-\end{figure}
-
-\subsection{}
 
 \section{Funnel-graph}
 
@@ -454,104 +462,6 @@ funnels from the basis set.
 
 TODO - create figure.
 
-\subsection{Translating funnels}
-
-In order to translate funnels around the world space the cyclic coordinates of
-the system has to be known. Looking at the LaGrangian equations of the system
-\begin{equation}
-  \mathcal{L(q,\dot{q})} = 
-\end{equation}
-
-Which means that the funnels can freely be shifted around in the coordinates
-\(\left( x, y, \theta \right)\), without it changing the dynamics of the vehicle
-in any regard.
-
-\subsection{Funnel composition}
-
-Even though the funnels are able to be translated around the configuration space
-along its cyclic coordinates, there are still no guarantees that one funnel
-composed onto the end of another makes another motion primitive which consists
-of the two discrete motion primitives of which it is made up. In order to
-guarantee that the resulting motion primitive does not violate the funnel
-conditions, the inlet of the second needs to be contained within the outlet of
-the first one. From~\cite[Majumdar]{majumdarFunnelLibrariesRealtime2017}, a
-funnel made up from two funnels are \textit{Sequentially composable modulo
-  invariances} if
-
-\begin{definition}
-  An ordered pair \((F_1,F_2)\) of funnels \(F_1 \colon [0,T_1] \rightarrow
-  \mathcal{P}(\R^n)\), and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
-  is sequantially composable modulo invariances if there exists a shift
-  \(\Psi_c\) of the state along cyclic coordinates such that \(F_1(T_1) \subset
-  \Psi(F_2(0))\).
-\end{definition}
-
-This means that if a funnel \(F_2\) can be shifted around the cyclic coordinates
-of the system and verify that its inlet is contained in the outlet of \(F_1\),
-then the two funnels can form another funnel which is the ordered pair of
-funnels \((F_1,F_2)\). It should be noted that the definition requires not only
-the cyclic coordinates to be contained within the outlet of the first funnel,
-but also the non-cyclic coordinates.
-
-\subsection{Uniform sampling in SO(2)}
-
-How to sample uniformly in the SO(2) space?
-
-Sampling uniformly in state space is important so that certaint parts of
-state-space will neither be over or under-represented, which could negatively
-impact the planning algorithm at hand.
-
-From~\cite{kuffnerEffectiveSamplingDistance2004} the samples can be genrated
-uniformly on the Euclidean plane through
-\[
-  (x,y) = (\mathnormal{X}_{dim}rand, \mathnormal{Y}_{dim}rand)
-\]
-where \(rand\) is a random variable in the interval \([0,1)\).
-
-\subsection{Choosing a distance metric}
-
-The ideal metric would have been the actual \textit{cost-to-go} function for the
-system at hand. However this calculating the actual cost to go is equivalent to
-solving the motion planning problem at hand, and is hence not
-viable~\cite{pengchengReducingMetricSensitivity2001}. Thus, in order for a
-mobile robot to efficiently navigate an environment, it must have a good measure
-of distance between different poses in space, without actually solving the
-planning problem anew. For a problem in the Cartesian plane - it is common to
-use the Euclidean distance, however, this is not a good distance metric for
-non-holonomic vehicles, as it does not incorporate the possible constraints of
-the system function, and has little bearing on the actual cost-to-go of the
-system~\cite{parkFeedbackMotionPlanning2015}. In fact, for sampling based
-planners such as the \ac{RRT}, the configuration space is only sufficiently
-explored in the case where the distance function reflects the true cost-to-go
-function~\cite{pengchengReducingMetricSensitivity2001}. Hence, all other metrics
-will be a compromise of complexity and time vs efficiency.
-
-TODO - maybe implement the~\cite{parkFeedbackMotionPlanning2015} distance
-metric. Or optionally, maybe use the current Lyapunov function value?
-
-Which distance metric to use?
-
-A modified Euclidean metric which weights the theta depending on how close the
-vehicle is to the final configuration is defined as
-\[
-  \rho(x_{1},x_{2}) = w_{1}\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}} +
-  w_{2}f(\theta{1},\theta{2})
-\]
-in~\cite{kuffnerEffectiveSamplingDistance2004}, where \(\norm{\mathnormal{X_{1}}
-  - \mathnormal{X_{2}}}\) is the standard Euclidean metric, and \(f\) is a
-function, giving the distance between headings, and the rotations and distance
-is scaled relative to the translation distance.
-
-In~\cite{parkFeedbackMotionPlanning2015}, a distance metric of a
-control-Lyapunov function. (interesting).
-
-\cite{perezLQRRRTOptimalSamplingbased2012a} LQR as distance metric.
-
-\subsubsection{Metric for nearest node}
-\subsubsection{Metric for extension operator}
-
-\ie which funnel to choose as an extension. What factors are considered here?
-
 
 \section{RRT-section}
 
@@ -596,6 +506,11 @@ The \rrtfunnel{} algorithm is defined as
   \SetKwFunction{Extend}{Extend} \SetKwFunction{AddVertex}{add\_vertex}
   \SetKwFunction{AddEdge}{add\_edge}
   \SetKwFunction{ExtractBranch}{Extract\_Branch}
+  \SetKwFunction{TestUncertainFunnels}{Test\_Uncertain\_Funnels}
+  \SetKwFunction{BuildComposabilityMatrix}{Build\_Composability\_Matrix}
+
+  \TestUncertainFunnels{}
+  \BuildComposabilityMatrix{}
 
   \(\mathcal{G}.init(q_0)\) \For{\(i \leftarrow 1\) \KwTo \(k\)}{ \(q_{rand}
     \leftarrow \) \RandConf{} \; \(q_{near} \leftarrow \)
@@ -607,9 +522,18 @@ The \rrtfunnel{} algorithm is defined as
         \mathcal{X}_{goal}\)}{ return \ExtractBranch{\(\mathcal{G}\)} \; }\; } }
 
   \SetKwProg{Def}{def}{:}{end} \Def{\RandConf{}}{ return 0\; }
+  \Def{\TestUncertainFunnels{}}{ return 0\; }
+  \Def{\BuildComposabilityMatrix{}}{ return 0\; }
   \Def{\NearestVertex{\(q_{rand}, \mathcal{G}\)}}{ return 0\; }
   \Def{\Extend{\(q_{near}, q_{rand} \)}}{ return 0\; }
 
   \Def{\ExtractBranch{}}{ return 0\; }
 
 \end{algorithm}
+
+\subsection{The convergence of the algorithm}
+
+The convergence rate \(\epsilon\) is set to 1 percent.
+
+No input saturations modelled.
+

@@ -119,7 +119,32 @@ the possible states of the vehicle model) is:
 \end{align*}
 
 where \(S_{k}^{'}\) is the ellipsoid which contains the volume of the vehicle
-for all verfied states in the funnel.
+for all verfied states in the funnel. A picture of the initial funnel and the
+funnel expanded around the vehicle model can be seen
+in~(\ref{fig:expanded-funnel}) and~(\ref{fig:expanded-and-unexpanded}).
+
+\begin{figure}
+  \centering \includegraphics[clip, trim=6cm 8cm 6cm 8cm,
+  scale=.5]{figures/method/expanded-funnel}
+  \caption{The original funnel created from the point model, with a funnel
+    expanded by a radius of 0.2 surrounding it.}
+  \label{fig:expanded-funnel}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{minipage}{0.4\textwidth}
+    \includegraphics[scale=.3]{figures/method/unexpanded-funnel}
+    \caption{The funnel around a straight trajector for the point model.}
+  \end{minipage}
+  \begin{minipage}{0.4\textwidth}
+    \includegraphics[scale=.3]{figures/method/expanded-funnel-with-car}
+    \caption{The funnel around a straight trajector for the point model.}
+  \end{minipage}
+  \caption{blablablal}
+  \label{fig:expanded-and-unexpanded}
+\end{figure}
+
 
 \subsection{The initial motion primitive set}
 
@@ -179,6 +204,20 @@ orientations for the vehicles heading, and the input. Hence, only the Euclidean
 distance to the goal set is checked when running the algorithm, and \(\theta\)
 and \(u\) are ignored. Sampling uniformly from a 
 
+\subsection{Benchmark planner}
+
+The benchmarkplanner is an \ac{RRT} algorithm using the same motion primitive
+set as the \rrtfunnel{} algorithm, with the same \ac{LQR} controller, and the
+same distance metric. The difference is that it does not take uncertainty into
+account, and instead maximizes the distance to the nearest obstacle as the
+extension operator, \ie{}
+\begin{equation}
+  \max_{i}\min_{t,j}(x_{i}(t), o_{j})
+\end{equation}
+where \(x_{i}(t) \in \mathcal{T}\), is a trajectory from the basic motion
+primitive set, and \(o_{j} \in \modelconfigurationspaceobst{}\) is an obstacle
+in the configuration space \(\modelconfigurationspace{}\).
+
 \subsection{Terrors of errors}
 
 The funnel compuatations error out if too much uncertainty is added. In this
@@ -197,6 +236,8 @@ funnel), and optionally increase the number of knot points (sampling points).
 
 Track and add some statistics on the most commonly employed funnels when testing
 the algorithm.
+
+\subsection{Making sure that the vehicle stays within the funnels during execution}
 
 
 \subsection{Experiments}

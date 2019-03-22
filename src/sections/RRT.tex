@@ -259,11 +259,14 @@ nonholonomic vehicle.
 Should it be expanded into the dynamic Voronoi regions? If so, what are these
 regions?
 
+The extend operation can take a different extension or distance metric than the
+closest node operation. Maybe this should be used for the benchmark planner. An
+extension heuristic which maximizes the distance to the closest trees.
+
 \subsubsection{Sampling with a bias}
 
 Extending with a goal bias of 5 percent is currently used in the \rrtfunnel{}
 algorithm. 
-
 
 \subsection{Reachability Graph}
 

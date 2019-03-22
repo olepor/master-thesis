@@ -147,7 +147,7 @@ are uncertainty in:
 \item the environment
 \end{enumerate}
 Thus the exact system state is never exactly known. Therefore planning under
-uncertainty is done in a belief space, which is a description of the state space
+uncertainty is done in belief space, which is a description of the state space
 using probability distributions. Planning is done in the information space, as
 opposed to the state-space. Uncertainties in prediction and the current state
 exist. The information space is a general structure for working with plans under
@@ -169,8 +169,8 @@ then a transition is modeled as
 As the actions of nature are not available beforehand, that is -- \(\theta_ k\)
 is not given, thus we have
 \[
-  X_{k+1} = \set{ x_{k+1} \ in X \mid \exists\theta_k \in \Theta(x_k,u_k)
-    \text{such that } x_{k+1} = f(x_k,u_k,\theta_k)}
+  X_{k+1} = \set{ x_{k+1} \in X \mid \exists\theta_k \in \Theta(x_k,u_k)
+    \text{ such that } x_{k+1} = f(x_k,u_k,\theta_k)}
 \]\cite{Lav06}.
 
 \subsection{A Plan under Uncertainty}
@@ -178,7 +178,7 @@ Since it Expected-case analysis. Worst-case analysis.
 
 \subsection{Trajectory planning}
 
-The \rrtfunnel\ algorithm relies on validating robust trajectories as motion
+The \rrtfunnel{} algorithm relies on validating robust trajectories as motion
 primitives for the planner. However, solving for a valid initial trajectory is a
 hard control problem in itself. Thus in order to surmount this obstacle
 
@@ -289,7 +289,7 @@ interval, and \(F(t)\) is the set of states that the system can be in at time
 
 \subsection{Defining funnels}
 
-The funnel computations will be based on the \ac{SOS} theory as developed
+The funnel computations will be based on the \ac{SOS} theory developed
 in~\ref{sec:Funnels}. Given a trajectory, the goal is to compute a robust
 invariant set around the trajectory that will `guarantee' that the planner is
 free from collisions during execution of the obtained motion plan. This robustly
@@ -545,8 +545,8 @@ and
 algorithm for funnel computation
 
 \begin{algorithm}[H]
-  \label{alg:funnelalgorithm}
   \caption{Funnel computation}
+  \label{alg:funnelalgorithm}
   \DontPrintSemicolon \SetAlgoNoLine
 
   \KwIn{\(V\) and \(\rho\)} \KwOut{Funnel}
