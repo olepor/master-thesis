@@ -205,6 +205,40 @@ where
   \label{fig:visualized-lyapunov}
 \end{figure}
 
+\subsection{Adding uncertainty to the funnel calculation}
+\label{sec:adding-uncertainty}
+
+Following are the changes to the formulations so that a funnel takes into
+account a bounded uncertainty term of the form \(\mathcal{W} = \set{ w(t) \in
+  R^d \mid g_{w,j}(w) \geq 0 \forall j = 1,\ldots,N_w}\). Adding an extra term
+to the closed-loop dynamics equation
+\[
+  \dot{\bar{x}} = f_{cl}(t, \bar{x}(t), w(t))
+\]
+the requirement~(\ref{eq:reachableset}) is slightly modified so that
+\begin{equation}
+  \label{eq:uncertain-reachableset}
+  \bar{x}(0) \in \mathcal{X} \implies \bar{x}(t) \in F(t),\, \forall t \in
+  [0,T], \, \forall w \colon [0,T] \rightarrow \mathcal{W}
+\end{equation} 
+\(F(t)\) is the new reachable set for the uncertain system. Thus the sufficient
+condition~(\ref{eq:funnelsufficient}) turns into
+\begin{equation}
+  \label{eq:funneluncertain-sufficient}
+  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x},w) < \dot{\rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W}.
+\end{equation}
+The Lyapunov function is calculated as
+\begin{equation}
+  \dot{V}(t,\bar{x}, w) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x},w) + \frac{\partial V(t,\bar{x})}{\partial t},
+\end{equation}
+and the optimization condition~(\ref{eq:optimizationconditionsos}) turns into
+\begin{align}
+  \label{eq:optimizationconditionuncertain}
+  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  & \\
+  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w)& \qquad \text{is SOS}  \\
+  \L_{w,j}(t,\bar{x},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w
+\end{align}
+
 \subsubsection{Shifting funnels and invariance}
 
 In order to freely shift funnels around in the configuration space, the cyclic
@@ -285,17 +319,121 @@ coordinates of the system \(F_n \in \R^n \mid \Psi_{c,i}(F_i), F_i \in
   \label{fig:two-funnels-composed}
 \end{figure}
 
+Using the generalized S-procedure the condition
+\begin{equation}
+  V_1(T_1,\bar{x}) \leq \rho_1(T_1) \implies V_2(0, \bar{x}) \leq \rho_2(0)
+\end{equation}
+the composability of the funnels can be checked through the \ac{SOS} program
+\begin{align*}
+    & \text{Find } && L(\bar{x}) \\
+    & \text{s.t. } && \rho_2(0) - V_2(0,\bar{x}) - L(\bar{x})\left( \rho_1(T_1) - V_1(T_1,\bar{x}) \right) \text{ is SOS} \\
+    &&& L(\bar{x}) \text{ is SOS} \\
+\end{align*}
+
+\subsection{Only minimizing the volume of the funnel projected down into the
+  xy-plane}
+
+There is no need in minimizing the value of \(\dot{\theta}\), so in order to
+minimize what we care about, i.e. the actual size of the funnel where the
+physical vehicle can move, we modify our costfunction according to
+\cite{majumdarFunnelLibrariesRealtime2017}. Thus, given a projection map \(\pi :
+\R^n \rightarrow \R^{n_p}\). Given the ellipsoid \(\epsilon = \set{\bar{x} \in
+  \R^n | \bar{x}^TS_{k}\bar{x} \leq 1}\) with
+\[
+  S_k^{(p)} = \p{PS_k^{-1}P^T}^{-1}
+\]
+Given that minimizing the volume of the ellipsoid \(\epsilon\) using an SDP
+relies on maximizing the determinant of \(S_k\). Since \(det(S_k)\) is a
+nonlinear function of \(S_k\), the function has to be linearized in order for it
+to be handled by our solution framework (SOS-programming).
+\cite{majumdarFunnelLibrariesRealtime2017} solves this by linearizing
+\(det(S_k)\) at the solution of \(S_k\) from the previous iteration, and
+maximizes this linearization instead. In the end this translates to
+\[
+  lin\p{det\p{S_k}} =
+  Tr\p{P^T\p{PS_{k,0}^{-1}P^T}^{-1}PS_{k,0}^{-1}S_kS_{k,0}^{-1}}
+\]
+where \(S_{k,0}\) is the nominal value.
+
+\subsection{Searching for a controller which minimizes the size of the funnel}
+
+With the non-optimal feedback controller given to the funnel calculation
+framework, the size of the funnels will in general be larger than they could
+have been if given a better controller. This is not beneficial given that the
+funnels is going to be used as motion primitives for an algorithm planning in a
+dense forest. Hence, referring to~\cite[Majumdar.sec~4.3.2 (Feedback control
+synthesis)]{majumdarFunnelLibrariesRealtime2017}, the initial controller input
+to the algorithm can be optimized with the goal of minimizing the size of the
+funnel, given a few conditions on the system.
+
+Firstly the system needs to be control affine:
+\begin{equation}
+  \dot{x} = f(x(t)) + g(x(t))u(t)
+\end{equation}
+so that the control policy can be parametrized as a polynomial
+\(\bar{u}_f(t,\bar{x})\), and the system dynamics written as:
+\begin{equation}
+  \dot{\bar{x}} = f(x_0(t) + \bar{x}(t)) + g(x(t))\left[ u_0(t) + \bar{u}_f(t,\bar{x}) \right] - \bar{x}_0
+\end{equation}
+Then the feedback controller can be optimized by adding the coefficients of the
+polynomial \(u_f(t,\bar{x})\) to the set of decision variables in the original
+optimization problem. The only issue is that now \(\dot{V}\) is bilinear in the
+decision variables
+\begin{equation}
+  {
+    % \newcommand{\x}{\bar{x}}
+    \newcommand{\Vdot}{\dot{V}}
+  \Vdot(t,\x) = \frac{\partial V(t,\x)}{\partial \x} \dot{\x} + \frac{\partial V(t,\x)}{\partial t}
+  }
+\end{equation}
+In order to minimize the cost function a search is done in
+\((\bar{u}_f,\rho,L_t,L_{0,i},S_k)\) while keeping \((V,L,L_{\epsilon,k})\)
+fixed. This method combined with the uncertainty added
+in~(\ref{sec:adding-uncertainty}), is what is the basis of the funnel
+computations in this thesis as summarized in algorithm~(\ref{alg:funnelalgorithm-extended}).
+
+\begin{algorithm}[H]
+  \caption{Feedback Funnel computation}
+  \label{alg:funnelalgorithm-extended}
+  \DontPrintSemicolon \SetAlgoNoLine
+
+  \KwIn{\(V\) and \(\rho\)} \KwOut{Funnel}
+
+  \(cost_{prev} = \infty\)\; converged = false \; \While{\(\neq converged\)}{
+    Optimization problem 1: \;
+    \begin{align*}
+      \underset{\substack{\bar{u}_f,L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
+      \text{subject to } & V \text{ and } \rho \text{ constant.}& \\
+    \end{align*}\;
+    Optimization problem 2: \;
+    \begin{align*}
+      \underset{\substack{\bar{u}}_f,\rho,L_{t},L_{0,i},S_{k}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
+      \text{subject to } & (V,L,L_{\mathcal{E},k}) \text{ constant.}& \\
+    \end{align*}\;
+    Optimization problem 3: \;
+    \begin{align*}
+      \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
+      \text{subject to } & (L,L_{\mathcal{E},k},\bar{u}_f) \text{ constant.}& \\
+    \end{align*}\;
+    cost = \(\sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))\) \;
+    \If{\(\frac{cost_{prev} - cost}{cost_{prev}} < \epsilon\)} {
+      converged = true
+    }\;
+    \(cost_{prev} = cost\)\;
+  }\;
+\end{algorithm}
+
 \section{RRT}
 
-With the basic framework for dealing with funnels as motion primitives built, it
-is time to build the \ac{RRT} part of the \rrtfunnel{} algorithm. The reason for
-choosing to base the global path planning framework on the \ac{RRT} motion
-planning algorithm are as follows. One, it has the ability ot quickly expand
-deep into the search-space, and then later progress towards a finer sampling,
-which is valuable as it avoids local minima. The \ac{RRT} is also relatively
-simple to implement, and has only three main components that needs to be in
-place in order for successful path planning to happen in an arbitrary state
-space.
+With the basic framework for dealing with funnels as motion primitives
+constructed, it is time to build the \ac{RRT} part of the \rrtfunnel{}
+algorithm. The reason for choosing to base the global path planning framework on
+the \ac{RRT} motion planning algorithm are as follows. One, it has the ability
+ot quickly expand deep into the search-space, and then later progress towards a
+finer sampling, which is valuable as it avoids local minima. The \ac{RRT} is
+also relatively simple to implement, and has only three main components that
+needs to be in place in order for successful path planning to happen in an
+arbitrary state space.
 
 \subsection{Uniform sampling in SO(2)}
 
@@ -365,12 +503,6 @@ control-Lyapunov function. (interesting).
 \subsubsection{Metric for extension operator}
 
 \ie which funnel to choose as an extension. What factors are considered here?
-
-\subsubsection{The identity funnel for starting the simulation fresh}
-
-The identity funnel is an empty placeholder for the start node of the graph,
-that does no transformations on the model at all, and thus can be seen as the
-identity element in the funnel space, or rather, the identity funnel.
 
 \section{FunnelGraph}
 
@@ -537,3 +669,74 @@ The convergence rate \(\epsilon\) is set to 1 percent.
 
 No input saturations modelled.
 
+\subsection{Special maneuvers}
+(Maybe have this along with the identity funnel)
+
+\subsubsection{The identity funnel for starting the simulation fresh}
+
+The identity funnel is an empty placeholder for the start node of the graph,
+that does no transformations on the model at all, and thus can be seen as the
+identity element in the funnel space, or rather, the identity funnel.
+
+\subsubsection{Emergency maneuver}
+
+If the vehicle is to leave the verified funnel at execution time -- this could
+happen for any number of reasons, such as unmodelled uncertainties -- the
+vehicle should execute the emergency maneuver, which in this case is a simple
+stop maneuver. Since the model employed is a simple first order model, a halt
+will happen momentarirly. Still, an emergency maneuver can be any sort of 'safe'
+maneuver for the model at hand -- such as a loiter circle for an airplane, or
+idling at one place for a quadcopter.
+
+
+\subsection{Alternative to the emergency maneuver}
+
+If the vehicle leaves the current funnel, maybe an idea would be to replan, ie
+translate the funnel so that the current state is once again contained within
+the funnel, and restart the driving?
+
+
+\subsubsection{How to obtain uniform sampling}
+\subsubsection{How to define a good distance metric}
+In general, it is not possible to get a perfect distance metric for our planning
+problem, as this involves solving another optimal planning problem, and will
+therefore be as, or more complex than the motion planning problem which is
+already being solved. Therefore in general we will have to limit ourselves to
+approximate distance metrics. The idea is to get as close to the optimal
+cost-to-go function without having to compute expensive
+computations~\cite{Lav06}. Distance metrics candidates in the RRT-Funnel
+algorithm:
+\begin{itemize}
+\item Time - Since time can be found by simple summing up the time of all the
+  funnels which need be added to get to the certain point in the configuration
+  space.
+\item Lyapunov function - As the Lyapunov function can be seen as an energy
+  function, the cost to go to a point can (probably) be used as a metric in the
+  planning.
+\item Length of the shortest path between two configurations - ignoring
+  collisions.
+\item A* search heuristics.
+\item Geometric - Stacking Funnels, where the shortest funnel of funnels wins.
+  e.g. if the point is not in the cone projected out from the current state by
+  the current motion primitives, pick the most extreme turn, and start over once
+  again. If it can be reached by a turn, turn, then go straight for N-Funnels.
+\end{itemize}
+
+Note that most of these metrics are not metrics in the full sense, as they do
+not fulfill the symmetric property, as under dynamic constraints going from a to
+b, may not be the same as going from b to a. In most cases it is not true for a
+nonholonomic vehicle.
+
+\subsubsection{How to extend the tree?}
+
+Should it be expanded into the dynamic Voronoi regions? If so, what are these
+regions?
+
+The extend operation can take a different extension or distance metric than the
+closest node operation. Maybe this should be used for the benchmark planner. An
+extension heuristic which maximizes the distance to the closest trees.
+
+\subsubsection{Sampling with a bias}
+
+Extending with a goal bias of 5 percent is currently used in the \rrtfunnel{}
+algorithm. 

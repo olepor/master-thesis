@@ -602,64 +602,6 @@ where \(k \in \set{1,\ldots,N}\), the optimization equations become
     \set{1,\ldots,N}}
 \end{mini}
 
-\subsection{Adding uncertainty to the funnel calculation}
-
-Following are the changes to the formulations so that a funnel takes into
-account a bounded uncertainty term of the form \(\mathcal{W} = \set{ w(t) \in
-  R^d \mid g_{w,j}(w) \geq 0 \forall j = 1,\ldots,N_w}\). Adding an extra term
-to the closed-loop dynamics equation
-\[
-  \dot{\bar{x}} = f_{cl}(t, \bar{x}(t), w(t))
-\]
-the requirement~(\ref{eq:reachableset}) is slightly modified so that
-\begin{equation}
-  \label{eq:uncertain-reachableset}
-  \bar{x}(0) \in \mathcal{X} \implies \bar{x}(t) \in F(t),\, \forall t \in
-  [0,T], \, \forall w \colon [0,T] \rightarrow \mathcal{W}
-\end{equation} 
-\(F(t)\) is the new reachable set for the uncertain system. Thus the sufficient
-condition~(\ref{eq:funnelsufficient}) turns into
-\begin{equation}
-  \label{eq:funneluncertain-sufficient}
-  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x},w) < \dot{\rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W}.
-\end{equation}
-The Lyapunov function is calculated as
-\begin{equation}
-  \dot{V}(t,\bar{x}, w) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x},w) + \frac{\partial V(t,\bar{x})}{\partial t},
-\end{equation}
-and the optimization condition~(\ref{eq:optimizationconditionsos}) turns into
-\begin{align}
-  \label{eq:optimizationconditionuncertain}
-  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  & \\
-  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w)& \qquad \text{is SOS}  \\
-  \L_{w,j}(t,\bar{x},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w
-\end{align}
-
-\subsection{Only minimizing the volume of the funnel projected down into the
-  xy-plane}
-
-There is no need in minimizing the value of \(\dot{\theta}\), so in order to
-minimize what we care about, i.e. the actual size of the funnel where the
-physical vehicle can move, we modify our costfunction according to
-\cite{majumdarFunnelLibrariesRealtime2017}. Thus, given a projection map \(\pi :
-\R^n \rightarrow \R^{n_p}\). Given the ellipsoid \(\epsilon = \set{\bar{x} \in
-  \R^n | \bar{x}^TS_{k}\bar{x} \leq 1}\) with
-\[
-  S_k^{(p)} = \p{PS_k^{-1}P^T}^{-1}
-\]
-Given that minimizing the volume of the ellipsoid \(\epsilon\) using an SDP
-relies on maximizing the determinant of \(S_k\). Since \(det(S_k)\) is a
-nonlinear function of \(S_k\), the function has to be linearized in order for it
-to be handled by our solution framework (SOS-programming).
-\cite{majumdarFunnelLibrariesRealtime2017} solves this by linearizing
-\(det(S_k)\) at the solution of \(S_k\) from the previous iteration, and
-maximizes this linearization instead. In the end this translates to
-\[
-  lin\p{det\p{S_k}} =
-  Tr\p{P^T\p{PS_{k,0}^{-1}P^T}^{-1}PS_{k,0}^{-1}S_kS_{k,0}^{-1}}
-\]
-where \(S_{k,0}\) is the nominal value.
-
 \subsection{Composition of funnels}
 
 \subsection{Checking composability of Funnels}

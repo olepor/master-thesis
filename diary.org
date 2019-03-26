@@ -69,13 +69,14 @@
     CLOSED: [2019-03-14 Thu 11:29]
 ** Experiments
 *** [Rejected] Fixup the bugz in the subfunnel algorithm part.
+*** The simulations have to transfer to the next funnel as soon as it is reached, and not 
+    Execute the entire funnel it is in at the current time, as this will leave all noise added,
+    and the planne will leave the funnel.
+***  Also the simulation has to check whether or not it leaves the funnel. If it does. Halt!
 *** FIXED Add a datastructure for checking which funnels are composable and not.
     CLOSED: [2019-03-20 Wed 15:30]
-*** The transformations along cyclic and non-cyclic coordinates probably have to be rewritten.
-    As it stands now, it seems the vehicle is leaving the funnels from time to time. All the uncertain funnel tests
-    are passing, and as such there must be something wrong with the composition of the funnels. 
-    Check and double check the composition methods. Also make sure that the transformations handle cyclic and non-cyclic
-    coordinates like it should. Maybe switch to composition MI from the Majumdar paper, instead of pure sequential composition?
+    
+
 ** Method
 *** [#B] Add the RRT-Funnel motion primitive algorithm design to the method section.
 *** [#C] Need literature on RRT with motion primitives -> Find more!
