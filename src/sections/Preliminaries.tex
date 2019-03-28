@@ -1,38 +1,48 @@
 \chapter{Preliminaries}
 
 Motion planning is the task of manipulating a robot's configurations so that,
-given an initial and goal state or posture, the planner (black box), is able to
-create a sequence of actions that gives a feasible or optimal path through the
+given an initial and goal state or posture, the planner, is able to create a
+sequence of actions that gives a feasible or optimal path through the
 overarching planning environment, usually referred to as the world space. Thus a
 motion planner can be seen as a machine which given an input: a world, and
 initial and goal states, produces a sequence of actions to move the robot from
 its initial to the desired goal configuration. This plan is then passed on to
 the trajectory generator in the system. Generally, planners can be separated
-into complete and non-complete planners, meaning that given enough time, all
-motion planning problems are solvable, only the solution is NP-Hard. Thus
-feasible solutions will have to make a compromise. A lot of planners in use
-today are probabilistically complete, meaning that they converge to a optimal
-solution given infinite time. There is a difference between on-line and off-line
-motion planning, whereas the offline algorithm plans in a static environment,
-the online algorithm is run continuously. However an on-line algorithm can be
-simulated by running an offline algorithm repeatedly for short intervals of
-time. However, this comes with the drawback, that no guarantee can be made for
-completing the task at hand \cite{Lav06}.
+into complete and non-complete planners, where being a complete planner means
+that given enough time, all motion planning problems are solvable, only the
+solution is NP-Hard~\cite{Lav06}, a non-complete planner makes no such
+guarantess. Thus feasible solutions will have to make a compromise. A lot of
+planners in use today are probabilistically complete, meaning that they converge
+to a optimal solution given infinite time. There is a difference between on-line
+and off-line motion planning, whereas the offline algorithm plans in a static
+environment, the online algorithm is run continuously. However an on-line
+algorithm can be simulated by running an offline algorithm repeatedly for short
+intervals of time. However, this comes with the drawback, that no guarantee can
+be made for completing the task at hand \cite{Lav06}.
 
+\section{The mathematical framework}
 
-\section{General motion planning building blocks}
+In order to build, model and reason about a motion planning problem, certain
+nomenclature and defininitions need to be standardized. A mathematical model of
+the world, and the robot and its dynamics is necessary for clearly and precisely
+reasoning about the problem at hand. Therefore the following sections creates
+the mathematical definitions which is needed to create understand and interpret
+the following chapters.
 
 \subsection{The Robot and World Model}
 
-In order to reason about a motion planning problem, a certain reference
-framework needs to be built. A mathematical model of the world, and the robot is
-necessary for clearly and precisely reasoning about the problem at hand.
-Therefore, in this thesis the world space (\modelworld) will be defined as
+First of all the robot and the overarching motion planner needs a world in which
+a plan is to be created and executed. In this thesis the world space is a
+2-dimensional plane, and is defined as:
 \[
   \modelworld = \R^2
 \]
-and obstacles are simply subsets of \modelworld. Likewise, the robot is also a
-subset of the world space
+In a real world planning problem not all parts of the \modelworld{} is
+traversable by the robot. As an example, in a forest, treetrunks, branches, and
+other inhabitants of the forest vegetation will be intraversable for a robot,
+and hence these obstacles needs to be modelled. As obstacles inhabit the world
+space, they will be modelled as subsets of the \modelworld, the same goes for
+the robot body.
 \[
   \modelrobot,\, \modelobstacle \subset \modelworld
 \]
@@ -43,6 +53,9 @@ through a rigid body transformation on the robot model
   h : \modelrobot\ \rightarrow \modelworld
 \]
 
+
+\subsubsection{Configuration Space}
+
 However, the robot is more than a set of points in the world space. For example
 a simple model of a car needs to know its heading as well. This information will
 be referred to as the configuration space of the robot
@@ -50,42 +63,24 @@ be referred to as the configuration space of the robot
 simple three dimensional vector holding the \(x\), \(y\), and \(\theta\)
 parameters, like so
 \[
-  \modelconfigurationspace \subset SO(2),
+  \modelconfigurationspace \subset SE(2),
 \]
 which encompass all the states the robot can be in during, and \(SE(2)\) stands
 for \textit{Special Euclidean two}, and is defined as \(SE(2) = \R^2 \times
 \mathsf{S}\).
 
-\subsubsection{Configuration Space}
-
-TODO -- fix shite!
-
-The configuration space is a general abstraction used as a model for a wide
-variety of motion planning problems. It is a manifold that arise from the
-transformations applied to the robot. If the robot has n-degrees of freedom, the
-set of transformations is usually a manifold of dimension n. This manifold is
-called the configuration space of the robot, and is shortened
-\modelconfigurationspace{}. Thus in order to solve a motion planning problem, a
-search must be performed in the configuration space. Thus the motion planning
-problem is now made into a question of finding the best path to traverse the
-given manifold\cite{Lav06}.
-
-Using generalized coordinates, the configuration of a robot can be modeled as a
-vector with n variables for the position in the configuration space, in
-literature this space is usually denoted by \modelconfigurationspace{}. As is
-most common, the robot is modeled as a rigid body, in which two bodies cannot
-overlap, thus points in the configuration space is separated into two sets. One
-set for which the robot configuration overlaps with another object in the
-configuration space, and is called \modelconfigurationspaceobst{}, and given
-that the world space is represented as \modelconfigurationspace{}, the collision
-free space is the given as, \(\modelconfigurationspacefree =
-\modelconfigurationspace \setminus \modelconfigurationspaceobst\). The obstacle
-region of the world space can be represented in a number of ways, but we will
-stick to polygonal models of the obstacle space.
+More generally, the configuration space is a model for a wide variety of motion
+planning problems. It is a manifold that arise from the transformations applied
+to the robot. If the robot has n-degrees of freedom, the set of transformations
+is usually a manifold of dimension n. This manifold is called the configuration
+space of the robot, and is shortened \modelconfigurationspace{}. Thus in order
+to solve a motion planning problem, a search must be performed in the
+configuration space. Thus the motion planning problem is now made into a
+question of finding the best path to traverse the given manifold\cite{Lav06}.
 
 \subsection{Action Space}
 
-Now that the configuration space, and how the robot model can move in the world
+With the configuration space, and how the robot model can move in the world
 space is defined, the next concern is to control the movement of the robot
 model, and this is where the \textit{action space} comes in. The action space is
 the set of actions that can be applied at any given state the robot is in. Thus
@@ -101,40 +96,53 @@ A planning problem needs to have an initial condition, and a goal. It is normal
 to define an initial state and a goal state as a starting and an ending point of
 a planning problem. Where both the initial, and goal states can be sets of
 states, meaning that it is not necessary to arrive specifically at the target
-point.
+point. Mathematically the initial and goal sets is defined as
+\[
+  \mathcal{X}_0 = \set{ x \in \modelconfigurationspace{} \mid g_i(x) \leq a_i,
+    \, \forall i = 1,\ldots N_j} \\
+  \mathcal{X}_{end} = \set{ x \in \modelconfigurationspace{} \mid g_i(x) \leq a_i,
+    \, \forall i = 1,\ldots N_k}
+\]
+which defines the initial and final states as subsets of the
+\modelconfigurationspace{} bounded by inequality constraints, such that the set
+is defined by a semi-algebraic set.
 
-\subsection{Model}
+\subsection{Dynamics}
 
-A mathematical model of the planning problem.
+The model of the robot has so far been unconstrained and free to move in all
+directions as it please under an affine transformation. This representation does
+not encompass the dynamics a system might have, which constrains the direction
+and speed in which a model can move. In the case of a first order model (\ie it
+does not take accelerations into account) the constraints are represented as a
+differential equation of the form:
+\[
+  \dot{x} = f(x,u)
+\]
 
-The \rrtfunnel\ motion planning algorithm is discrete, therefore only the
-discrete motion planning formulation will be defined. Note however that there is
-a rich literature surrounding the continuous case also. In fact a lot of
-discrete motion planners have simply been adapted from a continous analog. Also
-even though the planner itself is discrete, the configuration space can be --
-and is in this thesis -- continuous.
+\subsubsection{Discrete motion planning}
 
-\subsubsection{Discrete}
-
-Let \(\mathcal{X}\) be the discrete state space, and \(\mathcal{U}(x)\) be the
-set of actions available at each point \(x \in \mathcal{X}\). State transition:\
+As mentioned in the introduction, motion planning problems are in general
+NP-hard, one way of making the problem more tractable is to discretize the
+problem. The discrete motion planning problem employs all the same definitions
+as the continuous case for the world and robot model, only all points are
+discrete in time \(t_k\) for some \(k\). Therefore, let \(\mathcal{X}\) be the
+discrete state space, and \(\mathcal{U}(x_k)\) be the set of actions available
+at each point \(x_k \in \mathcal{X}\). Then the state transition equation is
+written as:
 \[
   x_{k+1} = f(x_k, u_k)
 \]
 
-\subsubsection{Path and Trajectory}
+\subsubsection{Representation of the plan}
 
-A motion plan takes the form of a path, or a trajectory. This is represented as
-a function \(\phi(\alpha) \colon [0,1] \rightarrow \mathcal{X}\), where
-\(\mathcal{X}\) is the configuration space of the vehicle. If the
-control-execution time is considered, then the explicit model of vehicle
-kinematics and/or dynamics, as well as the dynamics of the possible obstacles.
-Then the trajectory is represented as a time-parameterized function of the kind
-\(\pi(t) \colon [0,T] \rightarrow \mathcal{X}\), where \(T\) is the planning
-horizon. Unlike the path, the trajectory describes how the configuration of the
-vehicle evolves over time.
-
-Initial and Goal States. A path is a function f \ldots
+The plan that the planner makes for a robot in the configuration space is
+represented as a trajectory. A trajectory is a path with an additional time
+parameter, so that the path through configuration space is now time variant.
+This is represented as a function \(\phi(\alpha) \colon [0,1] \rightarrow
+\mathcal{X}\), where \(\mathcal{X}\) is the configuration space of the vehicle,
+with the time parameter added the trajectory is represented as a
+time-parameterized function of the kind \(\pi(t) \colon [0,T] \rightarrow
+\mathcal{X}\), where \(T\) is the planning horizon (\ie the endtime).
 
 \subsection{Planning Under Uncertainty (Decision Theoretic Planning)}
 
@@ -147,94 +155,65 @@ are uncertainty in:
 \item the environment
 \end{enumerate}
 Thus the exact system state is never exactly known. Therefore planning under
-uncertainty is done in belief space, which is a description of the state space
-using probability distributions. Planning is done in the information space, as
-opposed to the state-space. Uncertainties in prediction and the current state
-exist. The information space is a general structure for working with plans under
-conditions of uncertainty. Thus planning can be done mostly as it is done in a
-state space, albeit in a higher dimension. Thus the state transition function
-can be written as
+uncertainty is done in what~\cite[LaValle]{Lav06} refers to as the belief space,
+which is a description of the state space using probability distributions. The
+information space is a general structure for working with plans under conditions
+of uncertainty. Thus planning can be done mostly as it is done in a state space,
+albeit in a higher dimension. Thus the state transition function can be written
+as
 \[
   \phi_{k+1} = f_{\mathcal{I}}\left( \phi_k, \mu_k, y_{k+1} \right)
 \]
 
-\subsection{A Model of Uncertainty}
-
 If the discrete state space model is expanded to include \(\theta\) as the space
-of nature actions, and \(\ theta_k\) is the action selected by nature at step k,
-then a transition is modeled as
+of uncertain actions, and \(\ theta_k\) is the action applied by an uncertain
+source at time step \(k\), then the state transition transition is modeled as
 \[
   x_{k+1} = f(x_k,u_k,\theta_k)
 \]
-As the actions of nature are not available beforehand, that is -- \(\theta_ k\)
-is not given, thus we have
+As the uncertain actions are not available beforehand, that is -- \(\theta_ k\)
+is not given, the model turns into
 \[
   X_{k+1} = \set{ x_{k+1} \in X \mid \exists\theta_k \in \Theta(x_k,u_k)
     \text{ such that } x_{k+1} = f(x_k,u_k,\theta_k)}
 \]\cite{Lav06}.
 
-\subsection{A Plan under Uncertainty}
-Since it Expected-case analysis. Worst-case analysis.
-
-\subsection{Trajectory planning}
-
-The \rrtfunnel{} algorithm relies on validating robust trajectories as motion
-primitives for the planner. However, solving for a valid initial trajectory is a
-hard control problem in itself. Thus in order to surmount this obstacle
-
 \subsection{Reachable sets}
 
 Of particular interest to the \rrtfunnel\ algorithm is the reachable set. A
 reachable set is all the configurations that the robot can be in if started from
-a particular point in the world space. Had there been no constraints on the
-movement of the robot the reachable set would simply be the entire configuration
-space. However, the simple car model has both \textit{kinodynamic} and
-\textit{non-holonomic} constraints. This leads to the car not necessarily being
-able to reach all the states in the state-space from a given starting position.
-At least not given a time frame. This idea is important as it leads to the
-funnel definitions that makes up the backbone of this thesis. As an example, the
-reachable set for the \textit{Dubins car} will look like this
+a particular point in the configuration space. Had there been no constraints on
+the movement of the robot the reachable set would simply be the entirety of the
+configuration space. However, the simple car model has both \textit{kinodynamic}
+and \textit{non-holonomic} constraints. This leads to the car not necessarily
+being able to reach all the states in the state-space from a given starting
+point -- at least not given a time frame. This idea is important as it leads to
+the funnel definitions that makes up the backbone of this thesis. As an example,
+the reachable set for the \textit{Dubins car} is visualized
+in~(\ref{fig:reachable-set-dubin}).
 
 \begin{figure}
-  \centering \input{figures/preliminaries/dubinsreachability.tex}
+  \centering
+  \input{figures/preliminaries/dubinsreachability.tex}
+  \caption{The reachable set for a dubins car model after some time \(T\).}
+  \label{fig:reachable-set-dubin}
 \end{figure}
 
 \subsection{Motion primitives}
 
-A motion primitive is a constant action applied over fixed time intervals. It is
-one or more actions collected into one distinct action, usually with a goal. As
-an example, the action the \textit{Dubin's car} employs is steering the angle of
+The backbone of the \rrtfunnel{} algorithm is the composition of robust motion
+primitives in order to construct a path to the target configuration. A motion
+primitive is a constant action applied over fixed time intervals. It is one or
+more actions collected into one distinct action, usually with a goal. As an
+example, the action the \textit{Dubin's car} employs is steering the angle of
 the wheels. Setting the angle to a constant over a time interval can be a motion
 primitive, however, it is more easily thought of as a collection of actions over
 time, which embodies one bigger, more abstract action. For the car this could be
 \textit{go straight}, \textit{turn left}, etc. In this way, a collection of
-actions can be thought of as one simple action.
-
-\begin{table}
-  \begin{tabular}{c c c p{4cm}}
-    \hline
-    \hline
-    Algorithm Group & Technique & Variations & Description \\
-    \hline
-                    &  Dijkstra's Algorithm & &Algorithm for finding the shortest weighted path in a graph.\\
-                    &  \\
-    Graph Search               & & D* & Capable of planning paths in unknown, partially known, and changing environments in an efficient, optimal, and complete manner..\\
-                    & A* Family & Focused-D* & Informed-incremental heuristic search.\\
-                    & & D*-Lite & Simpler to implement that Focused D*, slightly slower performance.\\
-    \hline
-                    & RRT-implementations \\
-                    & & RRT\\
-                    & & RRT*\\
-    Sampling based Planners& & RRT*-Smart\\
-                    & & RRT-SLAM\\
-                    & & CC-RRT\\
-                    & PRM \\
-                    & & BRM & A road-map implementation that plans in belief space in order to handle uncertainties in the planning model.\\
-    \hline
-    Numerical Optimization &  Function Optimization \\
-    \hline
-  \end{tabular} 
-\end{table}
+actions can be thought of as one simple action. The robustness signifies that it
+is robust in the face of uncertainty, meaning that if the uncertainty
+encountered is within the bounds of the model, the motion primitives will be
+able accomplish their task even in the face of this disturbance.
 
 \section{Funnels}
 

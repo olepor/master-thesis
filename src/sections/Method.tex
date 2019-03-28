@@ -234,10 +234,12 @@ The Lyapunov function is calculated as
 and the optimization condition~(\ref{eq:optimizationconditionsos}) turns into
 \begin{align}
   \label{eq:optimizationconditionuncertain}
-  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  & \\
-  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w)& \qquad \text{is SOS}  \\
-  \L_{w,j}(t,\bar{x},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w
+  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  & \nonumber \\
+  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w) \quad \text{is SOS} &  \\
+  \L_{w,j}(t,\bar{x},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w \nonumber
 \end{align}
+
+All this is to be cited to~\cite{majumdarFunnelLibrariesRealtime2017}.
 
 \subsubsection{Shifting funnels and invariance}
 

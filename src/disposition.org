@@ -18,7 +18,7 @@
     motion planner more robust than if uncertainty is not taken into account.
 ** Normal introduction
 ** State of the art on the front.
-  
+   
 ** Background/Preliminaries
    General Motion Planning Overview:
    - General motion planning theory related to my thesis (i.e., Discrete motion
@@ -39,7 +39,15 @@
      done in Tedrake and Majumdar's paper from 2013.
    The Motion Planner used for verification of the robust motion primitives.
    - RRT's and the accompanying theory needed for understanding Random Dense Trees.
+     
     
+**  General preliminary material
+***  Motion planning in general
+***  The mathematical framework (State space, configuration space, etc)
+***  Planning under uncertainty
+*** Reachable sets
+** Funnel and SOS framework
+** RRT introduction
 * Methods
   When, how and why were the investigations done?
   What material was investigated?
