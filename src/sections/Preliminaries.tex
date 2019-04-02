@@ -69,6 +69,20 @@ which encompass all the states the robot can be in during, and \(SE(2)\) stands
 for \textit{Special Euclidean two}, and is defined as \(SE(2) = \R^2 \times
 \mathsf{S}\).
 
+A part of a robot's configuration can also be in collision with an obstacle.
+There is another dimension added to the collision checking, as say one model can
+be in collision with a certain heading, and not if facing another way, therefore
+the model's configuration when in collision with an obstacle is defined as
+\[
+  \modelconfigurationspaceobst{} = \set{q \in \modelconfigurationspace{} \mid
+    \mathcal{A}(q) \cap \modelobstacle{} \neq \emptyset}
+\]
+In the same way the free configuration space is defined as
+\[
+  \modelconfigurationspacefree{} = \mathcal{U} \setminus
+  \modelconfigurationspaceobst{}
+\]
+
 More generally, the configuration space is a model for a wide variety of motion
 planning problems. It is a manifold that arise from the transformations applied
 to the robot. If the robot has n-degrees of freedom, the set of transformations
@@ -100,8 +114,8 @@ point. Mathematically the initial and goal sets is defined as
 \[
   \mathcal{X}_0 = \set{ x \in \modelconfigurationspace{} \mid g_i(x) \leq a_i,
     \, \forall i = 1,\ldots N_j} \\
-  \mathcal{X}_{end} = \set{ x \in \modelconfigurationspace{} \mid g_i(x) \leq a_i,
-    \, \forall i = 1,\ldots N_k}
+  \mathcal{X}_{end} = \set{ x \in \modelconfigurationspace{} \mid g_i(x) \leq
+    a_i, \, \forall i = 1,\ldots N_k}
 \]
 which defines the initial and final states as subsets of the
 \modelconfigurationspace{} bounded by inequality constraints, such that the set
@@ -174,8 +188,8 @@ source at time step \(k\), then the state transition transition is modeled as
 As the uncertain actions are not available beforehand, that is -- \(\theta_ k\)
 is not given, the model turns into
 \[
-  X_{k+1} = \set{ x_{k+1} \in X \mid \exists\theta_k \in \Theta(x_k,u_k)
-    \text{ such that } x_{k+1} = f(x_k,u_k,\theta_k)}
+  X_{k+1} = \set{ x_{k+1} \in X \mid \exists\theta_k \in \Theta(x_k,u_k) \text{
+      such that } x_{k+1} = f(x_k,u_k,\theta_k)}
 \]\cite{Lav06}.
 
 \subsection{Reachable sets}
@@ -193,8 +207,7 @@ the reachable set for the \textit{Dubins car} is visualized
 in~(\ref{fig:reachable-set-dubin}).
 
 \begin{figure}
-  \centering
-  \input{figures/preliminaries/dubinsreachability.tex}
+  \centering \input{figures/preliminaries/dubinsreachability.tex}
   \caption{The reachable set for a dubins car model after some time \(T\).}
   \label{fig:reachable-set-dubin}
 \end{figure}
@@ -452,55 +465,26 @@ one arrives at the optimization problem
 
 { % Mini environment scope
 
-\newcommand{\E}{\mathcal{E}}
-\renewcommand{\x}{\bar{x}}
-\begin{mini*}[1]
-    {
-        \substack
-        {
-            V, \rho, L, L_t,
-            \\
-            L_{0, i}, S_{k}, L_{\E, k}
-        }
-    }
-    {
-        \sum_{k = 1}^{N}
-        \vol(\E(t_{k}))
-        =
-        \sum_{k = 1}^{N} \vol \p{\set{\x \mid \x^T S_k \x \le 1}}
-    }
-    {}
-    {}
-    \addConstraint
-        {
-            \dot{\rho}(t)
-            -
-            \dot{V}(t,\x)
-            -
-            L(t,\x) \sqb*{ V(t,\x) - \rho(t) }
-            -
-            L_t (t,\x) \sqb*{t \p*{T - t}}
-        }%
-        {\text{ is SOS}}
-    \addConstraint
-        {\rho(0) - V(0, \x) - \sum_i^N L_{0, i}(\x) g_{0, i}(\x)}%
-        {\text{ is SOS}}
-    \addConstraint
-        {
-            1 - \x^T S_k \x - L_{\E, k}(\x)
-            \sqb*{\rho(t_k) - V(t_k, \x)}
-        }%
-        {\text{ is SOS}}
-    \addConstraint
-        {S_k}%
-        {\succeq 0}%
-        {\quad \forall k \in \set{1, \ldots, N}}
-    \addConstraint
-        {L_t (t, \x),\, L_{0,i}(\x)}%
-        {\text{ are SOS}}%
-        {\quad \forall i \in \set{1, \ldots, N_0}}
-    \addConstraint{}{}{\quad \forall k \in \set{1, \ldots, N}.}
-\end{mini*}
+  \newcommand{\E}{\mathcal{E}} \renewcommand{\x}{\bar{x}}
+  \begin{mini*}[1]
+    { \substack { V, \rho, L, L_t,
+        \\
+        L_{0, i}, S_{k}, L_{\E, k} } } { \sum_{k = 1}^{N} \vol(\E(t_{k})) =
+      \sum_{k = 1}^{N} \vol \p{\set{\x \mid \x^T S_k \x \le 1}} } {} {}
+    \addConstraint { \dot{\rho}(t) - \dot{V}(t,\x) - L(t,\x) \sqb*{ V(t,\x) -
+        \rho(t) } - L_t (t,\x) \sqb*{t \p*{T - t}} }%
+    {\text{ is SOS}} \addConstraint {\rho(0) - V(0, \x) - \sum_i^N L_{0, i}(\x)
+      g_{0, i}(\x)}%
+    {\text{ is SOS}} \addConstraint { 1 - \x^T S_k \x - L_{\E, k}(\x)
+      \sqb*{\rho(t_k) - V(t_k, \x)} }%
+    {\text{ is SOS}} \addConstraint {S_k}%
+    {\succeq 0}%
+    {\quad \forall k \in \set{1, \ldots, N}} \addConstraint {L_t (t, \x),\,
+      L_{0,i}(\x)}%
+    {\text{ are SOS}}%
+    {\quad \forall i \in \set{1, \ldots, N_0}} \addConstraint{}{}{\quad \forall
+      k \in \set{1, \ldots, N}.}
+  \end{mini*}
 } % End optimization problem scope.
 
 Which is the finite dimensional optimization problem needed in order to search
@@ -563,8 +547,8 @@ where \(k \in \set{1,\ldots,N}\), the optimization equations become
 \begin{mini}
   {\substack{V_{k}, \rho, L_{k},\\ L_{0,i}, S_{k},
       L_{\mathcal{E},k}}} % Optimization variables
-  {\sum_{k=1}^{N}\vol(\mathcal{E}(t_{k})) = \sum_{k=1}^{N}
-    \vol\left( \set{\bar{x} \mid {\bar{x}}^{T} S_{k} \bar{x} \leq 1}
+  {\sum_{k=1}^{N}\vol(\mathcal{E}(t_{k})) = \sum_{k=1}^{N} \vol\left(
+      \set{\bar{x} \mid {\bar{x}}^{T} S_{k} \bar{x} \leq 1}
     \right)} % Optimization function
   {\label{optidef:discrete}} % Label optimization problem
   {} % Optimization result
