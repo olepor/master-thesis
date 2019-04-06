@@ -40,3 +40,17 @@ with a few modifications to the \rrtfunnel{} algorithm. For one, every time
 sample can be a node in the graph, and not simply the inlet's and outlet's of
 the funnels. This would increase the resolution at which the algorithm operates
 significantly, hence enabling the difficulty to be raised.
+
+The verified funnels are verified discretely and hence are only valid up to the
+numeric tolerances of the platform it is computed on, and the precision of the
+solver employed.
+
+The reachable set is an outer approximation for the problem at hand, and since
+the Lyapunov function employed is quadratic it will always be symmetric around
+an axis for the system. This means that even though the system can be pretty
+tight on one side of a trajector, the symmetry might lead the set to be way too
+big on the other, as a result of the quadratics involved.
+
+The \rrtfunnel{} algorithm does provide safe guaranteed passage through an
+environment, however it does not offer any optimality guarantees involved with
+the traversal. This might be an interesting topic for further research however.
