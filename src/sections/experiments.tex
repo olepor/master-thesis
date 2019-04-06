@@ -197,6 +197,51 @@ sample in~(\ref{fig:sample-funnel-overlay}).
   \label{fig:sample-funnel-overlay}
 \end{figure}
 
+\subsection{LQR cost matrices}
+
+Although the focus of this thesis is not on fine-tuning the controller, some
+amount of effort has to go into getting the cost parameters acceptable. In
+general the strategy is penalizing the vehicle's distance from the nominal path
+in \((x,y,\theta)\), and not caring for the energy expended by the control
+input. Thus path divergence is penalized hard, and input divergence is not.
+
+More specifically the cost matrices employed are
+\begin{align*}
+  R &= 0.01 \\
+  Q &= \begin{bmatrix}
+    40 & 0 & 0 & 0 \\
+    0 & 40 & 0 & 0 \\
+    0 & 0 & 40 & 0 \\
+    0 & 0 & 0 & 4 \\
+  \end{bmatrix}
+  \\
+  Q_{f} &=
+          2\times
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1.5 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1 \\
+  \end{bmatrix}
+\\
+\end{align*}
+where the control input is only penalized \(\frac{1}{10}\)th of the other
+variables.
+
+\subsection{SOS weighting matrices for the cost function}
+
+where
+\begin{equation}
+  W_{k} =
+  \begin{bmatrix}
+    10 & 0 & 0 & 0 \\
+    0 & 10 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & .1 \\
+  \end{bmatrix}
+\end{equation}
+
+
 \subsection{Sampling the goal set uniformly}
 
 The goal set is a circle in the Euclidean plane, along with all possible goal
