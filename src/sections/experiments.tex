@@ -1,6 +1,20 @@
 \chapter{Experiments}
 
-\section{Generating the obstacle forest (Poisson processes)}
+The \rrtfunnel{} algorithm developed this far will now be tested in a simulation
+experiment where a simple unicycle model of a car will be set to traverse a
+small forest edge. The simulation environment can be seen
+in~(\ref{fig:simulated-forest}), where the vehicle starts at one end of the
+obstacle forest, and is set to traverse the strip of forest and reach any
+\((x,y)\) position in a circle of radius five surrounding the endpoint thirty
+five meters ahead.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=.5]{figures/experiments/simulated-forest}
+  \caption{The experiment environment.}
+\end{figure}
+
+\subsection{Generating the obstacle forest (Poisson processes)}
 \label{sec:Poisson-Process}
 
 In order to generate the obstacle field for the experiments, which is to
@@ -63,14 +77,14 @@ figure~(\ref{fig:poisson009})
   \end{minipage}
 \end{figure}
 
-\section{Deciding upon the size of the vehicle and the obstacles}
+\subsection{Deciding upon the size of the vehicle and the obstacles}
 
 The funnels generated thus far is created from a point model of the vehicle, and
-it's dynamics. In the case that the grid that the simulations are run on are set
-to have an increment of a meter, then the funnels from the basic set are given a
-velocity of \([v(t)] = \si{m.s^{-1}}\), \([\theta] = \si{\radian\per\second}\),
-and \([\dot{\theta}] = \si{\radian\per\second\per\second}\), where \([\cdot]\)
-is the unit operator. The size of the vehicle is arbitrary, and can be chosen
+its dynamics. If the grid that the simulations are run on are set to have an
+increment of a meter, then the funnels from the basic set are given a velocity
+of \([v(t)] = \si{m.s^{-1}}\), \([\theta] = \si{\radian\per\second}\), and
+\([\dot{\theta}] = \si{\radian\per\second\per\second}\), where \([\cdot]\) is
+the unit operator. The size of the vehicle is arbitrary, and can be chosen
 freely, but if it is imagined as a radio controlled car, with a speed of
 \(10\si{m.s^{-1}}\), then a size of \(30 \times 20 \si{\centi\metre} \) keeps
 everything within the realm of a normal radio controlled car and its
@@ -81,13 +95,14 @@ the model dynamics is not irrelevant.
 \subsection{Expanding the size of the funnel by the size of the simulated
   vehicle}
 
-The size of the vehicle in the original model a single point, and as such, not
-accounted for in the funnel before running simulations. Therefore the funnels
-have to be expanded in order for them to accomodate the necessary robustness
-guarantees that are expected. However, the size of the vehicle only affects the
-size of the funnel ellipsis projected down into the xy-plane. Therefore first
-getting the projected size of the funnel where \(P \colon \R^4 \rightarrow
-\R^2\) is a projection map with a projection matrix
+The size of the vehicle in the original model is a single point, and as such,
+the vehicle model with a size is not accounted for in the funnel before running
+the simulations. Therefore the funnels have to be expanded in order for them to
+accomodate the necessary robustness guarantees that are expected from the
+algorithm. However, the size of the vehicle only affects the size of the funnel
+ellipsis projected down into the xy-plane. Therefore first getting the projected
+size of the funnel, where \(P \colon \R^4 \rightarrow \R^2\) is a projection map
+with a projection matrix
 \[
   P =
   \begin{bmatrix}
@@ -145,7 +160,6 @@ in~(\ref{fig:expanded-funnel}) and~(\ref{fig:expanded-and-unexpanded}).
   \label{fig:expanded-and-unexpanded}
 \end{figure}
 
-
 \subsection{The initial motion primitive set}
 
 The basis set of motion primitives should be small, yet cover enough of the
@@ -154,7 +168,6 @@ continuous when composed together. Thus in order to generate a 'dense' set of
 motion primitives the algorithm~(\ref{alg:initial-motion-primitives-generation})
 is employed to generate points along the arch of a circle with \(N\) different
 radii.
-
 
 \begin{algorithm}[H]
   \label{alg:initial-motion-primitives-generation}
@@ -200,10 +213,11 @@ sample in~(\ref{fig:sample-funnel-overlay}).
 \subsection{LQR cost matrices}
 
 Although the focus of this thesis is not on fine-tuning the controller, some
-amount of effort has to go into getting the cost parameters acceptable. In
-general the strategy is penalizing the vehicle's distance from the nominal path
-in \((x,y,\theta)\), and not caring for the energy expended by the control
-input. Thus path divergence is penalized hard, and input divergence is not.
+amount of effort has to go into getting the cost parameters acceptable, so that
+the funnels actually converge. In general the strategy is penalizing the
+vehicle's distance from the nominal path in \((x,y,\theta)\), and not caring for
+the energy expended by the control input. Thus path divergence is penalized
+hard, and input divergence is not.
 
 More specifically the cost matrices employed are
 \begin{align*}
@@ -241,21 +255,30 @@ where
   \end{bmatrix}
 \end{equation}
 
+\subsection{Making sure that the vehicle stays within the funnels during execution}
 
-\subsection{Sampling the goal set uniformly}
+During the execution of the \rrtfunnel{} algorithm the planner keeps track of
+the funnel during execution, and aborts the simulation with the emergency
+maneuver if the vehicle happens to leave one of the funnels at runtime. This
+will be counted in the experiments as a collision on the part of the
+\rrtfunnel{} algorithm.
 
-The goal set is a circle in the Euclidean plane, along with all possible goal
-orientations for the vehicles heading, and the input. Hence, only the Euclidean
-distance to the goal set is checked when running the algorithm, and \(\theta\)
-and \(u\) are ignored. Sampling uniformly from a 
+\subsection{Show the funnel inlets and outlets from the funnel computations}
 
-\subsection{Benchmark planner}
+TODO explain why composition is not viable at this point.
 
-The benchmarkplanner is an \ac{RRT} algorithm using the same motion primitive
-set as the \rrtfunnel{} algorithm, with the same \ac{LQR} controller, and the
-same distance metric. The difference is that it does not take uncertainty into
-account, and instead maximizes the distance to the nearest obstacle as the
-extension operator, \ie{}
+\section{Experiments}
+
+The experiments will run the \rrtfunnel{} against a benchmark regular RRT
+planner with the motion primitive set pictured
+in~(\ref{fig:intial-trajectories-exp}) on the forest traversal problem pictured
+in~(\ref{fig:simulated-forest}).
+
+The benchmarkplanner is an \ac{RRT} algorithm
+using the same motion primitive set as the \rrtfunnel{} algorithm, with the same
+\ac{LQR} controller, and the same distance metric. The difference is that it
+does not take uncertainty into account, and instead maximizes the distance to
+the nearest obstacle as the extension operator, \ie{}
 \begin{equation}
   \max_{i}\min_{t,j}(x_{i}(t), o_{j})
 \end{equation}
@@ -263,101 +286,39 @@ where \(x_{i}(t) \in \mathcal{T}\), is a trajectory from the basic motion
 primitive set, and \(o_{j} \in \modelconfigurationspaceobst{}\) is an obstacle
 in the configuration space \(\modelconfigurationspace{}\).
 
-\subsection{Terrors of errors}
-
-The funnel compuatations error out if too much uncertainty is added. In this
-case that is velocity higher than two (which to be fair is a bit). Also, the
-length of the funnels error out, meaning that funnels longer than approximately
-.3 seconds, which is what they are now, will error out. Had there been more time
-this should probably be resolved. A guess is that increasing the sampling
-frequency, and/or increasing the initial size of the \(\rho\) guess would help.
-
-From~\cite{tobenkinInvariantFunnelsTrajectories2010}, it is suggested that in
-case a funnel is not verified using the \ac{SOS} programming method, one option
-is to increase the size of \(\rho\) (the limiting factor on the size of the
-funnel), and optionally increase the number of knot points (sampling points).
-
-\subsection{What funnels are most oftenly(not a word) employed?}
-
-Track and add some statistics on the most commonly employed funnels when testing
-the algorithm.
-
-\subsection{Making sure that the vehicle stays within the funnels during execution}
-
-
-\subsection{Experiments}
-
-All three of the experiments will run with the motion primitive set pictured
-in~(\ref{fig:intial-trajectories-exp}), with funnels surrounding them. Still all
-three will have different uncertainty parameters.
-
-The \rrtfunnel{} algorithm is benchmarked against the same algorithm, only the
-funnels will not be surrounding the trajectories in the benchmark planner. Each
-experiment will do a testrun of a hundred runs from
-
-The end goal will not take pose into account, and will only be concerned with
-getting within an \(\epsilon\) of the \((x,y)\) in the test map. For all the
-experiments below, an \(\epsilon\) of 2\si{\metre} is given to the planners.
+The end goal is set so that it will not take pose into account, and will only be
+concerned with getting within an \(\epsilon\) of the \((x,y)\) in the test map.
+For all the experiments below, an \(\epsilon\) of 5\si{\metre} is given to the
+planners.
 
 Each testrun will be run in a forest generated with the \textit{Poisson process}
 method from~(\ref{sec:Poisson-Process}), and an intensity parameter (\(\lambda =
-0.9\)), which should yield a pretty dense forest, and hence make collisions more
+0.1\)), which should yield a pretty dense forest, and hence make collisions more
 likely to happen.
 
-The endgoal will be picked uniformly at random from the map, which is a 2D
-Euclidean space (\ie \(\in (-\alpha,\alpha)\times(-\alpha,\alpha)\)), where
-\(\alpha\) is the size of the map. The experiments will record the number of
-collisions for each algorithm across all testruns, and the distance penalty
-obtained total (which is the distance from the target, if the planner failed to
-make it ther). The planners will run in the same environment at each test, with
-the same initial seed, but the environments will be different from each run, as
-the Poisson process generating the obstacle forest is random in nature. With
-this test setup the difference between a planner which takes into account
-uncertainty should become evident, and increasingly superior as more
-uncertanties are added to the test environment.
+The experiments will record the number of collisions for each algorithm across
+all testruns, and the distance penalty obtained total (which is the distance
+from the target, if the planner failed to make it there). The planners will run
+in the same environment for each test, with the same initial seed, but the
+environments will be different for each run, as the Poisson process generating
+the obstacle forest is random in nature. With this test setup the difference
+between a planner which takes into account uncertainty should become evident,
+and increasingly superior as more uncertanties are added to the test
+environment.
 
-Before the benchmark is run, all individual funnels in the base set are run with
-a hundred simulations runs from random starting positions in its inlet, to check
-if the invariant holds, and that the vehicle stays within the funnel at all
-times. This, along with the check whether or not funnels are composable, as
-in~(\ref{sec:composable-funnels}), then the invariant that the vehicle never leaves
-multiple funnels composed holds.
+Before the experiments are run all individual funnels in the base set are run
+with a hundred simulations runs from random starting positions in its inlet, to
+check if the invariant holds, and that the vehicle stays within the funnel at
+all times. This, along with the check whether or not funnels are composable, as
+in~(\ref{sec:composable-funnels}), then the invariant that the vehicle never
+leaves multiple funnels composed holds.
 
-Adding uncertainty to the testruns.
-
-\(w = 2*wmax*rand - wmax\), in order to normalize around zero.
+Uncertainty is added in terms of additive noise with \(w = -0.3\) in the world
+x-direction, which is supposed to represent a broken sensor with a constant
+drift in the x-direction.
 
 Below are the results from a hundred testruns across all the different test
 parameters.
-
-\subsubsection{Uncertainty in speed}
-
-For the experiment
-
-Model: (TODO) - syntax for the random variables -- choose one.
-\begin{equation}
-  \label{eq:model-dynamics}
-  \mathbf{x} =
-  \begin{bmatrix}
-    x \\ y \\ \theta \\ \dot{\theta} \\
-  \end{bmatrix}, \, \dot{\mathbf{x}} =
-  \begin{bmatrix}
-    -(v(t) + \randomSpeedVar{}) \sin(\theta) \\
-    (v(t) + \randomSpeedVar{}) \cos(\theta) \\
-    \dot{\theta} \\
-    u \\
-  \end{bmatrix}
-\end{equation}
-
-with \(\randomSpeedVar{}\) a random variable \(\randomSpeedVar{} \colon
-\rightarrow [-2,2]\)
-
-Uncertainties:
-\begin{tabular}{ |c|c| }
-  \hline
-  \randomSpeedVar{} & 1 \\
-  \hline
-\end{tabular}
 
 \subsubsection{Uncertainty in speed and input}
 Model:
@@ -368,67 +329,19 @@ Model:
     x \\ y \\ \theta \\ \dot{\theta} \\
   \end{bmatrix}, \, \dot{\mathbf{x}} =
   \begin{bmatrix}
-    -(v(t) + \randomSpeedVar{}) \sin(\theta) \\
-    (v(t) + \randomSpeedVar{}) \cos(\theta) \\
+    -v(t)   \sin(\theta) \\
+    v(t) \cos(\theta) \\
     \dot{\theta} \\
     u \\
   \end{bmatrix}
   +
   \begin{bmatrix}
+    w \\
     0 \\
     0 \\
     0 \\
-    \randomInputVar{} \\
   \end{bmatrix}
 \end{equation}
-
-Uncertainties:
-\begin{tabular}{|c|c|}
-  \hline
-  \randomSpeedVar{} & 1 \\
-  \randomInputVar{} & 5 \\
-  \hline
-\end{tabular}
-
-\subsubsection{Uncertainty in speed, input and pos}
-
-A nice combination of multiplicative and additive noise.
-
-The model
-
-\begin{equation}
-  \label{eq:model-dynamics}
-  \mathbf{x} =
-  \begin{bmatrix}
-    x \\ y \\ \theta \\ \dot{\theta} \\
-  \end{bmatrix}, \, \dot{\mathbf{x}} =
-  \begin{bmatrix}
-    -v(t)\sin(\theta) \\
-    v(t)\cos(\theta) \\
-    \dot{\theta} \\
-    u \\
-  \end{bmatrix}
-  +
-  \begin{bmatrix}
-    \randomPosXVar{}  \\
-    \randomPosYVar{} \\
-    \randomPosThetaVar{} \\
-    \randomInputVar{} \\
-  \end{bmatrix}
-\end{equation}
-
-Uncertainties:
-\begin{tabular}{|c|c|}
-  \hline
-  \randomSpeedVar{} & 1 \\
-  \randomPosXVar{} & 1\si{\centi\metre} \\
-  \randomPosYVar{} & 1\si{\centi\metre}\\
-  \randomPosThetaVar{} & 1 \\
-  \randomInputVar{} & 5 \\
-  \hline
-\end{tabular}
-
-TODO - maybe record a movie or two of the vehicle driving?
 
 What happens if we add more uncertainty than what is modelled? - Run a simple
 experiment, to check the robustness of both benchmark algorithms to unmodelled noise.

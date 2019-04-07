@@ -65,14 +65,12 @@ parameters, like so
 \[
   \modelconfigurationspace \subset SE(2),
 \]
-which encompass all the states the robot can be in during, and \(SE(2)\) stands
+which encompass all the states the robot can be in during planning. \(SE(2)\) stands
 for \textit{Special Euclidean two}, and is defined as \(SE(2) = \R^2 \times
-\mathsf{S}\).
+\mathcal{S}\).
 
-A part of a robot's configuration can also be in collision with an obstacle.
-There is another dimension added to the collision checking, as say one model can
-be in collision with a certain heading, and not if facing another way, therefore
-the model's configuration when in collision with an obstacle is defined as
+As the robot lives in the world space, a subset of a robot's configuration can
+be in collision with an obstacle.
 \[
   \modelconfigurationspaceobst{} = \set{q \in \modelconfigurationspace{} \mid
     \mathcal{A}(q) \cap \modelobstacle{} \neq \emptyset}
@@ -85,20 +83,18 @@ In the same way the free configuration space is defined as
 
 More generally, the configuration space is a model for a wide variety of motion
 planning problems. It is a manifold that arise from the transformations applied
-to the robot. If the robot has n-degrees of freedom, the set of transformations
-is usually a manifold of dimension n. This manifold is called the configuration
-space of the robot, and is shortened \modelconfigurationspace{}. Thus in order
-to solve a motion planning problem, a search must be performed in the
-configuration space. Thus the motion planning problem is now made into a
-question of finding the best path to traverse the given manifold\cite{Lav06}.
+to the robot. Thus in order to solve a motion planning problem, a search must be
+performed in the configuration space. Thus the motion planning problem is now
+made into a question of finding the best path to traverse the given
+manifold~\cite{Lav06}.
 
 \subsection{Action Space}
 
-With the configuration space, and how the robot model can move in the world
-space is defined, the next concern is to control the movement of the robot
-model, and this is where the \textit{action space} comes in. The action space is
-the set of actions that can be applied at any given state the robot is in. Thus
-one can model the action space as a function of the robot's state.\ e.g.
+With the configuration space, and robot motion in the world space defined, the
+next problem is to control the movement of the robot model, which is where the
+\textit{action space} comes in. The action space is the set of inputs that can
+be applied at any given state the robot is in. Thus one can model the action
+space as a function of the robot's state.
 \[
   \modelactionspace(x) = \set{u \in \modelactionspace \mid \modelactionspace(x)
     \neq \emptyset }
@@ -106,11 +102,10 @@ one can model the action space as a function of the robot's state.\ e.g.
 
 \subsection{Initial and Goal States}
 
-A planning problem needs to have an initial condition, and a goal. It is normal
-to define an initial state and a goal state as a starting and an ending point of
-a planning problem. Where both the initial, and goal states can be sets of
-states, meaning that it is not necessary to arrive specifically at the target
-point. Mathematically the initial and goal sets is defined as
+A planning problem needs to have an initial condition, and a goal state or a set
+of states in the configuration space. Both the initial, and goal states can be
+sets of states, meaning that it is not necessary to arrive specifically at the
+target point. Mathematically the initial and goal sets is defined as
 \[
   \mathcal{X}_0 = \set{ x \in \modelconfigurationspace{} \mid g_i(x) \leq a_i,
     \, \forall i = 1,\ldots N_j} \\
@@ -118,8 +113,8 @@ point. Mathematically the initial and goal sets is defined as
     a_i, \, \forall i = 1,\ldots N_k}
 \]
 which defines the initial and final states as subsets of the
-\modelconfigurationspace{} bounded by inequality constraints, such that the set
-is defined by a semi-algebraic set.
+\modelconfigurationspace{} bounded by inequality constraints, such that the
+intial and goal states are semi-algebraic sets.
 
 \subsection{Dynamics}
 
@@ -132,24 +127,30 @@ differential equation of the form:
 \[
   \dot{x} = f(x,u)
 \]
+and can optionally be extended to entail uncertainty
+\[
+  \dot{x} = f(x,u,w)
+\]
+where \(x\) is the configuration, \(u\) is the system input control, and \(w\)
+is an uncertainty term.
 
 \subsubsection{Discrete motion planning}
 
-As mentioned in the introduction, motion planning problems are in general
-NP-hard, one way of making the problem more tractable is to discretize the
-problem. The discrete motion planning problem employs all the same definitions
-as the continuous case for the world and robot model, only all points are
-discrete in time \(t_k\) for some \(k\). Therefore, let \(\mathcal{X}\) be the
-discrete state space, and \(\mathcal{U}(x_k)\) be the set of actions available
-at each point \(x_k \in \mathcal{X}\). Then the state transition equation is
-written as:
+Mentioned in the introduction, motion planning problems are in general NP-hard.
+One way of making the problem more tractable is to discretize the problem. The
+discrete motion planning problem employs all the same definitions as the
+continuous case for the world and robot model, only all points are discrete in
+time \(t_k\) for some \(k\). Therefore, let \(\mathcal{X}\) be the discrete
+state space, and \(\mathcal{U}(x_k)\) be the set of actions available at each
+point \(x_k \in \mathcal{X}\). Then the state transition equation is now written
+as:
 \[
   x_{k+1} = f(x_k, u_k)
 \]
 
 \subsubsection{Representation of the plan}
 
-The plan that the planner makes for a robot in the configuration space is
+The plan that the motion planner makes for a robot in the configuration space is
 represented as a trajectory. A trajectory is a path with an additional time
 parameter, so that the path through configuration space is now time variant.
 This is represented as a function \(\phi(\alpha) \colon [0,1] \rightarrow
@@ -162,48 +163,45 @@ time-parameterized function of the kind \(\pi(t) \colon [0,T] \rightarrow
 
 All real life motion planning problems are faced with some level of uncertainty,
 as errors can arise from a multiple of sources, whereas the most prevalent ones
-are uncertainty in:
-\begin{enumerate}
-\item motion
-\item sensing
-\item the environment
-\end{enumerate}
+are uncertainty in motion, sensing, or the environment.
+
 Thus the exact system state is never exactly known. Therefore planning under
 uncertainty is done in what~\cite[LaValle]{Lav06} refers to as the belief space,
 which is a description of the state space using probability distributions. The
-information space is a general structure for working with plans under conditions
-of uncertainty. Thus planning can be done mostly as it is done in a state space,
-albeit in a higher dimension. Thus the state transition function can be written
-as
+belief space is a general structure for working with plans under conditions of
+uncertainty. Thus planning can be done mostly as it is done in a normal state
+space, albeit in a higher dimension. Thus the state transition function can be
+written as
 \[
   \phi_{k+1} = f_{\mathcal{I}}\left( \phi_k, \mu_k, y_{k+1} \right)
 \]
 
-If the discrete state space model is expanded to include \(\theta\) as the space
-of uncertain actions, and \(\ theta_k\) is the action applied by an uncertain
-source at time step \(k\), then the state transition transition is modeled as
+If the discrete state space model is expanded to include \(w\) as the space of
+uncertain actions, and \(w_k\) is the action applied by an uncertain source at
+time step \(k\), then the state transition transition is modeled as
 \[
   x_{k+1} = f(x_k,u_k,\theta_k)
 \]
-As the uncertain actions are not available beforehand, that is -- \(\theta_ k\)
+As the uncertain actions are not available beforehand, that is -- \(w_ k\)
 is not given, the model turns into
 \[
   X_{k+1} = \set{ x_{k+1} \in X \mid \exists\theta_k \in \Theta(x_k,u_k) \text{
       such that } x_{k+1} = f(x_k,u_k,\theta_k)}
-\]\cite{Lav06}.
+\] \cite{Lav06}.
 
 \subsection{Reachable sets}
 
-Of particular interest to the \rrtfunnel\ algorithm is the reachable set. A
+Of particular interest to the \rrtfunnel{} algorithm is the reachable set. A
 reachable set is all the configurations that the robot can be in if started from
 a particular point in the configuration space. Had there been no constraints on
 the movement of the robot the reachable set would simply be the entirety of the
 configuration space. However, the simple car model has both \textit{kinodynamic}
 and \textit{non-holonomic} constraints. This leads to the car not necessarily
 being able to reach all the states in the state-space from a given starting
-point -- at least not given a time frame. This idea is important as it leads to
+point -- at least not given a timeframe. This idea is important as it leads to
 the funnel definitions that makes up the backbone of this thesis. As an example,
-the reachable set for the \textit{Dubins car} is visualized
+the reachable set for the \textit{Dubins car} (which is a simple car model, with
+a constant velocity, and a control on the heading of the vehicle) is visualized
 in~(\ref{fig:reachable-set-dubin}).
 
 \begin{figure}
@@ -217,16 +215,16 @@ in~(\ref{fig:reachable-set-dubin}).
 The backbone of the \rrtfunnel{} algorithm is the composition of robust motion
 primitives in order to construct a path to the target configuration. A motion
 primitive is a constant action applied over fixed time intervals. It is one or
-more actions collected into one distinct action, usually with a goal. As an
-example, the action the \textit{Dubin's car} employs is steering the angle of
-the wheels. Setting the angle to a constant over a time interval can be a motion
-primitive, however, it is more easily thought of as a collection of actions over
-time, which embodies one bigger, more abstract action. For the car this could be
-\textit{go straight}, \textit{turn left}, etc. In this way, a collection of
-actions can be thought of as one simple action. The robustness signifies that it
-is robust in the face of uncertainty, meaning that if the uncertainty
-encountered is within the bounds of the model, the motion primitives will be
-able accomplish their task even in the face of this disturbance.
+more actions collected into one discrete action. As an example, the action the
+\textit{Dubin's car} employs is steering the angle of the wheels. Setting the
+angle to a constant over a time interval can be a motion primitive, however, it
+is more easily thought of as a collection of actions over time, which embodies
+one bigger, more abstract action. For the car this could be \textit{go
+  straight}, \textit{turn left}, etc. In this way, a collection of actions can
+be thought of as one simple action. The robustness signifies that it is robust
+in the face of uncertainty, meaning that if the uncertainty encountered is
+within the bounds of the model, the motion primitives will be able accomplish
+their task even in the face of this disturbance.
 
 \section{Funnels}
 
@@ -253,10 +251,6 @@ y-axis looks like~(\ref{fig:monte-carlo-sim}).
     interval \(\sqb{-.5,.5}\), and controlled with a LQR controller.}
   \label{fig:monte-carlo-sim}
 \end{figure}
-
-In this thesis a \textit{Funnel} will refer to the \textit{outer approximation
-  of forward reachable sets} parameterized by a \textit{Lyapunov function}.
-
 
 \subsection{Funnels}
 \label{sec:Funnels}

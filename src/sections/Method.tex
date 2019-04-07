@@ -425,6 +425,14 @@ TODO - insert figure of funnel and simulation runs with different uncertainties
 (do max in both directions).
 Idea taken from~\cite{mooreControlSynthesisVerification2012}.
 
+\subsection{Verify that the vehicle stays within the funnels}
+
+Below is a figure of N simulation runs with the model vehicle in all K of the
+funnels from the basis set.
+
+TODO - create figure.
+
+
 \subsection{The initial condition set for each funnel}
 
 In order to stack funnels one after the other it is desireable for the funnels
@@ -434,10 +442,6 @@ for each funnel. This is done with
 
 The intial theta is limited to: (Make pretty figure with the intial conditions
 for theta at each point (x,y))
-
-\subsection{Tuning the LQR controller}
-
-Add a short description of how the lqr controller was tuned. Why not a TVLQR?
 
 \section{RRT}
 
@@ -451,9 +455,9 @@ algorithm is also relatively simple to implement, and has only three main
 components that needs to be in place in order for successful path planning to
 happen in an arbitrary state space. This is beneficial as most all of the
 complexity accompanied with the planning problem (like uncertainty and
-controller calculations) has already been solved with the \ac{SOS} framework,
-and hence the \ac{RRT} algorithm need only concern itself with stacking one
-robust motion primitive after the other without any concern for the complexities
+controller calculations) has already been handled by the \ac{SOS} framework, and
+hence the \ac{RRT} algorithm need only concern itself with stacking one robust
+motion primitive after the other without any concern for the complexities
 mentioned above.
 
 The \ac{RRT} algorithm is a discrete sampling based motion planning algorithm,
@@ -461,48 +465,52 @@ and as such is reliant upon a few key metrics in order to function well.
 
 \subsection{Uniform sampling in SE(2)}
 
-One, as mentioned in~(\ref{sec:rrt-sampling}), the \ac{RRT} algorithm needs
+As mentioned in~(\ref{sec:rrt-sampling}), the \ac{RRT} algorithm needs
 uniform sampling of the state space in order for it to function optimally, as
 over- or under-sampling certain parts of the state space can lead to poor
 performance. Therefore one needs to be careful when sampling from a
 configuration space with non Euclidean
 topology~\cite{kuffnerEffectiveSamplingDistance2004}.
 
-If sampling from a \modelconfigurationspace{} which are formed stricly from
-cartesian products of the form \(X = X_1\times X_2\times \ldots X_n\), and each
-cartesian space is sampled uniformly, then the product will also be uniformly
-sampled. One needs to be more careful when dealing with rotations however, as
-the probability density measure can become non-uniform~\cite{Lav06}. Take the
-polar coordinates as an example. Sampling uniformly from \(r\) and \(\theta\)
-does not form a uniform sample product, as the \(pdf\) function will have a
-higher probability density near the origin, as the outer circles will contain a
-bigger area. For the model of a simple unicycle which moves in \(x,y,\theta\)
-the samples can be generated from
-From~\cite{kuffnerEffectiveSamplingDistance2004} the samples can be generated
-uniformly on the topological cylinder through
+If sampling from a configuration space which are formed stricly from cartesian
+products of the form \(X = X_1\times X_2\times \cdots \times X_n\), and each cartesian
+space is sampled uniformly, then the product will also be uniformly sampled. One
+needs to be more careful when dealing with rotations however, as the probability
+density measure can become non-uniform~\cite{Lav06}. Take the polar coordinates
+as an example. Sampling uniformly from \(r\) and \(\theta\) does not form a
+uniform sample product, as the \(pdf\) function will have a higher probability
+density near the origin, as the outer circles will contain a bigger area. For
+the model of a simple unicycle which moves in \(x,y,\theta\) the samples can be
+generated from From~\cite{kuffnerEffectiveSamplingDistance2004} the samples can
+be generated uniformly on the topological cylinder through
 \[
   (x,y,\theta) = (\mathnormal{X}_{dim}rand, \mathnormal{Y}_{dim}rand, \mathnormal{\Theta}_{dim}rand)
 \]
 where \(rand\) is a random variable in the interval \([0,1)\), since for
 \(SO(2)\), the rotations parametrized on \([0,1]\setminus\sim\) (where
-\(\setminus\sim\)) means that 0 and 1 are identified can be multiplied by a
-fixed constant, such as for \(2\pi\).
+\(\setminus\sim\) means that 0 and 1 are identified) can be multiplied by a
+fixed constant, such as for \(2\pi\) which means that sampling will be uniform
+in the configuration space of the robot from a simple cartesian product of
+uniform random variables.
 
 \subsection{Distance in configuration space}
 
 Introducing a function which Measures distance between two points in
-configuration space introduces a metric space. Finding a metric for the metric
-space at hand is a hard problem, and in general the ideal metric would have been
-the actual \textit{cost-to-go} function for the system at hand. However
-calculating the actual cost to go is equivalent to solving the original motion
-planning problem, and is hence not
-viable~\cite{pengchengReducingMetricSensitivity2001}. Thus, in order for a
-mobile robot to efficiently navigate an environment, it must have a good measure
-of distance between different poses in space, without actually solving the
-planning problem anew. For a problem in the Cartesian plane - it is common to
-use the Euclidean distance, however, this is not a good distance metric for
-non-holonomic vehicles, as it does not incorporate the possible constraints of
-the system function, and has little bearing on the actual cost-to-go of the
+configuration space introduces a metric space on the underlying configuration
+space \((\modelconfigurationspace{},\rho)\), where \(\rho\) is a distance
+function. Finding a good distance function for the metric space at hand is a
+hard problem. In general the ideal metric would have been the actual
+\textit{cost-to-go} function for the system at hand. However calculating the
+actual cost-to-go is equivalent to solving the original motion planning problem,
+and is hence not viable~\cite{pengchengReducingMetricSensitivity2001}.
+
+In order for the \rrtfunnel{} algorithm to efficiently explore the state space
+it must have a good measure of distance between different poses in space,
+without actually solving the planning problem anew. For a problem in the
+Cartesian plane - it is common to use the Euclidean distance, however, this is
+not a good distance metric for non-holonomic vehicles, as it does not
+incorporate the possible constraints of the system function, and has little
+bearing on the actual cost-to-go of the
 system~\cite{parkFeedbackMotionPlanning2015}. In fact, for sampling based
 planners such as the \ac{RRT}, the configuration space is only sufficiently
 explored in the case where the distance function reflects the true cost-to-go
@@ -516,24 +524,28 @@ metric can be employed in each step. To reflect on the difficulty of creating a
 general distance metric function have a look at the unicycle model
 from~(\ref{eq:model-dynamics}). From inspection it is seen that the model is not
 able to instantaneously move in a direction orthogonal to the direction of
-travel, as was seen in~(\ref{fig:non-holonomic-vehicle-euclidean-weakness}).
+travel, as is seen in~(\ref{fig:non-holonomic-vehicle-euclidean-weakness}). Here
+the distance between two points might be small in the sense of a regular
+Euclidean distance metric, but due to the differential constraints on the system
+model, the vehicle actually has to move far in order to reach the sought
+configuration.
 
 Therefore this thesis employs the non-holonomic distance metric
 from~\cite{parkFeedbackMotionPlanning2015}, based on a control Lyapunov function
 of the form.
 
-\subsubsection{Distance metric}
 Secondly, obtaining a good heuristic for the distance in the configuration space
 is considered. A distance metric has to be chosen for choosing the closest node in
-the tree. TODO - is this mentioned in the preliminaries?
+the tree.
 
-\subsubsection{Extension operator}
 Thirdly, the extension operator for the tree has to be chosen. This
 implementation settled on the non-holonomic distance function for unicycle type
 vehicles from~\cite{parkFeedbackMotionPlanning2015}.
 
-A modified Euclidean metric which weights the theta depending on how close the
-vehicle is to the final configuration is defined as
+The \rrtfunnel{} algorithm will use the same metric for both the closest node
+and in the extend operation on the funnel graph. The metric chosen is a modified
+Euclidean metric which weights the theta depending on how close the vehicle is
+to the final configuration is defined as
 \[
   \rho(x_{1},x_{2}) = w_{1}\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}} +
   w_{2}f(\theta{1},\theta{2})
@@ -545,47 +557,24 @@ is scaled relative to the translation distance.
 
 \subsection{FunnelGraph}
 
-One can think of funnels computed using the machinery described in
-\cite[sec~4]{majumdarFunnelLibrariesRealtime2017} as \textit{robust} motion
-primitives~\cite{majumdarFunnelLibrariesRealtime2017}.
-
-As every subfunnel (\ie{} part of a funnel), is also a funnel, funnels can be
-pruned. Therefore, cutting off the end, or the beginning of a funnel, will in
-fact create two new funnels. This fact can be exploited in order to create new
-and shorter subfunnels for use in the \rrtfunnel{} algorithm.
-
 Look at ~\cite{vonasekGlobalMotionPlanning2013} (Algorithm3) for a way of
 building an RRT with motion primitives.
-
-\subsection{Staying inside the funnels}
-
-As a funnel is not simply the 2D-ellipse projected down into the plane. In fact
-the funnel lives in 4D space, and as such the vehicle can leave the funnel, even
-though it is inside the projected funnel in 2D space. Therefore the \rrtfunnel{}
-algorithm checks at each step during the simulations that the vehicle stays
-inside the verified funnels. This is done through inputting the vehicle's
-current state into the quadratic Lyapunov function
-\[
-  {\bar{x}}^{T}S_{k}\bar{x} + \bar{x}s_{1} \bar{x} s_{2}
-\]
 
 \subsection{Funnel-graph}
 
 Even though the \rrtfunnel{} algorithm can work just fine with a collection of
 funnels, and simply bruteforcing all funnels at the planning stage, it is
-helpful to associate some kind of structure with the collection. In essence
-associating the collection of funnels \(\mathcal{F}\) with some structure.
-Giving the collection \(\mathcal{F}\) a tree structure, where each node in the
-tree is reached, either through a funnel, a part of a funnel (which is also a
-funnel), or a composition of funnels. Each funnel already has a set of nodes
-associated with itself from the discretization taking place prior to funnel
-creation as shown in figure \ref{fig:somefig}.
+helpful to associate some kind of structure with the collection. Therefore the
+funnels will be organised into a graph structure \(\mathcal{F}\) where each
+funnel is a edge in the graph, and the inlets and the outlets are vertices. The
+funnels also need information about which funnels that they are composable with,
+as they may not all be composable with eachother.
 
 \begin{figure}
   \centering
   \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{figures/method/trajectory-sampled}
-    \caption{Trajectory sampled \# times (TODO)}
+    \caption{Trajectory sampled 21 times.}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.4\textwidth}
@@ -616,23 +605,13 @@ in~(\ref{sec:funnel-composability-program-sos}).
   \ForEach{\(F_{i} \in \mathcal{F}\)} { \ForEach{\(F_{j} \in \mathcal{F}\)} {
       \ForEach{\(t_{k} \in F_{i}\)} { \ForEach{\(t_{l} \in F_{j}\)} {
           \If{\(F_{i}(t_{k}) \subset F_{j}(t_{l})\)} { \(\mathcal{G}
-            \leftarrow{} \left( F_{i}(t_{k}), F_{j}(t_{l}) \right)\) } \; } \; }
-      \; }\; }\;
+            \leftarrow{} \left( F_{i}(t_{k}), F_{j}(t_{l}) \right)\) }
+        }
+      }
+    }
+  }
 
 \end{algorithm}
-
-Hereafter the primities at each point can be prioritized by some metric, say
-distance to the goal or similar.
-
-\subsection{Verify that the vehicle stays within the funnels}
-
-Below is a figure of N simulation runs with the model vehicle in all K of the
-funnels from the basis set.
-
-TODO - create figure.
-
-
-\section{RRT-section}
 
 \subsection{The \rrtfunnel{} algorithm}
 
@@ -678,7 +657,7 @@ The \rrtfunnel{} algorithm is defined as
   \SetKwFunction{TestUncertainFunnels}{Test\_Uncertain\_Funnels}
   \SetKwFunction{BuildComposabilityMatrix}{Build\_Composability\_Matrix}
 
-  \TestUncertainFunnels{}
+  \TestUncertainFunnels{} \;
   \BuildComposabilityMatrix{}
 
   \(\mathcal{G}.init(q_0)\) \For{\(i \leftarrow 1\) \KwTo \(k\)}{ \(q_{rand}
@@ -700,14 +679,9 @@ The \rrtfunnel{} algorithm is defined as
 
 \end{algorithm}
 
-\subsection{The convergence of the algorithm}
-
-The convergence rate \(\epsilon\) is set to 1 percent.
-
-No input saturations modelled.
-
 \subsection{Special maneuvers}
-(Maybe have this along with the identity funnel)
+
+The algorithm incorporates room for two special maneuvers.
 
 \subsubsection{The identity funnel for starting the simulation fresh}
 
@@ -724,58 +698,5 @@ stop maneuver. Since the model employed is a simple first order model, a halt
 will happen momentarirly. Still, an emergency maneuver can be any sort of 'safe'
 maneuver for the model at hand -- such as a loiter circle for an airplane, or
 idling at one place for a quadcopter.
-
-
-\subsection{Alternative to the emergency maneuver}
-
-If the vehicle leaves the current funnel, maybe an idea would be to replan, ie
-translate the funnel so that the current state is once again contained within
-the funnel, and restart the driving?
-
-
-\subsubsection{How to obtain uniform sampling}
-\subsubsection{How to define a good distance metric}
-In general, it is not possible to get a perfect distance metric for our planning
-problem, as this involves solving another optimal planning problem, and will
-therefore be as, or more complex than the motion planning problem which is
-already being solved. Therefore in general we will have to limit ourselves to
-approximate distance metrics. The idea is to get as close to the optimal
-cost-to-go function without having to compute expensive
-computations~\cite{Lav06}. Distance metrics candidates in the RRT-Funnel
-algorithm:
-\begin{itemize}
-\item Time - Since time can be found by simple summing up the time of all the
-  funnels which need be added to get to the certain point in the configuration
-  space.
-\item Lyapunov function - As the Lyapunov function can be seen as an energy
-  function, the cost to go to a point can (probably) be used as a metric in the
-  planning.
-\item Length of the shortest path between two configurations - ignoring
-  collisions.
-\item A* search heuristics.
-\item Geometric - Stacking Funnels, where the shortest funnel of funnels wins.
-  e.g. if the point is not in the cone projected out from the current state by
-  the current motion primitives, pick the most extreme turn, and start over once
-  again. If it can be reached by a turn, turn, then go straight for N-Funnels.
-\end{itemize}
-
-Note that most of these metrics are not metrics in the full sense, as they do
-not fulfill the symmetric property, as under dynamic constraints going from a to
-b, may not be the same as going from b to a. In most cases it is not true for a
-nonholonomic vehicle.
-
-\subsubsection{How to extend the tree?}
-
-Should it be expanded into the dynamic Voronoi regions? If so, what are these
-regions?
-
-The extend operation can take a different extension or distance metric than the
-closest node operation. Maybe this should be used for the benchmark planner. An
-extension heuristic which maximizes the distance to the closest trees.
-
-\subsubsection{Sampling with a bias}
-
-Extending with a goal bias of 5 percent is currently used in the \rrtfunnel{}
-algorithm. 
 
 \subsection{Collision checking}
