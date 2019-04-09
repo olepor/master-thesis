@@ -19,7 +19,7 @@ that node, and as the largest Voronoi regions belong to the states on the leaves
 of the tree. As the Voronoi regions divides a plane according to the
 \textit{nearest neighbour rule}, each point is associated with the region of the
 plane closest to
-it~\cite{aurenhammerVoronoiDiagramsSurvey1991}~(\ref{fig:voronoi-diagram}. This
+it~\cite{aurenhammerVoronoiDiagramsSurvey1991}~(\ref{fig:voronoi-diagram}). This
 means that the tree will quickly expand into unexplored parts of the state
 space, as can be seen in~(\ref{fig:rrt-expansion}),
 and~(\ref{fig:rrt-voronoi})~\cite{Lav06}, which is what makes the \ac{RRT} good
@@ -57,7 +57,9 @@ dimensional state space.
     \includegraphics[width=\textwidth]{plainRRT10000}
     \caption{RRT-tree after 10000 iterations.}
   \end{minipage}
-  \caption{How the \ac{RRT} algorithm explores the state space.}
+  \caption{Pictured: The \ac{RRT} algorithm quickly expanding deep into the
+    state-space, then later, exploring the finer parts, until the exploration is
+    complete.}
   \label{fig:rrt-expansion}
 \end{figure}
 
@@ -72,10 +74,18 @@ dimensional state space.
 When inspecting the Voronoi regions of a \ac{RRT} tree, it is apparent that the
 leaf nodes will have the largest Voronoi regions, and thus also the largest
 probability for getting expanded, as can be seen in
-figure~\ref{fig:rrt-voronoi}.
+figure~(\ref{fig:rrt-voronoi}).
 
-In general, even though the \ac{RRT} algorithm is sampling based, it will, as
-time goes to infinity achieve probabilistic completeness in the state-space.
+The \ac{RRT} algorithm is a discrete sampling based algorithm, noticeable for
+its ability to handle large state-spaces. This stems from the algorithm's
+ability to avoid the \textit{curse of dimensionality}, which means that it does
+not suffer the same computational penalty with scaling the state space, as is
+hampering a lot of motion planning algorithms~\cite{Lav06}. Still, even though
+the \ac{RRT} algorithm is sampling based, it will, as time goes to infinity
+achieve probabilistic completeness in the state-space. Which means that it will
+cover the whole state space with the tree if given infinite time. Thus one can
+expect the \ac{RRT} algorithm to find a solution, if one exists and the
+algorithm is given enough time.
 
 \begin{figure}
   \centering \frame{\includegraphics[clip, trim=5cm 9cm 5cm 9cm,
@@ -84,37 +94,6 @@ time goes to infinity achieve probabilistic completeness in the state-space.
     which shows how the voronoi bias will lead the algorithm towards unexplored
     areas quickly.}
   \label{fig:rrt-voronoi}
-\end{figure}
-
-The ability to quickly expand into the largest Voronoi regions of the
-state-space is what enables the \ac{RRT} to avoid the \textit{curse of
-  dimensionality} that is keeping other motion planning algorithms from being
-employed on state-spaces of larger dimensionality. The perfect
-
-The optimal distance function would be the optimal \textit{cost-to-go} function,
-which is the optimal cost to go from one state to another on the optimal
-trajectory. However, solving the optimal cost-to-go sub-problem for every node,
-is equivalent to solving the optimal cost-to-go for the entire planning problem,
-and is thus not computationally feasible~\cite{Lav06}. The cost-to-go can be any
-number of metrics such as the energy consumed, time to target, or some distance
-metric in the state-space. For differential constraints on the vehicle dynamics
-some metrics, such as the Euclidean, may erode the performance of the algorithm,
-as it encorporates no knowledge of the model's inability to move in certain
-directions, as expamplified
-in~(\ref{fig:non-holonomic-vehicle-euclidean-weakness}). This is not unexpected
-as the \textit{Euclidean metric} is only a proper metric for holonomic vehicles
-\cite{parkFeedbackMotionPlanning2015}.
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=.2,angle=-90]{figures/rrtfunnel/non-holonomic-vehicle-euclidean-weakness}
-  \caption{Consider two poses \(p_0\) and \(p_1\). Although \(p_1\) is nearer
-    the robot in Euclidean distance it is harder to get to due to differential
-    constraints. In this paper, we propose a directed distance function
-    applicable to unicycle- type vehicles, that properly reflects the true
-    cost-to-go of the system under the non-holonomic constraint. (figure
-    courtesy of \cite{parkFeedbackMotionPlanning2015})}
-  \label{fig:non-holonomic-vehicle-euclidean-weakness}
 \end{figure}
 
 \begin{figure}
@@ -134,38 +113,22 @@ motion planning.
 
 \subsection{Motion Primitives}
 
-A motion primitive is a discrete action chosen from some action set
-\(\modelactionspace{}\), and applied as a constant action over a fixed period of
-time. The time periods can vary in length, as the primitives do not need to have
-the same timespan. Thus in the model:
-\[
-  x_{k+1} = f_d(x_k,u_k)
-\]
-Where \(x_k = x((k-1)\delta{}t)\), and \(u_k\) is the action in
-\(\modelactionspace{}_d\) that is applied from time \((k-1)\delta{}t\) to
-\(k\delta{}t\). If we let \(\overline{u}^p\) be a motion primitive in
-\(\modelactionspace{}\), which is a function from an interval of time, unto
-\(modelactionspace{}\). Then by letting the interval of time start at 0 and stop
-at \(t_F(\overline{u}^p)\), which has a final time that depends on the
-particular prmitive~\cite{Lav06}.
-
 The performance of the \ac{RRT} algorithm is dependent upon the control inputs
 employed to search the state-space. For systems with few control inputs, random
 control inputs can be sampled. The downside is that this usually produces
-non-smooth motions. Instead, predefined motion primitives with with known
-behaviour can be sampled, which will produce a smoother path, while also
-reducing the complexity of the planning
-task~\cite{vonasekGlobalMotionPlanning2013}. An example of this employed on a
-humanoid robot can be found in~\cite{hauserUsingMotionPrimitives2008}. A simple
+non-smooth motions. Instead, predefined motion primitives with known behaviour
+can be sampled, which will produce a smoother path, while also reducing the
+complexity of the planning task~\cite{vonasekGlobalMotionPlanning2013}, and if
+shown on a humanoid robot in~\cite{hauserUsingMotionPrimitives2008}. A simple
 basis of motion primitives for a vehicle can therefore be 'turn-left',
 'go-straight', or 'turn-right'. By chaining these basic smooth motion primitves
 together a smooth path from the intial- to the goal-state can be found. A figure
-displaying a tree built up from the tree motion primitives can be seen
+displaying a tree built up from the three motion primitives can be seen
 in~(\ref{fig:motion-primitive-tree}).
 
 \begin{figure}
   \centering
-  \includegraphics[scale=.5]{figures/preliminaries/motion-primitive-tree}
+  \includegraphics[scale=1]{figures/preliminaries/motion-primitive-tree}
   \caption{A simple motion primitive tree from the
     paper~\cite{vonasekHighlevelMotionPlanning2015}, displayinga a tree built
     from the composition of a left, right and a straight motion primitive.}
@@ -176,5 +139,7 @@ Thus in essence robust motion primitives are beneficial as they seperate the
 dynamics from the planner, enabling the planner to reason about what actions to
 take, and not in what manner they should be executed. This observation is the
 basis of the \rrtfunnel{}, which employs funnels as the robust motion primitives
-and hence as the extension operators for the tree the planner employs.
+and hence as the extension operators for the tree the planner employs, enabling
+the \ac{RRT} part of the \rrtfunnel{} algorithm to remain oblivious to
+uncertainties, and hence greatly simplifying the planning problem.
 

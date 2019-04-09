@@ -190,6 +190,7 @@ is not given, the model turns into
 \] \cite{Lav06}.
 
 \subsection{Reachable sets}
+\label{subsec:reachable-set}
 
 Of particular interest to the \rrtfunnel{} algorithm is the reachable set. A
 reachable set is all the configurations that the robot can be in if started from
@@ -296,10 +297,10 @@ with \(x(t)\) the state of the system at time \(t\) and \(u(t)\) the control
 input. Assume that a open loop nominal trajectory \(x_0 \colon [0,T] \rightarrow
 \R^n\) with control input \(u_0 \colon [0,T] \rightarrow \R^n\) is given, and
 define a change of coordinates into the error coordinate frame
-\[
-  \bar{x}(t) = (x - x_0)(t) \\
-  \bar{u}(t) = (u - u_0)(t).
-\]
+\begin{align}
+  \bar{x}(t) &= (x - x_0)(t) \\
+  \bar{u}(t) &= (u - u_0)(t).
+\end{align}
 Then, changing~\ref{eq:dynamicalsystem} to these new coordinates one obtaines
 \begin{equation}
   \dot{\bar{x}} = \dot{x} - \dot{x}_0 = f(x_0(t) + \bar{x}(t), u_0(t) + \bar{u}(t)) - \dot{x}_0(t)
@@ -461,7 +462,8 @@ one arrives at the optimization problem
 
   \newcommand{\E}{\mathcal{E}} \renewcommand{\x}{\bar{x}}
   \begin{mini*}[1]
-    { \substack { V, \rho, L, L_t,
+    {
+      \substack { V, \rho, L, L_t,
         \\
         L_{0, i}, S_{k}, L_{\E, k} } } { \sum_{k = 1}^{N} \vol(\E(t_{k})) =
       \sum_{k = 1}^{N} \vol \p{\set{\x \mid \x^T S_k \x \le 1}} } {} {}
@@ -664,20 +666,8 @@ Which returns ``Composition succesful!'' for circles with radii larger than
 \(sqrt{2}\) as expected. (Note, this can also be optmized for searching for the
 smallest circle which encompasses the square - TODO - do this later.)
 
-\subsection{Region of attraction along a trajectory}
-
-In order to verify regions of attraction along a trajectory, as opposed to
-around a single point, some minor modifications to the problem definition has to
-be made~\cite{tobenkinInvariantFunnelsTrajectories2010}.
-
-\subsection{Shifting funnels around in the world frame}
-
-* Composition at the ends * Composition in the middle of funnels. ** Cutting off
-ends of funnels ** Cutting of heads of funnels * Composing these cut off funnels
-at any point in time * Construct a graph which takes these effects into account.
-
-
 \subsection{Cyclic coordinates and LaGrangian dynamics}
+\label{subsec:cyclic-coordinates}
 
 The \funnel\'s generated in this thesis will be motion primitives for the
 \rrtfunnel{} algorithm this thesis develops.

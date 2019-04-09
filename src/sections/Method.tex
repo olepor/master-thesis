@@ -2,28 +2,29 @@
 
 This chapter will introduce and develop the \rrtfunnel\ algorithm, by two means:
 First develop robust motion primitives through the \ac{SOS} programming
-framework, based on the work in~\cite{majumdarFunnelLibrariesRealtime2017}, and
-second deploy these funnels as motion primitives in a discrete \ac{RRT} motion
-planner, based on~\cite{lavalleLav98cPdf}. Using \textit{robust} motion
-primitives has several advantages. Firstly, they are robust to uncertainty, and
-thus, as long as the uncertainties in the system are akin to the assumptions
-laid on the incoming uncertainty parameters, the vehicle will not leave the
-funnel, and hence if the funnel is not in collision, neither will the system be.
-Secondly, with the assumption that the motion primitives are robust, there is no
-need for more conservative maneuvers and heuristics, such as maximizing the
-distance to an obstacle. The system might as well choose a primitive that is
-close to an obstacle, as one that is far away, as the funnel is guaranteed to be
-collission free in both cases. This means that a robust motion primitive
-algorithm can perform more aggressive maneuvers than one that is inherently
-cautious about its environment~\cite{majumdarFunnelLibrariesRealtime2017}.
+framework based on the work in~\cite{majumdarFunnelLibrariesRealtime2017}, and
+second, deploy these funnels as robust motion primitives in a discrete \ac{RRT}
+robust motion planner based on~\cite{lavalleLav98cPdf}. Using \textit{robust}
+motion primitives has several advantages. Firstly, they are robust to
+uncertainty, and thus, as long as the uncertainties in the system are akin to
+the assumptions put on the incoming uncertainty parameters, the vehicle will not
+leave the funnel, and hence if the funnel is not in collision, neither will the
+system be. Secondly, with the assumption that the motion primitives are robust,
+there is no need for more conservative maneuvers and heuristics, such as
+maximizing the distance to an obstacle. The system might as well choose a
+primitive that is close to an obstacle, as one that is far away, as the funnel
+is guaranteed to be collission-free in both cases. This means that a robust
+motion primitive algorithm can perform more aggressive maneuvers than one that
+is inherently conservative about its environment and
+maneuvers~\cite{singhRobustOnlineMotion2017}.
 
 \section{Generating robust motion primitives}
 
 In order to create a basic set of funnels as the robust motion primitives for
-the \rrtfunnel{} motion planning algorithm, a few obstacles have to be overcome.
-The first one is settling on a model for the funnel calculations. This thesis
-employs the simple unicycle model from \cite[LaValle.p~613]{Lav06} which is
-modified slightly into
+the \rrtfunnel{} motion planning algorithm, a few obstacles has to be overcome.
+The first one is settling on a dynamical system model for the funnel
+calculations. This thesis employs the simple unicycle model from
+\cite[LaValle.p~613]{Lav06} which is modified slightly into
 \begin{equation}
   \label{eq:model-dynamics}
   \mathbf{x} =
@@ -51,9 +52,12 @@ is easily adapted into accommodating a different and more complicated model.
 \subsubsection{Generating the trajectories}
 
 The robust motion primitives are in essence \textit{finite regions of time
-  variance} around an intial trajectory, meaning that they are verified state
-regions surrounding a trajectory that the system can reach in a given time
-interval. Generating optimal trajectories is a rich field in the motion planning
+  variance} around an initial trajectory, meaning that they are verified regions
+of the state space surrounding a trajectory in which the system can reach in a
+given time interval, also called a reachable set~(\ref{subsec:reachable-set}).
+But in order to verify the robust regions surrounding a trajector, first the
+trajectories themselves have to be generated. Generating optimal trajectories is
+a rich field in the motion planning
 literature~\cite{bettsSurveyNumericalMethods}, and the initial trajectories
 could have been generated through any number of methods, however, the
 \textit{direct collocation method} was chosen as it builds locally optimal
@@ -66,7 +70,7 @@ the solver to minimize, which in this case is:
 \begin{equation}
   J = \int_{0}^{T} \left[ 1 + {u_{0}}^{T}Ru_{0} \right] dt
 \end{equation}
-from~\cite{majumdarFunnelLibrariesRealtime2017}.
+from~\cite{majumdarRobustOnlineMotion2013}.
 
 An example of an initial trajectory set is pictured
 in~\ref{fig:initial-trajectories}, and consists of a left-turn, a
@@ -128,40 +132,44 @@ Taylor expansion of degree three. Secondly the function limiting the size of the
 funnel \(\rho(t_{k})\) has to be initialized by a feasible \(\rho(t)\). This is
 done through the equation
 \begin{equation}
-  \rho(t_{k}) = \mathrm{exp}\left( \rho_{\tau}\frac{\left( t_{f} - t \right)}{\left( t_{f} - t_{0}  \right)}\right)
+  \rho(t_{k}) = \mathrm{exp}\left( \rho_{\tau}\frac{\left( t_{f} - t \right)}{\left( t_{f} - t_{0}  \right)}\right) + \rho_0
 \end{equation}
 from~\cite[eq.~6.sec~3]{tobenkinInvariantFunnelsTrajectories2010}, where
 \(\rho_{\tau}\) is a positive constant determining the upper bound on the
-funnel. If the given choice of \(\rho_{\tau}\) does not verify a funnel, either
-increase the value of \(\rho_{\tau}\), and optionally the number of sampled
-points from the trajectory to be
-verified~\cite{tobenkinInvariantFunnelsTrajectories2010}.
+funnel, along with the zero value \(\rho_0\). If the given choice of
+\(\rho_{\tau}\) does not verify a funnel, either increase the value of
+\(\rho_{\tau}\) and \(\rho_0\), and optionally the number of sampled points from
+the trajectory to be verified~\cite{tobenkinInvariantFunnelsTrajectories2010}.
 
 Thirdly, the initial condition set has to be decided beforehand. In general the
 initial condition set can be any semi-algebraic set in the state-space. However,
-a simple way of obtaining a initial condition set for the trajectories at hand
+a simple way of obtaining an initial condition set for the trajectories at hand
 is by taking advantage of the Lyapunov function canditate from the
 \ac{LQR}-controller. Thus by setting
 \begin{equation}
   \mathcal{X}_{0} = \frac{S_{k}}{\rho_{\tau}}
 \end{equation}
-an intial condition is obtained.
+an intial condition is obtained. However, any semi-algebraic set will do, and
+the algorithm is not constrained to this one initial condition set in
+particular, but it has proven itself useful when calculating new motion
+primitives for a system when the initial condition set is not obvious. Another
+idea is to use the outlet of one funnel as the initial condition set for the
+calculation of another.
 
 For the cost function in the funnel generation
 algorithm~\ref{alg:funnelalgorithm}, which in general is a maximization of the
-determinant of the upper bound ellipse for the funnel set, a weight is added to
-each element in order to further fine tune the size of the funnel. As an
-example: For the vehicle model in this thesis the size of the funnel projected
-down into the xy-plane will be the most important metric. Whether or not the
-vehicle's orientation parameter \(\theta\) is close to the nominal heading is of
-less concern, and is therefore down-prioritized, along with the cost on the
-control input \(u\). Having a large \(\theta\) and \(\dot{\theta}\) semi-axis in
-the hyperellipsoid can also be beneficial, as it increases the inlet of the
-ellipsoid at hand. All this taken together then gives the cost function
-\begin{equation}
-  P_{k} = W_{k}P_{k}W_{k}^{T}
-\end{equation}
+determinant of the upper bound ellipse for the funnel set, one may not be
+concerned about the size of the hyperellipsoid in all directions of the
+state-space. As an example: For the vehicle model in this thesis the size of the
+funnel projected down into the xy-plane will be the most important metric.
+Whether or not the vehicle's orientation parameter \(\theta\) is close to the
+nominal heading is of less concern, and is therefore down-prioritized, along
+with the cost on the control input \(u\). Having a large \(\theta\) and
+\(\dot{\theta}=u\) semi-axis in the hyperellipsoid can also be beneficial, as it
+increases the inlet of the ellipsoid at hand. 
 
+The funnels in this thesis are parametrized as sub-level sets of a Lypunov
+function for which the state-space does not invalidate the sub-level constraint.
 A visualization of the Lyapunov function associated with a straight motion
 primitive can be found in~(\ref{fig:visualized-lyapunov}).
 \begin{figure}
@@ -172,156 +180,17 @@ primitive can be found in~(\ref{fig:visualized-lyapunov}).
   \label{fig:visualized-lyapunov}
 \end{figure}
 
-\subsection{Adding uncertainty to the funnel calculation}
-\label{sec:adding-uncertainty}
-
-The system dynamics and funnel generation theory presented this far has not been
-able to handle any system uncertainty, which is vital to the safe execution of
-the \rrtfunnel{} algorithm. However, the basic formulations presented do have
-all the necessary formulations present, and adding uncertainty is equivalent to
-adding another constraint to the optimization problem.
-
-Following are the changes to the formulation of the \ac{SOS} optimization
-problem~(\ref{eq:sufficient-conditions})
-from~\cite{majumdarFunnelLibrariesRealtime2017} so that a funnel takes into
-account a bounded uncertainty term of the form \(\mathcal{W} = \set{ w(t) \in
-  R^d \mid g_{w,j}(w) \geq 0\, \forall j = 1,\ldots,N_w}\). First the uncertainty
-has to be added to the system dynamics equation, through adding an uncertainty
-term \(w\)
-\begin{equation}
-  \dot{\bar{x}} = f_{cl}(t, \bar{x}(t), w(t))
-\end{equation}
-the requirement~(\ref{eq:reachableset}) is slightly modified so that
-\begin{equation}
-  \label{eq:uncertain-reachableset}
-  \bar{x}(0) \in \mathcal{X} \implies \bar{x}(t) \in F(t),\, \forall t \in
-  [0,T], \, \forall w \colon [0,T] \rightarrow \mathcal{W}
-\end{equation} 
-where \(F(t)\) is the new reachable set for the uncertain system. Thus the
-sufficient condition~(\ref{eq:funnelsufficient}) turns into
-\begin{equation}
-  \label{eq:funneluncertain-sufficient}
-  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x},w) < \dot{\rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W}.
-\end{equation}
-The Lyapunov function is calculated as
-\begin{equation}
-  \dot{V}(t,\bar{x}, w) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x},w) + \frac{\partial V(t,\bar{x})}{\partial t},
-\end{equation}
-and the optimization condition~(\ref{eq:optimizationconditionsos}) turns into
-\begin{align}
-  \label{eq:optimizationconditionuncertain}
-  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  & \nonumber \\
-  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w) \quad \text{is SOS} &  \\
-  L_{w,j}(t,\bar{x},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w \nonumber
-\end{align}
-
-\subsubsection{Shifting funnels and invariance}
-
-In order to freely shift funnels around in the configuration space, the cyclic
-coordinates of the system has to be determined. ex:
-\begin{align}
-  \mathcal{L} &= T - V = \frac{1}{2} mv^2 + \frac{1}{2}I\dot{\theta}^2 \\ 
-              &= \frac{1}{2} 
-                m\begin{bmatrix}
-                  -v\sin \theta \\ 
-                  v \cos \theta \\
-                \end{bmatrix}^{T}
-  \begin{bmatrix}
-    -v\sin \theta \\
-    v \cos \theta \\
-  \end{bmatrix}
-  + I\dot{\theta}^2 \\
-              &= m \left(
-                v^2 \sin^2 \theta + v^2 \cos^2
-                \right)  + I {\dot{\theta}}^2 \\
-              &= mv^2 + I {\dot{\theta}}^2 \\
-\end{align}
-which shows that the LaGrangian is invariant to shifts in the \((x,y,\theta)\)
-variables, since \(\frac{\partial\mathcal{L}}{\partial q_i} = 0 \, q_i =
-x,y,\theta\). Hence now, any funnel in the base set can be shifted freely around
-in the cyclic coordinates of the system withouth changing the solution to the
-system dynamic equation, and thus create an infinite set of funnels in the state
-space for the planner to work with. Through the partitioning of coordinates into
-cyclic- and non-cyclic coordinates of the form \(x = [x_c x_{nc}]\), the state
-dynamics \(\dot{x} = f(x(t), u(t))\) only depends on the non-cyclic coordinates
-of the system. Thus, a trajector of the form \(t \rightarrow (x(t),u(t))\) which
-solves \(\dot{x} = f(x(t),u(t))\) can then be transformed through a shift
-\(\Psi_c\) along the cyclic coordinates of the system to yield a valid solution
-of the form
-\[
-  t \rightarrow (\Psi_{x}(x(t)), u(t))
-\]
-The transform \(\Psi\) is given by
-\[
-  \Psi([x_c, x_{nc}]) =  
-  \begin{cases}
-    x_c \rightarrow \hat{x}_{c} \\
-    x_{nc} \rightarrow x_{nc} \\
-  \end{cases}.
-\]
-
-\subsection{Checking which funnels can be composed and not}
-\label{sec:composable-funnels}
-
-Now that funnels can be shifted freely around the state space to create new
-motion primitives it is time to chain funnels together to create trees of
-funnels that span out into the planning environment to build a robust plan that
-the vehicle can follow. However, in order for two funnels to create a third and
-new motion primitive when chained together they need to be composable, which
-means that the inlet of the second funnel needs to be fully contained within the
-outlet of the first one. Otherwise the robustness guarantees of the traversal
-will be lost. An abstract pictorial representaion of two funnels composed
-together can be seen in~(\ref{fig:two-funnels-composed}). The mathematical
-definition of funnel composition~(\ref{def:funnel-composition}) is used to
-verify that two funnels are composable, and can implemented as a
-\ac{SOS}-program, an example of which can be found in~(\ref{AppendixB}).
-However, take note that the definition has to be modified slightly in order to
-take into account the translation along the cyclic coordinates. Hence the
-definition used
-is~\cite[definition~3,sec~5]{majumdarFunnelLibrariesRealtime2017} which states
-\begin{definition}
-  An ordered pair \(F_1,F_2\) of funnels \(F_1 \colon [0,T_1] \rightarrow
-  \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
-  is \textit{sequentially composable modulo invariances} if there exists a shift
-  along cyclic coordinates such that \(F_{1}(T_1) \subset
-  \Psi_{c}\left(F_2(0)\right)\)
-\end{definition}
-In laymans terms this means that if a funnel \(F_2\) can be shifted along cyclic
-coordinates to stack up against the outlet of funnel \(F_2\) so that they are
-composable in the sense of definition~(\ref{def:funnel-composition}), they are
-composable modulo invariances. Hence, basically any funnel in the state space
-can be seen as a set consisting of the funnel from the basic set, along with a
-transformation along the cyclic coordinates of the system \(F_n \in \R^n \mid
-\Psi_{c,i}(F_i), F_i \in \mathcal{F}\), where \(\mathcal{F}\) is the basic set
-of funnels.
-
-\begin{figure}
-  \includegraphics[scale=.2]{figures/method/funnel-composition} \centering
-  \caption{Two funnels that can be successfully composed, as the outlet of the
-    first one is fully contained in the inlet of the second.}
-  \label{fig:two-funnels-composed}
-\end{figure}
-
-Using the generalized S-procedure the condition
-\begin{equation}
-  V_1(T_1,\bar{x}) \leq \rho_1(T_1) \implies V_2(0, \bar{x}) \leq \rho_2(0)
-\end{equation}
-the composability of the funnels can be checked through the \ac{SOS} program
-\begin{align*}
-    & \text{Find } && L(\bar{x}) \\
-    & \text{s.t. } && \rho_2(0) - V_2(0,\bar{x}) - L(\bar{x})\left( \rho_1(T_1) - V_1(T_1,\bar{x}) \right) \text{ is SOS} \\
-    &&& L(\bar{x}) \text{ is SOS} \\
-\end{align*}
-
 \subsection{Only minimizing the volume of the funnel projected down into the
   xy-plane}
+\label{subsec:xy-cost-function}
 
 For the \rrtfunnel{} algorithm, the size of the of the hyperellipsoid which
-contains the reachable set is not equally important in all dimensions. In the
-forest traversal case the size of the elipsoid in the \(\theta\) and \(u\)
-dimensions are unimportant. There is no need in minimizing the value of
-\(\dot{\theta}\), as they will not make the traversal of the forest any easier,
-in fact they might inflate the size of the \((x,y)\) ellipsoid.
+contains the reachable set is not equally important in all dimensions, as
+mentioned in~(\ref{subsec:generating-funnels}). In the forest traversal case the
+size of the elipsoid in the \(\theta\) and \(u\) dimensions are unimportant.
+There is no need in minimizing the value of \(\dot{\theta}\), as they will not
+make the traversal of the forest any easier, in fact they might inflate the size
+of the \((x,y)\) ellipsoid.
 
 Therefore in order to minimize the actual size of the funnel where the physical
 vehicle can move in the world space modify the costfunction according to
@@ -352,12 +221,13 @@ trace of the matrix.
 With the non-optimal feedback controller given to the funnel calculation
 framework (non-optimal with regards to the funnel calculation cost function),
 the size of the funnels will in general be larger than if given a better
-controller. This is not beneficial given that the funnels is going to be used as
-motion primitives for an algorithm planning in a dense forest environment.
-Hence, referring to~\cite[Majumdar.sec~4.3.2 (Feedback control
-synthesis)]{majumdarFunnelLibrariesRealtime2017}, the initial controller input
-to the algorithm can be optimized with the goal of minimizing the size of the
-funnel, given a few conditions on the system.
+controller. Thus in order to further minmize the size of the funnel in the
+xy-plane this method, along with the cost function
+from~(\ref{subsec:xy-cost-function}) is used to make traversal through obstacles
+in the world space easier. Hence, referring to~\cite[Majumdar.sec~4.3.2
+(Feedback control synthesis)]{majumdarFunnelLibrariesRealtime2017}, the initial
+controller input to the algorithm can be optimized with the goal of minimizing
+the size of the funnel, given a few conditions on the system.
 
 Firstly the system needs to be control affine:
 \begin{equation}
@@ -415,6 +285,158 @@ environment, as summarized in algorithm~(\ref{alg:funnelalgorithm-extended}).
     \(cost_{prev} = cost\)\;
   }\;
 \end{algorithm}
+
+
+\subsection{Adding uncertainty to the funnel calculation}
+\label{sec:adding-uncertainty}
+
+The system dynamics and funnel generation theory presented this far has not been
+able to handle any system uncertainty, which is vital to the safe execution of
+the \rrtfunnel{} algorithm. However, the basic formulations presented do have
+all the necessary formulations present, and adding uncertainty is equivalent to
+adding another constraint to the optimization
+problem~(\ref{opt:sufficient-conditions}).
+
+Following are the changes to the formulation of the \ac{SOS} optimization
+condition~(\ref{eq:funnelsufficient})
+from~\cite{majumdarFunnelLibrariesRealtime2017} so that a funnel takes into
+account a bounded uncertainty term of the form \(\mathcal{W} = \set{ w(t) \in
+  R^d \mid g_{w,j}(w) \geq 0\, \forall j = 1,\ldots,N_w}\). But first the
+uncertainty has to be added to the system dynamics equation. This is done
+through adding an uncertainty term \(w\)
+\begin{equation}
+  \dot{\bar{x}} = f_{cl}(t, \bar{x}(t), w(t)).
+\end{equation}
+Then the requirement~(\ref{eq:reachableset}) is slightly modified so that
+\begin{equation}
+  \label{eq:uncertain-reachableset}
+  \bar{x}(0) \in \mathcal{X} \implies \bar{x}(t) \in F(t),\, \forall t \in
+  [0,T], \, \forall w \colon [0,T] \rightarrow \mathcal{W}
+\end{equation} 
+where \(F(t)\) is the new reachable set for the uncertain system. Thus the
+sufficient condition~(\ref{eq:funnelsufficient}) turns into
+\begin{equation}
+  \label{eq:funneluncertain-sufficient}
+  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x},w) < \dot{\rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W}.
+\end{equation}
+The Lyapunov function derivative then becomes
+\begin{equation}
+  \dot{V}(t,\bar{x}, w) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x},w) + \frac{\partial V(t,\bar{x})}{\partial t},
+\end{equation}
+and the optimization condition~(\ref{eq:optimizationconditionsos}) turns into
+\begin{align}
+  \label{eq:optimizationconditionuncertain}
+  \dot{\rho}(t) - \dot{V}(t,\bar{x},w) - L(t,\bar{x},w) \left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x},w)\left[ t\left( T - t \right) \right]  & \nonumber \\
+  - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{x},w)g_{w,j}(w) \quad \text{is SOS} &  \\
+  L_{w,j}(t,\bar{x},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w \nonumber
+\end{align}
+
+\subsubsection{Shifting funnels and invariance}
+
+Now that the funnels are able to be calculated for a basic set of motion
+primitives, it is time to start looking at chaining motion primtives together in
+order to construct longer and more complex motion primitives from a set of basic
+motions. Thus, in order to freely shift funnels around in the configuration
+space, the cyclic coordinates of the system has to be determined, so that the
+dynamics of the system is never violated, even though the funnels now start and
+end in a completely different part of the configuration space, the original
+dynamics must not be violated. Therefore the cyclic and non-cyclic coordinates
+of the system must be decided~(\ref{subsec:cyclic-coordinates}). Therefore,
+given the model~(\ref{eq:model-dynamics}) the cyclic coordinates of the system
+are:
+\begin{align}
+  \mathcal{L} &= T - V = \frac{1}{2} mv^2 + \frac{1}{2}I\dot{\theta}^2 \\ 
+              &= \frac{1}{2} 
+                m\begin{bmatrix}
+                  -v\sin \theta \\ 
+                  v \cos \theta \\
+                \end{bmatrix}^{T}
+  \begin{bmatrix}
+    -v\sin \theta \\
+    v \cos \theta \\
+  \end{bmatrix}
+  + I\dot{\theta}^2 \\
+              &= m \left(
+                v^2 \sin^2 \theta + v^2 \cos^2 \theta
+                \right)  + I {\dot{\theta}}^2 \\
+              &= mv^2 + I {\dot{\theta}}^2 \\
+\end{align}
+which shows that the LaGrangian is invariant to shifts in the \((x,y,\theta)\)
+variables, since \(\frac{\partial\mathcal{L}}{\partial q_i} = 0 \, q_i =
+x,y,\theta\). Hence now, any funnel in the base set can be shifted freely around
+in the cyclic coordinates of the system withouth changing the solution to the
+system dynamic equation, and thus create an infinite set of funnels in the state
+space for the planner to work with. Through the partitioning of coordinates into
+cyclic- and non-cyclic coordinates of the form \(x = [x_c x_{nc}]\), the state
+dynamics \(\dot{x} = f(x(t), u(t))\) only depends on the non-cyclic coordinates
+of the system. Thus, a trajector of the form \(t \rightarrow (x(t),u(t))\) which
+solves \(\dot{x} = f(x(t),u(t))\) can then be transformed through a shift
+\(\Psi_c\) along the cyclic coordinates of the system to yield a valid solution
+of the form
+\[
+  t \rightarrow (\Psi_{x}(x(t)), u(t))
+\]
+where the transform \(\Psi\) is given by
+\[
+  \Psi([x_c, x_{nc}]) =  
+  \begin{cases}
+    x_c \rightarrow \hat{x}_{c} \\
+    x_{nc} \rightarrow x_{nc} \\
+  \end{cases}.
+\]
+
+\subsection{Sequential funnel composition}
+\label{sec:composable-funnels}
+
+Now that funnels can be shifted freely around the configuration space along the
+cyclic coordinates of the system to create new motion primitives it is time to
+start chaining funnels together to create trees of funnels that span out into
+the planning environment in orderr to create a robust motion plan. However, in
+order for two funnels to create a third and new motion primitive when chained
+together they need to be composable, which means that the inlet of the second
+funnel needs to be fully contained within the outlet of the first one. Otherwise
+the robustness guarantees of the traversal will be lost. An abstract pictorial
+representaion of two funnels composed together can be seen
+in~(\ref{fig:two-funnels-composed}) to emphasize this observation. The
+mathematical definition of funnel composition~(\ref{def:funnel-composition})
+that is used to verify that two funnels are composable, and is implemented as a
+\ac{SOS}-program in~(\ref{AppendixB}). However, take note that the definition
+has to be modified slightly in order to take into account the translation along
+the cyclic coordinates. Hence the definition used
+is~\cite[definition~3,sec~5]{majumdarFunnelLibrariesRealtime2017} which states
+\begin{definition}
+  An ordered pair \(F_1,F_2\) of funnels \(F_1 \colon [0,T_1] \rightarrow
+  \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
+  is \textit{sequentially composable modulo invariances} if there exists a shift
+  along cyclic coordinates such that \(F_{1}(T_1) \subset
+  \Psi_{c}\left(F_2(0)\right)\)
+\end{definition}
+In laymans terms this means that if a funnel \(F_2\) can be shifted along cyclic
+coordinates to stack up against the outlet of funnel \(F_2\) so that they are
+composable in the sense of definition~(\ref{def:funnel-composition}), they are
+composable modulo invariances. Hence, any funnel in the configuration space will
+be a set consisting of the funnel from the basic set, along with a
+transformation along the cyclic coordinates of the system \(\hat{\mathcal{F}} =
+\set{F_n \in \R^n \mid \Psi_{c,i}(F_i), F_i \in \mathcal{F}}\), where
+\(\mathcal{F}\) is the basic set of funnels.
+
+\begin{figure}
+  \includegraphics[scale=.2]{figures/method/funnel-composition} \centering
+  \caption{Two funnels that can be successfully composed, as the outlet of the
+    first one is fully contained in the inlet of the second.}
+  \label{fig:two-funnels-composed}
+\end{figure}
+
+Using the generalized S-procedure
+\begin{equation}
+  V_1(T_1,\bar{x}) \leq \rho_1(T_1) \implies V_2(0, \bar{x}) \leq \rho_2(0)
+\end{equation}
+the composability of two funnels can be checked through the \ac{SOS} program
+\begin{align*}
+    & \text{Find } && L(\bar{x}) \\
+    & \text{s.t. } && \rho_2(0) - V_2(0,\bar{x}) - L(\bar{x})\left( \rho_1(T_1) - V_1(T_1,\bar{x}) \right) \text{ is SOS} \\
+    &&& L(\bar{x}) \text{ is SOS} \\
+\end{align*}
 
 \subsection{Checking the conservativeness of the funnel calculated}
 
@@ -554,6 +576,34 @@ in~\cite{kuffnerEffectiveSamplingDistance2004}, where \(\norm{\mathnormal{X_{1}}
   - \mathnormal{X_{2}}}\) is the standard Euclidean metric, and \(f\) is a
 function, giving the distance between headings, and the rotations and distance
 is scaled relative to the translation distance.
+
+
+The optimal distance function would be the optimal \textit{cost-to-go} function,
+which is the optimal cost to go from one state to another on the optimal
+trajectory. However, solving the optimal cost-to-go sub-problem for every node,
+is equivalent to solving the optimal cost-to-go for the entire planning problem,
+and is thus not computationally feasible~\cite{Lav06}. The cost-to-go can be any
+number of metrics such as the energy consumed, time to target, or some distance
+metric in the state-space. For differential constraints on the vehicle dynamics
+some metrics, such as the Euclidean, may erode the performance of the algorithm,
+as it encorporates no knowledge of the model's inability to move in certain
+directions, as expamplified
+in~(\ref{fig:non-holonomic-vehicle-euclidean-weakness}). This is not unexpected
+as the \textit{Euclidean metric} is only a proper metric for holonomic vehicles
+\cite{parkFeedbackMotionPlanning2015}.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=.2,angle=-90]{figures/rrtfunnel/non-holonomic-vehicle-euclidean-weakness}
+  \caption{Consider two poses \(p_0\) and \(p_1\). Although \(p_1\) is nearer
+    the robot in Euclidean distance it is harder to get to due to differential
+    constraints. In this paper, we propose a directed distance function
+    applicable to unicycle- type vehicles, that properly reflects the true
+    cost-to-go of the system under the non-holonomic constraint. (figure
+    courtesy of \cite{parkFeedbackMotionPlanning2015})}
+  \label{fig:non-holonomic-vehicle-euclidean-weakness}
+\end{figure}
+
 
 \subsection{FunnelGraph}
 
