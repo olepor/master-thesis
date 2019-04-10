@@ -440,6 +440,13 @@ the composability of two funnels can be checked through the \ac{SOS} program
 
 \subsection{Checking the conservativeness of the funnel calculated}
 
+The funnels generated are \textit{Outer approximations} of time reachable sets
+for the system at hand. This means that in general they are larger than the
+actual reachable set for the system. This can be verified through a Monte-Carlo
+simulation for the straight funnel primitive. Therefore, running N-simulations
+from the funnel inlet, and storing the solutions, it is possible to visualize
+the actual funnel for the system, and one such can be seen in TODO-insert ref.
+
 By comparing one of the funnels in the funnel set with a funnel based from \(N\)
 simulation runs, it is seen that
 
@@ -447,20 +454,36 @@ TODO - insert figure of funnel and simulation runs with different uncertainties
 (do max in both directions).
 Idea taken from~\cite{mooreControlSynthesisVerification2012}.
 
-\subsection{Verify that the vehicle stays within the funnels}
-
-Below is a figure of N simulation runs with the model vehicle in all K of the
-funnels from the basis set.
-
-TODO - create figure.
-
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{figures/experiments/FunnelSim2}
+    \end{subfigure}
+     %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{figures/experiments/FunnelSim1}
+        \label{fig:tiger}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{figures/experiments/FunnelSOS2}
+    \end{subfigure}
+     %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{figures/experiments/FunnelSOS1}
+        \label{fig:tiger}
+    \end{subfigure}
+    \caption{Pictures of animals}
+\end{figure}
 
 \subsection{The initial condition set for each funnel}
 
-In order to stack funnels one after the other it is desireable for the funnels
-to have a big inlet, and a smaller outlet as defined in hyperspace. It is from
-the formulations in (ref perliminaries) to constrain the intial condition set
-for each funnel. This is done with
+In order to stack funnels one after the other it is necessary for the funnels to
+have a big inlet, and a smaller outlet as defined in hyperspace. It is from the
+formulations in (ref perliminaries) to constrain the intial condition set for
+each funnel. This is done with
 
 The intial theta is limited to: (Make pretty figure with the intial conditions
 for theta at each point (x,y))
@@ -473,17 +496,16 @@ algorithm. The reason for choosing to base the global path planning framework on
 the \ac{RRT} motion planning algorithm are as follows. One, it has the ability
 ot quickly expand deep into the search-space, and then later progress towards a
 finer sampling, which is valuable as it avoids local minima. Two, the \ac{RRT}
-algorithm is also relatively simple to implement, and has only three main
-components that needs to be in place in order for successful path planning to
-happen in an arbitrary state space. This is beneficial as most all of the
-complexity accompanied with the planning problem (like uncertainty and
-controller calculations) has already been handled by the \ac{SOS} framework, and
-hence the \ac{RRT} algorithm need only concern itself with stacking one robust
-motion primitive after the other without any concern for the complexities
-mentioned above.
-
-The \ac{RRT} algorithm is a discrete sampling based motion planning algorithm,
-and as such is reliant upon a few key metrics in order to function well.
+algorithm is easily extendable to larger state space, and thus adding to the
+generality of the \rrtfunnel{} algorithm, such that it can be adapted to fit a
+wide range of dynamical systems, as well that it has only three main components
+that needs to be in place in order for successful path planning to happen in an
+arbitrary configuration space. This is beneficial as most all of the complexity
+accompanied with the planning problem (like uncertainty and controller
+calculations) has already been handled by the \ac{SOS} framework, and hence the
+\ac{RRT} algorithm need only concern itself with stacking one robust motion
+primitive after the other without any concern for the complexities mentioned
+above.
 
 \subsection{Uniform sampling in SE(2)}
 
@@ -513,7 +535,7 @@ where \(rand\) is a random variable in the interval \([0,1)\), since for
 \(\setminus\sim\) means that 0 and 1 are identified) can be multiplied by a
 fixed constant, such as for \(2\pi\) which means that sampling will be uniform
 in the configuration space of the robot from a simple cartesian product of
-uniform random variables.
+uniform random variables~\cite{Lav06}.
 
 \subsection{Distance in configuration space}
 
@@ -526,18 +548,17 @@ hard problem. In general the ideal metric would have been the actual
 actual cost-to-go is equivalent to solving the original motion planning problem,
 and is hence not viable~\cite{pengchengReducingMetricSensitivity2001}.
 
-In order for the \rrtfunnel{} algorithm to efficiently explore the state space
-it must have a good measure of distance between different poses in space,
+So, in order for the \rrtfunnel{} algorithm to efficiently explore the state
+space it must have a good measure of distance between different poses in space,
 without actually solving the planning problem anew. For a problem in the
-Cartesian plane - it is common to use the Euclidean distance, however, this is
-not a good distance metric for non-holonomic vehicles, as it does not
-incorporate the possible constraints of the system function, and has little
-bearing on the actual cost-to-go of the
-system~\cite{parkFeedbackMotionPlanning2015}. In fact, for sampling based
-planners such as the \ac{RRT}, the configuration space is only sufficiently
-explored in the case where the distance function reflects the true cost-to-go
-function~\cite{pengchengReducingMetricSensitivity2001}. Hence, all other metrics
-will be a compromise of complexity and time vs efficiency.
+Cartesian plane it is common to use the Euclidean distance, however, this is not
+a good distance metric for non-holonomic vehicles, as it does not incorporate
+the possible constraints of the system function, and has little bearing on the
+actual cost-to-go of the system~\cite{parkFeedbackMotionPlanning2015}. In fact,
+for sampling based planners such as the \ac{RRT}, the configuration space is
+only sufficiently explored in the case where the distance function reflects the
+true cost-to-go function~\cite{pengchengReducingMetricSensitivity2001}. Hence,
+all other metrics will be a compromise of complexity and time vs efficiency.
 
 Normally the \ac{RRT} algorithm splits the extension part into two sections. One
 for identifying the closest node in the tree, and second one for the closest
@@ -552,45 +573,18 @@ Euclidean distance metric, but due to the differential constraints on the system
 model, the vehicle actually has to move far in order to reach the sought
 configuration.
 
-Therefore this thesis employs the non-holonomic distance metric
-from~\cite{parkFeedbackMotionPlanning2015}, based on a control Lyapunov function
-of the form.
-
-Secondly, obtaining a good heuristic for the distance in the configuration space
-is considered. A distance metric has to be chosen for choosing the closest node in
-the tree.
-
-Thirdly, the extension operator for the tree has to be chosen. This
-implementation settled on the non-holonomic distance function for unicycle type
-vehicles from~\cite{parkFeedbackMotionPlanning2015}.
-
 The \rrtfunnel{} algorithm will use the same metric for both the closest node
 and in the extend operation on the funnel graph. The metric chosen is a modified
-Euclidean metric which weights the theta depending on how close the vehicle is
-to the final configuration is defined as
+Euclidean metric which weights the angle \((\theta)\) depending on how close the
+vehicle is to the final configuration and is defined as
 \[
   \rho(x_{1},x_{2}) = w_{1}\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}} +
-  w_{2}f(\theta{1},\theta{2})
+  w_{2}f(\theta_1,\theta_2)
 \]
-in~\cite{kuffnerEffectiveSamplingDistance2004}, where \(\norm{\mathnormal{X_{1}}
-  - \mathnormal{X_{2}}}\) is the standard Euclidean metric, and \(f\) is a
-function, giving the distance between headings, and the rotations and distance
-is scaled relative to the translation distance.
-
-
-The optimal distance function would be the optimal \textit{cost-to-go} function,
-which is the optimal cost to go from one state to another on the optimal
-trajectory. However, solving the optimal cost-to-go sub-problem for every node,
-is equivalent to solving the optimal cost-to-go for the entire planning problem,
-and is thus not computationally feasible~\cite{Lav06}. The cost-to-go can be any
-number of metrics such as the energy consumed, time to target, or some distance
-metric in the state-space. For differential constraints on the vehicle dynamics
-some metrics, such as the Euclidean, may erode the performance of the algorithm,
-as it encorporates no knowledge of the model's inability to move in certain
-directions, as expamplified
-in~(\ref{fig:non-holonomic-vehicle-euclidean-weakness}). This is not unexpected
-as the \textit{Euclidean metric} is only a proper metric for holonomic vehicles
-\cite{parkFeedbackMotionPlanning2015}.
+and taken from~\cite{kuffnerEffectiveSamplingDistance2004}, where
+\(\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}}\) is the standard Euclidean
+metric, and \(f\) is a function, giving the distance between headings, and the
+rotations and distance is scaled relative to the translation distance.
 
 \begin{figure}
   \centering
@@ -618,7 +612,8 @@ helpful to associate some kind of structure with the collection. Therefore the
 funnels will be organised into a graph structure \(\mathcal{F}\) where each
 funnel is a edge in the graph, and the inlets and the outlets are vertices. The
 funnels also need information about which funnels that they are composable with,
-as they may not all be composable with eachother.
+as they may not all be composable with eachother, hence the graph is not
+complete.
 
 \begin{figure}
   \centering
@@ -665,8 +660,11 @@ in~(\ref{sec:funnel-composability-program-sos}).
 
 \subsection{The \rrtfunnel{} algorithm}
 
-The \rrtfunnel{} algorithm is a modified \ac{RRT} graph algorithm which employs
-the precomputed funnels as motion primitives for it's expansion operator.
+With the framework finished, it is time to introduce the formulation of the
+\rrtfunnel{} algorithm itself. The \rrtfunnel{} algorithm is a modified \ac{RRT}
+algorithm which employs the precomputed funnels as motion primitives for its
+expansion operator, and pseudocode for its definition can be found
+in~(\ref{alg:rrtfunnel}).
 
 \begin{algorithm}
   \caption{Check funnel composability}
@@ -693,7 +691,7 @@ The \rrtfunnel{} algorithm is defined as
 
 \begin{algorithm}[H]
   \caption{\rrtfunnel{} algorithm}
-
+  \label{alg:rrtfunnel}
   \DontPrintSemicolon
 
   \KwIn{Initial configuration, \(q_0\)} \KwOut{\textit{RRT}-Funnel-graph
