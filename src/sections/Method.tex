@@ -1,7 +1,7 @@
 \chapter{Method}
 
-This chapter will introduce and develop the \rrtfunnel\ algorithm, by two means:
-First develop robust motion primitives through the \ac{SOS} programming
+This chapter will introduce and develop the \rrtfunnel{} algorithm, by two
+means: First develop robust motion primitives through the \ac{SOS} programming
 framework based on the work in~\cite{majumdarFunnelLibrariesRealtime2017}, and
 second, deploy these funnels as robust motion primitives in a discrete \ac{RRT}
 robust motion planner based on~\cite{lavalleLav98cPdf}. Using \textit{robust}
@@ -445,37 +445,34 @@ for the system at hand. This means that in general they are larger than the
 actual reachable set for the system. This can be verified through a Monte-Carlo
 simulation for the straight funnel primitive. Therefore, running N-simulations
 from the funnel inlet, and storing the solutions, it is possible to visualize
-the actual funnel for the system, and one such can be seen in TODO-insert ref.
+the actual funnel for the system, and one such can be seen
+in~(\ref{fig:funnel-simulated-overlaid}).
 
-By comparing one of the funnels in the funnel set with a funnel based from \(N\)
-simulation runs, it is seen that
-
-TODO - insert figure of funnel and simulation runs with different uncertainties
-(do max in both directions).
-Idea taken from~\cite{mooreControlSynthesisVerification2012}.
+By comparing one of the funnels in the funnel set with a funnel based from
+\(10.000\) simulation runs, it is seen that the calculated funnels are indeed
+proper outer approximations of the time-reachable sets for the dynamical system.
+Therefore, the conclusion is that the uncertain trajectories are contained
+within the funnels used in the planner, and the trajectories can be seen as
+robustly to uncertainty given the uncertainty and dynamical assumptions made.
 
 \begin{figure}
-    \centering
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{figures/experiments/FunnelSim2}
+        \includegraphics[width=\textwidth]{figures/experiments/FunnelSim4}
     \end{subfigure}
      %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{figures/experiments/FunnelSim1}
-        \label{fig:tiger}
     \end{subfigure}
-    \\
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{figures/experiments/FunnelSOS2}
+        \includegraphics[width=\textwidth]{figures/experiments/FunnelSim5}
     \end{subfigure}
      %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{figures/experiments/FunnelSOS1}
-        \label{fig:tiger}
-    \end{subfigure}
-    \caption{Pictures of animals}
+    \caption{The simulated trajectories, overlaid with the outer approximation
+      that is the funnel returned by the \ac{SOS} calculation for three
+      trajectories from the trajectory library \(\mathcal{T}\).}
+    \label{fig:funnel-simulated-overlaid}
 \end{figure}
 
 \subsection{The initial condition set for each funnel}

@@ -1,18 +1,63 @@
 \chapter{Abstract}
-\kant[1-3] % Dummy text
-\todo[inline]{Add new section about results in \cref{sec:fourth}.}
-
 % OPTIONAL SOLUTION:
-
 % Use these settings if you are writing a monograph
 % and have only one abstract.
 % Do not use them if you have an abstract
 % at the beginning of each chapter/paper.
 
-% \abstractintoc % Add abstract to Table of Contents
+\abstractintoc % Add abstract to Table of Contents
 % \abstractnum   % Format abstract like a chapter
 
-%\begin{abstract}
-%    \kant[1-3] % Dummy text
-%    \todo[inline]{Add new section about results in \cref{sec:fourth}.}
-%\end{abstract}
+\begin{abstract}
+
+  This thesis if focused on robust motion planning. Planning under uncertainty
+  is necessary in order for an algorithm to move out of the lab and into the
+  real world as in reality there are always an error in planning. Knowledge of
+  position, the environment and the dynamics of the system are all uncertain to
+  some degree. Sensory noise, tuning and readings may be off. Limited precision,
+  and accidents may hinder the measurements and leave them with a constant error
+  term. Thus in order for a planner to give guarantees on safe traversal through
+  a real world environment, a motion planner needs to handle uncertainties.
+
+  The \rrtfunnel{} algorithm is the answer provided to handle a subset of these
+  problems. As it currently stands the algorithm handles uncertainty only in the
+  position of the dynamical system, but can be easily extended to handle
+  uncertainty in input and speed as well. Handling uncertainties in the
+  environment will need a bit more work, but should be possible.
+
+  The algorithm is built up through two main parts. One is the calculation of
+  \textit{robust motion primitives}, which allows the global motion planner (in
+  essence a regular \ac{RRT} algorithm) to remain completely oblivious to these
+  difficulties, and hence act as though there were no uncertainties during the
+  planning stage. This means that a lot of the difficulty of planning is handled
+  during the off-line phase of generating the robust motion primitives
+  themselves. This is done through the elegant theory of \ac{SOS} programming
+  and verification. Through formulating the search for a \textit{Lyapunov
+    function} for the system as a \ac{SOS} program, the trajectories are
+  extended to so called 'funnels', which encorporate all the states the system
+  can be in during a given time frame -- even in the face of uncertainties. In
+  the literature this is referred to as a \textit{finite time reachable set},
+  meaning that if the calculations are correct, it contains all the states that
+  the system can evolve to given a set of initial conditions and a bounded
+  uncertainty term.
+
+  Later the aforementioned funnels are employed as \textit{motion primitives}
+  for the motion planner. Which means that they all encode a discrete action.
+  For the dynamical system in this thesis, which is a simple vehicle model, this
+  means that a motion primitive can 'turn-left', 'turn-right', or 'go-straight'.
+  Thus, by stacking one motion primtive after the other, one is able to create a
+  plan, and hence build one long motion primitive through the overarching
+  environment. With the motion primtives being robust to uncertainty as well,
+  these plans are in theory guaranteed to be collision-free.
+
+  This theoretical robustness guarantee is later put to the test in simulated
+  experimental runs through a strip of forest of some density meant to make
+  planning difficult, as the vehicle is equipped with a broken sensors, which
+  always gives a drift in one dimension the world frame. Hence the vehicle is
+  constantly faced with a positional reading which is not correct, and is forced
+  to deal with this as best as it is able to during execution of the plan. As is
+  shown, the robustness guarantees provided by the Lyapunov functions found
+  through the \ac{SOS} programs formulated do provide safe traversal through the
+  environment, as opposed to a planner which does not.
+
+\end{abstract}
