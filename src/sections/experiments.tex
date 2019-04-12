@@ -3,7 +3,7 @@
 The \rrtfunnel{} algorithm developed this far will now be tested in a simulation
 experiment where a simple unicycle model of a car will be set to traverse a
 small strip of forest. The simulation environment can be seen
-in~(\ref{fig:simulated-forest}), where the vehicle starts at one end of the
+in figure~\ref{fig:simulated-forest}, where the vehicle starts at one end of the
 obstacle forest, and is set to traverse the strip of forest and reach any
 \((x,y)\) position in a circle of radius five surrounding the endpoint thirty
 five meters ahead.
@@ -34,7 +34,7 @@ origo, and hence the difficulty in traversing the terrain would increase with
 the distance travelled. However, the constant intensity setting was chosen to
 keep things simple and uniform.
 
-The algorithm for realizing a random Poisson measure~(\ref{def:Poisson-def}) is
+The algorithm for realizing a random Poisson measure~\ref{def:Poisson-def} is
 taken from~\cite[Definition 1.1.1,p~34]{kroeseSpatialProcessGeneration}.
 
 \begin{definition}[Generating a Poisson random measure]
@@ -60,7 +60,7 @@ the density of the generated forest \(\lambda\) will be set to
   \lambda = 0.1
 \]
 of which the resultant forest on a \(20 \times 20\) grid can be seen in
-figure~(\ref{fig:poisson009})
+figure~\ref{fig:poisson009}.
 
 \begin{figure}
   \centering
@@ -92,7 +92,7 @@ everything within the realm of a normal radio controlled car and its
 capabilities. The mass is not relevant for our first order dynamics, but still
 the vehicle is assigned a mass of \(1 \si{\kilo}\), so that the translation of
 the model dynamics is not irrelevant. A figure of the vehicle can be seen
-in~(\ref{fig:radio-vehicle}).
+in figure~\ref{fig:radio-vehicle}.
 
 \begin{figure}
   \centering
@@ -145,7 +145,7 @@ the possible states of the vehicle model) is:
 where \(S_{k}^{'}\) is the ellipsoid which contains the volume of the vehicle
 for all verfied states in the funnel. A picture of the initial funnel and the
 funnel expanded around the vehicle model can be seen
-in~(\ref{fig:expanded-funnel}) and~(\ref{fig:expanded-and-unexpanded}).
+in figure~\ref{fig:expanded-funnel} and figure~\ref{fig:expanded-and-unexpanded}.
 
 \begin{figure}
   \centering \includegraphics[clip, trim=6cm 8cm 6cm 8cm,
@@ -175,7 +175,7 @@ in~(\ref{fig:expanded-funnel}) and~(\ref{fig:expanded-and-unexpanded}).
 The basis set of motion primitives should be small, yet cover enough of the
 finer movements of the vehicle so that the motion of the vehicle can be near
 continuous when composed together. Thus in order to generate a 'dense' set of
-motion primitives the algorithm~(\ref{alg:initial-motion-primitives-generation})
+motion primitives the algorithm~\ref{alg:initial-motion-primitives-generation}
 is employed to generate points along the arch of a circle with \(N\) different
 radii.
 
@@ -202,8 +202,8 @@ radii.
 \end{algorithm}
 
 The initial trajectories employed in the experiments can be seen in
-figure~(\ref{fig:intial-trajectories-exp}), and the projected funnels overlaid a
-sample in~(\ref{fig:sample-funnel-overlay}).
+figure~\ref{fig:intial-trajectories-exp}, and the projected funnels overlaid a
+sample in figure~\ref{fig:sample-funnel-overlay}.
 
 \begin{figure}
   \centering
@@ -265,7 +265,7 @@ will be counted in the experiments as a collision on the part of the
 Unfortunately, the funnels do not compose, and the composition checking of the
 algorithm has to be left out. This is because the controller has no influence on
 the speed of the vehicle, and hence there is no way to make the system converge
-in the direction of speed as examplified in the figure~(\ref{fig:funnel-conv}).
+in the direction of speed as examplified in the figure~\ref{fig:funnel-conv}.
 
 \begin{figure}
   \centering
@@ -284,8 +284,8 @@ in the direction of speed as examplified in the figure~(\ref{fig:funnel-conv}).
 
 The experiments will run the \rrtfunnel{} against a benchmark regular RRT
 planner with the motion primitive set pictured
-in~(\ref{fig:intial-trajectories-exp}) on the forest traversal problem pictured
-in~(\ref{fig:simulated-forest}).
+in figure~\ref{fig:intial-trajectories-exp} on the forest traversal problem pictured
+in figure~\ref{fig:simulated-forest}.
 
 The benchmarkplanner is an \ac{RRT} algorithm
 using the same motion primitive set as the \rrtfunnel{} algorithm, with the same
@@ -305,7 +305,7 @@ For all the experiments below, an \(\epsilon\) of 5\si{\metre} is given to the
 planners.
 
 Each testrun will be run in a forest generated with the \textit{Poisson process}
-method from~(\ref{sec:Poisson-Process}), and an intensity parameter (\(\lambda =
+method from section~\ref{sec:Poisson-Process}, and an intensity parameter (\(\lambda =
 0.1\)), which should yield a pretty dense forest, and hence make collisions more
 likely to happen.
 
@@ -321,7 +321,7 @@ Before the experiments are run all individual funnels in the base set are run
 with a hundred simulations runs from random starting positions in its inlet, to
 check if the invariant holds, and that the vehicle stays within the funnel at
 all times. This, along with the check whether or not funnels are composable, as
-in~(\ref{sec:composable-funnels}), then the invariant that the vehicle never
+in section~\ref{sec:composable-funnels}, then the invariant that the vehicle never
 leaves multiple funnels composed holds.
 
 Uncertainty is added in terms of additive noise with \(w = -0.3\)\si{m.s^{-1}}

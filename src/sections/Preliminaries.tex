@@ -203,7 +203,7 @@ point -- at least not given a timeframe. This idea is important as it leads to
 the funnel definitions that makes up the backbone of this thesis. As an example,
 the reachable set for the \textit{Dubins car} (which is a simple car model, with
 a constant velocity, and a control on the heading of the vehicle) is visualized
-in~(\ref{fig:reachable-set-dubin}).
+in figure~\ref{fig:reachable-set-dubin}.
 
 \begin{figure}
   \centering \input{figures/preliminaries/dubinsreachability.tex}
@@ -244,7 +244,7 @@ through \textit{Lyapunov} functions, a useful analogy is imagining the funnel
 created through \textit{Monte-Carlo} simulation, where the \textit{Funnel} would
 be the set of all the paths traversed by the dynamical system at hand. For a
 simple car model, monte-carlo simulation of nine starting points along the
-y-axis looks like~(\ref{fig:monte-carlo-sim}).
+y-axis looks like figure~\ref{fig:monte-carlo-sim}.
 
 \begin{figure}
   \centering \includegraphics[scale=.5]{figures/preliminaries/montecarlofunnel}
@@ -277,7 +277,7 @@ interval, and \(F(t)\) is the set of states that the system can be in at time
 \subsection{Defining funnels}
 
 The funnel computations will be based on the \ac{SOS} theory developed
-in~\ref{sec:Funnels}. Given a trajectory, the goal is to compute a robust
+in section~\ref{sec:Funnels}. Given a trajectory, the goal is to compute a robust
 invariant set around the trajectory that will `guarantee' that the planner is
 free from collisions during execution of the obtained motion plan. This robustly
 invariant set is parameterized through Lyapunov function candidates, that, in
@@ -301,13 +301,13 @@ define a change of coordinates into the error coordinate frame
   \bar{x}(t) &= (x - x_0)(t) \\
   \bar{u}(t) &= (u - u_0)(t).
 \end{align}
-Then, changing~\ref{eq:dynamicalsystem} to these new coordinates one obtaines
+Then, changing~\eqref{eq:dynamicalsystem} to these new coordinates one obtaines
 \begin{equation}
   \dot{\bar{x}} = \dot{x} - \dot{x}_0 = f(x_0(t) + \bar{x}(t), u_0(t) + \bar{u}(t)) - \dot{x}_0(t)
 \end{equation}
 
 In order to compute a parameterized reachable set through \ac{SOS} programming
-the system~\ref{eq:dynamicalsystem} needs to be polynomial, and parameterized by
+the system~\eqref{eq:dynamicalsystem} needs to be polynomial, and parameterized by
 \(x\) and \(t\), since the trajectory is parametrized by \(x\) and \(t\).
 Therefore, through the use of a \ac{TV-LQR} controller, the control input can be
 eliminated from the dynamical equation, giving
@@ -317,13 +317,13 @@ eliminated from the dynamical equation, giving
 \end{equation}
 However, the dynamical system may still not be polynomial, which is a necessary
 condition in order for this to be verified using \ac{SOS} programming. Expanding
-the system~\ref{eq:dynamicclosedloop} around the nominal trajectory \(x_0\)
+the system~\eqref{eq:dynamicclosedloop} around the nominal trajectory \(x_0\)
 through a Taylor expansion of some degree high enough to capture the
 nonlinearities of the system.
 
 The goal is to parametrize a tight outer approximation of the set of states the
 system may transition into during the time interval \([0,T]\). Given that
-\(F(t)\) is the set of states the system (\ref{eq:dynamicclosedloop}) can be in
+\(F(t)\) is the set of states the system~\eqref{eq:dynamicclosedloop} can be in
 at time \(t\), then
 \begin{equation}
   \label{eq:reachableset}
@@ -338,7 +338,7 @@ A funnel is defined in~\cite{majumdarFunnelLibrariesRealtime2017} as
   f_{cl}(t,x(t))\) is a map \(F \colon [0,T] \rightarrow \mathcal{P}(\R^n)\),
   from the time interval \([0,T]\) to the power set (i.e., the set of subsets)
   of \(\R^n\) so that the sets \(F(t)\) satisfy the
-  condition~\ref{eq:reachableset}.
+  condition~\eqref{eq:reachableset}.
 \end{definition}
 Thus, \(F(t)\) is the set of reachable states that the system can be in at time
 \(t\).
@@ -353,7 +353,7 @@ size of the reachable set, and \(V(t,\bar{x}(t))\) is a Lyapunov function \(V
 \colon [0,T] \times \R^n \rightarrow \R^+\).
 
 Then, by setting \(\mathcal{X}_0 \subset F(0,\bar{x})\), one can derive the
-sufficient condition for containing the reachable~\ref{eq:reachableset} set in
+sufficient condition for containing the reachable~\eqref{eq:reachableset} set in
 the Lyapunov function paramterization
 \begin{equation}
   \label{eq:funnelsufficient}
@@ -366,7 +366,7 @@ with \(\dot{V}(t,\bar{x})\) computed as
 
 Currently there are no limitations on the functions \(V\) and \(\rho\), and
 hence there exists infinitely many functions with different sized reachable sets
-that satisfies~\ref{eq:funnelsufficient}, and is a valid funnel in the sense of
+that satisfies~\eqref{eq:funnelsufficient}, and is a valid funnel in the sense of
 definition~\ref{def:funnel}. In order for efficient planning to take place, the
 motion primitives, meaning the size of the funnels, should be as small as
 possible, and it is therefore that the size of the funnels is minimized using
@@ -384,7 +384,7 @@ the following optimization problem~\cite{majumdarFunnelLibrariesRealtime2017}
 
 \subsection{Formulating the optimization problem as a SOS program}
 
-The optimization problem in~\ref{eq:funneloptimizationproblem} would prove
+The optimization problem in~\eqref{eq:funneloptimizationproblem} would prove
 impossible to solve efficiently had it not been for advances in mathematical
 convex numerical optimization, as in general the problem involves searching over
 an infinite function space. While the general optimization problem of searching
@@ -401,7 +401,7 @@ polynomial inequalities),
   \mathcal{X}_0 = \set{\bar{x} \in \R^n \mid g_{o,i}(\bar{x}) \geq 0, \, i = 1,\ldots,N_0}
 \end{equation}
 
-Then rewriting~(\ref{eq:funneloptimizationproblem})~as in terms of positivity
+Then rewriting~\eqref{eq:funneloptimizationproblem}~as in terms of positivity
 and equality constraints yields
 \begin{equation}
   V(t,\bar{x}) = \rho(t) \implies \dot{\rho}(t) - \dot{V}(t,\bar{x}) > 0
@@ -419,11 +419,11 @@ arrives at the equations
   & L_{t}(\bar{x}), \, L_{0,i}(\bar{x}) \; &&\text{are SOS}, \, \forall i \in \set{1,\ldots,N_{0}} \label{eq:sufficient-conditions3} \\
 \end{align} 
 where \(L\), \(L_{t}\), and \(L_{0,i}\) are multiplier
-polynomials~(\ref{sec:s-procedure})~.
+polynomials~\eqref{sec:s-procedure}~.
 
 The goal is to make the parametrization of the reachable set as small as
 possible, and therefore minimizing the cost
-function~(\ref{eq:funneloptimizationproblem})~. This is done
+function~\eqref{eq:funneloptimizationproblem}~. This is done
 in~\cite{majumdarFunnelLibrariesRealtime2017}, through approximating the cost
 function by first discretizing the problem and replacing the integral with a
 finite sum
@@ -438,7 +438,7 @@ written as
 which means that the set \(F(t_{k})\) is an ellipsoid in which the volume can be
 minimized through maximizing the determinant of \(S_{k}\). Which in turn can be
 transformed into a \ac{SDP} problem. If an upper bound on the cost
-function~(\ref{eq:discrete-costfunction}) is introduced as
+function~\eqref{eq:discrete-costfunction} is introduced as
 \begin{equation}
   \mathcal{E} (t_{k}) = \set{\bar{x} \in \R^n \mid {\bar{x}}^{T}S_{k}\bar{x} \leq 1, \, S_{k} \succeq 0}
 \end{equation}
@@ -454,8 +454,8 @@ Which when expressed using \ac{SOS} constraints is
   L_{\mathcal{E},k}(\bar{x}) \qquad \text{is SOS.}& \\
 \end{align}
 
-Then combining the cost function~(\ref{eq:discrete-costfunction}) with the
-constraints~(\ref{eq:sufficient-conditions}-\ref{eq:sufficient-conditions3}),
+Then combining the cost function~\eqref{eq:discrete-costfunction} with the
+constraints~\eqref{eq:sufficient-conditions}-\eqref{eq:sufficient-conditions3},
 one arrives at the optimization problem
 
 { % Mini environment scope
@@ -587,13 +587,11 @@ funnels are sequentially composable if
   is sequentially composable if \(F_1(T) \subseteq F_2(0)\).
 \end{definition}
 
-TODO - make pretty funnel picture!
-
 Thus
 \[
   V_1(T_1,\bar{x}) \leq \rho_1(T_1) \implies V_2(0,\bar{x}) \leq \rho_2(0)
 \]
-is an equivalent condition to \ref{composability}, and which can be checked
+is an equivalent condition to~\ref{composability}, and which can be checked
 through the following \ac{SOS} program.
 \begin{align*}
   \text{Find } \; &L(\bar{x}) \\
