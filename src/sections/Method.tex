@@ -56,12 +56,11 @@ surrounding a trajectory in which the system can reach in a given time interval,
 also called a reachable set~\cref{subsec:reachable-set}. But in order to verify
 the robust regions surrounding a trajector, first the trajectories themselves
 have to be generated. Generating optimal trajectories is a rich field in the
-motion planning literature~\cite{bettsSurveyNumericalMethods}, and the initial
-trajectories could have been generated through any number of methods, however,
-the \textit{direct collocation method} was chosen as it builds locally optimal
-trajectories from a discrete set of sampled points along a sought trajectory,
-which is beneficial for the discrete funnel verification
-in~\cref{subsec:generating-funnels}.
+motion planning literature~\cite{Betts_1998}, and the initial trajectories could
+have been generated through any number of methods, however, the \textit{direct
+  collocation method} was chosen as it builds locally optimal trajectories from
+a discrete set of sampled points along a sought trajectory, which is beneficial
+for the discrete funnel verification in~\cref{subsec:generating-funnels}.
 
 Since it is an optimal trajectory planner, a cost function has to be chosen for
 the solver to minimize, which in this case is:
@@ -132,12 +131,12 @@ done through the equation
 \begin{equation}
   \rho(t_{k}) = \mathrm{exp}\left( \rho_{\tau}\frac{\left( t_{f} - t \right)}{\left( t_{f} - t_{0}  \right)}\right) + \rho_0
 \end{equation}
-from~\cite[eq.~6.sec~3]{tobenkinInvariantFunnelsTrajectories2010}, where
-\(\rho_{\tau}\) is a positive constant determining the upper bound on the
-funnel, along with the zero value \(\rho_0\). If the given choice of
-\(\rho_{\tau}\) does not verify a funnel, either increase the value of
-\(\rho_{\tau}\) and \(\rho_0\), and optionally the number of sampled points from
-the trajectory to be verified~\cite{tobenkinInvariantFunnelsTrajectories2010}.
+from~\cite[eq.~6.sec~3]{Tobenkin_2011}, where \(\rho_{\tau}\) is a positive
+constant determining the upper bound on the funnel, along with the zero value
+\(\rho_0\). If the given choice of \(\rho_{\tau}\) does not verify a funnel,
+either increase the value of \(\rho_{\tau}\) and \(\rho_0\), and optionally the
+number of sampled points from the trajectory to be
+verified~\cite{Tobenkin_2011}.
 
 Thirdly, the initial condition set has to be decided beforehand. In general the
 initial condition set can be any semi-algebraic set in the state-space. However,

@@ -4,9 +4,8 @@ TODO - Create a timeline of these papers.
 
 The term \funnel\ first appears in \cite{masonMechanicsManipulation1985}. The
 \funnel\ definitions in this thesis is taken from a series of articles on
-\funnel 's \cite{tobenkinInvariantFunnelsTrajectories2010}
-\cite{tedrakeLQRtreesFeedbackMotion2009} \cite{majumdarRobustOnlineMotion2013}
-\cite{majumdarFunnelLibrariesRealtime2017}
+\funnel 's \cite{Tobenkin_2011} \cite{tedrakeLQRtreesFeedbackMotion2009}
+\cite{majumdarRobustOnlineMotion2013} \cite{majumdarFunnelLibrariesRealtime2017}
 \cite{ahmadiDSOSSDSOSOptimization2017}, with the main focus being on
 \cite{majumdarFunnelLibrariesRealtime2017}. Here a \funnel\ is mathematically
 defined as
@@ -188,9 +187,9 @@ A semidefinite program can solve all problems of the form:
   \text{subject to } &TrA_iX = b_i \text{for all i } = 1,\ldots,m\\
                    &X \succeq 0
 \end{align*} 
-where \(X \in S^n\), with \(S^n\) being the space of real symmetric \(n \times n\)
-matrices. The vector \(b \in \R^m\), and the matrices \(A_i \in S^n\), and \(C
-\in S^n\) are given problem
+where \(X \in S^n\), with \(S^n\) being the space of real symmetric \(n \times
+n\) matrices. The vector \(b \in \R^m\), and the matrices \(A_i \in S^n\), and
+\(C \in S^n\) are given problem
 parameters\cite{wolkowiczHandbookSemidefiniteProgramming2000}.
 
 \subsection{A simple example}
@@ -422,7 +421,8 @@ exist as a solution for the system, it might not be \ac{SOS} decomposable.
 
 \subsection{S-procedure}
 
-The \textit{S-procedure} is used to check for polynomial positivity over a region.
+The \textit{S-procedure} is used to check for polynomial positivity over a
+region.
 \[
   \beta = \set{x \in \R^n \mid g_{eq,i}(x),\,g_{ineq,i}(x) \geq 0}
 \]
@@ -495,7 +495,8 @@ the linear Lyapunov equation \ref{eqn:linearlyapunov}. Thus
 \]
 and
 \[
-  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + x^3) = -x^2 + x^4.
+  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + x^3) = -x^2 +
+  x^4.
 \]
 which fullfills all the Lyapunov function criteria, with \(\dot{V}(0) = 0\),
 negative for \(\abs{x}<1\) and positive for \(\abs{x} > 1\). Thus the sub-level
@@ -510,21 +511,21 @@ verification of regions of attraction in the presence of uncertainty.
 
 The general idea is based aroung \textit{common Lyapunov functions}, which, in
 contrary to regular Lyapunov analysis searches for a function which is negative
-for \textit{all values of \(w\)}, as opposed to only all values of \(x\).
-TODO - prettyfix this
+for \textit{all values of \(w\)}, as opposed to only all values of \(x\). TODO -
+prettyfix this
 
 \begin{definition}[Common Lyapunov Function]
-TODO -
+  TODO -
 \end{definition}
 
 \begin{example}[One-dimensional system with gain uncertainty]
   Given the same nonlinear dynamic system as in \ref{subsec:Estimating the
     region of attraction for a one-dimensional system}, but with a
-  \textit{bounded uncertainty term} \(w\), with 
+  \textit{bounded uncertainty term} \(w\), with
   \[
     \dot{x} = -x + wx^3, \; w_{min} \leq w \leq w_{max}
   \]
-  is 
+  is
 
   \begin{figure}
     \input{figures/funnel/regionofattractiononedimensionuncertaingain}
@@ -537,7 +538,8 @@ here the origin is still stable, but the \textit{robust region of attraction} is
 smaller than it was without any uncertainty. By using the same Lyapunov
 candidate as above, \(V(x) = \frac{1}{2}x^2\),
 \[
-  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + wx^3) = -x^2 + wx^4.
+  \dot{V}(x) = \frac{\partial V}{\partial x_i} f_i(x) = x(-x + wx^3) = -x^2 +
+  wx^4.
 \]
 Which, when analyzed yields
 \begin{align*}
@@ -569,12 +571,12 @@ A good example of how the fixed point is not necessary at the origin is the
   is not at the origin for all values of \(w\), it moves depending on the value.
   However, utilizing an invariant set argument to guarantee that the the
   uncertain dynamical system will stay near the origin if it starts near the
-  origin. 
+  origin.
 
 \begin{figure}
-    \input{figures/funnel/regionofattractiononedimensionuncertaingain}
-    \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
-      where \(w\) is a bounded uncertainty parameter.}
+  \input{figures/funnel/regionofattractiononedimensionuncertaingain}
+  \caption{The region of attraction for the system \(\dot{x} = -x + wx^3\),
+    where \(w\) is a bounded uncertainty parameter.}
 \end{figure}
 \end{example}
 
@@ -586,9 +588,9 @@ Once again, applying the same Lyapunov function \(V(x) = \frac{1}{2}x^2\),
 However, the invariant set argument here is a little different, as every
 sub-level set of the Lyapunov function is invariant. For instance \(V \leq
 \frac{1}{3}\) is a \textit{robust invariant set}, because if \(V =
-\frac{1}{3}\), 
+\frac{1}{3}\),
 \[
- \forall w \in \left[ w_{min}, w_{max} \right], \; \dot{V}(x,w) < 0.
+  \forall w \in \left[ w_{min}, w_{max} \right], \; \dot{V}(x,w) < 0.
 \]
 Thus, \(V(x)\) can never start out at less than \(\frac{1}{3}\), and obtain
 values greater than \(\frac{1}{3}\).
@@ -600,32 +602,34 @@ values greater than \(\frac{1}{3}\).
 However, note that \(V = \frac{1}{32}\) yields
 \[
   V = \frac{1}{32} \implies x = \pm \frac{1}{4} \implies \dot{V} = -\frac{1}{4}
-  + \frac{1}{16} \pm w\frac{1}{4}, \; \not \forall w \in \left[ -\frac{1}{4}, \frac{1}{4} \right].
+  + \frac{1}{16} \pm w\frac{1}{4}, \; \not \forall w \in \left[ -\frac{1}{4},
+    \frac{1}{4} \right].
 \]
 Which shows that not all sub-level sets of an invariant set is invariant in the
-case of additive uncertainty, so the conclusion is that it is not robustly invariant.
+case of additive uncertainty, so the conclusion is that it is not robustly
+invariant.
 
-Through the \ac{SOS} procedure and the Lyapunov function theory
-outlined, a \ac{SOS} program for verifying the dynamical system utilized in the
-examples looks like
+Through the \ac{SOS} procedure and the Lyapunov function theory outlined, a
+\ac{SOS} program for verifying the dynamical system utilized in the examples
+looks like
 \begin{example}{Region of attraction for the one-dimensional cubic system}
   \[
     \dot{x} = -x + x^3
-  \] 
-Using the Lyapunov function candidate \(V = x^2\), and the multiplier polynomial
-\(L(x) = \alpha_0 + \alpha_1x + \alpha_2x^2 + \alpha_3x^3 + \alpha_4x^4\), the
-\ac{SOS} optmization problem can be defined as
+  \]
+  Using the Lyapunov function candidate \(V = x^2\), and the multiplier
+  polynomial \(L(x) = \alpha_0 + \alpha_1x + \alpha_2x^2 + \alpha_3x^3 +
+  \alpha_4x^4\), the \ac{SOS} optmization problem can be defined as
 
 \begin{align*}
   \text{find } \alpha& \\
   \text{subject to }& -\dot{V}(x) - L(x)\left[ 1 - V(x) \right] \; &\text{is SOS} \\
-  & &L(x) \text{ is SOS}.
+                     & &L(x) \text{ is SOS}.
 \end{align*}
 
 Which written in \cite[Yalmip]{Lofberg2004,Lofberg2009} yields
 
-\lstinputlisting[language=matlab]{figures/funnel/cubicregionofattraction.m}
-TODO - fix this program.
+\lstinputlisting[language=matlab]{figures/funnel/cubicregionofattraction.m} TODO
+- fix this program.
 \end{example}
 
 \subsubsection{Robust set-invariance}
@@ -779,8 +783,9 @@ where \(q(x)\) and \(L(\bar{x})\) needs to be SOS polynomials.
 \subsubsection{Example - embedding a square within a circle}
 
 As a simple example let's have a look at embedding a square within a circle. For
-good measure let's give the circle a radius of \(\sqrt{2}+\epsilon\), and the square a
-radius of \(1\), and center them both at the origin in the Euclidean plane.
+good measure let's give the circle a radius of \(\sqrt{2}+\epsilon\), and the
+square a radius of \(1\), and center them both at the origin in the Euclidean
+plane.
 
 Starting with defining the set \(\beta\)
 \[
@@ -796,10 +801,10 @@ which can be formulated as
   p(x) &= r^2 - x^2 - y^2
 \end{align*}
 where \(p(x)\) is the parametrization of the circle, and \(\beta\) is the
-parametrization of the square with sides of length two. What needs to be shown is that \(p(x)\) is
-positive on the set \(\beta\). Through the \textit{S-procedure} this can be
-written as the search for a nonnegative polynomial \(L_{ineq,i}(x)\) such that
-\(p(x) \geq \left( sg \right)(x)\). Thus
+parametrization of the square with sides of length two. What needs to be shown
+is that \(p(x)\) is positive on the set \(\beta\). Through the
+\textit{S-procedure} this can be written as the search for a nonnegative
+polynomial \(L_{ineq,i}(x)\) such that \(p(x) \geq \left( sg \right)(x)\). Thus
 \[
   q(x) = p(x) - \sum_{i=1}^{2}L_{ineq,i}(x)g_{ineq,i}(x)
 \]

@@ -1,11 +1,5 @@
 \chapter{Survey of Papers}
 
-% \subsection{Related Work}
-
-% http://msl.cs.uiuc.edu/~lavalle/cs497/jokane.pdf
-
-% http://robotics.cs.unc.edu/BeliefSpacePlanning/index.html
-
 \section{Focus}
 Following is a survey of motion planning techniques incorporating uncertainty
 with a focus on their application to unmanned ground vehicles (UGVs). First
@@ -44,9 +38,8 @@ solving such a problem is PSPACE-Complete and thus not tractable for real-life
 applications. However approximate solutions are available, as shown by Kaelbling
 et.\ al~\cite{kaelblingPlanningActingPartially1998}. Therefore the problem has
 to be solved by using techniques such as sampling the belief space, as shown
-in~\cite{kearnsSparseSamplingAlgorithm}. Another approach, using Monte-Carlo
-simulation, is shown effective on large belief-spaces
-in~\cite{silverMonteCarloPlanningLarge}.
+in~\cite{kearns2002sparse}. Another approach, using Monte-Carlo simulation, is
+shown effective on large belief-spaces in~\cite{Veness_2011}.
 
 % \subsubsection{Optimal Control Based Approaches}
 
@@ -59,11 +52,11 @@ unpredicted obstacles appearing, is essential. Thus environment sensing and
 mapping and re-planning in real-time is required. This is referred to in the
 literature as planning in partially unknown environments. One solution to this
 problem is through incremental graph-search algorithms, as shown
-in~\cite{stentzOptimalEfficientPath}, where the \textsl{D*} algorithm is
-described as a method for optimal and efficient re-planning in partially unknown
-environments. Then \textit{Stentz}, a year later published the \textit{Focused
-  D*} algorithm~\cite{stentz1995focussed}, which incorporates heuristics to
-reduce the total time taken for re-planning. Still,\textit{D*} is
+in~\cite{Stentz_1997}, where the \textsl{D*} algorithm is described as a method
+for optimal and efficient re-planning in partially unknown environments. Then
+\textit{Stentz}, a year later published the \textit{Focused D*}
+algorithm~\cite{Stentz:1995:FDA:1643031.1643113}, which incorporates heuristics
+to reduce the total time taken for re-planning. Still,\textit{D*} is
 computationally heavy, and algorithms have been created to improve on the
 time-bound of \textit{D*}. One such implementation is the \textit{D*-lite}
 algorithm presented by Koenig~\cite{koenig2002d}. These incremental planners,
@@ -111,13 +104,12 @@ probabilistic model. Thus the usage of a map of the area is voluntary. In this
 way, unknown cells (those that are not yet inspected by local sensors) can be
 assigned a high probability of occupancy. An old article on how this can be
 implemented on a real robot is given by Kriegman~\cite{kriegman1987mobile} More
-recent work on the Occupancy Grid method can be found
-in~\cite{carrilloAutonomousRoboticExploration2015}, which explores the trade-off
-between exploring a new area, and relying on the information already obtained in
-order to solve the problem. A method to integrate current map-data with the
-on-board filter information is given in~\cite{gindeleBayesianOccupancyGrid2009}
-using a Bayesian Occupancy Grid Filter for dynamic environments using prior map
-knowledge.
+recent work on the Occupancy Grid method can be found in~\cite{7139224}, which
+explores the trade-off between exploring a new area, and relying on the
+information already obtained in order to solve the problem. A method to
+integrate current map-data with the on-board filter information is given
+in~\cite{gindeleBayesianOccupancyGrid2009} using a Bayesian Occupancy Grid
+Filter for dynamic environments using prior map knowledge.
 
 \subsubsection{Integrating Planning and Mapping}
 Not reasoning about the map and environment uncertainty can lead to crashes, as
@@ -139,11 +131,11 @@ faster path, with higher uncertainty when time is short. A method for doing so
 is given in~\cite{vandenbergLQGMPOptimizedPath2011} and is based on the
 \textit{Linear Quadratic Gaussian Motion Planning} LQG-MP algorithm. Another
 more recent implementation is~\cite{blakeEfficientComputationCollision2018}.
-In~\cite{kurniawatiGlobalMotionPlanning} a motion planner called \textit{Guided
-  Cluster Sampling} is used that takes into account all three sources of
-uncertainty for robots with active sensing capabilities. This method builds on
-the POMDP framework by utilizing a more suitable sampling distribution based on
-the observations done by the robots active sensors.
+In~\cite{Kurniawati_2011} a motion planner called \textit{Guided Cluster
+  Sampling} is used that takes into account all three sources of uncertainty for
+robots with active sensing capabilities. This method builds on the POMDP
+framework by utilizing a more suitable sampling distribution based on the
+observations done by the robots active sensors.
 In~\cite{huangRRTSLAMMotionPlanning2008} the \textit{RRT-SLAM} method is
 introduced, where uncertainty is used in the RRT-planner by moving the state
 space up a dimension, then this is joined together with a \textit{Simultaneous
