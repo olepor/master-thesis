@@ -1,4 +1,5 @@
 \section{The RRT algorithm}
+\label{sec:rrt-algorithm-intro}
 
 The \ac{RRT} algorithm~\cite[LaValle]{article} is a tree based algorithm which,
 starting at the intial configuration of the system, grows it's branches into the
@@ -19,12 +20,11 @@ that node, and as the largest Voronoi regions belong to the states on the leaves
 of the tree. As the Voronoi regions divides a plane according to the
 \textit{nearest neighbour rule}, each point is associated with the region of the
 plane closest to
-it~\cite{aurenhammerVoronoiDiagramsSurvey1991}~(\ref{fig:voronoi-diagram}). This
+it~\cite{aurenhammerVoronoiDiagramsSurvey1991}~\cref{fig:voronoi-diagram}. This
 means that the tree will quickly expand into unexplored parts of the state
-space, as can be seen in~(\ref{fig:rrt-expansion}),
-and~(\ref{fig:rrt-voronoi})~\cite{Lav06}, which is what makes the \ac{RRT} good
-at solving a wide variety of planning problems, espacially ones with a high
-dimensional state space.
+space, as can be seen in~\cref{fig:rrt-expansion,fig:rrt-voronoi}~\cite{Lav06},
+which is what makes the \ac{RRT} algorithm good at solving a wide variety of
+planning problems, especially ones with a high dimensional state space.
 
 \begin{figure}
   \centering \includegraphics{figures/rrt/rrt-pseudo.tex}
@@ -74,7 +74,7 @@ dimensional state space.
 When inspecting the Voronoi regions of a \ac{RRT} tree, it is apparent that the
 leaf nodes will have the largest Voronoi regions, and thus also the largest
 probability for getting expanded, as can be seen in
-figure~(\ref{fig:rrt-voronoi}).
+figure~\cref{fig:rrt-voronoi}.
 
 The \ac{RRT} algorithm is a discrete sampling based algorithm, noticeable for
 its ability to handle large state-spaces. This stems from the algorithm's
@@ -124,7 +124,7 @@ basis of motion primitives for a vehicle can therefore be 'turn-left',
 'go-straight', or 'turn-right'. By chaining these basic smooth motion primitves
 together a smooth path from the intial- to the goal-state can be found. A figure
 displaying a tree built up from the three motion primitives can be seen
-in~(\ref{fig:motion-primitive-tree}).
+in~\cref{fig:motion-primitive-tree}.
 
 \begin{figure}
   \centering
