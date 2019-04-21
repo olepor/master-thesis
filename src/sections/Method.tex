@@ -13,7 +13,7 @@ system be. Secondly, with the assumption that the motion primitives are robust,
 there is no need for more conservative maneuvers and heuristics, such as
 maximizing the distance to an obstacle. The system might as well choose a
 primitive that is close to an obstacle, as one that is far away, as the funnel
-is guaranteed to be collission-free in both cases. This means that a robust
+is guaranteed to be collision-free in both cases. This means that a robust
 motion primitive algorithm can perform more aggressive maneuvers than one that
 is inherently conservative about its environment and
 maneuvers~\cite{singhRobustOnlineMotion2017}.
@@ -53,7 +53,7 @@ is easily adapted into accommodating a different and more complicated model.
 The robust motion primitives are \textit{finite regions of time variance} around
 an initial trajectory, meaning that they are all the states surrounding a
 trajectory in which the system can reach in a given time interval. But in order
-to verify the robust regions surrounding a trajector, first the trajectories
+to verify the robust regions surrounding a trajectory, first the trajectories
 themselves have to be generated. Generating optimal trajectories is a rich field
 in the motion planning literature~\cite{Betts_1998}, and the initial
 trajectories could have been generated through any number of methods, however,
@@ -143,19 +143,19 @@ verified~\cite{Tobenkin_2011}.
 Thirdly, the initial condition set has to be decided beforehand. In general the
 initial condition set can be any semi-algebraic set in the state-space. However,
 a simple way of obtaining an initial condition set for the trajectories at hand
-is by taking advantage of the Lyapunov function canditate from the
+is by taking advantage of the Lyapunov function candidate from the
 \ac{LQR}-controller. Thus by setting
 \begin{equation}
   \mathcal{X}_{0} = \frac{S_{k}}{\rho_{\tau}}
 \end{equation}
-an intial condition is obtained. In general however, any semi-algebraic set will
-do, and the algorithm is not constrained to this one initial condition set in
-particular, but it has proven itself useful when calculating new motion
+an initial condition is obtained. In general however, any semi-algebraic set
+will do, and the algorithm is not constrained to this one initial condition set
+in particular, but it has proven itself useful when calculating new motion
 primitives for a system when the initial condition set is not obvious. Another
 idea is to use the outlet of one funnel as the initial condition set for the
 calculation of another.
 
-The funnels in this thesis are parametrized as sub-level sets of a Lypunov
+The funnels in this thesis are parameterized as sub-level sets of a Lyapunov
 function for which the state-space does not invalidate the sub-level constraint.
 A visualization of the Lyapunov function associated with a straight motion
 primitive can be found in~\cref{fig:visualized-lyapunov}.
@@ -171,7 +171,7 @@ primitive can be found in~\cref{fig:visualized-lyapunov}.
   xy-plane}
 \label{subsec:xy-cost-function}
 
-In the \rrtfunnel{} algorithm, the size of the of the hyperellipsoid which
+In the \rrtfunnel{} algorithm, the size of the of the hyper-ellipsoid which
 contains the reachable set is not equally important in all dimensions for all
 problems. In the forest traversal case the size of the ellipsoid in the
 \(\theta\) dimension is unimportant. There is no need in minimizing the value of
@@ -181,7 +181,7 @@ vehicle model in this thesis the size of the funnel projected down into the
 xy-plane will be the most important metric. Whether or not the vehicle's
 orientation parameter \(\theta\) is close to the nominal heading is of less
 concern, and is therefore down-prioritized, along with the cost on the control
-input \(u\). Having a large \(\theta\) semi-axis in the hyperellipsoid can also
+input \(u\). Having a large \(\theta\) semi-axis in the hyper-ellipsoid can also
 be beneficial, as it increases the inlet of the ellipsoid at hand.
 
 For the cost function in the funnel generation
@@ -209,7 +209,7 @@ maximizes this linearization instead. In the end this translates to
   \mathnormal{lin}\p{det\p{S_k}} =
   Tr\p{P^T\p{PS_{k,0}^{-1}P^T}^{-1}PS_{k,0}^{-1}S_kS_{k,0}^{-1}}
 \]
-where \(S_{k,0}\) is the nominal value for the linarization, and \(Tr\) is the
+where \(S_{k,0}\) is the nominal value for the linearization, and \(Tr\) is the
 trace of the matrix.
 
 \subsection{Searching for a controller which minimizes the size of the funnel}
@@ -217,7 +217,7 @@ trace of the matrix.
 With the non-optimal feedback controller given to the funnel calculation
 framework (non-optimal with regards to the funnel calculation cost function),
 the size of the funnels will in general be larger than if given a better
-controller. Thus in order to further minmize the size of the funnel in the
+controller. Thus in order to further minimize the size of the funnel in the
 xy-plane this method, along with the cost function
 from~\cref{subsec:xy-cost-function} is used to make traversal through obstacles
 in the world space easier. Hence, referring to~\cite[Majumdar.sec~4.3.2
@@ -229,7 +229,7 @@ Firstly the system needs to be control affine:
 \begin{equation}
   \dot{x} = f(x(t)) + g(x(t))u(t)
 \end{equation}
-so that the control policy can be parametrized as a polynomial
+so that the control policy can be parameterized as a polynomial
 \(\bar{u}_f(t,\bar{x})\), and the system dynamics written as:
 \begin{equation}
   \dot{\bar{x}} = f(x_0(t) + \bar{x}(t)) + g(x(t))\left[ u_0(t) + \bar{u}_f(t,\bar{x}) \right] - \bar{x}_0
@@ -378,16 +378,16 @@ found from:
                 \right)  + I {\dot{\theta}}^2 \\
               &= mv^2 + I {\dot{\theta}}^2 \\
 \end{align*}
-which shows that the LaGrangian is invariant to shifts in the \((x,y,\theta)\)
+which shows that the Lagrangian is invariant to shifts in the \((x,y,\theta)\)
 variables, since \(\frac{\partial\mathcal{L}}{\partial q_i} = 0 \, q_i =
 x,y,\theta\). Now, any funnel in the base set can be shifted freely around in
-the cyclic coordinates of the system withouth changing the solution to the
-system dynamic equation, and thus create an infinite set of funnels in the state
-space for the planner to work with. Through the partitioning of coordinates into
+the cyclic coordinates of the system without changing the solution to the system
+dynamic equation, and thus create an infinite set of funnels in the state space
+for the planner to work with. Through the partitioning of coordinates into
 cyclic- and non-cyclic coordinates of the form \(x = [x_c\, x_{nc}]\), the state
 dynamics \(\dot{x} = f(x(t), u(t))\) only depends on the non-cyclic coordinates
-of the system. Thus, a trajector of the form \(t \rightarrow (x(t),u(t))\) which
-solves \(\dot{x} = f(x(t),u(t))\) can then be transformed through a shift
+of the system. Thus, a trajectory of the form \(t \rightarrow (x(t),u(t))\)
+which solves \(\dot{x} = f(x(t),u(t))\) can then be transformed through a shift
 \(\Psi_c\) along the cyclic coordinates of the system to yield a valid solution
 of the form
 \[
@@ -413,7 +413,7 @@ order for two funnels to create a third and new motion primitive when chained
 together they need to be composable, which means that the inlet of the second
 funnel needs to be fully contained within the outlet of the first one. Otherwise
 the robustness guarantees of the traversal will be lost. An abstract pictorial
-representaion of two funnels composed together can be seen
+representation of two funnels composed together can be seen
 in~\cref{fig:two-funnels-composed} to emphasize this observation. The
 mathematical definition of funnel composition~\cref{def:funnel-composition} that
 is used to verify that two funnels are composable, and is implemented as a
@@ -424,15 +424,15 @@ is~\cite[definition~3,sec~5]{majumdarFunnelLibrariesRealtime2017} which states
 \begin{definition}
   An ordered pair \(F_1,F_2\) of funnels \(F_1 \colon [0,T_1] \rightarrow
   \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
-  is \textit{sequentially composable modulo invariances} if there exists a shift
+  is \textit{sequentially composable modulo invariance} if there exists a shift
   along cyclic coordinates such that \(F_{1}(T_1) \subset
   \Psi_{c}\left(F_2(0)\right)\)
 \end{definition}
-In laymans terms this means that if a funnel \(F_2\) can be shifted along cyclic
-coordinates to stack up against the outlet of funnel \(F_2\) so that they are
-composable in the sense of definition~\cref{def:funnel-composition}, they are
-composable modulo invariances. Hence, any funnel in the configuration space will
-be a set consisting of the funnel from the basic set, along with a
+In layman's terms this means that if a funnel \(F_2\) can be shifted along
+cyclic coordinates to stack up against the outlet of funnel \(F_2\) so that they
+are composable in the sense of definition~\cref{def:funnel-composition}, they
+are composable modulo invariance. Hence, any funnel in the configuration space
+will be a set consisting of the funnel from the basic set, along with a
 transformation along the cyclic coordinates of the system \(\hat{\mathcal{F}} =
 \set{F_n \in \R^n \mid \Psi_{c,i}(F_i), F_i \in \mathcal{F}}\), where
 \(\mathcal{F}\) is the basic set of funnels.
@@ -454,6 +454,15 @@ the composability of two funnels can be checked through the \ac{SOS} program
   & \text{s.t. } && \rho_2(0) - V_2(0,\bar{x}) - L(\bar{x})\left( \rho_1(T_1) - V_1(T_1,\bar{x}) \right) \text{ is SOS} \nonumber \\ 
   &&& L(\bar{x}) \text{ is SOS} \nonumber
 \end{align}
+A picture of funnels composed together can be seen
+in~\cref{fig:funnel-composition-tree}.
+\begin{figure}
+  \centering \includegraphics[scale=.5]{figures/method/funnel-tree}
+  \caption{Pictured: A tree of funnels built by the \rrtfunnel{} algorithm,
+    showing how longer motion primitives are built up from primitives in the
+    basic set.}
+  \label{fig:funnel-composition-tree}
+\end{figure}
 
 \subsection{Checking the conservativeness of the funnel calculated}
 
@@ -477,7 +486,7 @@ robustly to uncertainty given the uncertainty and dynamical assumptions made.
     \includegraphics[width=\textwidth]{figures/experiments/FunnelSim4}
   \end{subfigure}
   % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
-  % (or a blank line to force the subfigure onto a new line)
+  % (or a blank line to force the sub-figure onto a new line)
   \begin{subfigure}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{figures/experiments/FunnelSim1}
   \end{subfigure}
@@ -485,7 +494,7 @@ robustly to uncertainty given the uncertainty and dynamical assumptions made.
     \includegraphics[width=\textwidth]{figures/experiments/FunnelSim5}
   \end{subfigure}
   % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
-  % (or a blank line to force the subfigure onto a new line)
+  % (or a blank line to force the sub-figure onto a new line)
   \caption{The simulated trajectories, overlaid with the outer approximation
     that is the funnel returned by the \ac{SOS} calculation for three
     trajectories from the trajectory library \(\mathcal{T}\).}
@@ -496,10 +505,10 @@ robustly to uncertainty given the uncertainty and dynamical assumptions made.
 
 In order to stack funnels one after the other it is necessary for the funnels to
 have a big inlet, and a smaller outlet as defined in hyperspace. It is from the
-formulations in (ref perliminaries) to constrain the intial condition set for
+formulations in (ref preliminaries) to constrain the initial condition set for
 each funnel. This is done with
 
-The intial theta is limited to: (Make pretty figure with the intial conditions
+The initial theta is limited to: (Make pretty figure with the initial conditions
 for theta at each point (x,y))
 
 \section{RRT}
@@ -508,9 +517,9 @@ With the basic framework for dealing with funnels as motion primitives
 constructed, it is time to build the \ac{RRT} part of the \rrtfunnel{}
 algorithm. The reason for choosing to base the global path planning framework on
 the \ac{RRT} motion planning algorithm are as follows. One, it has the ability
-ot quickly expand deep into the search-space, and then later progress towards a
+to quickly expand deep into the search-space, and then later progress towards a
 finer sampling, which is valuable as it avoids local minima. Two, the \ac{RRT}
-algorithm is easily extendable to larger state space, and thus adding to the
+algorithm is easily extensible to larger state spaces, and thus adding to the
 generality of the \rrtfunnel{} algorithm, such that it can be adapted to fit a
 wide range of dynamical systems, as well that it has only three main components
 that needs to be in place in order for successful path planning to happen in an
@@ -530,9 +539,9 @@ to poor performance. Therefore one needs to be careful when sampling from a
 configuration space with non Euclidean
 topology~\cite{kuffnerEffectiveSamplingDistance2004}.
 
-If sampling from a configuration space which are formed stricly from cartesian
+If sampling from a configuration space which are formed strictly from Cartesian
 products of the form \(X = X_1\times X_2\times \cdots \times X_n\), and each
-cartesian space is sampled uniformly, then the product will also be uniformly
+Cartesian space is sampled uniformly, then the product will also be uniformly
 sampled. One needs to be more careful when dealing with rotations however, as
 the probability density measure can become non-uniform~\cite{Lav06}. Take the
 polar coordinates as an example. Sampling uniformly from \(r\) and \(\theta\)
@@ -547,10 +556,10 @@ uniformly on the topological cylinder through
   \mathnormal{\Theta}_{dim}rand)
 \]
 where \(rand\) is a random variable in the interval \([0,1)\), since for
-\(SO(2)\), the rotations parametrized on \([0,1]\setminus\sim\) (where
+\(SO(2)\), the rotations parameterized on \([0,1]\setminus\sim\) (where
 \(\setminus\sim\) means that 0 and 1 are identified) can be multiplied by a
 fixed constant, such as for \(2\pi\) which means that sampling will be uniform
-in the configuration space of the robot from a simple cartesian product of
+in the configuration space of the robot from a simple Cartesian product of
 uniform random variables~\cite{Lav06}.
 
 \subsection{Distance in configuration space}
@@ -615,7 +624,7 @@ rotations and distance is scaled relative to the translation distance.
 \end{figure}
 
 
-\subsection{FunnelGraph}
+\subsection{Funnel-Graph}
 
 Look at ~\cite{vonasekGlobalMotionPlanning2013} (Algorithm3) for a way of
 building an RRT with motion primitives.
@@ -623,12 +632,12 @@ building an RRT with motion primitives.
 \subsection{Funnel-graph}
 
 Even though the \rrtfunnel{} algorithm can work just fine with a collection of
-funnels, and simply bruteforcing all funnels at the planning stage, it is
+funnels, and simply brute-forcing all funnels at the planning stage, it is
 helpful to associate some kind of structure with the collection. Therefore the
-funnels will be organised into a graph structure \(\mathcal{F}\) where each
+funnels will be organized into a graph structure \(\mathcal{F}\) where each
 funnel is a edge in the graph, and the inlets and the outlets are vertices. The
 funnels also need information about which funnels that they are composable with,
-as they may not all be composable with eachother, hence the graph is not
+as they may not all be composable with each other, hence the graph is not
 complete.
 
 \begin{figure}
@@ -648,7 +657,7 @@ For each funnel, in order to not only be able to compose funnels, but
 sub-funnels, which means that at every point of every node in every funnel is
 composable with every other sample point in every other funnel has to be
 checked. This is summed up more orderly in algorithm
-\cref{alg:create-funnel-graph}, where a funnel is a vertice in the graph, and an
+\cref{alg:create-funnel-graph}, where a funnel is a vertex in the graph, and an
 ordered pair of funnels \(\left( F_{i}, F_{j} \right)\) is an edge. Composition
 of funnels is checked in the same way as in \cref{def:funnel-composition}, and a
 \ac{SOS}-program which implements the algorithm can be found in
@@ -692,11 +701,6 @@ in~\cref{alg:rrtfunnel}.
         \left( F_{i}(t_{0}), F_{j}(t_{end}) \right)\) } \; }\; }\;
 
 \end{algorithm}
-
-\begin{figure}
-  \centering \includegraphics[scale=.5]{figures/method/funnel-tree}
-  \caption{Picutred: A tree of funnels built by the \rrtfunnel{} algorithm.}
-\end{figure}
 
 The \rrtfunnel{} algorithm is defined as
 
@@ -756,8 +760,8 @@ If the vehicle is to leave the verified funnel at execution time -- this could
 happen for any number of reasons, such as unmodelled uncertainties -- the
 vehicle should execute the emergency maneuver, which in this case is a simple
 stop maneuver. Since the model employed is a simple first order model, a halt
-will happen momentarirly. Still, an emergency maneuver can be any sort of 'safe'
+will happen momentarily. Still, an emergency maneuver can be any sort of 'safe'
 maneuver for the model at hand -- such as a loiter circle for an airplane, or
-idling at one place for a quadcopter.
+idling at one place for a quad-copter.
 
 \subsection{Collision checking}
