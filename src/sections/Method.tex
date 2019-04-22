@@ -503,20 +503,24 @@ robustly to uncertainty given the uncertainty and dynamical assumptions made.
 
 \begin{figure}[p]
   % Regular xy-funnel
-  \begin{minipage}{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figures/method/FunnelSim1}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[trim={0cm 6cm 0cm 6cm},
+    width=\textwidth]{figures/method/FunnelSim1}
     \caption{Comparison of the \ac{SOS} funnel in the xy-plane with the
       simulated non-polynomial system overlaid in green, generated from
       \(10.000\) Monte-Carlo simulations.}
-  \end{minipage}%
+  \end{subfigure}%
   % 
-  \begin{minipage}{0.5\textwidth}
+  \quad
+  %
+  \begin{subfigure}{0.5\textwidth}
     % y-theta funnel
-    \includegraphics[width=\textwidth]{figures/method/FunnelSimythetafunnel}
+    \includegraphics[trim={0cm 6cm 0cm 6cm},
+    width=\textwidth]{figures/method/FunnelSimythetafunnel}
     \caption{Comparison of the \ac{SOS} funnel in the \(\theta\)-y plane, with
       the simulated non-polynomial system overlaid in green, generated from
       \(10.000\) Monte-Carlo simulations.}
-  \end{minipage}%
+  \end{subfigure}%
   % 
   \\
   %
@@ -607,6 +611,10 @@ robustly to uncertainty given the uncertainty and dynamical assumptions made.
       \end{minipage}%
     \end{minipage}%
   }
+  \caption{The figures on the left show that the funnel approximation is a lot
+    tighter to the 'real' funnel in the x-y plane, than it is in the \(\theta\)
+    domain, which is to be expected, considering the cost function given to the
+    procedure.}
 \end{figure}
 
 \subsection{The initial condition set for each funnel}
@@ -645,30 +653,30 @@ algorithm needs uniform sampling of the state space in order for it to function
 optimally, as over- or under-sampling certain parts of the state space can lead
 to poor performance. Therefore one needs to be careful when sampling from a
 configuration space with non Euclidean
-topology~\cite{kuffnerEffectiveSamplingDistance2004}.
+topology~\cite{kuffnerEffectiveSamplingDistance2004}, as the sampling is not
+necessarily uniform.
 
-If sampling from a configuration space which are formed strictly from Cartesian
+If sampling from a configuration space which is formed strictly from Cartesian
 products of the form \(X = X_1\times X_2\times \cdots \times X_n\), and each
 Cartesian space is sampled uniformly, then the product will also be uniformly
 sampled. One needs to be more careful when dealing with rotations however, as
 the probability density measure can become non-uniform~\cite{Lav06}. Take the
 polar coordinates as an example. Sampling uniformly from \(r\) and \(\theta\)
 does not form a uniform sample product, as the \(pdf\) function will have a
-higher probability density near the origin, as the outer circles will contain a
-bigger area. For the model of a simple unicycle which moves in \(x,y,\theta\)
-the samples can be generated from
-From~\cite{kuffnerEffectiveSamplingDistance2004} the samples can be generated
-uniformly on the topological cylinder through
+higher probability density away from the origin, as the outer circles will
+contain a bigger area. For the model~\cref{eq:model-dynamics} which moves in
+\(x,y,\theta\) the samples can be generated uniformly on the topological
+cylinder through~\cite{kuffnerEffectiveSamplingDistance2004}:
 \[
-  (x,y,\theta) = (\mathnormal{X}_{dim}rand, \mathnormal{Y}_{dim}rand,
-  \mathnormal{\Theta}_{dim}rand)
+  (x,y,\theta) = (\mathnormal{X}_{dim}, \mathnormal{Y}_{dim},
+  \mathnormal{\Theta}_{dim})
 \]
-where \(rand\) is a random variable in the interval \([0,1)\), since for
-\(SO(2)\), the rotations parameterized on \([0,1]\setminus\sim\) (where
-\(\setminus\sim\) means that 0 and 1 are identified) can be multiplied by a
-fixed constant, such as for \(2\pi\) which means that sampling will be uniform
-in the configuration space of the robot from a simple Cartesian product of
-uniform random variables~\cite{Lav06}.
+where \((\mathnormal{X}, \mathnormal{Y}, \mathnormal{\Theta})\) are a random
+variables in the interval \([0,1)\), since for \(SO(2)\), the rotations
+parameterized on \([0,1]\setminus\sim\) (where \(\setminus\sim\) means that 0
+and 1 are the same) can be multiplied by a fixed constant, such as for \(2\pi\)
+which means that sampling will be uniform in the configuration space of the
+robot from a simple Cartesian product of uniform random variables~\cite{Lav06}.
 
 \subsection{Distance in configuration space}
 
@@ -771,21 +779,21 @@ of funnels is checked in the same way as in \cref{def:funnel-composition}, and a
 \ac{SOS}-program which implements the algorithm can be found in
 ~\cref{sec:funnel-composability-program-sos}.
 
-\begin{algorithm}
-  \caption{Create Funnel Graph}
-  \label{alg:create-funnel-graph}
-  \DontPrintSemicolon \SetAlgoNoLine
+% \begin{algorithm}
+%   \caption{Create Funnel Graph}
+%   \label{alg:create-funnel-graph}
+%   \DontPrintSemicolon \SetAlgoNoLine
 
-  \KwIn{\(\mathcal{F}\) -- The basis set of funnels computed around the nominal
-    trajectories.} \KwOut{\(\mathcal{G}(\mathcal{F})\) -- Directed graph
-    representing the composability of funnels.}
+%   \KwIn{\(\mathcal{F}\) -- The basis set of funnels computed around the nominal
+%     trajectories.} \KwOut{\(\mathcal{G}(\mathcal{F})\) -- Directed graph
+%     representing the composability of funnels.}
 
-  \ForEach{\(F_{i} \in \mathcal{F}\)} { \ForEach{\(F_{j} \in \mathcal{F}\)} {
-      \ForEach{\(t_{k} \in F_{i}\)} { \ForEach{\(t_{l} \in F_{j}\)} {
-          \If{\(F_{i}(t_{k}) \subset F_{j}(t_{l})\)} { \(\mathcal{G}
-            \leftarrow{} \left( F_{i}(t_{k}), F_{j}(t_{l}) \right)\) } } } } }
+%   \ForEach{\(F_{i} \in \mathcal{F}\)} { \ForEach{\(F_{j} \in \mathcal{F}\)} {
+%       \ForEach{\(t_{k} \in F_{i}\)} { \ForEach{\(t_{l} \in F_{j}\)} {
+%           \If{\(F_{i}(t_{k}) \subset F_{j}(t_{l})\)} { \(\mathcal{G}
+%             \leftarrow{} \left( F_{i}(t_{k}), F_{j}(t_{l}) \right)\) } } } } }
 
-\end{algorithm}
+% \end{algorithm}
 
 \subsection{The \rrtfunnel{} algorithm}
 
