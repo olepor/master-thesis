@@ -178,7 +178,7 @@ parameters\cite{wolkowiczHandbookSemidefiniteProgramming2000}.
 \label{subsec:A simple example}
 
 \begin{align*}
-  \min{a} \text{subject to}
+  \min{a}\, \text{subject to}
   \begin{bmatrix}
     a & 0 \\
     0 & 1 \\
@@ -340,7 +340,7 @@ As a simple example where a search for a polynomial Lyapunov function can be
 performed is the \textit{simple pendulum} example. The dynamics of the pendulum
 can be described as
 \[
-  ml^2\dot{\dot{\theta}} + mgl \sin(\theta) = -b\dot{\theta}
+  ml^2\ddot{\theta} + mgl \sin(\theta) = -b\dot{\theta}
 \]
 which in vector form can be written as
 \begin{align*}
@@ -405,7 +405,7 @@ exist as a solution for the system, it might not be \ac{SOS} decomposable.
 \subsection{S-Procedure}
 \label{sec:s-procedure}
 
-The \textit{S-procedure} is used to check for positivity (SoS) over a region.
+The \textit{S-procedure} is used to check for positivity (SOS) over a region.
 
 \[
   \beta = \set{x \in \R^n \mid g_{eq,i}(x),\,g_{ineq,i}(x) \geq 0}
@@ -416,11 +416,11 @@ given set \(\beta\)
   x \in \beta \implies p(x) \geq 0
 \]
 which can be imposed by the following SOS constraints
-\[
-  q(x) = p(x) - \sum_{i=1}^{N_{eq}}L_{eq,i}(x)g_{eq,i}(x) -
-  \sum_{j=1}^{N_{ineq}}L_{ineq,i}(x)g_{ineq,j}(x) \\
+\begin{align*}
+  q(x) = p(x) &- \sum_{i=1}^{N_{eq}}L_{eq,i}(x)g_{eq,i}(x) \\ &-
+  \sum_{j=1}^{N_{ineq}}L_{ineq,i}(x)g_{ineq,j}(x)
   L_{ineq,j}(x) \text{ is SOS } \forall j \in \set{0,\ldots,N_{ineq}}
-\]
+\end{align*} 
 where the multiplier polynomials \(L_{eq}\) and \(L_{ineq}\) are multiplier
 polynomials similar to Lagrange multipliers in constrained optmization.
 

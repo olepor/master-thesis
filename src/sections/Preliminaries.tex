@@ -512,7 +512,7 @@ algorithm for funnel computation
 
   \KwIn{\(V\) and \(\rho\)} \KwOut{Funnel}
 
-  \(cost_{prev} = \infty\)\; converged = false \; \While{\(\neq converged\)}{
+  \(cost_{prev} = \infty\)\; converged = false \; \While{\(!\; converged\)}{
     Optimization problem 1: \;
     \begin{align*}
       \underset{\substack{L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
@@ -667,7 +667,7 @@ where \(q(x)\) and \(L(\bar{x})\) needs to be SOS polynomials.
   \(\sqrt{2}\) as expected.
 \end{example}
 
-\subsection{Cyclic coordinates and LaGrangian dynamics}
+\subsection{Cyclic coordinates and Lagrangian dynamics}
 \label{subsec:cyclic-coordinates}
 
 The \funnel{}'s generated in this thesis will be motion primitives for the

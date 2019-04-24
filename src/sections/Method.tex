@@ -160,8 +160,8 @@ function for which the state-space does not invalidate the sub-level constraint.
 A visualization of the Lyapunov function associated with a straight motion
 primitive can be found in~\cref{fig:visualized-lyapunov}.
 \begin{figure}
-  \centering
-  \includegraphics[scale=.3]{figures/rrtfunnel/straight-funnel-lyapunov-3d}
+  \includegraphics[trim={3cm 7cm 3cm 7cm},
+  scale=.6]{figures/rrtfunnel/straight-funnel-lyapunov-3d}
   \caption{A visualization of the Lyapunov function values around a straight
     motion primitive.}
   \label{fig:visualized-lyapunov}
@@ -275,7 +275,7 @@ environment, as summarized in~\cref{alg:funnelalgorithm-extended}.
 
   \KwIn{\(V\) and \(\rho\)} \KwOut{Funnel}
 
-  \(cost_{prev} = \infty\)\; converged = false \; \While{\(\not converged\)}{
+  \(cost_{prev} = \infty\)\; converged = false \; \While{\(! \; converged\)}{
     Optimization problem 1: \;
     \begin{align*}
       \underset{\substack{\bar{u}_f,L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
@@ -438,7 +438,7 @@ transformation along the cyclic coordinates of the system \(\hat{\mathcal{F}} =
 \(\mathcal{F}\) is the basic set of funnels.
 
 \begin{figure}
-  \includegraphics[scale=.2]{figures/method/funnel-composition} \centering
+  \centering \includegraphics[scale=.2]{figures/method/funnel-composition}
   \caption{Two funnels that can be successfully composed, as the outlet of the
     first one is fully contained in the inlet of the second.}
   \label{fig:two-funnels-composed}
@@ -784,14 +784,14 @@ of funnels is checked in the same way as in \cref{def:funnel-composition}, and a
 %   \label{alg:create-funnel-graph}
 %   \DontPrintSemicolon \SetAlgoNoLine
 
-%   \KwIn{\(\mathcal{F}\) -- The basis set of funnels computed around the nominal
-%     trajectories.} \KwOut{\(\mathcal{G}(\mathcal{F})\) -- Directed graph
-%     representing the composability of funnels.}
+%   \KwIn{\(\mathcal{F}\) -- The basis set of funnels computed around the
+%   nominal trajectories.} \KwOut{\(\mathcal{G}(\mathcal{F})\) -- Directed graph
+%   representing the composability of funnels.}
 
 %   \ForEach{\(F_{i} \in \mathcal{F}\)} { \ForEach{\(F_{j} \in \mathcal{F}\)} {
-%       \ForEach{\(t_{k} \in F_{i}\)} { \ForEach{\(t_{l} \in F_{j}\)} {
-%           \If{\(F_{i}(t_{k}) \subset F_{j}(t_{l})\)} { \(\mathcal{G}
-%             \leftarrow{} \left( F_{i}(t_{k}), F_{j}(t_{l}) \right)\) } } } } }
+%   \ForEach{\(t_{k} \in F_{i}\)} { \ForEach{\(t_{l} \in F_{j}\)} {
+%   \If{\(F_{i}(t_{k}) \subset F_{j}(t_{l})\)} { \(\mathcal{G} \leftarrow{}
+%   \left( F_{i}(t_{k}), F_{j}(t_{l}) \right)\) } } } } }
 
 % \end{algorithm}
 
