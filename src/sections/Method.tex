@@ -18,6 +18,8 @@ motion primitive algorithm can perform more aggressive maneuvers than one that
 is inherently conservative about its environment and
 maneuvers~\cite{singhRobustOnlineMotion2017}.
 
+\rrtfunnel{} will in section(blablal) will develop. section(bla) is lsadkjfa;sldkjf.
+
 \section{Generating robust motion primitives}
 
 In order to create a basic set of funnels as the robust motion primitives for
@@ -252,13 +254,13 @@ Which~\cref{eq:model-dynamics} is, since:
   u(t).
 \end{equation}
 Then the feedback controller can be optimized by adding the coefficients of the
-polynomial \(u_f(t,\bar{x})\) to the set of decision variables in the original
+polynomial \(u_f(t,\bar{\x})\) to the set of decision variables in the original
 optimization problem. The only issue is that now \(\dot{V}\) is bilinear in the
 decision variables \(V\) and \(\bar{u}_f\)
 \begin{equation}
   {
     \newcommand{\Vdot}{\dot{V}}
-    \Vdot(t,\x) = \frac{\partial V(t,x)}{\partial x} \dot{x} + \frac{\partial V(t,x)}{\partial t}
+    \Vdot(t,\x) = \frac{\partial V(t,\x)}{\partial \x} \dot{\x} + \frac{\partial V(t,\x)}{\partial t}
   }
 \end{equation}
 Thus in order to minimize the cost function a search is done in
@@ -483,15 +485,15 @@ robustly to uncertainty given the uncertainty and dynamical assumptions made.
 
 \begin{figure}
   \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/FunnelSim4}
+    \includegraphics[width=\textwidth]{figures/method/FunnelSimnew4}
   \end{subfigure}
   % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
   % (or a blank line to force the sub-figure onto a new line)
   \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/FunnelSim1}
+    \includegraphics[width=\textwidth]{figures/method/FunnelSimnew1}
   \end{subfigure}
   \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/FunnelSim5}
+    \includegraphics[width=\textwidth]{figures/method/FunnelSimnew5}
   \end{subfigure}
   % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
   % (or a blank line to force the sub-figure onto a new line)
@@ -881,3 +883,7 @@ maneuver for the model at hand -- such as a loiter circle for an airplane, or
 idling at one place for a quad-copter.
 
 \subsection{Collision checking}
+
+\subsection{summary}
+
+In this chapter the \rrtfunnel{} algorithm has been developed through ....
