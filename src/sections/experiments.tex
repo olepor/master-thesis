@@ -11,11 +11,13 @@ five meters ahead.
 \begin{figure}
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-no-funnel}
-    \caption{The airplane is deviating from the nominal trajectory due to the crosswind.}
+    \caption{The airplane is deviating from the nominal trajectory due to the
+      cross-wind.}
   \end{subfigure}%
+  \;
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-funnel}
-    \caption{The reachable set given the crosswind pictured.}
+    \caption{The reachable set given the cross-wind pictured.}
   \end{subfigure}
   \caption{Not taking uncertainty into account can lead to collisions when the
     actual trajectory diverges from the nominal one.}
@@ -33,9 +35,9 @@ five meters ahead.
 In order to generate the obstacle field for the experiments, which is to
 resemble a forest, a \textit{spatial Poisson process} is employed. Poisson
 processes are used to model random configurations of points in
-space'~\cite{Kroese_2014}, and hence are well suited for
-generating a simulated forest. For the experiments below, a forest will be the
-realization of a spatial Poisson process on \(\R^2\).
+space'~\cite{Kroese_2014}, and hence are well suited for generating a simulated
+forest. For the experiments below, a forest will be the realization of a spatial
+Poisson process on \(\R^2\).
 
 A few key parameters of the Poisson process has to be set for use in the
 experiments below. Firstly, \(\lambda\) is the intensity of the spatial process.
@@ -43,7 +45,7 @@ For these experiments, the intensity will be held constant, and the process is
 therefore homogeneous, as it does not vary with the position in space. One
 interesting configuration could be to vary the intensity as the radius from
 origo, and hence the difficulty in traversing the terrain would increase with
-the distance travelled. However, the constant intensity setting was chosen to
+the distance traveled. However, the constant intensity setting was chosen to
 keep things simple and uniform.
 
 The algorithm for realizing a random Poisson measure~\cref{def:Poisson-def} is
@@ -52,8 +54,8 @@ taken from~\cite[Definition 1.1.1,p~34]{Kroese_2014}.
 \begin{definition}[Generating a Poisson random measure]
   \label{def:Poisson-def}
   \begin{enumerate}
-  \item Generate a Poisson random variable \(N ~ Poi(\mu(E))\).
-  \item Draw \(X_1,X_2,\ldots,X_N ~ g\), where \(g(x) \lambda(x)/ \mu(E)\).
+  \item Generate a Poisson random variable \(N \sim Poi(\mu(E))\).
+  \item Draw \(X_1,X_2,\ldots,X_N \sim g\), where \(g(x) \lambda(x)/ \mu(E)\).
   \end{enumerate}
 \end{definition}
 where \(E\) is the set over which the points should be generated, and the
@@ -65,7 +67,7 @@ as
 
 For the experiments the set \(E\) will be a square defined as
 \[
-  E = [-\alpha, \alpha]^2
+  E = {[-\alpha, \alpha]}^2
 \]
 the density of the generated forest \(\lambda\) will be set to
 \[
@@ -119,7 +121,7 @@ figure~\cref{fig:radio-vehicle}.
 The size of the vehicle in the original model is a single point, and as such,
 the vehicle model with a size is not accounted for in the funnels prior to
 running the simulations. Therefore the funnels have to be expanded in order for
-them to accomodate the necessary robustness guarantees that are expected from
+them to accommodate the necessary robustness guarantees that are expected from
 the algorithm. However, the size of the vehicle only affects the size of the
 funnel ellipsis projected down into the xy-plane. Therefore first getting the
 projected size of the funnel, where \(P \colon \R^4 \rightarrow \R^2\) is a
@@ -137,14 +139,14 @@ such that for the projected ellipsoid
 \]
 and
 \[
-  S_{k}^{(p)} = \left( PS_{k}^{-1}P^T \right)^{-1}
+  S_{k}^{(p)} = {\left( PS_{k}^{-1}P^T \right)}^{-1}
 \]
 and \(\mathcal{E}_{p}\) is the projected set of the ellipsoid projected down
 into the xy-plane~\cite{majumdarFunnelLibrariesRealtime2017}. In general an
 ellipse centered at the origin is a linear transformation of the unit
 circle~\cite{lay2005linear}. Exploiting this fact, expanding the radius of the
 circle to encompass the vehicle model. Also taking into account that the matrix
-\(S_{k}\) is \textit{Positive semidefinite}, and hence can be cholezky
+\(S_{k}\) is \textit{Positive semidefinite}, and hence can be Cholezky
 factorized~\cite{lay2005linear}. The expanded ellipsis (which now contains all
 the possible states of the vehicle model) is:
 
@@ -155,7 +157,7 @@ the possible states of the vehicle model) is:
 \end{align*}
 
 where \(S_{k}^{'}\) is the ellipsoid which contains the volume of the vehicle
-for all verfied states in the funnel. A picture of the initial funnel and the
+for all verified states in the funnel. A picture of the initial funnel and the
 funnel expanded around the vehicle model can be seen in
 figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 
@@ -163,22 +165,26 @@ figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
   \centering \includegraphics[clip, trim=6cm 8cm 6cm 8cm,
   scale=.5]{figures/method/expanded-funnel}
   \caption{The original funnel created from the point model, with a funnel
-    expanded by a radius of 0.2 surrounding it.}
+    expanded by a radius of 0.1 surrounding it.}
   \label{fig:expanded-funnel}
 \end{figure}
 
 \begin{figure}
-  \centering
-  \begin{minipage}{0.4\textwidth}
-    \includegraphics[scale=.3]{figures/method/unexpanded-funnel}
-    \caption{The funnel around a straight trajector for the point model.}
-  \end{minipage}
-  \begin{minipage}{0.4\textwidth}
-    \includegraphics[scale=.3]{figures/method/expanded-funnel-with-car}
-    \caption{The funnel around a straight trajector for the point model.}
-  \end{minipage}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[trim={2cm 5cm 0cm 5cm},
+    width=\textwidth]{figures/experiments/unexpanded-funnel}
+    \caption{The funnel around a straight trajectory for the point
+      model.\newline}
+  \end{subfigure}%
+  \;
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[trim={2cm 5cm 0cm 5cm},
+    width=\textwidth]{figures/experiments/expanded-funnel-with-plane}
+    \caption{The funnel around a straight trajectory for the point model,
+      expanded with the size of the plane.}
+  \end{subfigure}
   \caption{Pictured: An unexpanded and a funnel expanded by the size of the
-    simulation vehicle.}
+    simulation plane.}
   \label{fig:expanded-and-unexpanded}
 \end{figure}
 
@@ -186,7 +192,7 @@ figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 
 The basis set of motion primitives should be small, yet cover enough of the
 finer movements of the vehicle so that the motion of the vehicle can be near
-continuous when composed together. Thus in order to generate a 'dense' set of
+continuous when composed together. Thus in order to generate a `dense' set of
 motion primitives the~\cref{alg:initial-motion-primitives-generation} is
 employed to generate points along the arch of a circle with \(N\) different
 radii.
@@ -197,11 +203,11 @@ radii.
     primitives!}
   \DontPrintSemicolon \SetAlgoNoLine
 
-  \KwIn{
+  \KwIn{%
     \(n\) - Number of points along the arch \\
     \(r_{0}\) - Initial radius \\
     \(r_{f}\) - Final radius \\
-    \(s\) - Stepsize (\(r_{n+1} = r_{n} + s\)) } \KwOut{\(\mathbf{X}\) -
+    \(s\) - Step-size (\(r_{n+1} = r_{n} + s\)) } \KwOut{\(\mathbf{X}\) -
     Endpoints matrix for the trajectory generator}
 
   \(\theta_{0} = \pi\) \;
@@ -278,7 +284,7 @@ will be counted in the experiments as a collision on the part of the
 Unfortunately, the funnels do not compose, and the composition checking of the
 algorithm has to be left out. This is because the controller has no influence on
 the speed of the vehicle, and hence there is no way to make the system converge
-in the direction of speed as examplified in the~\cref{fig:funnel-conv}.
+in the direction of speed as exemplified in the~\cref{fig:funnel-conv}.
 
 \begin{figure}
   \centering
@@ -300,7 +306,7 @@ planner with the motion primitive set pictured
 in~\cref{fig:intial-trajectories-exp} on the forest traversal problem pictured
 in~\cref{fig:simulated-forest}.
 
-The benchmarkplanner is an \ac{RRT} algorithm using the same motion primitive
+The benchmark-planner is an \ac{RRT} algorithm using the same motion primitive
 set as the \rrtfunnel{} algorithm, with the same \ac{LQR} controller, and the
 same distance metric. The difference is that it does not take uncertainty into
 account, and instead maximizes the distance to the nearest obstacle as the
@@ -317,13 +323,13 @@ concerned with getting within an \(\epsilon\) of the \((x,y)\) in the test map.
 For all the experiments below, an \(\epsilon\) of 5\si{\metre} is given to the
 planners.
 
-Each testrun will be run in a forest generated with the \textit{Poisson process}
-method from~\nameref{sec:Poisson-Process}, and an intensity parameter (\(\lambda
-= 0.1\)), which should yield a pretty dense forest, and hence make collisions
-more likely to happen.
+Each test-run will be run in a forest generated with the \textit{Poisson
+  process} method from~\nameref{sec:Poisson-Process}, and an intensity parameter
+(\(\lambda = 0.1\)), which should yield a pretty dense forest, and hence make
+collisions more likely to happen.
 
 The experiments will record the number of collisions for each algorithm across
-all testruns, and the distance penalty obtained total (which is the distance
+all test-runs, and the distance penalty obtained total (which is the distance
 from the target, if the planner failed to make it there). The planners will run
 in the same environment for each test, with the same initial seed, but the
 environments will be different for each run, as the Poisson process generating
@@ -341,7 +347,7 @@ Uncertainty is added in terms of additive noise with \(w = -0.3\)\si{m.s^{-1}}
 in the world x-direction, which is supposed to represent a broken sensor with a
 constant drift.
 
-Below are the results from a hundred testruns with the test setup from above:
+Below are the results from a hundred test-runs with the test setup from above:
 
 \subsubsection{Uncertainty in input}
 Model:
@@ -366,25 +372,23 @@ Model:
   \end{bmatrix}
 \end{equation}
 
-What happens if we add more uncertainty than what is modelled? - Run a simple
+What happens if we add more uncertainty than what is modeled? - Run a simple
 experiment, to check the robustness of both benchmark algorithms to unmodelled
 noise.
 
-TODO - run the experiments with increasing uncertainty, and add this as barplots
-for the experiments with groups of bars for each uncertainty addition. Then the
-benchmark planner must not collide without uncertainty!
+TODO - run the experiments with increasing uncertainty, and add this as bar
+plots for the experiments with groups of bars for each uncertainty addition.
+Then the benchmark planner must not collide without uncertainty!
 
 \begin{figure}
-  \centering
-  \includegraphics[scale=.5]{figures/experiments/ResultPlot01}
+  \centering \includegraphics[scale=.5]{figures/experiments/ResultPlot01}
   \caption{Results for forest density = 0.1}
   \label{fig:result0.1}
 \end{figure}
 
 \begin{figure}
-  \centering
-  \fbox{%
-  \includegraphics[scale=.7]{figures/experiments/ResultPlot02}}
+  \centering \fbox{%
+    \includegraphics[scale=.7]{figures/experiments/ResultPlot02}}
   \caption{Results for forest density = 0.1}
   \label{fig:result0.2}
 \end{figure}
