@@ -9,6 +9,19 @@ obstacle forest, and is set to traverse the strip of forest and reach any
 five meters ahead.
 
 \begin{figure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-no-funnel}
+    \caption{The airplane is deviating from the nominal trajectory due to the crosswind.}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-funnel}
+    \caption{The reachable set given the crosswind pictured.}
+  \end{subfigure}
+  \caption{Not taking uncertainty into account can lead to collisions when the
+    actual trajectory diverges from the nominal one.}
+\end{figure}
+
+\begin{figure}
   \centering \includegraphics[scale=.5]{figures/experiments/simulated-forest}
   \caption{The experiment environment.}
   \label{fig:simulated-forest}

@@ -100,6 +100,8 @@
 \RequirePackage{textcomp}       % Extra symbols
 \RequirePackage{multirow}       % Rows spanning multiple lines in tables
 \RequirePackage{tablefootnote}  % Footnotes for tables
+\RequirePackage{nomencl}        % Nomenclature
+
 
 
 %% Bibliography
@@ -259,12 +261,30 @@
 \renewcommand{\P}{\mathbb{P}}  % Projective space
 
 
+% \def \Vectorized{} % Vectorize the math syntax.
 %% Vectors
+\ifx \Vectorized \undefined
+\renewcommand{\a}{a}
+\renewcommand{\b}{b}
+\renewcommand{\c}{c}
+\newcommand{\x}{x}
+\newcommand{\y}{y}
+\newcommand{\uin}{u}
+\newcommand{\w}{w}
+% \newcommand{\matr}[1]{\mathbf{#1}} % undergraduate algebra version
+\newcommand{\matr}[1]{#1}          % pure math version
+%\newcommand{\matr}[1]{\bm{#1}}     % ISO complying version
+\else % Vectorize defined.
 \renewcommand{\a}{\mathbf{a}}
 \renewcommand{\b}{\mathbf{b}}
 \renewcommand{\c}{\mathbf{c}}
 \newcommand{\x}{\mathbf{x}}
 \newcommand{\y}{\mathbf{y}}
+\newcommand{\uin}{\mathbf{u}}
+\newcommand{\matr}[1]{\mathbf{#1}} % undergraduate algebra version
+%\newcommand{\matr}[1]{#1}          % pure math version
+%\newcommand{\matr}[1]{\bm{#1}}     % ISO complying versionnewcommand{\w}{\mathbf{w}}
+\fi
 \newcommand{\0}{\mathbf{0}}
 \newcommand{\1}{\mathbf{1}}
 

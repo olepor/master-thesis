@@ -96,7 +96,7 @@ next problem is to control the movement of the robot model, which is where the
 be applied at any given state the robot is in. Thus one can model the action
 space as a function of the robot's state.
 \[
-  \modelactionspace(x) = \set{u \in \modelactionspace \mid \modelactionspace(x)
+  \modelactionspace(\x) = \set{\uin \in \modelactionspace \mid \modelactionspace(\x)
     \neq \emptyset }
 \]
 
@@ -107,9 +107,9 @@ of states in the configuration space. Both the initial, and goal states can be
 sets of states, meaning that it is not necessary to arrive specifically at the
 target point. Mathematically the initial and goal sets is defined as
 \begin{align*}
-  \mathcal{X}_0 &= \set{ x \in \modelconfigurationspace{} \mid g_i(x) \leq a_i,
+  \mathcal{X}_0 &= \set{ \x \in \modelconfigurationspace{} \mid g_i(\x) \leq a_i,
                   \, \forall i = 1,\ldots N_j} \\
-  \mathcal{X}_{end} &= \set{ x \in \modelconfigurationspace{} \mid g_i(x) \leq
+  \mathcal{X}_{end} &= \set{ \x \in \modelconfigurationspace{} \mid g_i(\x) \leq
                       a_i, \, \forall i = 1,\ldots N_k}
 \end{align*}
 which defines the initial and final states as subsets of the
@@ -125,14 +125,14 @@ and speed in which a model can move. In the case of a first order model (\ie it
 does not take accelerations into account) the constraints are represented as a
 differential equation of the form:
 \[
-  \dot{x} = f(x,u)
+  \dot{\x} = f(\x,\uin)
 \]
 and can optionally be extended to entail uncertainty
 \[
-  \dot{x} = f(x,u,w)
+  \dot{\x} = f(\x,\uin,\w)
 \]
-where \(x\) is the configuration, \(u\) is the system input control, and \(w\)
-is an uncertainty term.
+where \(\x\) is the configuration, \(\uin\) is the system input control, and
+\(\w\) is an uncertainty term.
 
 \subsubsection{Discrete motion planning}
 
@@ -142,10 +142,10 @@ discrete motion planning problem employs all the same definitions as the
 continuous case for the world and robot model, only all points are discrete in
 time \(t_k\) for some \(k\). Therefore, let \(\mathcal{X}\) be the discrete
 state space, and \(\mathcal{U}(x_k)\) be the set of actions available at each
-point \(x_k \in \mathcal{X}\). Then the state transition equation is now written
-as:
+point \(\x_k \in \mathcal{X}\). Then the state transition equation is now
+written as:
 \[
-  x_{k+1} = f(x_k, u_k)
+  \x_{k+1} = f(\x_k, \uin_k)
 \]
 
 \subsubsection{Representation of the plan}
@@ -176,17 +176,17 @@ written as
   \phi_{k+1} = f_{\mathcal{I}}\left( \phi_k, \mu_k, y_{k+1} \right)
 \]
 
-If the discrete state space model is expanded to include \(w\) as the space of
-uncertain actions, and \(w_k\) is the action applied by an uncertain source at
+If the discrete state space model is expanded to include \(\w\) as the space of
+uncertain actions, and \(\w_k\) is the action applied by an uncertain source at
 time step \(k\), then the state transition transition is modeled as
 \[
-  x_{k+1} = f(x_k,u_k,\theta_k)
+  \x_{k+1} = f(\x_k,\uin_k,\theta_k)
 \]
-As the uncertain actions are not available beforehand, that is -- \(w_ k\) is
+As the uncertain actions are not available beforehand, that is -- \(\w_ k\) is
 not given, the model turns into
 \[
-  X_{k+1} = \set{ x_{k+1} \in X \mid \exists\theta_k \in \Theta(x_k,u_k) \text{
-      such that } x_{k+1} = f(x_k,u_k,\theta_k)}
+  X_{k+1} = \set{ \x_{k+1} \in X \mid \exists\theta_k \in \Theta(\x_k,\uin_k)
+    \text{ such that } \x_{k+1} = f(\x_k,\uin_k,\theta_k)}
 \] \cite{Lav06}.
 
 \subsection{Reachable sets}
@@ -234,7 +234,7 @@ system. This means that a \textit{Funnel} holds all the states the dynamical
 system can be in during a planning task. Mathematically the reachable set of the
 system is defined as
 \[
-  \bar{x}(0) \in \mathcal{X}_0 \implies \bar{x}(t) \in F(t), \forall t \in
+  \bar{\x}(0) \in \mathcal{X}_0 \implies \bar{\x}(t) \in F(t), \forall t \in
   \sqb{0,T}
 \]
 where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
@@ -256,9 +256,7 @@ y-axis looks like~\cref{fig:monte-carlo-sim}.
 \subsection{Funnels}
 \label{sec:Funnels}
 
-TODO -- Create a timeline of these papers.
-
-The term \funnel\ first appears in \cite{masonMechanicsManipulation1985}. The
+The term \funnel{} first appears in \cite{masonMechanicsManipulation1985}. The
 \funnel{} definitions in this thesis is taken from a series of articles on
 \funnel{}'s \cite{Tobenkin_2011} \cite{tedrakeLQRtreesFeedbackMotion2009,
   majumdarRobustOnlineMotion2013,
@@ -266,7 +264,7 @@ The term \funnel\ first appears in \cite{masonMechanicsManipulation1985}. The
 on \cite{majumdarFunnelLibrariesRealtime2017}. Here a \funnel{} is
 mathematically defined as
 \[
-  \bar{x}(0) \in \mathcal{X}_0 \implies \bar{x}(t) \in F(t), \forall t \in
+  \bar{\x}(0) \in \mathcal{X}_0 \implies \bar{\x}(t) \in F(t), \forall t \in
   \sqb{0,T}
 \]
 where \(\mathcal{X}_0\) is the set of initial conditions, \(\sqb{0,T}\) the time
@@ -289,34 +287,34 @@ syntax from~\cite{majumdarFunnelLibrariesRealtime2017}.
 Thus, given the nonlinear dynamical system
 \begin{equation}
   \label{eq:dynamicalsystem}
-  \dot{x} = f(x(t), u(t))
+  \dot{\x} = f(\x(t), \uin(t))
 \end{equation}
-with \(x(t)\) the state of the system at time \(t\) and \(u(t)\) the control
-input. Assume that a open loop nominal trajectory \(x_0 \colon [0,T] \rightarrow
-\R^n\) with control input \(u_0 \colon [0,T] \rightarrow \R^n\) is given, and
-define a change of coordinates into the error coordinate frame
+with \(\x(t)\) the state of the system at time \(t\) and \(\uin(t)\) the control
+input. Assume that a open loop nominal trajectory \(\x_0 \colon [0,T]
+\rightarrow \R^n\) with control input \(\uin_0 \colon [0,T] \rightarrow \R^n\) is
+given, and define a change of coordinates into the error coordinate frame
 \begin{align}
-  \bar{x}(t) &= (x - x_0)(t) \\
-  \bar{u}(t) &= (u - u_0)(t).
+  \bar{\x}(t) &= (\x - \x_0)(t) \\
+  \bar{\uin}(t) &= (\uin - \uin_0)(t).
 \end{align}
 Then, changing~\cref{eq:dynamicalsystem} to these new coordinates one obtains
 \begin{equation}
   \label{eq:dynamicalsystem-coordinatechange}
-  \dot{\bar{x}} = \dot{x} - \dot{x}_0 = f(x_0(t) + \bar{x}(t), u_0(t) + \bar{u}(t)) - \dot{x}_0(t)
+  \dot{\bar{\x}} = \dot{\x} - \dot{\x}_0 = f(\x_0(t) + \bar{\x}(t), \uin_0(t) + \bar{\uin}(t)) - \dot{\x}_0(t)
 \end{equation}
 
 In order to compute a parameterized reachable set through \ac{SOS} programming
 the system~\cref{eq:dynamicalsystem-coordinatechange} needs to be polynomial,
-and parameterized by \(x\) and \(t\), since the trajectory is parametrized by
-\(x\) and \(t\). Therefore, through the use of a \ac{TV-LQR} controller, the
+and parameterized by \(\x\) and \(t\), since the trajectory is parametrized by
+\(\x\) and \(t\). Therefore, through the use of a \ac{TV-LQR} controller, the
 control input can be eliminated from the dynamical equation, giving
 \begin{equation}
   \label{eq:dynamicclosedloop}
-  \dot{\bar{x}} = f_{cl}(t,\bar{x}(t)).
+  \dot{\bar{\x}} = f_{cl}(t,\bar{\x}(t)).
 \end{equation}
 However, the dynamical system may still not be polynomial, which is a necessary
 condition in order for this to be verified using \ac{SOS} programming. Expanding
-the system~\cref{eq:dynamicclosedloop} around the nominal trajectory \(x_0\)
+the system~\cref{eq:dynamicclosedloop} around the nominal trajectory \(\x_0\)
 through a Taylor expansion of some degree high enough to capture the
 nonlinearities of the system.
 
@@ -326,7 +324,7 @@ that \(F(t)\) is the set of states the system~\cref{eq:dynamicclosedloop} can be
 in at time \(t\), then
 \begin{equation}
   \label{eq:reachableset}
-  \bar{x}(0) \in \mathcal{X}_0 \implies \x(t) \in F(t), \, \forall t \in [0,T]
+  \bar{\x}(0) \in \mathcal{X}_0 \implies \x(t) \in F(t), \, \forall t \in [0,T]
 \end{equation}~\cite{majumdarFunnelLibrariesRealtime2017} 
 where \(\mathcal{X}_0\) is the initial condition set, and \(F(t) \subset \R^n\)
 is the finite time funnel for the system.
@@ -334,8 +332,8 @@ is the finite time funnel for the system.
 A funnel is defined in~\cite[Majumdar]{majumdarFunnelLibrariesRealtime2017} as
 \begin{definition}
   \label{def:funnel}
-  A funnel associatied with a closed-loop dynamical system \(\dot{\bar{x}} =
-  f_{cl}(t,x(t))\) is a map \(F \colon [0,T] \rightarrow \mathcal{P}(\R^n)\),
+  A funnel associatied with a closed-loop dynamical system \(\dot{\bar{\x}} =
+  f_{cl}(t,\x(t))\) is a map \(F \colon [0,T] \rightarrow \mathcal{P}(\R^n)\),
   from the time interval \([0,T]\) to the power set (i.e., the set of subsets)
   of \(\R^n\) so that the sets \(F(t)\) satisfy the
   condition~\cref{eq:reachableset}.
@@ -346,22 +344,22 @@ Thus, \(F(t)\) is the set of reachable states that the system can be in at time
 Next, the reachable set is paramterized through the use of Lyapunov functions,
 which yields
 \begin{equation}
-  F(t) = \set{\bar{x}(t) \mid V(t, \bar{x}(t) \leq \rho (t))}
+  F(t) = \set{\bar{\x}(t) \mid V(t, \bar{\x}(t) \leq \rho (t))}
 \end{equation}
 where \(\rho (t) \colon [0,T] \rightarrow \R^+\), is a function which limits the
 size of the reachable set, and \(V(t,\bar{x}(t))\) is a Lyapunov function \(V
 \colon [0,T] \times \R^n \rightarrow \R^+\).
 
-Then, by setting \(\mathcal{X}_0 \subset F(0,\bar{x})\), one can derive the
+Then, by setting \(\mathcal{X}_0 \subset F(0,\bar{\x})\), one can derive the
 sufficient condition~\cref{eq:reachableset} for containing the reachable set in
 the Lyapunov function paramterization
 \begin{equation}
   \label{eq:funnelsufficient}
-  V(t,\bar{x}) = \rho(t) \implies \dot{V}(t,\bar{x}) < \dot{\rho}(t), \, \forall t \in [0,T]
+  V(t,\bar{\x}) = \rho(t) \implies \dot{V}(t,\bar{\x}) < \dot{\rho}(t), \, \forall t \in [0,T]
 \end{equation}
-with \(\dot{V}(t,\bar{x})\) computed as
+with \(\dot{V}(t,\bar{\x})\) computed as
 \begin{equation}
-  \dot{V}(t,\bar{x}) = \frac{\partial V(t,\bar{x})}{\partial x} f_{cl}(t,\bar{x}) + \frac{\partial V(t,\bar{x})}{\partial t}
+  \dot{V}(t,\bar{\x}) = \frac{\partial V(t,\bar{\x})}{\partial \x} f_{cl}(t,\bar{\x}) + \frac{\partial V(t,\bar{\x})}{\partial t}
 \end{equation}
 
 Currently there are no limitations on the functions \(V\) and \(\rho\), and
@@ -375,8 +373,8 @@ optimization problem~\cite{majumdarFunnelLibrariesRealtime2017}
 \begin{align}
   \label{eq:funneloptimizationproblem}
   &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol(F(t))\, dt \\
-  &\text{subject to} && V(t,\bar{x}) = \rho (t) \implies \dot{V}(t,\bar{x}) < \rho (t) \, \forall t \in [0,T] \\
-  && &\mathcal{X}_0 \subset F(0,\bar{x}) \\
+  &\text{subject to} && V(t,\bar{\x}) = \rho (t) \implies \dot{V}(t,\bar{\x}) < \rho (t) \, \forall t \in [0,T] \\
+  && &\mathcal{X}_0 \subset F(0,\bar{\x}) \\
 \end{align} 
 
 
@@ -400,25 +398,25 @@ condition set needs to be a \textit{semi-algebraic set}, (\ie{} parameterized by
 polynomial inequalities),
 
 \begin{equation}
-  \mathcal{X}_0 = \set{\bar{x} \in \R^n \mid g_{o,i}(\bar{x}) \geq 0, \, i = 1,\ldots,N_0}
+  \mathcal{X}_0 = \set{\bar{\x} \in \R^n \mid g_{o,i}(\bar{\x}) \geq 0, \, i = 1,\ldots,N_0}
 \end{equation}
 
 Then rewriting~\cref{eq:funneloptimizationproblem}~as in terms of positivity and
 equality constraints yields
 \begin{equation}
-  V(t,\bar{x}) = \rho(t) \implies \dot{\rho}(t) - \dot{V}(t,\bar{x}) > 0
+  V(t,\bar{\x}) = \rho(t) \implies \dot{\rho}(t) - \dot{V}(t,\bar{\x}) > 0
 \end{equation}
 and
 \begin{equation}
-  g_{0,i}(\bar{x}) \geq 0 \forall i \in \set{1,\ldots,N_0} \implies \rho(0) - V(0,\bar{x}) \geq 0
+  g_{0,i}(\bar{\x}) \geq 0 \forall i \in \set{1,\ldots,N_0} \implies \rho(0) - V(0,\bar{\x}) \geq 0
 \end{equation}
 which, if these functions are both polynomial, is now in the form of a \ac{SOS}
 optimization problem. Then through the use of the~\nameref{sec:s-procedure} one
 arrives at the equations
 \begin{align}
-  &\dot{\rho}(t) - \dot{V}(t,\bar{x}) - L(t,\bar{x})\left[ V(t,\bar{x}) - \rho(t) \right] - L_{t}(t,\bar{x})\left[ t\left( T - t \right) \right]  && \text{is SOS}& \label{eq:sufficient-conditions}\\
-  & \rho(0) - V(0,\bar{x}) - \sum_{i}^{N_{0}} L_{0,i}(\bar{x})g_{0,i}(\bar{x}) && \text{is SOS}& \\
-  & L_{t}(\bar{x}), \, L_{0,i}(\bar{x}) \; &&\text{are SOS}, \, \forall i \in \set{1,\ldots,N_{0}} \label{eq:sufficient-conditions3} \\
+  &\dot{\rho}(t) - \dot{V}(t,\bar{\x}) - L(t,\bar{\x})\left[ V(t,\bar{\x}) - \rho(t) \right] - L_{t}(t,\bar{\x})\left[ t\left( T - t \right) \right]  && \text{is SOS}& \label{eq:sufficient-conditions}\\
+  & \rho(0) - V(0,\bar{\x}) - \sum_{i}^{N_{0}} L_{0,i}(\bar{\x})g_{0,i}(\bar{\x}) && \text{is SOS}& \\
+  & L_{t}(\bar{\x}), \, L_{0,i}(\bar{\x}) \; &&\text{are SOS}, \, \forall i \in \set{1,\ldots,N_{0}} \label{eq:sufficient-conditions3} \\
 \end{align} 
 where \(L\), \(L_{t}\), and \(L_{0,i}\) are multiplier
 polynomials~\cref{sec:s-procedure}.
@@ -435,25 +433,25 @@ finite sum
 Since the Lyapunov function (\(V(t,\bar{x})\)) in this thesis is quadratic, it
 can be written as
 \begin{equation}
-  V(t_{k}, \bar{x}) = {\bar{x}}^{T}S_{k}\bar{x}, \, S_{k} \succeq 0
+  V(t_{k}, \bar{\x}) = {\bar{\x}}^{T}S_{k}\bar{\x}, \, S_{k} \succeq 0
 \end{equation}
 which means that the set \(F(t_{k})\) is an ellipsoid in which the volume can be
 minimized through maximizing the determinant of \(S_{k}\). Which in turn can be
 transformed into a \ac{SDP} problem. If an upper bound on the cost
 function~\cref{eq:discrete-costfunction} is introduced as
 \begin{equation}
-  \mathcal{E} (t_{k}) = \set{\bar{x} \in \R^n \mid {\bar{x}}^{T}S_{k}\bar{x} \leq 1, \, S_{k} \succeq 0}
+  \mathcal{E} (t_{k}) = \set{\bar{\x} \in \R^n \mid {\bar{\x}}^{T}S_{k}\bar{\x} \leq 1, \, S_{k} \succeq 0}
 \end{equation}
 where \( \mathcal{E} ( t_{k} ) \) is an ellipsoid containing the reachable set
 \( F ( t_{k} ) \) at time \( t_{k} \). This containment constraint can be
 equivalently expressed as
 \begin{equation}
-  V ( t_{k}, \bar{x} ) \leq \rho(t_{k})  \implies {\bar{x}}^{T}S_{k}\bar{x} \leq 1.
+  V ( t_{k}, \bar{\x} ) \leq \rho(t_{k})  \implies {\bar{\x}}^{T}\matr{S}_{k}\bar{\x} \leq 1.
 \end{equation}
 Which when expressed using \ac{SOS} constraints
 \begin{align}
-  1 - {\bar{x}}^{T}S_{k}\bar{x} - L_{\mathcal{E},k}(\bar{x})\left[ \rho(t_{k}) - V(t_{k}, \bar{x}) \right]  \qquad \text{is SOS}& \\
-  L_{\mathcal{E},k}(\bar{x}) \qquad \text{is SOS.}& \\
+  1 - {\bar{\x}}^{T}\matr{S}_{k}\bar{\x} - L_{\mathcal{E},k}(\bar{\x})\left[ \rho(t_{k}) - V(t_{k}, \bar{\x}) \right]  \qquad \text{is SOS}& \\
+  L_{\mathcal{E},k}(\bar{\x}) \qquad \text{is SOS.}& \\
 \end{align}
 
 Then combining the cost function~\cref{eq:discrete-costfunction} with the
@@ -461,18 +459,17 @@ constraints~\cref{eq:sufficient-conditions,eq:sufficient-conditions3}, one
 arrives at the optimization problem
 
 { % Mini environment scope
-
   \newcommand{\E}{\mathcal{E}} \renewcommand{\x}{\bar{x}}
   \begin{mini*}[1]
     { \substack { V, \rho, L, L_t,
         \\
         L_{0, i}, S_{k}, L_{\E, k} } } { \sum_{k = 1}^{N} \vol(\E(t_{k})) =
-      \sum_{k = 1}^{N} \vol \p{\set{\x \mid \x^T S_k \x \le 1}} } {} {}
+      \sum_{k = 1}^{N} \vol \p{\set{\x \mid \x^T \matr{S}_k \x \le 1}} } {} {}
     \addConstraint { \dot{\rho}(t) - \dot{V}(t,\x) - L(t,\x) \sqb*{ V(t,\x) -
         \rho(t) } - L_t (t,\x) \sqb*{t \p*{T - t}} }%
     {\text{ is SOS}} \addConstraint {\rho(0) - V(0, \x) - \sum_i^N L_{0, i}(\x)
       g_{0, i}(\x)}%
-    {\text{ is SOS}} \addConstraint { 1 - \x^T S_k \x - L_{\E, k}(\x)
+    {\text{ is SOS}} \addConstraint { 1 - \x^T \matr{S}_k \x - L_{\E, k}(\x)
       \sqb*{\rho(t_k) - V(t_k, \x)} }%
     {\text{ is SOS}} \addConstraint {S_k}%
     {\succeq 0}%
@@ -500,7 +497,7 @@ decision variables
 \]
 and
 \[
-  \left( V,\rho,L_{0,i},S_{k} \right)
+  \left( V,\rho,L_{0,i},\matr{S}_{k} \right)
 \]
 \cite[Majumdar]{majumdarFunnelLibrariesRealtime2017} arrives at the following
 algorithm for funnel computation
@@ -550,15 +547,15 @@ the sampling rate~\cite{Tobenkin_2011}. If \(t_{k} \in [0,T]\), where \(k \in
   {\label{optidef:discrete}} % Label optimization problem
   {} % Optimization result
   % Constraints
-  \addConstraint{\dot{\rho}(t_{k}) - \dot{V}_{k}(\bar{x}) - L_{k}(\bar{x})
-    \left( V_{k}(\bar{x}) - \rho(t_{k}) \right)} {\qquad} {\forall k \in
-    \set{1,\ldots,N}} \addConstraint{\rho(t_{1}) - V_{1}(\bar{x}) -
-    \sum_{i}^{N_{0}} L_{0,i}g_{0,i}(\bar{x})} {\, \text{is SOS}} {} %
-  \addConstraint{1 - {\bar{x}}^{T} S_{k} \bar{x} - L_{\mathcal{E,k}} \left(
-      \rho(t_{k}) - V_{k}(\bar{x}) \right)} {\, \text{is SOS}\;} {\forall k \in
+  \addConstraint{\dot{\rho}(t_{k}) - \dot{V}_{k}(\bar{\x}) - L_{k}(\bar{\x})
+    \left( V_{k}(\bar{\x}) - \rho(t_{k}) \right)} {\qquad} {\forall k \in
+    \set{1,\ldots,N}} \addConstraint{\rho(t_{1}) - V_{1}(\bar{\x}) -
+    \sum_{i}^{N_{0}} L_{0,i}g_{0,i}(\bar{\x})} {\, \text{is SOS}} {} %
+  \addConstraint{1 - {\bar{\x}}^{T} S_{k} \bar{\x} - L_{\mathcal{E,k}} \left(
+      \rho(t_{k}) - V_{k}(\bar{\x}) \right)} {\, \text{is SOS}\;} {\forall k \in
     \set{1,\ldots,N}} %
   \addConstraint{S_{k} \succeq 0} {} {\forall k \in \set{1,\ldots,N}} %
-  \addConstraint{L_{0,i}(\bar{x}), L_{\mathcal{E},k}} {\, \text{are SOS}}
+  \addConstraint{L_{0,i}(\bar{\x}), L_{\mathcal{E},k}} {\, \text{are SOS}}
   {\forall i \in \set{1,\ldots,N} \quad \forall k \in \set{1,\ldots,N}} %
 \end{mini}
 
@@ -591,14 +588,14 @@ funnels are sequentially composable if
 
 Thus
 \[
-  V_1(T_1,\bar{x}) \leq \rho_1(T_1) \implies V_2(0,\bar{x}) \leq \rho_2(0)
+  V_1(T_1,\bar{\x}) \leq \rho_1(T_1) \implies V_2(0,\bar{\x}) \leq \rho_2(0)
 \]
 is an equivalent condition to~\cref{eq:funnel-subset}, and which can be checked
 through the following \ac{SOS} program.
 \begin{align*}
   \text{Find } \; &L(\bar{x}) \\
-  \text{s.t} \; &\rho_2(0) - V_2(0,\bar{x}) - L(\bar{x})
-                  \left( \rho_1(T_1) - V_1(T_1,\bar{x}) \right)
+  \text{s.t} \; &\rho_2(0) - V_2(0,\bar{\x}) - L(\bar{\x})
+                  \left( \rho_1(T_1) - V_1(T_1,\bar{\x}) \right)
 \end{align*}
 \cite[Majumdar and Tedrake, p.~54]{majumdarFunnelLibrariesRealtime2017}
 
@@ -607,20 +604,20 @@ program is simply stated, and it can be helpful to take a look at the derivation
 in order to gain a feel of the implementation of a \ac{SOS} program.
 
 The \textit{S-procedure} enables us to limit our search to a semialgebraic set.
-In this case, that set is \(\mathcal{F}_2 = \set{x \in \R^n \mid V_2(0,\bar{x})
-  \leq \rho_2(0)}\), any \(x\) that is not in this set does not concern us,
-which is why employing the \textit{S-procedure} is valid. In more general terms
-this can be written
+In this case, that set is \(\mathcal{F}_2 = \set{\x \in \R^n \mid
+  V_2(0,\bar{\x}) \leq \rho_2(0)}\), any \(\x\) that is not in this set does not
+concern us, which is why employing the \textit{S-procedure} is valid. In more
+general terms this can be written
 \[
-  x \in \mathcal{F}_2 \implies p(x) \geq 0
+  \x \in \mathcal{F}_2 \implies p(\x) \geq 0
 \]
-where \(p(x)\) is the \ac{SOS} polynomial that is to be verified. In this case
-\(p(x)\) is \(V_2(0,\bar{x})\). Thus in order to impose the implication define
+where \(p(\x)\) is the \ac{SOS} polynomial that is to be verified. In this case
+\(p(\x)\) is \(V_2(0,\bar{\x})\). Thus in order to impose the implication define
 \[
-  q(x) = V_2(0,\bar{x}) - \rho_2(0) - L(\bar{x}) \left( \rho_1(T_1) -
-    V_1(T_1,\bar{x}) \right)
+  q(\x) = V_2(0,\bar{\x}) - \rho_2(0) - L(\bar{\x}) \left( \rho_1(T_1) -
+    V_1(T_1,\bar{\x}) \right)
 \]
-where \(q(x)\) and \(L(\bar{x})\) needs to be SOS polynomials.
+where \(q(\x)\) and \(L(\bar{\x})\) needs to be SOS polynomials.
 
 \begin{example}
 
@@ -631,29 +628,29 @@ where \(q(x)\) and \(L(\bar{x})\) needs to be SOS polynomials.
 
   Starting with defining the set \(\beta\)
   \[
-    \beta = \set{x \in \R^2 \mid \norm{x} \leq 2}
+    \beta = \set{\x \in \R^2 \mid \norm{\x} \leq 2}
   \]
   using the manhattan metric. then the implication
   \[
-    x \in \beta \implies p(x) \geq 0
+    \x \in \beta \implies p(\x) \geq 0
   \]
   which can be formulated as
   \begin{align*}
-    \beta &= \set{x \in \R^2 \mid 1 \pm x \geq 0 } \\
-    p(x) &= r^2 - x^2 - y^2
+    \beta &= \set{\x \in \R^2 \mid 1 \pm \x \geq 0 } \\
+    p(\x) &= r^2 - x^2 - y^2
   \end{align*}
-  where \(p(x)\) is the parametrization of the circle, and \(\beta\) is the
+  where \(p(\x)\) is the parametrization of the circle, and \(\beta\) is the
   parametrization of the square with sides of length two. What needs to be shown
   is that \(p(x)\) is positive on the set \(\beta\). Through the
   \nameref{sec:s-procedure} this can be written as the search for a nonnegative
-  polynomial \(L_{ineq,i}(x)\) such that \(p(x) \geq \left( L_{ineq,i}g
-  \right)(x)\). Thus
+  polynomial \(L_{ineq,i}(\x)\) such that \(p(\x) \geq \left( L_{ineq,i}g
+  \right)(\x)\). Thus
   \[
-    q(x) = p(x) - \sum_{i=1}^{2}L_{ineq,i}(x)g_{ineq,i}(x)
+    q(\x) = p(\x) - \sum_{i=1}^{2}L_{ineq,i}(\x)g_{ineq,i}(\x)
   \]
   is required to be a \ac{SOS} polynomial, along with \(L_{ineq,i}\). From this
-  it is seen that when a point satisfies \(g_{ineq,i}\) (\ie when \(x \in
-  \beta\)) the term \(\sum_{i=1}^{2}L_{ineq,i}(x)g_{ineq,i}(x)\) is negative,
+  it is seen that when a point satisfies \(g_{ineq,i}\) (\ie when \(\x \in
+  \beta\)) the term \(\sum_{i=1}^{2}L_{ineq,i}(\x)g_{ineq,i}(\x)\) is negative,
   and hence \(p(x)\) must be nonnegative, which gives the desired implication.
 
   Solving this problem can be done using any of a number of \ac{SOS} modelling
@@ -670,7 +667,16 @@ where \(q(x)\) and \(L(\bar{x})\) needs to be SOS polynomials.
 \subsection{Cyclic coordinates and Lagrangian dynamics}
 \label{subsec:cyclic-coordinates}
 
-The \funnel{}'s generated in this thesis will be motion primitives for the
-\rrtfunnel{} algorithm this thesis develops.
+Given the Lagrangian \((\mathcal{L}(q_i, \dot{q_i}, t))\) of a dynamical system,
+where the \((q_i)\) are the generalized coordinates of the system, and
+\((\dot{q_i})\) are the generalized velocities. If the Lagrangian does not
+contain the \((q_j)\) then \((q_j)\) is a cyclic coordinate of the system, and
+the j-th Lagrangian has the form
+\[
+  \left( \frac{d}{dt} \right) \left( \frac{\partial \mathcal{L}}{\partial
+      \dot{q_j}} \right) = \mathrm{const}
+\]
+This means that any \((q_j)\) fullfilling the above criteria can be freely moved
+around in the state-space, yet yield the same dynamical solution of the system.
 
 

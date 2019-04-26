@@ -204,8 +204,7 @@ function for which the state-space does not invalidate the sub-level constraint.
 A visualization of the Lyapunov function associated with a straight motion
 primitive can be found in~\cref{fig:visualized-lyapunov}.
 \begin{figure}
-  \centering
-  \includegraphics[trim={3cm 7cm 3cm 7cm},
+  \centering \includegraphics[trim={3cm 7cm 3cm 7cm},
   scale=.6]{figures/rrtfunnel/straight-funnel-lyapunov-3d}
   \caption{A visualization of the Lyapunov function values around a straight
     motion primitive.}
@@ -237,7 +236,8 @@ beneficial to modify this cost to penalize the size of the xy-ellipsoid.
 Therefore in order to minimize the actual size of the funnel where the physical
 vehicle can move in the world space the cost function has to be modified. Given
 a projection map \(\pi : \R^n \rightarrow \R^{n_p}\), the ellipsoid of interest
-is \(\mathcal{E} = \set{\bar{\x} \in \R^n | \bar{\x}^TS_{k}\bar{\x} \leq 1}\) with
+is \(\mathcal{E} = \set{\bar{\x} \in \R^n | \bar{\x}^TS_{k}\bar{\x} \leq 1}\)
+with
 \[
   S_k^{(p)} = \p{PS_k^{-1}P^T}^{-1}
 \]
@@ -276,9 +276,9 @@ Firstly the system needs to be control affine:
   \dot{\x} = f(\x(t)) + g(\x(t))u(t)
 \end{equation}
 so that the control policy can be parameterized as a polynomial
-\(\bar{u}_f(t,\bar{x})\), and the system dynamics written as:
+\(\bar{u}_f(t,\bar{\x})\), and the system dynamics written as:
 \begin{equation}
-  \dot{\bar{\x}} = f(\x_0(t) + \bar{\x}(t)) + g(\x(t))\left[ u_0(t) + \bar{u}_f(t,\bar{x}) \right] - \bar{\x}_0
+  \dot{\bar{\x}} = f(\x_0(t) + \bar{\x}(t)) + g(\x(t))\left[ u_0(t) + \bar{u}_f(t,\bar{\x}) \right] - \bar{\x}_0
 \end{equation}
 Which~\cref{eq:model-dynamics} is, since:
 \begin{equation}
@@ -500,7 +500,7 @@ Using the generalized S-procedure
 the composability of two funnels can be checked through the \ac{SOS} program
 \begin{align}
   & \text{Find } && L(\bar{\x}) \\
-  & \text{s.t. } && \rho_2(0) - V_2(0,\bar{\x}) - L(\bar{\x})\left( \rho_1(T_1) - V_1(T_1,\bar{x}) \right) \text{ is SOS} \nonumber \\ 
+  & \text{s.t. } && \rho_2(0) - V_2(0,\bar{\x}) - L(\bar{\x})\left( \rho_1(T_1) - V_1(T_1,\bar{\x}) \right) \text{ is SOS} \nonumber \\ 
   &&& L(\bar{\x}) \text{ is SOS} \nonumber
 \end{align}
 A picture of funnels composed together can be seen
@@ -785,7 +785,7 @@ and the extend operation on the funnel graph. The metric chosen is a modified
 Euclidean metric which weights the angle \((\theta)\) depending on how close the
 vehicle is to the final configuration and is defined as
 \[
-  \rho(x_{1},x_{2}) = w_{1}\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}} +
+  \rho(\x_{1}, \x_{2}) = w_{1}\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}} +
   w_{2}f(\theta_1,\theta_2)
 \]
 and taken from~\cite{kuffnerEffectiveSamplingDistance2004}, where
@@ -844,14 +844,14 @@ using~\cref{alg:create-funnel-graph}.
 
   \KwIn{\(\mathcal{F}\) -- The basis set of funnels computed around the nominal
     trajectories.}%
-  \KwOut{\(\mathcal{G}(\mathcal{F})\) -- Directed graph
-    representing the composability of funnels.}
+  \KwOut{\(\mathcal{G}(\mathcal{F})\) -- Directed graph representing the
+    composability of funnels.}
 
   \ForEach{\(F_{i} \in \mathcal{F}\)}%
-  { \ForEach{\(F_{j} \in \mathcal{F}\)} {
-      \If{\(F_{i}(t_{0}) \subset F_{j}(t_{end})\)}%
-      { \(\mathcal{G} \leftarrow{}
-        \left( F_{i}(t_{0}), F_{j}(t_{end}) \right)\)%
+  { \ForEach{\(F_{j} \in \mathcal{F}\)} { \If{\(F_{i}(t_{0}) \subset
+        F_{j}(t_{end})\)}%
+      { \(\mathcal{G} \leftarrow{} \left( F_{i}(t_{0}), F_{j}(t_{end})
+        \right)\)%
       }%
     }%
   }
