@@ -55,8 +55,8 @@ calculations. This thesis employs the simple unicycle model from
     x \\ y \\ \theta \\
   \end{bmatrix}, \, \dot{\x} =
   \begin{bmatrix}
-    -v\sin(\theta) \\
-    v\cos(\theta) \\
+    -v \sin(\theta) \\
+    v \cos(\theta) \\
     u \\
   \end{bmatrix},
 \end{equation}
@@ -88,24 +88,23 @@ in~\cref{subsec:generating-funnels}.
 
 The cost function chosen for the solver to minimize is:
 \begin{equation}
-  J = \int_{0}^{T} \left[ 1 + {u_{0}}^{T}Ru_{0} \right] dt
+  J = \int_{0}^{T} \left[ 1 + {\uin_{0}}^{T} \matr{R} \uin_{0} \right] \mathrm{d}t
 \end{equation}
-from~\cite{majumdarRobustOnlineMotion2013}, where \(R = 1\).
+from~\cite{majumdarRobustOnlineMotion2013}, where \(\matr{R} = 1\).
 
 An example of an initial trajectory set is pictured
 in~\cref{fig:initial-trajectories}, and consists of a left-turn, a
 straight-forward, and a right-turn motion primitive.
 
 \begin{figure}
-  \centering
   \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
-    width=\textwidth]{figures/method/straight-trajector}
+    width=\textwidth]{figures/method/left-trajector}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
-    width=\textwidth]{figures/method/left-trajector}
+    width=\textwidth]{figures/method/straight-trajector}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.3\textwidth}
@@ -127,11 +126,11 @@ as~\cite[Majumdar]{majumdarFunnelLibrariesRealtime2017}, the funnel generation
 algorithm will be initialized with a \ac{LQR} controller as the initial Lyapunov
 function employing a cost function of the form
 \begin{equation}
-  J = \x^{T} (t_1)F(t_1)\x (t_1) + \int_{t_{0}}^{t_{1}} \left( \x^{T}Q \x + u^{T}Ru + 2 \x^TNu \right) \mathrm{d}t,
+  J = \x^{T} (t_1) \matr{F}(t_1) \x (t_1) + \int_{t_{0}}^{t_{1}} \left( \x^{T} \matr{Q} \x + \uin^{T} \matr{R} u + 2 \x^T \matr{N} \uin \right) \mathrm{d}t,
 \end{equation}
 which when employed on the linearization of the system dynamics
 \begin{equation}
-  \dot{\bar{\x}} \approx A(t)\bar{\x}(t) + B(t)\bar{u}(t)
+  \dot{\bar{\x}} \approx \matr{A} (t)\bar{\x}(t) + \matr{B}(t) \bar{\uin}(t)
 \end{equation}
 \begin{equation}
   \dot{\bar{\x}} \approx %
@@ -149,15 +148,15 @@ which when employed on the linearization of the system dynamics
 \end{equation} 
 gives an initial candidate Lyapunov function
 \begin{equation}
-  V(t,\x) = {\bar{\x}}^{T}S_{i}\bar{\x}.
+  V(t,\x) = {\bar{\x}}^{T} \matr{S}_{i}\bar{\x}.
 \end{equation}
 where \(S_{i}\) is a solution of the \textit{Ricatti} \cref{eq:ricatti}
 \begin{equation}
   \label{eq:ricatti}
-  - \dot{S}(t) = A^{T}S(t) +S(t)A - \left( S(t)B + N \right)R^{-1}\left( B^{T}S(t) + N^{T} \right) + Q
+  - \dot{\matr{S}}(t) = \matr{A}^{T} \matr{S}(t) +\matr{S}(t) \matr{A} - \left( \matr{S}(t) \matr{B} + \matr{N} \right) \matr{R}^{-1}\left( \matr{B}^{T} \matr{S}(t) + \matr{N}^{T} \right) + \matr{Q}
 \end{equation} 
-associated with the \ac{LQR} controller, the feedback is gained from \(K =
-R^{-1}\left( BS + N^T \right)\), and enables the system dynamics to be written
+associated with the \ac{LQR} controller, the feedback is gained from \(\matr{K} =
+\matr{R}^{-1}\left( \matr{B} \matr{S} + \matr{N}^T \right)\), and enables the system dynamics to be written
 \(f_{cl}(t,\x)\). TODO - specify S.
 
 \subsubsection{Generating the funnels around the trajectories}
@@ -190,7 +189,7 @@ a simple way of obtaining an initial condition set for the trajectories at hand
 is by taking advantage of the Lyapunov function candidate from the
 \ac{LQR}-controller. Thus by setting
 \begin{equation}
-  \mathcal{X}_{0} = \frac{S_{k}}{\rho_{\tau}}
+  \mathcal{X}_{0} = \frac{ \matr{S}_{k}}{\rho_{\tau}}
 \end{equation}
 an initial condition is obtained. In general however, any semi-algebraic set
 will do, and the algorithm is not constrained to this one initial condition set
@@ -244,17 +243,18 @@ with
 where \(P\) is an \(n\times n_p\) projection matrix.
 
 Since minimizing the volume of the ellipsoid \(\pi(\mathcal{E})\) using a
-\ac{SDP} relies on maximizing the determinant of \(S_k\), and \(det(S_k)\) is a
+\ac{SDP} relies on maximizing the determinant of \(\matr{S}_k\), and \(det( \matr{S}_k)\) is a
 nonlinear function of \(S_k\), the function has to be linearized in order for it
 to be handled by the \ac{SOS} framework.
 \cite[Majumdar]{majumdarFunnelLibrariesRealtime2017} solves this by linearizing
-\(det(S_k)\) at the solution of \(S_k\) from the previous iteration, and
+\(det(\matr{S}_k)\) at the solution of \(\matr{S}_k\) from the previous iteration, and
 maximizes this linearization instead. In the end this translates to
 \[
-  \mathnormal{lin}\p{det\p{S_k}} =
-  Tr\p{P^T\p{PS_{k,0}^{-1}P^T}^{-1}PS_{k,0}^{-1}S_kS_{k,0}^{-1}}
+  \mathnormal{lin}\p{det\p{ \matr{S}_k}} = Tr\p{ \matr{P}^T\p{ \matr{P}
+      \matr{S}_{k,0}^{-1} \matr{P}^T}^{-1} \matr{P} \matr{S}_{k,0}^{-1}
+    \matr{S}_k \matr{S}_{k,0}^{-1}}
 \]
-where \(S_{k,0}\) is the nominal value for the linearization, and \(Tr\) is the
+where \( \matr{S}_{k,0}\) is the nominal value for the linearization, and \(Tr\) is the
 trace of the matrix.
 
 \subsection{Searching for a controller which minimizes the size of the funnel}
@@ -273,17 +273,17 @@ the size of the funnel, given a few conditions on the system.
 
 Firstly the system needs to be control affine:
 \begin{equation}
-  \dot{\x} = f(\x(t)) + g(\x(t))u(t)
+  \dot{\x} = f(\x(t)) + g(\x(t)) \uin (t)
 \end{equation}
 so that the control policy can be parameterized as a polynomial
-\(\bar{u}_f(t,\bar{\x})\), and the system dynamics written as:
+\(\bar{\uin}_f(t,\bar{\x})\), and the system dynamics written as:
 \begin{equation}
-  \dot{\bar{\x}} = f(\x_0(t) + \bar{\x}(t)) + g(\x(t))\left[ u_0(t) + \bar{u}_f(t,\bar{\x}) \right] - \bar{\x}_0
+  \dot{\bar{\x}} = f(\x_0(t) + \bar{\x}(t)) + g(\x(t))\left[ \uin_0(t) + \bar{\uin}_f(t,\bar{\x}) \right] - \bar{\x}_0
 \end{equation}
 Which~\cref{eq:model-dynamics} is, since:
 \begin{equation}
   \dot{\x} = %
-  f(\x(t)) + g(\x(t))u(t) = %
+  f(\x(t)) + g(\x(t)) \uin (t) = %
   \begin{bmatrix}
     -v(t)\sin (\theta) \\
     v(t) \cos (\theta) \\
@@ -354,7 +354,7 @@ able to handle any system uncertainty, which is vital to the safe execution of
 the \rrtfunnel{} algorithm. However, the basic formulations presented do have
 all the necessary formulations present, and adding uncertainty is equivalent to
 adding another constraint to the optimization
-problem~\cref{opt:sufficient-conditions}.
+problem~\cref{eq:sufficient-conditions}.
 
 Following are the changes to the formulation of the \ac{SOS} optimization
 condition~\cref{eq:funnelsufficient} from~\cite{majumdarRobustOnlineMotion2013}

@@ -11,8 +11,8 @@ all: setup
 	# @tests/scripts/createIncludeOnly thesis tests/thesis/maintemplate.tex
 	# @cd tests/thesis/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
 	@cp zot.bib .latexmkrc ./tests/thesis/
-	@cd tests/thesis/ && latexmk --output-directory=./build -cd -bibtex -pdf  ./main.tex
-	@open tests/thesis/build/main.pdf
+	@cd tests/thesis/ && latexmk  -bibtex -pdf  main.tex
+	@open tests/thesis/main.pdf
 
 .Phony: setup
 setup:

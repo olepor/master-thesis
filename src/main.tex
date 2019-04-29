@@ -1,4 +1,4 @@
-\documentclass[a4paper, oneside, draft]{memoir} % showtrims
+\documentclass[a4paper, oneside, final]{memoir} % showtrimxs
 \usepackage{style}      % Custom style
 \usepackage{kantlipsum} % Dummy text
 \usepackage[FYS,5,master]{mnfrontpage} % TODO - add the option print for a high
@@ -50,7 +50,7 @@
     \listoftables       % Or \listoftables*
     \mainmatter{}       % Folios in Arabic numerals, numbered chapters.
     \part{Introduction}
-    % \include{sections/introduction}
+    \include{sections/introduction}
     \include{sections/problem_description}
     \include{sections/survey}
     \include{sections/Preliminaries}
