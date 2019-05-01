@@ -1,11 +1,14 @@
-\documentclass[a4paper, oneside, final]{memoir} % showtrimxs
+\documentclass[a4paper,
+  oneside,
+  hidelinks, % Do not show links in pdf.
+  final]{memoir} % showtrimxs
 \usepackage{style}      % Custom style
 \usepackage{kantlipsum} % Dummy text
-\usepackage[FYS,5,master]{mnfrontpage} % TODO - add the option print for a high
-                                % resolution image before printing.
-\title{Motion Planning}
+\usepackage[FYS,5,master,print]{mnfrontpage} % TODO - add the option "bound" before printing!
+                
+\title{Robust Motion Planning}
 \author{Ole Petter Orhagen}
-\subtitle{The RRT-Funnel motion planning algorithm}
+\subtitle{The development and execution of the \rrtfunnel{} motion planning algorithm}
 %
 \makenomenclature
 %
@@ -22,13 +25,13 @@
     sections/RRT,
     sections/Method,
     sections/experiments,
+    sections/Discussion,
+    sections/furtherwork,
     sections/planner,
     sections/MotionPlanning,
     sections/model,
     sections/Funnel,
     sections/RRTFunnel
-    sections/Discussion,
-    sections/furtherwork,
     sections/appendixA,
     sections/appendixB,
 }

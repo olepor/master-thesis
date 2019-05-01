@@ -1,4 +1,5 @@
 \chapter{Method}
+\label{chp:method}
 
 This chapter will introduce and develop the \rrtfunnel{} algorithm, by two
 means: First develop robust motion primitives through the \ac{SOS} programming
@@ -715,7 +716,7 @@ calculations) has already been handled by the \ac{SOS} framework, and hence the
 primitive after the other without any concern for the complexities mentioned
 above.
 
-\subsection{Uniform sampling in SE(2)}
+\subsection{Uniform sampling in \(SE(2)\)}
 
 As mentioned in \nameref{sec:rrt-algorithm-intro}, the \ac{RRT} algorithm needs
 uniform sampling of the state space in order for it to function optimally, as
@@ -862,6 +863,30 @@ using~\cref{alg:create-funnel-graph}.
   }
 \end{algorithm}
 
+\subsection{Special maneuvers}
+
+The algorithm incorporates room for two special maneuvers.
+
+\subsubsection{The identity funnel for starting the simulation fresh}
+
+The identity funnel is an empty placeholder for the start node of the graph,
+that does no transformations on the model at all, and thus can be seen as the
+identity element in the funnel space, or rather, the identity funnel.
+
+\subsubsection{Emergency maneuver}
+
+If the airplane is to leave the verified funnel at execution time -- this could
+happen for any number of reasons, such as unmodelled uncertainties -- the plane
+should execute the emergency maneuver, which in this case is loiter loop. In
+general an emergency maneuver can be any sort of 'safe' maneuver for the model
+at hand -- such as a sudden stop for a vehicle, or idling at one place for a
+quad-copter. This will then be the last motion primitive that the planner
+executes.
+
+\subsection{Collision checking}
+
+TODO
+
 \subsection{The \rrtfunnel{} algorithm}
 
 With the framework finished, it is time to introduce the formulation of the
@@ -905,27 +930,25 @@ The \rrtfunnel{} algorithm is defined as
         \mathcal{X}_{goal}\)}{ return \ExtractBranch{\(\mathcal{G}\)} \; } } }
 \end{algorithm}
 
-\subsection{Special maneuvers}
-
-The algorithm incorporates room for two special maneuvers.
-
-\subsubsection{The identity funnel for starting the simulation fresh}
-
-The identity funnel is an empty placeholder for the start node of the graph,
-that does no transformations on the model at all, and thus can be seen as the
-identity element in the funnel space, or rather, the identity funnel.
-
-\subsubsection{Emergency maneuver}
-
-If the airplane is to leave the verified funnel at execution time -- this could
-happen for any number of reasons, such as unmodelled uncertainties -- the plane
-should execute the emergency maneuver, which in this case is loiter loop. In
-general an emergency maneuver can be any sort of 'safe' maneuver for the model
-at hand -- such as a sudden stop for a vehicle, or idling at one place for a
-quad-copter.
-
-\subsection{Collision checking}
 
 \subsection{summary}
 
-In this chapter the \rrtfunnel{} algorithm has been developed through ....
+In this chapter the \rrtfunnel{} algorithm has been developed through the means
+of merging motion primitives created with the direct-collocation method, in
+order for optimal paths to be generated from one point in the configuration
+space to another. Next \ac{SOS}-programming and the theory of Lyapunov functions
+is utilized to verify the robust regions of convergence for each trajectory
+generated. Then the one-level set of the Lyapunov function generated from the
+\ac{SOS} framework is taken as a tight outer approximation to the actual
+reachable set of the dynamical system at sample points along the generated
+trajectories. Given that the Lyapunov function searched for is quadratic, these
+regions will be hyper-ellipsoids of dimension three, and therefore symmetric
+along the trajectories they verify. These regions of invariance are then
+given as the motion primitives to the global \ac{RRT} motion planner, which uses
+these funnels to compose a tree of motion primitives through the configuration
+space, and hence safe traversal can be made, given that the funnels abide by the
+composition \cref{def:funnel-composition}. The latest sections are focused on
+tuning and improving the distance metric and the sampling of \ac{RRT} algorithm.
+Putting this together then results in the \rrtfunnel{} algorithm, and is the
+result of this thesis, whose performance will be put to the test in the
+\cref{chp:experiments}.

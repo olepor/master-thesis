@@ -1,4 +1,5 @@
 \chapter{Experiments}
+\label{chp:experiments}
 
 The \rrtfunnel{} algorithm developed this far will now be tested in a simulation
 experiment where a simple unicycle model of a car will be set to traverse a
@@ -9,25 +10,28 @@ obstacle forest, and is set to traverse the strip of forest and reach any
 five meters ahead.
 
 \begin{figure}
-  \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-no-funnel}
-    \caption{The airplane is deviating from the nominal trajectory due to the
-      cross-wind.}
-  \end{subfigure}%
-  \;
-  \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-funnel}
-    \caption{The reachable set given the cross-wind pictured.}
-  \end{subfigure}
-  \caption{Not taking uncertainty into account can lead to collisions when the
-    actual trajectory diverges from the nominal one.}
-\end{figure}
-
-\begin{figure}
   \centering \includegraphics[scale=.5]{figures/experiments/simulated-forest}
   \caption{The experiment environment.}
   \label{fig:simulated-forest}
 \end{figure}
+
+\section{Testing the \rrtfunnel{} algorithm}
+
+The experiment section starts out by generating a random strip of forest for
+which the airplane has to navigate through in \cref{sec:Poisson-Process}. Next
+it expands from the single point model in \cref{eq:dynamical-model} to
+incorporate the actual size of the model in \cref{subsec:deciding-model-size},
+and then shows how to expand the size of the funnels to incorporate the expanded
+model in \cref{subsec:expand-funnel}. It then continues to show the initial
+motion primitive set and the \ac{LQR} controller weightings in
+\cref{subsec:initial-motion-primitive,subsec:lqr-cost}. It then shows how a
+\textit{Monte-Carlo} simulation is run in order to make sure that the expanded
+model actually stays within the expaned funnels in
+\cref{subsec:check-vehicle-in-funnel}, and shows that the funnel composition
+guarantees are lost due to the data shown in \cref{subsec:funnel-no-composable},
+until finally presenting the results of the \rrtfunnel{} algorithm benchmarked
+against a conservative \ac{RRT} motion planner which does not handle the
+uncertainty that is provided by the cross-wind in \cref{sec:experiments-final}.
 
 \subsection{Generating the obstacle forest (Poisson processes)}
 \label{sec:Poisson-Process}
@@ -92,6 +96,7 @@ figure~\cref{fig:poisson009}.
 \end{figure}
 
 \subsection{Deciding upon the size of the vehicle and the obstacles}
+\label{subsec:deciding-model-size}
 
 The funnels generated thus far is created from a point model of the vehicle, and
 its dynamics. If the grid that the simulations are run on are set to have an
@@ -116,6 +121,7 @@ figure~\cref{fig:radio-vehicle}.
 
 \subsection{Expanding the size of the funnel by the size of the simulated
   vehicle}
+\label{subsec:expand-funnel}
 
 The size of the vehicle in the original model is a single point, and as such,
 the vehicle model with a size is not accounted for in the funnels prior to
@@ -188,6 +194,7 @@ figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 \end{figure}
 
 \subsection{The initial motion primitive set}
+\label{subsec:initial-motion-primitive}
 
 The basis set of motion primitives should be small, yet cover enough of the
 finer movements of the vehicle so that the motion of the vehicle can be near
@@ -238,6 +245,7 @@ sample in~\cref{fig:sample-funnel-overlay}.
 \end{figure}
 
 \subsection{LQR cost matrices}
+\label{subsec:lqr-cost}
 
 Although the focus of this thesis is not on fine-tuning the controller, some
 amount of effort has to go into getting the cost parameters acceptable, so that
@@ -271,6 +279,7 @@ variables.
 
 \subsection{Making sure that the vehicle stays within the funnels during
   execution}
+\label{subsec:check-vehicle-in-funnel}
 
 During the execution of the \rrtfunnel{} algorithm the planner keeps track of
 the funnel during execution, and aborts the simulation with the emergency
@@ -279,6 +288,7 @@ will be counted in the experiments as a collision on the part of the
 \rrtfunnel{} algorithm.
 
 \subsection{Show the funnel inlets and outlets from the funnel computations}
+\label{subsec:funnel-no-composable}
 
 Unfortunately, the funnels do not compose, and the composition checking of the
 algorithm has to be left out. This is because the controller has no influence on
@@ -300,6 +310,7 @@ in the direction of speed as exemplified in the~\cref{fig:funnel-conv}.
 \end{figure}
 
 \section{Experiments}
+\label{sec:experiments-final}
 
 The experiments will run the \rrtfunnel{} against a benchmark regular RRT
 planner with the motion primitive set pictured

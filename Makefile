@@ -10,9 +10,9 @@ all: setup
 	# @mv tests/thesis/main.tex tests/thesis/maintemplate.tex
 	# @tests/scripts/createIncludeOnly thesis tests/thesis/maintemplate.tex
 	# @cd tests/thesis/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
-	@cp zot.bib .latexmkrc ./tests/thesis/
-	@cd tests/thesis/ && latexmk  -bibtex -pdf  main.tex
-	@open tests/thesis/main.pdf
+	@cp zot.bib .latexmkrc ./tests/thesis/src
+	@cd tests/thesis/src && latexmk  -bibtex -pdf  main.tex
+	@okular tests/thesis/src/main.pdf
 
 .Phony: setup
 setup:
