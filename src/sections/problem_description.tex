@@ -1,15 +1,29 @@
-\chapter{Problem Description}
-
 \section{The thesis problem description}
 
-% TODO - insert the problem description given in the thesis announcement from FFI
+Current motion planning algorithms mainly do not in general handle the problem
+of uncertainty during planning. This is not optimal, in that all real-world
+motion planning problems have to handle uncertainties. Therefore, develop a
+motion planning algorithm that is robust to uncertainty, and verify the safe
+traversal of the algorithm through simulation.
 
-\section{What has been done by others}
+\subsection{What has been done by others}
 
-Generating finite time reachable sets that are robust to uncertainty.
+The two main parts of the \rrtfunnel{} algorithm is the funnel generation
+framework through \ac{SOS} programming. Although this is used in a lot of
+different research, the strand that this thesis is based upon is a series of
+papers~\cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,majumdarRobustOnlineMotion2013,majumdarFunnelLibrariesRealtime2017,ahmadi2014dsos}
+with the main focus being on \cite{majumdarFunnelLibrariesRealtime2017}. The
+second part is based on~\textcite{article} and the \ac{RRT} motion planning
+algorithm, which is a simple algorithm that seeks to build a random tree that
+quickly expands deeply into the state space, and due to its random nature is
+good at avoiding local extrema.
 
-\section{Scientific contributions of the thesis}
+\subsection{Scientific contributions of this thesis}
 
-Employing finite time reachable sets to a \ac{RRT} motion planner as robust motion
-primitives.
-
+The contribution of this thesis is the combination of the \ac{RRT} motion
+planning algorithm with the guaranteed safe traversal provided by the funnel
+framework. These \textit{finite time reachable sets} are then employed as robust
+motion primitives to the \ac{RRT} motion planner, letting it create a tree of
+safe maneuvers as it searches for a path to the goal, all the while guaranteeing
+safe traversal for the nonlinear dynamical model even in the face of
+uncertainty.
