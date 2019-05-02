@@ -33,13 +33,12 @@
 \begin{document}
     \mnfrontpage{}
     \frontmatter        % Folios in Roman numerals, unnumbered chapters.
-    % \begin{titlingpage}
-    %     \mnfrontpage
-    % \end{titlingpage}
+
     \include{sections/nomenclature}
     \include{sections/Acronyms}
     \include{sections/abstract}
     \include{sections/acknowledgements}
+
     \cleartorecto{}
     \tableofcontents    % Or \tableofcontents*
     \cleartorecto{}
@@ -47,22 +46,27 @@
     \cleartorecto{}
     \listoftables       % Or \listoftables*
     \mainmatter{}       % Folios in Arabic numerals, numbered chapters.
+
     \part{Introduction}
     \include{sections/introduction}
     \include{sections/problem_description}
     \include{sections/survey}
     \include{sections/Preliminaries}
     \include{sections/RRT}
+
     \part{Method}
     \include{sections/Method}
+
     \part{Results}
     \include{sections/experiments}
     \include{sections/Discussion}
     \include{sections/furtherwork}
+
     \appendix           % "Chapter" is renamed "Appendix"
     \appendixpage       % Similar to \part*{Appendices}, but appears in TOC.
     \include{sections/appendixA}
     \include{sections/appendixB}
     \backmatter         % Folios in Arabic numerals, unnumbered chapters.
+
     \printbibliography
 \end{document}
