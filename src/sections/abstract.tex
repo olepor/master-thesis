@@ -1,67 +1,38 @@
-\chapter{Abstract}
+% \chapter{Abstract}
 % OPTIONAL SOLUTION: Use these settings if you are writing a monograph and have
 % only one abstract. Do not use them if you have an abstract at the beginning of
 % each chapter/paper.
 
 \abstractintoc{} % Add abstract to Table of Contents
-% \abstractnum % Format abstract like a chapter
+\abstractnum % Format abstract like a chapter
 
-% \begin{abstract}
+\begin{abstract}
 
-TODO - This is too vague for an abstract. Be more academic here. Do popolar
-science in the introduction.
+  This thesis develops the \rrtfunnel{} algorithm by combining the mathematical
+  theory of convex optimization in order to search for Lyapunov functions which
+  verify the stability of a smooth nonlinear system, along with a standard
+  \ac{RRT} motion planning algorithm.
 
-This thesis is focused on robust motion planning for a nonlinear system model.
-Planning with uncertainty is necessary in order for an algorithm to move out of
-the lab and into the real world as in reality there are always uncertainty in
-planning. Knowledge of position, the environment and the dynamics of the system
-are all uncertain to some degree. Sensory noise, tuning and readings may be off.
-Limited precision, and accidents may hinder the measurements and leave them with
-a an error term. Thus in order for a planner to give guarantees on safe
-traversal through a real world environment, a motion planner needs to handle
-uncertainties.
+  The combination is made through verifying an outer approximation of the
+  reachable set for a set of intial trajectories used as motion primitives in
+  the global planner.
 
-The \rrtfunnel{} algorithm is the answer provided to handle a subset of these
-problems. As it currently stands the algorithm handles uncertainty only in the
-position of the dynamical system, but can be easily extended to handle
-uncertainty in input and speed as well. Handling uncertainties in the
-environment is currently not handled.
+  Through the \ac{SOS} programming theory, the verified regions are guaranteed
+  to give safe traversal of the planning environment, even in the presence of
+  noise.
 
-The algorithm is built up through two main parts. One is the calculation of
-\textit{robust motion primitives}, which allows the global motion planner (in
-essence a regular \ac{RRT} algorithm) to remain completely oblivious to these
-difficulties, and hence act as though there were no uncertainties during the
-planning stage. This means that a lot of the difficulty of planning is handled
-during the off-line phase of generating the robust motion primitives themselves.
-This is done through the theory of \ac{SOS} programming and verification.
-Through formulating the search for a \textit{Lyapunov function} for the system
-as a \ac{SOS} program, the trajectories are extended to so called `funnels',
-which incorporate all the states the system can be in during a given time frame
--- even in the face of uncertainties. In the literature this is referred to as a
-\textit{finite time reachable set}, meaning that if the calculations are
-correct, it contains all the states that the system can evolve to given a set of
-initial conditions and a bounded uncertainty term.
+  The verified trajectories are then employed as local motion primitives, each
+  with its locally valid \ac{LQR} controller, which are then combined into a
+  tree of controllers by the \ac{RRT} motion planner. With each controller
+  having a verified region of the state space, these verified regions of
+  traversal is referred to as 'funnels', and are combined together, giving a
+  certificate of safe traversal, if the funnels can be combined into a path from
+  the intial state to the goal state.
 
-Later the aforementioned funnels are employed as \textit{motion primitives} for
-the global motion planning algorithm. Which means that they all encode a
-discrete action. For the dynamical system in this thesis, which is a simple
-unicycle model, this means that the motion primitives can be as simple
-`turn-left', `turn-right', or `go-straight' -- yet a basis set should have a few
-more primitives. Thus by stacking one motion primitive after the other, one is
-able to create a plan, and hence build one long motion primitive through the
-overarching environment. With the motion primitives being robust to uncertainty,
-these plans are in theory guaranteed to be collision-free. The reason the theory
-employed here does not necessarily apply to the real world is that most noise is
-not bounded in the real world, and hence may break our basic assumption that it
-is.
+  Lastly the algorithm is run through a simulated forest in order to show that
+  the robustness guarantees hold, even in the presence of noise and obstacles,
+  which is shown not to hold for a \ac{RRT} algorithm which does not reason
+  about disturbances.
 
-This theoretical robustness guarantee is later put to the test in simulated
-experimental runs through a strip of forest of some density meant to make
-planning difficult, along with a cross-wind as the system noise. Hence the
-airplane is constantly faced with a positional offset, and is forced to deal
-with this as best as it is able to during execution of the plan. As is shown,
-the robustness guarantees provided by the Lyapunov functions found through the
-\ac{SOS} programs formulated do provide safe traversal through the environment,
-as opposed to a planner which does not.
 
-% \end{abstract}
+\end{abstract}
