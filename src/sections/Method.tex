@@ -23,16 +23,17 @@ The outline of the chapter is as follows: first it introduces the generation of
 the trajectories~\cref{subsec:generating-the-trajectories} algorithm then moves
 on to making the model~\cref{eq:model-dynamics} equation independent of the
 system input using a \ac{TVLQR}-controller. Thus when~\cref{eq:model-dynamics}
-can be written as \(\dot{\bar{\vect{x}}} = f_{cl}(t,\vect{x})\) thanks to the controller,
-the initial funnels with no uncertainty will be generated from the polynomial
-dynamics following a third degree Taylor expansion surrounding the initial
-trajectory, which is explored in~\cref{subsec:generating-funnels}. Then later
-in~\cref{subsec:xy-cost-function}, the cost function for the funnel generation
-is modified, so that it seeks to minimize the size of the funnel projected down
-in the xy-plane. Following in~\cref{subsec:searching-for-a-controller}, the
-\ac{SOS} formulation from the funnel generation algorithm is modified so that it
-in addition to minimizing the size of the funnel in the xy-plane, also searches
-for a controller which seeks to optimize the cost function mentioned. Following
+can be written as \(\dot{\bar{\vect{x}}} = f_{cl}(t,\vect{x})\) thanks to the
+controller, the initial funnels with no uncertainty will be generated from the
+polynomial dynamics following a third degree Taylor expansion surrounding the
+initial trajectory, which is explored in~\cref{subsec:generating-funnels}. Then
+later in~\cref{subsec:xy-cost-function}, the cost function for the funnel
+generation is modified, so that it seeks to minimize the size of the funnel
+projected down in the xy-plane. Following
+in~\cref{subsec:searching-for-a-controller}, the \ac{SOS} formulation from the
+funnel generation algorithm is modified so that it in addition to minimizing the
+size of the funnel in the xy-plane, also searches for a controller which seeks
+to optimize the cost function mentioned. Following
 in~\cref{sec:adding-uncertainty} is the additional formulations needed to make
 the funnels robust to uncertainties, then
 in~\cref{subsec:shifting-funnels,sec:composable-funnels}, the composition and
@@ -156,9 +157,10 @@ where \(S_{i}\) is a solution of the \textit{Ricatti} \cref{eq:ricatti}
   \label{eq:ricatti}
   - \dot{\matr{S}}(t) = \matr{A}^{T} \matr{S}(t) +\matr{S}(t) \matr{A} - \left( \matr{S}(t) \matr{B} + \matr{N} \right) \matr{R}^{-1}\left( \matr{B}^{T} \matr{S}(t) + \matr{N}^{T} \right) + \matr{Q}
 \end{equation} 
-associated with the \ac{LQR} controller, the feedback is gained from \(\matr{K} =
-\matr{R}^{-1}\left( \matr{B} \matr{S} + \matr{N}^T \right)\), and enables the system dynamics to be written
-\(f_{cl}(t,\vect{x})\) by direct substitution of \(\vect{u}\).
+associated with the \ac{LQR} controller, the feedback is gained from \(\matr{K}
+= \matr{R}^{-1}\left( \matr{B} \matr{S} + \matr{N}^T \right)\), and enables the
+system dynamics to be written \(f_{cl}(t,\vect{x})\) by direct substitution of
+\(\vect{u}\).
 
 \subsubsection{Generating the funnels around the trajectories}
 \label{subsec:generating-funnels}
@@ -237,27 +239,28 @@ size of the xy-ellipsoid.
 Therefore in order to minimize the actual size of the funnel where the physical
 vehicle can move in the world space the cost function has to be modified. Given
 a projection map \(\pi : \R^n \rightarrow \R^{n_p}\), the ellipsoid of interest
-is \(\mathcal{E} = \set{\bar{\vect{x}} \in \R^n | \bar{\vect{x}}^TS_{k}\bar{\vect{x}} \leq 1}\)
-with
+is \(\mathcal{E} = \set{\bar{\vect{x}} \in \R^n |
+  \bar{\vect{x}}^TS_{k}\bar{\vect{x}} \leq 1}\) with
 \[
   S_k^{(p)} = \p{PS_k^{-1}P^T}^{-1}
 \]
 where \(P\) is an \(n\times n_p\) projection matrix.
 
 Since minimizing the volume of the ellipsoid \(\pi(\mathcal{E})\) using a
-\ac{SDP} relies on maximizing the determinant of \(\matr{S}_k\), and \(det( \matr{S}_k)\) is a
-nonlinear function of \(S_k\), the function has to be linearized in order for it
-to be handled by the \ac{SOS} framework.
+\ac{SDP} relies on maximizing the determinant of \(\matr{S}_k\), and \(det(
+\matr{S}_k)\) is a nonlinear function of \(S_k\), the function has to be
+linearized in order for it to be handled by the \ac{SOS} framework.
 \cite[Majumdar]{majumdarFunnelLibrariesRealtime2017} solves this by linearizing
-\(det(\matr{S}_k)\) at the solution of \(\matr{S}_k\) from the previous iteration, and
-maximizes this linearization instead. In the end this translates to
+\(det(\matr{S}_k)\) at the solution of \(\matr{S}_k\) from the previous
+iteration, and maximizes this linearization instead. In the end this translates
+to
 \[
   \mathnormal{lin}\p{det\p{ \matr{S}_k}} = Tr\p{ \matr{P}^T\p{ \matr{P}
       \matr{S}_{k,0}^{-1} \matr{P}^T}^{-1} \matr{P} \matr{S}_{k,0}^{-1}
     \matr{S}_k \matr{S}_{k,0}^{-1}}
 \]
-where \( \matr{S}_{k,0}\) is the nominal value for the linearization, and \(Tr\) is the
-trace of the matrix.
+where \( \matr{S}_{k,0}\) is the nominal value for the linearization, and \(Tr\)
+is the trace of the matrix.
 
 \subsection{Searching for a controller which minimizes the size of the funnel}
 \label{subsec:searching-for-a-controller}
@@ -300,9 +303,9 @@ Which~\cref{eq:model-dynamics} is, since:
   u(t).
 \end{equation}
 Then the feedback controller can be optimized by adding the coefficients of the
-polynomial \(u_f(t,\bar{\vect{x}})\) to the set of decision variables in the original
-optimization problem. The only issue is that now \(\dot{V}\) is bilinear in the
-decision variables \(V\) and \(\bar{u}_f\)
+polynomial \(u_f(t,\bar{\vect{x}})\) to the set of decision variables in the
+original optimization problem. The only issue is that now \(\dot{V}\) is
+bilinear in the decision variables \(V\) and \(\bar{u}_f\)
 \begin{equation}
   {
     \newcommand{\Vdot}{\dot{V}}
@@ -436,12 +439,12 @@ x,y,\theta\). Now, any funnel in the base set can be shifted freely around in
 the cyclic coordinates of the system without changing the solution to the system
 dynamic equation, and thus create an infinite set of funnels in the state space
 for the planner to work with. Through the partitioning of coordinates into
-cyclic- and non-cyclic coordinates of the form \(\vect{x} = [x_c\, x_{nc}]\), the
-state dynamics \(\dot{\vect{x}} = f(\vect{x} (t), u(t))\) only depends on the non-cyclic
-coordinates of the system. Thus, a trajectory of the form \(t \rightarrow
-(x(t),u(t))\) which solves \(\dot{\vect{x}} = f(\vect{x}(t),u(t))\) can then be transformed
-through a shift \(\Psi_c\) along the cyclic coordinates of the system to yield a
-valid solution of the form
+cyclic- and non-cyclic coordinates of the form \(\vect{x} = [x_c\, x_{nc}]\),
+the state dynamics \(\dot{\vect{x}} = f(\vect{x} (t), u(t))\) only depends on
+the non-cyclic coordinates of the system. Thus, a trajectory of the form \(t
+\rightarrow (x(t),u(t))\) which solves \(\dot{\vect{x}} = f(\vect{x}(t),u(t))\)
+can then be transformed through a shift \(\Psi_c\) along the cyclic coordinates
+of the system to yield a valid solution of the form
 \[
   t \rightarrow (\Psi_{x}(\vect{x}(t)), u(t))
 \]
@@ -453,8 +456,9 @@ where the transform \(\Psi\) is given by
     \vect{x}_{nc} \rightarrow \vect{x}_{nc} \\
   \end{cases}.
 \]
-However, since \(\mathnormal{dim}(\vect{x}) = \mathnormal{dim}(\vect{x}_c) \), for
-the~\cref{eq:model-dynamics}, it is not necessary to handle the non-cyclic case.
+However, since \(\mathnormal{dim}(\vect{x}) = \mathnormal{dim}(\vect{x}_c) \),
+for the~\cref{eq:model-dynamics}, it is not necessary to handle the non-cyclic
+case.
 
 \subsection{Sequential funnel composition}
 \label{sec:composable-funnels}
@@ -738,8 +742,7 @@ contain a bigger area. For the model~\cref{eq:model-dynamics} which moves in
 \(x,y,\theta\) the samples can be generated uniformly on the topological
 cylinder through~\cite{kuffnerEffectiveSamplingDistance2004}:
 \[
-  (x,y,\theta) = (\mathnormal{X}, \mathnormal{Y},
-  \mathnormal{\Theta})
+  (x,y,\theta) = (\mathnormal{X}, \mathnormal{Y}, \mathnormal{\Theta})
 \]
 where \((\mathnormal{X}, \mathnormal{Y}, \mathnormal{\Theta})\) are a random
 variables in the interval \([0,1)\). Where the \(\mathnormal{X}\) and
@@ -791,8 +794,8 @@ and the extend operation on the funnel graph. The metric chosen is a modified
 Euclidean metric which weights the angle \((\theta)\) depending on how close the
 vehicle is to the final configuration and is defined as
 \[
-  \rho(\vect{x}_{1}, \vect{x}_{2}) = w_{1}\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}} +
-  w_{2}f(\theta_1,\theta_2)
+  \rho(\vect{x}_{1}, \vect{x}_{2}) = w_{1}\norm{\mathnormal{X_{1}} -
+    \mathnormal{X_{2}}} + w_{2}f(\theta_1,\theta_2)
 \]
 and taken from~\cite{kuffnerEffectiveSamplingDistance2004}, where
 \(\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}}\) is the standard Euclidean
@@ -943,10 +946,10 @@ generated. Then the one-level set of the Lyapunov function generated from the
 reachable set of the dynamical system at sample points along the generated
 trajectories. Given that the Lyapunov function searched for is quadratic, these
 regions will be hyper-ellipsoids of dimension three, and therefore symmetric
-along the trajectories they verify. These regions of invariance are then
-given as the motion primitives to the global \ac{RRT} motion planner, which uses
-these funnels to compose a tree of motion primitives through the configuration
-space, and hence safe traversal can be made, given that the funnels abide by the
+along the trajectories they verify. These regions of invariance are then given
+as the motion primitives to the global \ac{RRT} motion planner, which uses these
+funnels to compose a tree of motion primitives through the configuration space,
+and hence safe traversal can be made, given that the funnels abide by the
 composition \cref{def:funnel-composition}. The latest sections are focused on
 tuning and improving the distance metric and the sampling of \ac{RRT} algorithm.
 Putting this together then results in the \rrtfunnel{} algorithm, and is the

@@ -300,7 +300,7 @@ the control input. Assume that a open loop nominal trajectory \(\x_0 \colon
 coordinate frame
 \begin{align}
   \bar{\vect{x}}(t) &= (\vect{x} - \vect{x}_0)(t) \\
-  \bar{\vect{u}}(t) &= (\vect{u}in - \vect{u}_0)(t).
+  \bar{\vect{u}}(t) &= (\vect{u} - \vect{u}_0)(t).
 \end{align}
 Then, changing~\cref{eq:dynamicalsystem} to these new coordinates one obtains
 \begin{equation}
@@ -384,7 +384,8 @@ optimization problem~\cite{majumdarFunnelLibrariesRealtime2017}
 \end{align} 
 
 \begin{figure}
-  \centering \includegraphics{figures/experiments/lyapunov_visualization}
+  \centering
+  \includegraphics[scale=.7]{figures/experiments/lyapunov_visualization}
   \caption{A visualization of the Lyapunov function along a trajectory, where
     the center of the Lyapunov function moves along the trajectory with time
     \(t\).}
