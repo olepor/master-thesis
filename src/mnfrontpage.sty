@@ -83,6 +83,7 @@
 \DeclareOption{web}  
 { 
     \def \MNFP@indent { 0 mm}
+    \def \MNFP@fac-indent { 20 mm}
     \def \MNFP@type     {web}
 }
 \DeclareOption{print}
@@ -207,7 +208,7 @@
     \put(-3 mm, 142 mm)
     {
         \begin{tikzpicture}[scale = 1mm]
-            \filldraw[white, opacity = 0.8] 
+            \filldraw[black, opacity = 1.0] 
                 (0, 2.5) rectangle (\paperwidth, 3.73);
             \filldraw[white, opacity = 0.6] 
                 (0, 0) rectangle (\paperwidth, 2.5);
@@ -224,17 +225,17 @@
     
     \ifthenelse{ \equal{\MNFP@Dept}{mn} }
     {
-        \put(22 mm + \MNFP@indent, 220 mm)
+        \put(22 mm +  23 mm + \MNFP@indent, 220 mm)
         {
-            \includegraphics[scale = 0.5]
-                {mnfrontpage-images/mnfrontpage-logo-\MNFP@Dept-\MNFP@lang}
+            \includegraphics[scale = 0.6]
+                {mnfrontpage-images/MN_FYSISK_C_ENG_cmyk}
         }
     }
     {
-        \put(19 mm + \MNFP@indent, 222 mm)
+        \put(19 mm + 23 mm + \MNFP@indent, 222 mm)
         {
-            \includegraphics[scale = 0.6]
-                {mnfrontpage-images/mnfrontpage-logo-\MNFP@Dept-\MNFP@lang}
+            \includegraphics[scale = 0.7]
+                {mnfrontpage-images/MN_FYSISK_C_ENG_cmyk}
         }
     }
 }
