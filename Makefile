@@ -5,14 +5,16 @@ all: setup
 	# cd ./src/ && latexmk -output-directory="build" -pdf -silent ./main.tex
 	# open build/main.pdf
 	@echo "Building the whole thesis!"
+	@rm -rf tests/thesis
 	@mkdir -p tests/thesis/build
-	@cp -rf src/ tests/thesis/
+	@cp -r src tests/thesis
 	# @mv tests/thesis/main.tex tests/thesis/maintemplate.tex
 	# @tests/scripts/createIncludeOnly thesis tests/thesis/maintemplate.tex
 	# @cd tests/thesis/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
-	@cp zot.bib .latexmkrc ./tests/thesis/src
-	@cd tests/thesis/src && latexmk  -bibtex -pdf  main.tex
-	@okular tests/thesis/src/main.pdf
+	@cp .latexmkrc ./tests/thesis/src
+	@cp zot.bib  ./tests/thesis/src
+	@cd tests/thesis/src && latexmk -output-directory=build -cd -bibtex -pdf main.tex
+	@open tests/thesis/src/build/main.pdf
 
 .Phony: setup
 setup:
