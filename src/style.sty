@@ -17,9 +17,9 @@
 
 
 %% Fonts and typography
-\RequirePackage{lmodern}           % Latin Modern
-\renewcommand{\sfdefault}{phv}     % Helvetica
-\RequirePackage[scaled]{beramono}  % Bera Mono (Bitstream Vera Sans Mono)
+% \RequirePackage{lmodern}           % Latin Modern
+% \renewcommand{\sfdefault}{phv}     % Helvetica
+% \RequirePackage[scaled]{beramono}  % Bera Mono (Bitstream Vera Sans Mono)
 \RequirePackage[final]{microtype}  % Improved typography
 \RequirePackage{enumitem}          % Format lists
 \setlist[itemize]{font = \upshape, before = \leavevmode}
@@ -263,9 +263,10 @@
 \renewcommand{\P}{\mathbb{P}}  % Projective space
 
 
-% \def \Vectorized{} % Vectorize the math syntax.
+\def \Vectorized{} % Vectorize the math syntax.
 %% Vectors
 \ifx \Vectorized \undefined
+\newcommand{\vect}[1]{#1}
 \renewcommand{\a}{a}
 \renewcommand{\b}{b}
 \renewcommand{\c}{c}
@@ -277,6 +278,7 @@
 \newcommand{\matr}[1]{#1}          % pure math version
 %\newcommand{\matr}[1]{\bm{#1}}     % ISO complying version
 \else % Vectorize defined.
+\newcommand{\vect}[1]{\boldsymbol{#1}}
 \renewcommand{\a}{\mathbf{a}}
 \renewcommand{\b}{\mathbf{b}}
 \renewcommand{\c}{\mathbf{c}}

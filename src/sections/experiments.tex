@@ -139,7 +139,7 @@ projection map with a projection matrix
 \]
 such that for the projected ellipsoid
 \[
-  \mathcal{E}_{p} = \set{\bar{x} \in \R^{2} \mid {\bar{x}}^{T}S_{k}^{(p)}\bar{x}
+  \mathcal{E}_{p} = \set{\bar{vect{x}} \in \R^{2} \mid {\bar{vect{x}}}^{T}S_{k}^{(p)}\bar{vect{x}}
     \leq 1}
 \]
 and
@@ -157,7 +157,7 @@ the possible states of the vehicle model) is:
 
 \begin{align*}
   S_{k}^{\mathcal{P}} &= R^{T}R \\
-  \mathcal{C} &= \set{y \in \R^2 \mid y^{T}y \leq 1 + r_{vehicle}} \\
+  \mathcal{C} &= \set{vect{y} \in \R^2 \mid vect{y}^{T}vect{y} \leq 1 + r_{vehicle}} \\
   S_{k}^{p'} &= R^{-1}y \\
 \end{align*}
 
@@ -265,7 +265,6 @@ More specifically the cost matrices employed are
   \end{bmatrix}
   \\
   Q_{f} &=
-          2\times
           \begin{bmatrix}
             1 & 0 & 0 & 0 \\
             0 & 1.5 & 0 & 0 \\
@@ -323,7 +322,7 @@ same distance metric. The difference is that it does not take uncertainty into
 account, and instead maximizes the distance to the nearest obstacle as the
 extension operator \ie{}
 \begin{equation}
-  \max_{i}\min_{t,j}(x_{i}(t), o_{j})
+  \max_{i}\min_{t,j}(vect{x}_{i}(t), o_{j})
 \end{equation}
 where \(x_{i}(t) \in \mathcal{T}\), is a trajectory from the basic motion
 primitive set, and \(o_{j} \in \modelobstacle{}\) is an obstacle in the
@@ -364,7 +363,7 @@ Below are the results from a hundred test-runs with the test setup from above:
 Model:
 \begin{equation}
   \label{eq:model-dynamics-experiments}
-  \mathbf{x} =
+  \vect{x} =
   \begin{bmatrix}
     x \\ y \\ \theta \\ \dot{\theta} \\
   \end{bmatrix}, \, \dot{\mathbf{x}} =
