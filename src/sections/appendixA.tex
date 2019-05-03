@@ -249,22 +249,12 @@ This is an important detail, as the numerical search for Lyapunov functions can
 only verify \ac{SOS}-polynomials, and as such there will be a \textit{gap} in
 the Lyapunov functions we can find and verify, and the best Lyapunov functions
 for the task, as it is no guarantees that a \ac{SOS}-Lyapunov function will be
-the optimal function for the task.
-
-\ac{SOS} is the theory of
-
-As seen in section~\ref{subsec:A simple example}, if one is able to
-
-\acl{SOS} polynomials are
-
-\acl{SOS} programming is
-
-\cite{parilloStructuredSemidefinitePrograms},
+the optimal function for the task~\cite{parilloStructuredSemidefinitePrograms}.
 
 \subsection{SOS programming}
 
 The procedure used for searching the space of all positive Lyapunov functions
-which can be written as a sum of squares is \ac{SOS} programming.
+which can be written as a sum of squares is called \ac{SOS} programming.
 With~\cite[Parillo's]{parilloStructuredSemidefinitePrograms}, work, there now
 exists an efficient way of restructuring a \ac{SOS} program into an \ac{SDP}
 program, solve it, then convert it back, and get the sought solution polynomial.
@@ -356,9 +346,9 @@ polynomial, which is required if the \ac{SOS} programming framework is to be
 applied. There are in general two ways of dealing with this:
 
 First method, is to Taylor expand equation. Second, is doing a change of
-coordinates of the form \(\left[ \theta \; \dot{\theta} \right] \) to \(\left[ s
-  \;c \; \dot{\theta} \right]\), where \(s = \sin(\theta)\) and \(c =
-\cos(\theta)\). Then with \(x = {\left[ s \; c \; \dot{\theta} \right]}^{T}\)
+coordinates of the form \(\left[ \theta \; \dot{\theta} \right]^{T} \) to
+\(\left[ s \;c \; \dot{\theta} \right]^{T}\), where \(s = \sin{\theta}\) and \(c
+= \cos{\theta}\). Then with \(x = {\left[ s \; c \; \dot{\theta} \right]}^{T}\)
 the dynamics can be written as
 \[
   \dot{x} =
@@ -387,7 +377,7 @@ Actually this feasability problem can be reduced further. In fact \(V\) and
 \(\dot{V}\) need only be positive in the case that \(\sin{(\theta)}^2 +
 \cos{(\theta)}^2 = 1\). This then means that the problem can be formulated as
 \begin{align*}
-  &\text{find}\alpha \lambda \\
+  &\text{find}\alpha\, \lambda \\
   &\text{subject to } V \text{ is SOS} \\
   &-\dot{V}(x) - \lambda(x)\left( s^2 + c^2 -1 \right) \text{ is SOS}
 \end{align*}
@@ -496,10 +486,10 @@ entire region of attraction in this case.
 Moving on to the most important sections for this thesis -- the analysis and
 verification of regions of attraction in the presence of uncertainty.
 
-The general idea is based aroung \textit{common Lyapunov functions}, which, in
+The general idea is based around \textit{common Lyapunov functions}, which, in
 contrary to regular Lyapunov analysis searches for a function which is negative
-for \textit{all values of \(w\)}, as opposed to only all values of \(x\). TODO -
-prettyfix this
+for \textit{all values of \(w\) and \(x\)}, as opposed to only all values of
+\(x\).
 
 \begin{definition}[Common Lyapunov Function]
   TODO -
@@ -534,7 +524,7 @@ Which, when analyzed yields
 \begin{align*}
   \dot{V}(x) &< 0 \\
   -x^2 + wx^4 &< 0 \\
-  x^2 > wx^4
+  x^2 &> wx^4
 \end{align*}
 or equivalently
 \[
