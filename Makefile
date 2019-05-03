@@ -33,7 +33,7 @@ section: src/sections/$(section).tex
 	@tests/scripts/createIncludeOnly $(section) tests/$(section)/maintemplate.tex
 	# @cd tests/$(section)/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
 	@cp zot.bib ./tests/$(section)/
-	@cd tests/$(section)/ && latexmk --output-directory=./build -cd -bibtex -pdf  ./main.tex
+	@cd tests/$(section)/ && latexmk --output-directory=./build -cd -bibtex- -pdf  ./main.tex
 	@open tests/$(section)/build/main.pdf
 
 

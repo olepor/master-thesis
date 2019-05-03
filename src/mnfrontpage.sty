@@ -158,6 +158,10 @@
             \AddToShipoutPictureFG*{\MNFP@print@title}
             \null
         \end{titlingpage}
+        {
+          % \MNFP@page@iv
+        }
+        % {\MNFP@page@iii \MNFP@page@iv}
     }    
 }
 {
@@ -225,14 +229,15 @@
     
     \ifthenelse{ \equal{\MNFP@Dept}{mn} }
     {
-        \put(22 mm +  23 mm + \MNFP@indent, 220 mm)
+        \put(22 mm - 4 mm + \MNFP@indent, 220 mm)
         {
             \includegraphics[scale = 0.6]
                 {mnfrontpage-images/MN_FYSISK_C_ENG_cmyk}
         }
     }
     {
-        \put(19 mm + 23 mm + \MNFP@indent, 222 mm)
+      % 23 mm alignes perfectly
+        \put(19 mm - 4 mm + \MNFP@indent, 222 mm)
         {
             \includegraphics[scale = 0.7]
                 {mnfrontpage-images/MN_FYSISK_C_ENG_cmyk}
@@ -380,5 +385,35 @@
     \null
     \newpage
 }
+
+% third and fourth page stolne from the duoforside package.
+\newcommand{\MNFP@page@iii}{%
+  \begin{titlepage}
+    \def \and {\\}
+    \centering
+    \null\vfill
+    {\fontsize{24}{28pt}\fontseries{bx}\selectfont Hullo} % \@title\par
+    \vfill
+    % {\fontsize{20}{23pt}\fontshape{sl}\selectfont \duo@subtitle\par}
+    % \vfill
+    % {\fontsize{16}{18pt}\selectfont \@author\par}
+    % \vfill\vfill\vfill
+    % \ifthenelse{\equal{\duo@image}{}}{}
+    %   {\includegraphics[keepaspectratio,width=10cm,height=8cm]{\duo@image}\par\vfill\vfill}
+  \end{titlepage}
+}
+
+\newcommand{\MNFP@page@iv}{%
+  \begin{titlepage}
+    \null
+    % \vfill
+    % \raggedright
+    % \def \and {, }
+    % \textcopyright~hello \\[\baselineskip]
+    % \leavevmode Robust motion planning \\[\baselineskip]
+    % \url{http://www.duo.uio.no/}
+  \end{titlepage}
+}
+                
 
 \endinput

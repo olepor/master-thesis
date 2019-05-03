@@ -143,7 +143,7 @@ One way of making the problem more tractable is to discretize the problem. The
 discrete motion planning problem employs all the same definitions as the
 continuous case for the world and robot model, only all points are discrete in
 time \(t_k\) for some \(k\). Therefore, let \(\mathcal{X}\) be the discrete
-state space, and \(\mathcal{U}(vect{x}_k)\) be the set of actions available at
+state space, and \(\mathcal{U}(\vect{x}_k)\) be the set of actions available at
 each point \(\vect{x}_k \in \mathcal{X}\). Then the state transition equation is
 now written as:
 \[
@@ -156,10 +156,10 @@ The plan that the motion planner makes for a robot in the configuration space is
 represented as a trajectory. A trajectory is a path with an additional time
 parameter, so that the path through configuration space is now time variant.
 This is represented as a function \(\phi(\alpha) \colon [0,1] \rightarrow
-\mathcal{X}\), where \(\mathcal{X}\) is the configuration space of the vehicle,
+\mathcal{C}\), where \(\mathcal{C}\) is the configuration space of the airplane,
 with the time parameter added the trajectory is represented as a
 time-parameterized function of the kind \(\pi(t) \colon [0,T] \rightarrow
-\mathcal{X}\), where \(T\) is the planning horizon (\ie the endtime).
+\mathcal{C}\), where \(T\) is the planning horizon (\ie the endtime).
 
 \subsection{Planning Under Uncertainty (Decision Theoretic Planning)}
 
@@ -206,7 +206,7 @@ being able to reach all the states in the state-space from a given starting
 point -- at least not given a timeframe. This idea is important as it leads to
 the funnel definitions that makes up the backbone of this thesis. As an example,
 the reachable set for the \textit{Dubins car} (which is a simple car model, with
-a constant velocity, and a control on the heading of the vehicle) is visualized
+a constant velocity, and a control on the heading of the airplane) is visualized
 in~\cref{fig:reachable-set-dubin}.
 
 \begin{figure}
@@ -261,8 +261,8 @@ y-axis looks like~\cref{fig:monte-carlo-sim}.
 \label{sec:Funnels}
 
 The term \textit{funnel} first appears in \cite{masonMechanicsManipulation1985}.
-The \funnel{} definitions in this thesis is taken from a series of articles on
-\funnel{}'s \cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,
+The funnel definitions in this thesis is taken from a series of articles on
+funnels \cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,
   majumdarRobustOnlineMotion2013,
   majumdarFunnelLibrariesRealtime2017,ahmadi2014dsos}, with the main focus being
 on \cite{majumdarFunnelLibrariesRealtime2017}. Here a funnel is mathematically

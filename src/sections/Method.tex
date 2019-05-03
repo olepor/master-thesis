@@ -8,7 +8,7 @@ second, deploy these funnels as robust motion primitives in a discrete \ac{RRT}
 robust motion planner based on~\cite{lavalleLav98cPdf}. Using \textit{robust}
 motion primitives has several advantages. Firstly, they are robust to
 uncertainty, and thus, as long as the uncertainties in the system are akin to
-the assumptions put on the incoming uncertainty parameters, the vehicle will not
+the assumptions put on the incoming uncertainty parameters, the airplane will not
 leave the funnel, and hence if the funnel is not in collision, neither will the
 system be. Secondly, with the assumption that the motion primitives are robust,
 there is no need for more conservative maneuvers and heuristics, such as
@@ -67,7 +67,7 @@ picture of the model can be found in ~\cref{fig:second-order-unicycle}.
 \begin{figure}
   \centering { \fontsize{16pt}{16pt}\selectfont \def\svgwidth{1.333in}
     \import{figures/method/}{unicycle-model.pdf_tex} }
-  \caption{The unicycle model of a vehicle.}
+  \caption{The unicycle model of a airplane.}
   \label{fig:second-order-unicycle}
 \end{figure}
 Although this is the only model used in this thesis, the framework and the code
@@ -224,8 +224,8 @@ problems. In the forest traversal case the size of the ellipsoid in the
 \(\theta\) dimension is unimportant. There is no need in minimizing the value of
 \(\theta\), as it will not make the traversal of the forest any easier, in fact
 it might inflate the size of the \((x,y)\) ellipsoid. As an example: For the
-vehicle model in this thesis the size of the funnel projected down into the
-xy-plane will be the most important metric. Whether or not the vehicle's
+airplane model in this thesis the size of the funnel projected down into the
+xy-plane will be the most important metric. Whether or not the airplane's
 orientation parameter \(\theta\) is close to the nominal heading is of less
 concern, and is therefore down-prioritized, along with the cost on the control
 input \(u\). Having a large \(\theta\) semi-axis in the hyper-ellipsoid can also
@@ -237,7 +237,7 @@ the funnel set, it is therefore beneficial to modify this cost to penalize the
 size of the xy-ellipsoid.
 
 Therefore in order to minimize the actual size of the funnel where the physical
-vehicle can move in the world space the cost function has to be modified. Given
+airplane can move in the world space the cost function has to be modified. Given
 a projection map \(\pi : \R^n \rightarrow \R^{n_p}\), the ellipsoid of interest
 is \(\mathcal{E} = \set{\bar{\vect{x}} \in \R^n |
   \bar{\vect{x}}^TS_{k}\bar{\vect{x}} \leq 1}\) with
@@ -769,7 +769,7 @@ So, in order for the \rrtfunnel{} algorithm to efficiently explore the state
 space it must have a good measure of distance between different poses in space,
 without actually solving the planning problem anew. For a problem in the
 Cartesian plane it is common to use the Euclidean distance, however, this is not
-a good distance metric for non-holonomic vehicles, as it does not incorporate
+a good distance metric for non-holonomic ariplanes, as it does not incorporate
 the possible constraints of the system function, and has little bearing on the
 actual cost-to-go of the system~\cite{parkFeedbackMotionPlanning2015}. In fact,
 for sampling based planners such as the \ac{RRT}, the configuration space is
@@ -787,12 +787,12 @@ able to instantaneously move in a direction orthogonal to the direction of
 travel, as is seen in \cref{fig:non-holonomic-vehicle-euclidean-weakness}. Here
 the distance between two points might be small in the sense of a regular
 Euclidean distance metric, but due to the differential constraints on the system
-model, the vehicle has to move far in order to reach the sought configuration.
+model, the airplane has to move far in order to reach the sought configuration.
 
 The \rrtfunnel{} algorithm will use the same metric for both the closest node
 and the extend operation on the funnel graph. The metric chosen is a modified
 Euclidean metric which weights the angle \((\theta)\) depending on how close the
-vehicle is to the final configuration and is defined as
+airplane is to the final configuration and is defined as
 \[
   \rho(\vect{x}_{1}, \vect{x}_{2}) = w_{1}\norm{\mathnormal{X_{1}} -
     \mathnormal{X_{2}}} + w_{2}f(\theta_1,\theta_2)

@@ -92,3 +92,4 @@
 ** Update frontpage to have pretty second and third pages, like DUO master frontpage.
 ** Finish the nomenclature with sections, like motion planning, SOS, etc
 ** Cleanup appendixA after a solid read through.
+** Cleanup the section depth in the method section. (More subsections needed).

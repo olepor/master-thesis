@@ -14,9 +14,9 @@ The algorithm does take into account uncertainty in both pose and
 predictability, but not the surrounding environment.
 
 The algorithm takes only kinematic constraints, and as such is severly limited
-in that some plans might not be executable on an actual vehicle which is subject
-to actuator constraints, forces and torques. Actuator constraints could be
-enveloped in the current implementation
+in that some plans might not be executable on an actual airplane which is
+subject to actuator constraints, forces and torques. Actuator constraints could
+be enveloped in the current implementation
 however~\cite{majumdarFunnelLibrariesRealtime2017}.
 
 The implementation in this thesis leveraged the discrete sampling of points in
@@ -29,7 +29,7 @@ The algorithm could in theory leverage the symmetries in the dynamics, and hold
 a much sparser funnel library, and then simply mirror them at runtime, then the
 mirror of another funnel is needed - say a left turn instead of a right, but
 this implementation has to be considered more as a proof of concept than a
-fine-tuned lean and mean implementation ready for use of a proper vehicle.
+fine-tuned lean and mean implementation ready for use of a proper airplane.
 
 In general not every sub-level set of the uncertain funnel is invariant, however
 some investigations into this could significantly reduce the size of the funnel
