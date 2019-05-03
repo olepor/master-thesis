@@ -139,7 +139,7 @@ projection map with a projection matrix
 \]
 such that for the projected ellipsoid
 \[
-  \mathcal{E}_{p} = \set{\bar{vect{x}} \in \R^{2} \mid {\bar{vect{x}}}^{T}S_{k}^{(p)}\bar{vect{x}}
+  \mathcal{E}_{p} = \set{\bar{\vect{x}} \in \R^{2} \mid {\bar{\vect{x}}}^{T}S_{k}^{(p)}\bar{\vect{x}}
     \leq 1}
 \]
 and
@@ -157,7 +157,7 @@ the possible states of the vehicle model) is:
 
 \begin{align*}
   S_{k}^{\mathcal{P}} &= R^{T}R \\
-  \mathcal{C} &= \set{vect{y} \in \R^2 \mid vect{y}^{T}vect{y} \leq 1 + r_{vehicle}} \\
+  \mathcal{C} &= \set{\vect{y} \in \R^2 \mid \vect{y}^{T}\vect{y} \leq 1 + r_{vehicle}} \\
   S_{k}^{p'} &= R^{-1}y \\
 \end{align*}
 
@@ -322,7 +322,7 @@ same distance metric. The difference is that it does not take uncertainty into
 account, and instead maximizes the distance to the nearest obstacle as the
 extension operator \ie{}
 \begin{equation}
-  \max_{i}\min_{t,j}(vect{x}_{i}(t), o_{j})
+  \max_{i}\min_{t,j}(\vect{x}_{i}(t), o_{j})
 \end{equation}
 where \(x_{i}(t) \in \mathcal{T}\), is a trajectory from the basic motion
 primitive set, and \(o_{j} \in \modelobstacle{}\) is an obstacle in the
