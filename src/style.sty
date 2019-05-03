@@ -76,6 +76,9 @@
 \usepackage{xinttools} % for the \xintFor***
 \RequirePackage{import}
 \RequirePackage{slashbox}
+\usepackage{dcolumn} % For pretty tables.
+	\newcolumntype{d}[1]{D..{#1}}
+	\newcommand\mc[1]{\multicolumn{1}{c}{#1}}
 
 %% Organising tools
 \RequirePackage{comment}                                 % Multiline comments
@@ -191,8 +194,8 @@
 \addtolength{\cftsubsubsectionindent}{0.5em}
 \addtolength{\cftparagraphindent}{0.5em}
 \addtolength{\cftsubparagraphindent}{0.5em}
-\maxtocdepth{subsection}
-\setsecnumdepth{subsection}
+\maxtocdepth{subsection} % The depth of the table of contents includes.
+\setsecnumdepth{subsection} % The depth of the numbered subparagraphs/sections.
 
 
 %% Header and footer
@@ -281,7 +284,7 @@
 \newcommand{\matr}[1]{#1}          % pure math version
 %\newcommand{\matr}[1]{\bm{#1}}     % ISO complying version
 \else % Vectorize defined.
-\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\vect}[1]{\mathbf{#1}}
 \renewcommand{\a}{\mathbf{a}}
 \renewcommand{\b}{\mathbf{b}}
 \renewcommand{\c}{\mathbf{c}}
