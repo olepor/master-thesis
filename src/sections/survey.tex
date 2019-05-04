@@ -7,14 +7,14 @@ with a focus on their application to unmanned ground vehicles (UGVs). First
 described is the relevant sources of uncertainty in UGV motion planning, and
 then the relevant techniques that have been applied to solve them in the
 literature. In general uncertainty in UGV planning can be related to three
-sources:
+sources~\cite{lavalleFrameworkMotionPlanning1995}:
 \begin{enumerate}
 \item Uncertainty in predictability.
 \item Uncertainty in environment.
 \item Uncertainty in pose.
-\end{enumerate}~\cite{lavalleFrameworkMotionPlanning1995}
+\end{enumerate}
 
-\subsection{Uncertainty in predictability}
+\section{Uncertainty in predictability}
 Uncertainty in vehicle dynamics arises as the future robot configuration cannot
 be predicted exactly. This results from modeling errors and/or limited precision
 in the system's command tracking
@@ -44,7 +44,7 @@ shown effective on large belief-spaces in~\cite{Veness_2011}.
 
 % \subsubsection{Optimal Control Based Approaches}
 
-\subsection{Uncertainty in Environment}
+\section{Uncertainty in Environment}
 If the robot has imperfect or non-existent a-priori maps, or noisy sensory data,
 complete deterministic knowledge of the environment is impossible. For an UGV in
 an unknown environment, being able to have the situational awareness to avoid
@@ -189,7 +189,7 @@ is~\cite{lenySequentialCompositionRobust2012}, as the paper also employs an
 that this algorithm is discrete and the funnels are computed using a \ac{SOS}
 framework.
 
-\subsection{Motion primitives}
+\subsubsection{Motion primitives}
 
 Applying motion primitives in a \ac{RRT} planner is shown to be beneficial for
 generating smoother paths, and offers a significant speedup on the planning
