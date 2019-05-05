@@ -161,37 +161,30 @@ with the time parameter added the trajectory is represented as a
 time-parameterized function of the kind \(\pi(t) \colon [0,T] \rightarrow
 \mathcal{C}\), where \(T\) is the planning horizon (\ie the endtime).
 
-\subsection{Planning Under Uncertainty (Decision Theoretic Planning)}
+\subsection{Planning Under Uncertainty}
 
 All real life motion planning problems are faced with some level of uncertainty,
 as errors can arise from a multiple of sources, whereas the most prevalent ones
-are uncertainty in motion, sensing, or the environment.
-
-Thus the exact system state is never exactly known. Therefore planning under
-uncertainty is done in what~\cite[LaValle]{Lav06} refers to as the belief space,
-which is a description of the state space using probability distributions. The
-belief space is a general structure for working with plans under conditions of
-uncertainty. Thus planning can be done mostly as it is done in a normal state
-space, albeit in a higher dimension. Thus the state transition function can be
-written as
-\[
-  \phi_{k+1} = f_{\mathcal{I}}\left( \phi_k, \mu_k, y_{k+1} \right)
-\]
-
-If the discrete state space model is expanded to include \(\vect{w}\) as the
-space of uncertain actions, and \(\vect{w}_k\) is the action applied by an
-uncertain source at time step \(k\), then the state transition transition is
-modeled as
+are uncertainty in motion, sensing, or the environment. Thus the exact system
+state is never exactly known. Therefore planning under uncertainty is done in
+what~\citeauthor[LaValle]{Lav06} refers to as the belief space, which is a
+description of the state space using probability distributions. The belief space
+is a general structure for working with plans under conditions of uncertainty.
+Thus planning can be done mostly as it is done in a normal state space, albeit
+in a higher dimension. If the discrete state space model is expanded to include
+\(\vect{w}\) as the space of uncertain actions, and \(\vect{w}_k\) is the action
+applied by an uncertain source at time step \(k\), then the state transition
+transition is modeled as
 \[
   \vect{x}_{k+1} = f(\vect{x}_k,\vect{u}_k,\vect{w}_k)
 \]
 As the uncertain actions are not available beforehand, that is -- \(\vect{w}_
-k\) is not given, the model turns into
+k\) is not given, the model turns into~\cite{Lav06}
 \[
-  X_{k+1} = \set{ \vect{x}_{k+1} \in X \mid \exists\theta_k \in
-    \Theta(\vect{x}_k,\vect{u}_k) \text{ such that } \vect{x}_{k+1} =
-    f(\vect{x}_k,\vect{u}_k,\vect{w}_k)}
-\] \cite{Lav06}.
+  X_{k+1} = \set{ \vect{x}_{k+1} \in X \mid \exists w_k \in
+    W(\vect{x}_k,\vect{u}_k) \text{ such that } \vect{x}_{k+1} =
+    f(\vect{x}_k,\vect{u}_k,\vect{w}_k)}.
+\] 
 
 \subsection{Reachable sets}
 \label{subsec:reachable-set}
@@ -426,29 +419,29 @@ which, if these functions are both polynomial, is now in the form of a \ac{SOS}
 optimization problem. Then through the use of the~\nameref{sec:s-procedure} one
 arrives at the equations
 \begin{align}
-  &\dot{\rho}(t) - \dot{V}(t,\bar{\vect{x}}) - L(t,\bar{\vect{x}})\left[ V(t,\bar{\vect{x}}) - \rho(t) \right] - L_{t}(t,\bar{\vect{x}})\left[ t\left( T - t \right) \right]  && \text{is SOS}& \label{eq:sufficient-conditions}\\
+  &\dot{\rho}(t) - \dot{V}(t,\bar{\vect{x}}) - L(t,\bar{\vect{x}})\left( V(t,\bar{\vect{x}}) - \rho(t) \right) - L_{t}(t,\bar{\vect{x}})\left( t\left( T - t \right) \right)  && \text{is SOS}& \label{eq:sufficient-conditions}\\
   & \rho(0) - V(0,\bar{\vect{x}}) - \sum_{i}^{N_{0}} L_{0,i}(\bar{\vect{x}})g_{0,i}(\bar{\vect{x}}) && \text{is SOS}& \\
   & L_{t}(\bar{\vect{x}}), \, L_{0,i}(\bar{\vect{x}}) \; &&\text{are SOS}, \, \forall i \in \set{1,\ldots,N_{0}} \label{eq:sufficient-conditions3} \\
 \end{align} 
-where \(L\), \(L_{t}\), and \(L_{0,i}\) are multiplier
-polynomials~\cref{sec:s-procedure}.
+where \(L\), \(L_{t}\), and \(L_{0,i}\) are multiplier polynomials~(see
+\labelcref{sec:s-procedure}).
 
 The goal is to make the parametrization of the reachable set as small as
 possible, and therefore minimizing the cost
-function~\cref{eq:funneloptimizationproblem}~. This is done
+function~\cref{eq:funneloptimizationproblem}. This is done
 in~\cite{majumdarFunnelLibrariesRealtime2017}, through approximating the cost
 function by first discretizing the problem and replacing the integral with a
 finite sum
 \begin{equation}
-  \int_{0}^{T} \vol(F(t)) \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol(F(t_{k})) \label{eq:discrete-costfunction}
+  \int_{0}^{T} \vol(F(t))\, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol(F(t_{k})) \label{eq:discrete-costfunction}
 \end{equation}
-Since the Lyapunov function (\(V(t,\bar{\vect{x}})\)) in this thesis is
-quadratic, it can be written as
+Since the Lyapunov function \(V(t,\bar{\vect{x}})\) in this thesis is quadratic,
+it can be written as
 \begin{equation}
   V(t_{k}, \bar{\vect{x}}) = {\bar{\vect{x}}}^{T}S_{k}\bar{\vect{x}}, \, S_{k} \succeq 0
 \end{equation}
 which means that the set \(F(t_{k})\) is an ellipsoid in which the volume can be
-minimized through maximizing the determinant of \(S_{k}\). Which in turn can be
+minimized through maximizing the determinant of \(S_{k}\), which in turn can be
 transformed into a \ac{SDP} problem. If an upper bound on the cost
 function~\cref{eq:discrete-costfunction} is introduced as
 \begin{equation}
@@ -462,7 +455,7 @@ equivalently expressed as
 \end{equation}
 Which when expressed using \ac{SOS} constraints
 \begin{align}
-  1 - {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} - L_{\mathcal{E},k}(\bar{\vect{x}})\left[ \rho(t_{k}) - V(t_{k}, \bar{\vect{x}}) \right]  \qquad \text{is SOS}& \\
+  1 - {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} - L_{\mathcal{E},k}(\bar{\vect{x}})\left( \rho(t_{k}) - V(t_{k}, \bar{\vect{x}}) \right)  \qquad \text{is SOS}& \\
   L_{\mathcal{E},k}(\bar{\vect{x}}) \qquad \text{is SOS.}& \\
 \end{align}
 
@@ -683,11 +676,11 @@ where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) needs to be SOS polynomials.
 \subsection{Cyclic coordinates and Lagrangian dynamics}
 \label{subsec:cyclic-coordinates}
 
-Given the Lagrangian \((\mathcal{L}(q_i, \dot{q_i}, t))\) of a dynamical system,
-where the \((q_i)\) are the generalized coordinates of the system, and
+Given the Lagrangian \(\mathcal{L}(q_i, \dot{q_i}, t)\) of a dynamical system,
+where the \(q_i\) are the generalized coordinates of the system, and
 \((\dot{q_i})\) are the generalized velocities. If the Lagrangian does not
-contain the \((q_j)\) then \((q_j)\) is a cyclic coordinate of the system, and
-the j-th Lagrangian has the form
+contain the \(q_j\) then \(q_j\) is a cyclic coordinate of the system, and the
+j-th Lagrangian has the form
 \[
   \left( \frac{d}{dt} \right) \left( \frac{\partial \mathcal{L}}{\partial
       \dot{q_j}} \right) = \mathrm{const}

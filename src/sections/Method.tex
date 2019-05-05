@@ -214,6 +214,22 @@ primitive can be found in~\cref{fig:visualized-lyapunov}.
   \label{fig:visualized-lyapunov}
 \end{figure}
 
+However, for the funnels in this thesis, the initial condition set will be given
+by the hyperellipsoid
+\begin{equation}
+  \mathcal{X}_0 = \set{\vect{x} \in \R^2 \mid \vect{x}^{T}%
+    \begin{bmatrix}
+      2 & 0 & 0 \\
+      0 & 2 & 0 \\
+      0 & 0 & 4 \\
+  \end{bmatrix}%
+  \vect{x}
+  }
+\end{equation}
+which means that the funnel will have a diameter of one, and the \(\theta\)
+inlet will be wider at closer to the center of the funnel, which is beneficial,
+as this is where most of the paths in the experiment setup is expected to enter.
+
 \subsection{Minimizing the volume of the funnel projected down into the
   xy-plane}
 \label{subsec:xy-cost-function}
@@ -409,6 +425,19 @@ and the optimization condition~\cref{eq:sufficient-conditions} turns into
   - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{\vect{x}},w)g_{w,j}(w) \quad \text{is SOS} &  \\
   \left( L, L_t, L_{w,j} \right) (t,\bar{\vect{x}},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w \nonumber
 \end{align}
+A figure of a straight funnel motion primitive calculated with uncertainties by
+the \ac{SOS} solver from the code in \cref{sec:sos-program-implementation} can
+be seen in \cref{fig:funnel-calculation-visuals}.
+\begin{figure}
+  \centering
+  \includegraphics[scale=.5]{figures/method/funnel-calculation-visuals}
+  \caption{A funnel calculated around a straight trajector motion. Shown is the
+    value of \(\rho(t)\), and \(\sum \rho(t_k)\) as it is incrementally improved
+    by the numerical solver. The bottom figures are the funnel projected down in
+    the xy-plane. Left the ellipsoids are overlaid on top of each other, and on
+    the right they are plotted on top of their respective sampling points in time \(t_k\).}
+  \label{fig:funnel-calculation-visuals}
+\end{figure}
 
 \subsubsection{Shifting funnels and invariance}
 \label{subsec:shifting-funnels}

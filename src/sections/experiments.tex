@@ -25,8 +25,8 @@ and then shows how to expand the size of the funnels to incorporate the expanded
 model in \cref{subsec:expand-funnel}. It then continues to show the initial
 motion primitive set and the \ac{LQR} controller weightings in
 \cref{subsec:initial-motion-primitive,subsec:lqr-cost}. It then shows how a
-\textit{Monte-Carlo} simulation is run in order to make sure that the expanded
-model actually stays within the expaned funnels in
+\textit{Monte-Carlo} simulation is run in order to make sure that the nonlinear
+system model does stays within the funnels in
 \cref{subsec:check-vehicle-in-funnel}, and shows that the funnel composition
 guarantees are lost due to the data shown in \cref{subsec:funnel-no-composable},
 until finally presenting the results of the \rrtfunnel{} algorithm benchmarked
@@ -54,7 +54,7 @@ intensity setting was chosen to keep things simple and uniform.
 The algorithm for realizing a random Poisson measure~\cref{def:Poisson-def} is
 taken from~\cite[Definition~1.1.1][34]{Kroese_2014}.
 
-\begin{definition}[Generating a Poisson random measure]
+\begin{definition}{Generating a Poisson random measure}
   \label{def:Poisson-def}
   \begin{enumerate}
   \item Generate a Poisson random variable \(N \sim Poi(\mu(E))\).
@@ -104,9 +104,9 @@ increment of a meter, then the funnels from the basic set are given a velocity
 of \([v(t)] = \si{m.s^{-1}}\), \([\theta] = \si{\radian\per\second}\), and
 \([\dot{\theta}] = \si{\radian\per\second\per\second}\), where \([\cdot]\) is
 the unit operator. The size of the airplane is arbitrary, and can be chosen
-freely, but if it is imagined as a radio controlled car, with a speed of
-\(10\si{m.s^{-1}}\), then a size of \(30 \times 20 \si{\centi\metre} \) keeps
-everything within the realm of a normal radio controlled car and its
+freely, but if it is imagined as a radio controlled aircraft, with a speed of
+\(10\si{m.s^{-1}}\), then a size of \(10 \times 20 \si{\centi\metre} \) keeps
+everything within the realm of a normal radio controlled aircraft and its
 capabilities. The mass is not relevant for our first order dynamics, but still
 the airplane is assigned a mass of \(1 \si{\kilo}\), so that the translation of
 the model dynamics is not irrelevant. A figure of the airplane can be seen in
@@ -157,13 +157,13 @@ the possible states of the airplane model) is:
 
 \begin{align*}
   S_{k}^{\mathcal{P}} &= R^{T}R \\
+  \vect{x} &= R^{-1}\vect{y} \\
   \mathcal{C} &= \set{\vect{y} \in \R^2 \mid \vect{y}^{T}\vect{y} \leq 1 + r_{airplane}} \\
-  S_{k}^{p'} &= R^{-1}\vect{y} \\
+  \mathcal{E}_{exp} &= \set{R^{-1}\vect{y} \mid \vect{y} \in \mathcal{C}} \\
 \end{align*}
-
-where \(S_{k}^{'}\) is the ellipsoid which contains the volume of the airplane
-for all verified states in the funnel. A picture of the initial funnel and the
-funnel expanded around the airplane model can be seen in
+where \(\mathcal{E}_{exp}\) is the ellipsoid which contains the volume of the
+airplane for all verified states in the funnel. A picture of the initial funnel
+and the funnel expanded around the airplane model can be seen in
 figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 
 \begin{figure}
@@ -223,7 +223,6 @@ radii.
       \(\theta_{ki} = i*\theta_{stepsize}\) \; \(\mathbf{X} \leftarrow (r, \pm
       \theta_{ki})\) \; }\; }\;
 \end{algorithm}
-
 The initial trajectories employed in the experiments can be seen
 in~\cref{fig:intial-trajectories-exp}, and the projected funnels overlaid a
 sample in~\cref{fig:sample-funnel-overlay}.
@@ -259,8 +258,7 @@ More specifically the cost matrices employed are
   Q &= \begin{bmatrix}
     40 & 0 & 0 & 0 \\
     0 & 40 & 0 & 0 \\
-    0 & 0 & 40 & 0 \\
-    0 & 0 & 0 & 4 \\
+    0 & 0 & 4 & 0 \\
   \end{bmatrix}
   \\
   Q_{f} &=
@@ -268,9 +266,7 @@ More specifically the cost matrices employed are
             1 & 0 & 0 & 0 \\
             0 & 1.5 & 0 & 0 \\
             0 & 0 & 1 & 0 \\
-            0 & 0 & 0 & 1 \\
           \end{bmatrix}
-  \\
 \end{align*}
 where the control input is only penalized \(\frac{1}{10}\)th of the other
 variables.
@@ -286,10 +282,20 @@ variables.
 \end{figure}
 
 During the execution of the \rrtfunnel{} algorithm the planner keeps track of
-the funnel during execution, and aborts the simulation with the emergency
-maneuver if the airplane happens to leave one of the funnels at runtime. This
-will be counted in the experiments as a collision on the part of the
-\rrtfunnel{} algorithm.
+the whether or not the model has left the funnel during execution, and aborts
+the simulation with the emergency maneuver if the airplane happens to leave one
+of the funnels at runtime. This happens if the value of the Lyapunov function is
+larger than one. This will be counted in the experiments as a collision on the
+part of the \rrtfunnel{} algorithm. A plot of the Lyapunov values for a
+simulation run can be seen in \cref{fig:lyapunov-values}.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=.5]{figures/experiments/lyapunov-values-simulation-run}
+  \caption{The plot of the Lyapunov values for a simulation run at the sampling
+    times \(t_k\).}
+  \label{fig:lyapunov-values}
+\end{figure}
 
 \subsection{Show the funnel inlets and outlets from the funnel computations}
 \label{subsec:funnel-no-composable}
@@ -297,7 +303,9 @@ will be counted in the experiments as a collision on the part of the
 Unfortunately, the funnels do not compose, and the composition checking of the
 algorithm has to be left out. This is because the controller has no influence on
 the speed of the airplane, and hence there is no way to make the system converge
-in the direction of speed as exemplified in the~\cref{fig:funnel-conv}.
+in the direction of speed as exemplified in the~\cref{fig:funnel-conv}. The
+inlet overlaid the outlets for the projected xy-funnel, and y-theta-funnel can
+be found in \cref{fig:funnel-inlet-outlet} and shows this.
 
 \begin{figure}
   \centering
@@ -311,6 +319,16 @@ in the direction of speed as exemplified in the~\cref{fig:funnel-conv}.
   \caption{Pictures: A slice of the inlet and the outlet ellipsis in the x-y and
     x-theta dimensions.}
   \label{fig:funnel-conv}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[scale=.5]{figures/experiments/funnel-inlet-outlet}
+\caption{The projection of the funnel inlet and outlet in the xy-plane. It is
+  seen that the controller is able to make the funnel converge in the
+  x-direction as expected, however, it has no control in the y-direction, as
+  there is no controller steering the speed of the vehicle.}
+\label{fig:funnel-inlet-outlet}
 \end{figure}
 
 \section{Results}
@@ -340,39 +358,24 @@ planners.
 
 Each test-run will be run in a forest generated with the \textit{Poisson
   process} method from~\nameref{sec:Poisson-Process}, and an intensity parameter
-(\(\lambda = 0.1\)), which should yield a pretty dense forest, and hence make
-collisions more likely to happen.
+(\(\lambda = 0.1,0.2,0.3\)) respectively, which should yield a pretty dense
+forest, and hence make collisions more likely to happen.
 
 The experiments will record the number of collisions for each algorithm across
-all test-runs, and the distance penalty obtained total (which is the distance
-from the target, if the planner failed to make it there). The planners will run
-in the same environment for each test, with the same initial seed, but the
-environments will be different for each run, as the Poisson process generating
-the obstacle forest is random in nature. With this test setup the difference
-between a planner which takes into account uncertainty should become evident.
+all test-runs. The planners will run in the same environment for each test, with
+the same initial starting point, but the environments will be different for each
+run, as the Poisson process generating the obstacle forest is random in nature.
+With this test setup the difference between a planner which takes into account
+uncertainty should become evident.
 
-Before the experiments are run all individual funnels in the base set are run
+Before the experiments are run, all individual funnels in the base set are run
 with a hundred simulations runs from random starting positions in its inlet, to
 check if the invariant holds, and that the airplane stays within the funnel at
-all times. This, along with the check whether or not funnels are composable, as
-in~\nameref{sec:composable-funnels}, then the invariant that the airplane never
-leaves multiple funnels composed holds.
+all times. 
 
 Uncertainty is added in terms of additive noise with \(w = -0.3\)\si{m.s^{-1}}
-in the world x-direction, which is supposed to represent a broken sensor with a
-constant drift.
-
-Below are the results from a hundred test-runs with the test setup from above:
-
-\subsubsection{Uncertainty in input}
-
-What happens if we add more uncertainty than what is modeled? - Run a simple
-experiment, to check the robustness of both benchmark algorithms to unmodelled
-noise.
-
-TODO - run the experiments with increasing uncertainty, and add this as bar
-plots for the experiments with groups of bars for each uncertainty addition.
-Then the benchmark planner must not collide without uncertainty!
+in the world x-direction. Below are the results from a hundred test-runs with
+the test setup from above:
 
 \begin{figure}
   \centering \includegraphics[scale=.5]{figures/experiments/ResultPlot01}
