@@ -5,40 +5,39 @@ This chapter will introduce and develop the \rrtfunnel{} algorithm, by two
 means: First develop robust motion primitives through the \ac{SOS} programming
 framework based on the work in~\cite{majumdarFunnelLibrariesRealtime2017}, and
 second, deploy these funnels as robust motion primitives in a discrete \ac{RRT}
-robust motion planner based on~\cite{lavalleLav98cPdf}. Using \textit{robust}
-motion primitives has several advantages. Firstly, they are robust to
-uncertainty, and thus, as long as the uncertainties in the system are akin to
-the assumptions put on the incoming uncertainty parameters, the airplane will not
-leave the funnel, and hence if the funnel is not in collision, neither will the
-system be. Secondly, with the assumption that the motion primitives are robust,
-there is no need for more conservative maneuvers and heuristics, such as
-maximizing the distance to an obstacle. The system might as well choose a
-primitive that is close to an obstacle, as one that is far away, as the funnel
-is guaranteed to be collision-free in both cases. This means that a robust
-motion primitive algorithm can perform more aggressive maneuvers than one that
-is inherently conservative about its environment and
+robust motion planner based on~\cite{Lav06}. Using \textit{robust} motion
+primitives has several advantages. Firstly, they are robust to uncertainty, and
+thus, as long as the uncertainties in the system are akin to the assumptions put
+on the incoming uncertainty parameters, the dynamical system will not leave the
+funnel, and hence if the funnel is not in collision, neither will the system be.
+Secondly, with the assumption that the motion primitives are robust, there is no
+need for more conservative maneuvers and heuristics, such as maximizing the
+distance to an obstacle. The system might as well choose a primitive that is
+close to an obstacle, as one that is far away, as the funnel is guaranteed to be
+collision-free in both cases. This means that a robust motion primitive
+algorithm can perform more aggressive maneuvers than one that is inherently
+conservative about its environment and
 maneuvers~\cite{singhRobustOnlineMotion2017}.
 
 The outline of the chapter is as follows: first it introduces the generation of
-the trajectories~\cref{subsec:generating-the-trajectories} algorithm then moves
-on to making the model~\cref{eq:model-dynamics} equation independent of the
-system input using a \ac{TVLQR}-controller. Thus when~\cref{eq:model-dynamics}
-can be written as \(\dot{\bar{\vect{x}}} = f_{cl}(t,\vect{x})\) thanks to the
-controller, the initial funnels with no uncertainty will be generated from the
-polynomial dynamics following a third degree Taylor expansion surrounding the
-initial trajectory, which is explored in~\cref{subsec:generating-funnels}. Then
-later in~\cref{subsec:xy-cost-function}, the cost function for the funnel
-generation is modified, so that it seeks to minimize the size of the funnel
-projected down in the xy-plane. Following
-in~\cref{subsec:searching-for-a-controller}, the \ac{SOS} formulation from the
-funnel generation algorithm is modified so that it in addition to minimizing the
-size of the funnel in the xy-plane, also searches for a controller which seeks
-to optimize the cost function mentioned. Following
-in~\cref{sec:adding-uncertainty} is the additional formulations needed to make
-the funnels robust to uncertainties, then
-in~\cref{subsec:shifting-funnels,sec:composable-funnels}, the composition and
+the trajectories in \cref{subsec:generating-the-trajectories}, then moves on to
+making the model \cref{eq:model-dynamics} independent of the system input using
+a \ac{TV-LQR}-controller. Thus when \cref{eq:model-dynamics} can be written as
+\( \dot{\bar{\vect{x}}} = f_{cl}(t,\vect{x}) \) thanks to the controller, the
+initial funnels with no uncertainty will be generated from the polynomial
+dynamics following a third degree Taylor expansion surrounding the initial
+trajectory, which is explored in \cref{subsec:generating-funnels}. Then later in
+\cref{subsec:xy-cost-function}, the cost function for the funnel generation is
+modified, so that it seeks to minimize the size of the funnel projected down in
+the xy-plane. Following in \cref{subsec:searching-for-a-controller}, the
+\ac{SOS} formulation from the funnel generation algorithm is modified so that
+it, in addition to minimizing the size of the funnel in the xy-plane, also
+searches for a controller which seeks to optimize the cost function mentioned.
+Following in \cref{sec:adding-uncertainty} is the additional formulations needed
+to make the funnels robust to uncertainties, then in
+\cref{subsec:shifting-funnels,sec:composable-funnels}, the composition and
 translation of the generated motion primitives are explored in order to employ
-them in the \ac{RRT} planning algorithm developed in~\cref{sec:RRT}, which
+them in the \ac{RRT} planning algorithm developed in \cref{sec:RRT}, which
 further explores the sampling and distance metric employed in the on-line
 planning stage of the algorithm.
 
@@ -49,7 +48,7 @@ In order to create a basic set of funnels as the robust motion primitives for
 the \rrtfunnel{} motion planning algorithm, a few obstacles has to be overcome.
 The first one is settling on a dynamical system model for the funnel
 calculations. This thesis employs the simple unicycle model from
-\cite[LaValle][613]{Lav06} which is modified slightly into
+\citeauthor{Lav06}~\cite[613]{Lav06} which is modified slightly into
 \begin{equation}
   \label{eq:model-dynamics}
   \vect{x} =
@@ -62,8 +61,8 @@ calculations. This thesis employs the simple unicycle model from
     u \\
   \end{bmatrix},
 \end{equation}
-which is a first-order unicycle model with constant speed (\(v=10\)\si{m.s}). A
-picture of the model can be found in ~\cref{fig:second-order-unicycle}.
+which is a first-order unicycle model with constant speed of \(v=10\)\si{m.s}. A
+picture of the model can be found in \cref{fig:second-order-unicycle}.
 \begin{figure}
   \centering { \fontsize{16pt}{16pt}\selectfont \def\svgwidth{1.333in}
     \import{figures/method/}{unicycle-model.pdf_tex} }
@@ -78,14 +77,14 @@ is easily adapted into accommodating a different and more complicated model.
 
 The robust motion primitives are \textit{finite regions of time variance} around
 an initial trajectory, meaning that they are all the states surrounding a
-trajectory in which the system can reach in a given time interval. But in order
-to verify the robust regions surrounding a trajectory, first the trajectories
-themselves have to be generated. Generating optimal trajectories is a rich field
-in the motion planning literature~\cite{Betts_1998}, and the initial
-trajectories could have been generated through any number of methods, however,
-the \textit{direct collocation method}~\cite{von1993numerical} was chosen as it
-builds locally optimal trajectories from a discrete set of sampled points along
-a sought trajectory, which is beneficial for the discrete funnel verification
+trajectory in which the system can reach in a given time. But in order to verify
+the robust regions surrounding a trajectory, first the trajectories themselves
+have to be generated. Generating optimal trajectories is a rich field in the
+motion planning literature~\cite{Betts_1998}, and the initial trajectories could
+have been generated through any number of methods, however, the \textit{direct
+  collocation method}~\cite{von1993numerical} was chosen as it builds locally
+optimal trajectories from a discrete set of sampled points along a sought
+trajectory, which is beneficial for the discrete funnel verification
 in~\cref{subsec:generating-funnels}.
 
 The cost function chosen for the solver to minimize is:
@@ -94,7 +93,8 @@ The cost function chosen for the solver to minimize is:
 \end{equation}
 from~\cite{majumdarRobustOnlineMotion2013}, where \(\matr{R} = 1\).
 
-An example of an initial trajectory set is pictured
+An example of an initial trajectory set generated with the direct collocation
+method, and the given cost function is pictured
 in~\cref{fig:initial-trajectories}, and consists of a left-turn, a
 straight-forward, and a right-turn motion primitive.
 
@@ -118,17 +118,17 @@ straight-forward, and a right-turn motion primitive.
   \label{fig:initial-trajectories}
 \end{figure}
 
-\subsubsection{Initializing the funnel calculations with a TVLQR candidate as
-  the initial Lyapunov function}
+\subsubsection{Initializing the funnel calculations}
 \label{subsec:initializing-tvlqr}
 
 The funnel calculation algorithm has to be initialized with a candidate Lyapunov
-function. In the same way
-as~\cite[Majumdar]{majumdarFunnelLibrariesRealtime2017}, the funnel generation
-algorithm will be initialized with a \ac{LQR} controller as the initial Lyapunov
-function employing a cost function of the form
+function. In the same way as
+\citeauthor{majumdarRobustOnlineMotion2013}~\cite{majumdarRobustOnlineMotion2013},
+the funnel generation algorithm will be initialized with a \ac{TV-LQR}
+controller as the initial Lyapunov function employing a cost function of the
+form
 \begin{equation}
-  J = \vect{x}^{T} (t_1) \matr{F}(t_1) \vect{x} (t_1) + \int_{t_{0}}^{t_{1}} \left( \vect{x}^{T} \matr{Q} \vect{x} + \vect{u}^{T} \matr{R} u + 2 \vect{x}^T \matr{N} \vect{u} \right) \mathrm{d}t,
+  J = \vect{x}^{T} (t_1) \matr{F}(t_1) \vect{x} (t_1) + \int_{t_{0}}^{t_{1}} \left( \vect{x}^{T} \matr{Q} \vect{x} + \vect{u}^{T} \matr{R} \vect{u} + 2 \vect{x}^T \matr{N} \vect{u} \right) \mathrm{d}t,
 \end{equation}
 which when employed on the linearization of the system dynamics
 \begin{equation}
@@ -150,28 +150,42 @@ which when employed on the linearization of the system dynamics
 \end{equation} 
 gives an initial candidate Lyapunov function
 \begin{equation}
-  V(t,\bar{vect{x}}) = {\bar{\vect{x}}}^{T} \matr{S}_{i}\bar{\vect{x}}.
+  V(t,\bar{\vect{x}}) = {\bar{\vect{x}}}^{T} \matr{S}_{i}\bar{\vect{x}}.
 \end{equation}
 where \(S_{i}\) is a solution of the \textit{Ricatti} \cref{eq:ricatti}
 \begin{equation}
   \label{eq:ricatti}
   - \dot{\matr{S}}(t) = \matr{A}^{T} \matr{S}(t) +\matr{S}(t) \matr{A} - \left( \matr{S}(t) \matr{B} + \matr{N} \right) \matr{R}^{-1}\left( \matr{B}^{T} \matr{S}(t) + \matr{N}^{T} \right) + \matr{Q}
 \end{equation} 
-associated with the \ac{LQR} controller, the feedback is gained from \(\matr{K}
-= \matr{R}^{-1}\left( \matr{B} \matr{S} + \matr{N}^T \right)\), and enables the
-system dynamics to be written \(f_{cl}(t,\vect{x})\) by direct substitution of
-\(\vect{u}\).
+associated with the \ac{LQR} controller, the feedback is gained from
+\[
+  \matr{K} = \matr{R}^{-1}\left( \matr{B} \matr{S} + \matr{N}^T \right),
+\]
+and enables the system dynamics \cref{eq:model-dynamics} to be written
+\(f_{cl}(t,\vect{x})\) by direct substitution of \(\vect{u}\), like
+\begin{equation}
+  \label{eq:model-dynamics-cl}
+  \vect{x} =
+  \begin{bmatrix}
+    x \\ y \\ \theta \\
+  \end{bmatrix}, \, \dot{\vect{x}} =
+  \begin{bmatrix}
+    -v \sin(\theta) \\
+    v \cos(\theta) \\
+    -K\vect{x} \\
+  \end{bmatrix}.
+\end{equation}
 
-\subsubsection{Generating the funnels around the trajectories}
+\subsection{Generating the funnels around the trajectories}
 \label{subsec:generating-funnels}
 
 With the nominal trajectories, and the initial Lyapunov functions ready, the
 funnels around the nominal trajectories can be calculated using
-~\cref{alg:funnelalgorithm}, and is implemented in software through the
-~\cite[sostools]{sostools} toolbox as shown
-in~\vref{sec:sos-program-implementation}.
+\cref{alg:funnelalgorithm}, and is implemented in software through the
+\textsc{sostools}~\cite{sostools} toolbox as shown in
+\vref{sec:sos-program-implementation}.
 
-However, the dynamics for the model in~\cref{eq:model-dynamics} are still not
+However, the dynamics for the model in \cref{eq:model-dynamics-cl} are still not
 polynomial, and the \ac{SOS}-framework can only verify polynomial systems. Thus
 in order to obtain the needed polynomial dynamics, the system is expanded around
 the nominal trajectory with a Taylor expansion of degree three. Also, the
@@ -180,7 +194,7 @@ by a feasible \(\rho(t)\). This is done through the equation
 \begin{equation}
   \rho(t_{k}) = \mathrm{exp}\left( \rho_{\tau}\frac{\left( t_{f} - t \right)}{\left( t_{f} - t_{0}  \right)}\right) + \rho_0
 \end{equation}
-from~\cite[eq.~6.sec~3]{Tobenkin_2011}, where \(\rho_{\tau}\) is a positive
+from~\cite[eq.~6][.sec~3]{Tobenkin_2011}, where \(\rho_{\tau}\) is a positive
 constant determining the upper bound on the funnel, along with the zero value
 \(\rho_0\). If the given choice of \(\rho_{\tau}\) does not verify a funnel,
 either increase the value of \(\rho_{\tau}\) and \(\rho_0\), and optionally the
@@ -216,17 +230,15 @@ primitive can be found in~\cref{fig:visualized-lyapunov}.
 
 However, for the funnels in this thesis, the initial condition set will be given
 by the hyperellipsoid
-\begin{equation}
-  \mathcal{X}_0 = \set{\vect{x} \in \R^2 \mid \vect{x}^{T}%
-    \begin{bmatrix}
+\begin{align}
+  \mathcal{X}_0 &= \set{\vect{x} \in \R^2 \mid \vect{x}^{T} Q \vect{x}} \\
+   Q &= \begin{bmatrix}
       2 & 0 & 0 \\
       0 & 2 & 0 \\
-      0 & 0 & 4 \\
-  \end{bmatrix}%
-  \vect{x}
-  }
-\end{equation}
-which means that the funnel will have a diameter of one, and the \(\theta\)
+      0 & 0 & 4
+  \end{bmatrix}
+\end{align}
+which means that the funnel will have a diameter of one half, and the \(\theta\)
 inlet will be wider at closer to the center of the funnel, which is beneficial,
 as this is where most of the paths in the experiment setup is expected to enter.
 
@@ -240,12 +252,13 @@ problems. In the forest traversal case the size of the ellipsoid in the
 \(\theta\) dimension is unimportant. There is no need in minimizing the value of
 \(\theta\), as it will not make the traversal of the forest any easier, in fact
 it might inflate the size of the \((x,y)\) ellipsoid. As an example: For the
-airplane model in this thesis the size of the funnel projected down into the
-xy-plane will be the most important metric. Whether or not the airplane's
-orientation parameter \(\theta\) is close to the nominal heading is of less
-concern, and is therefore down-prioritized, along with the cost on the control
-input \(u\). Having a large \(\theta\) semi-axis in the hyper-ellipsoid can also
-be beneficial, as it increases the inlet of the ellipsoid at hand.
+dynamical model \eqref{eq:model-dynamics} in this thesis the size of the funnel
+projected down into the xy-plane will be the most important metric. Whether or
+not the airplane's orientation parameter \(\theta\) is close to the nominal
+heading is of less concern, and is therefore down-prioritized, along with the
+cost on the control input \(u\). Having a large \(\theta\) semi-axis in the
+hyper-ellipsoid can also be beneficial, as it increases the inlet of the
+ellipsoid at hand.
 
 For the cost function in the funnel generation \cref{alg:funnelalgorithm}, which
 in general is a maximization of the determinant of the upper bound ellipse for
@@ -255,8 +268,17 @@ size of the xy-ellipsoid.
 Therefore in order to minimize the actual size of the funnel where the physical
 airplane can move in the world space the cost function has to be modified. Given
 a projection map \(\pi : \R^n \rightarrow \R^{n_p}\), the ellipsoid of interest
-is \(\mathcal{E} = \set{\bar{\vect{x}} \in \R^n |
-  \bar{\vect{x}}^TS_{k}\bar{\vect{x}} \leq 1}\) with
+is
+\[
+  \mathcal{E} = \set{\bar{\vect{x}} \in \R^n |
+    \bar{\vect{x}}^TS_{k}\bar{\vect{x}} \leq 1}
+\]
+with the projected ellipsoid
+\[
+  \pi(\mathcal{E}) = \set{\bar{\vect{x}} \in \R^n |
+    \bar{\vect{x}}^TS^{(p)}_{k}\bar{\vect{x}} \leq 1}
+\]
+and
 \[
   S_k^{(p)} = \p{PS_k^{-1}P^T}^{-1}
 \]
@@ -287,10 +309,10 @@ the size of the funnels will in general be larger than if given a better
 controller. Thus in order to further minimize the size of the funnel in the
 xy-plane this method, along with the cost function
 from~\cref{subsec:xy-cost-function} is used to make traversal through obstacles
-in the world space easier. Hence, referring to~\cite[Majumdar.sec~4.3.2
-(Feedback control synthesis)]{majumdarFunnelLibrariesRealtime2017}, the initial
-controller input to the algorithm can be optimized with the goal of minimizing
-the size of the funnel, given a few conditions on the system.
+in the world space easier. Hence, referring to
+\citeauthor{majumdarFunnelLibrariesRealtime2017}~\cite[sec~4.3.2]{majumdarFunnelLibrariesRealtime2017},
+the initial controller input to the algorithm can be optimized with the goal of
+minimizing the size of the funnel, given a few conditions on the system.
 
 Firstly the system needs to be control affine:
 \begin{equation}
@@ -301,7 +323,7 @@ so that the control policy can be parameterized as a polynomial
 \begin{equation}
   \dot{\bar{\vect{x}}} = f(\vect{x}_0(t) + \bar{\vect{x}}(t)) + g(\vect{x}(t))\left[ \vect{u}_0(t) + \bar{\vect{u}}_f(t,\bar{\vect{x}}) \right] - \bar{\vect{x}}_0
 \end{equation}
-Which~\cref{eq:model-dynamics} is, since:
+Which \cref{eq:model-dynamics} is, since:
 \begin{equation}
   \dot{\vect{x}} = %
   f(\vect{x}(t)) + g(\vect{x}(t)) \vect{u} (t) = %
@@ -316,12 +338,12 @@ Which~\cref{eq:model-dynamics} is, since:
     0 \\
     1 \\
   \end{bmatrix}
-  u(t).
+  \vect{u}(t).
 \end{equation}
 Then the feedback controller can be optimized by adding the coefficients of the
-polynomial \(u_f(t,\bar{\vect{x}})\) to the set of decision variables in the
-original optimization problem. The only issue is that now \(\dot{V}\) is
-bilinear in the decision variables \(V\) and \(\bar{u}_f\)
+polynomial \(\vect{u}_f(t,\bar{\vect{x}})\) to the set of decision variables in
+the original optimization problem. The only issue is that now \(\dot{V}\) is
+bilinear in the decision variables \(V\) and \(\bar{\vect{u}}_f\)
 \begin{equation}
   {
     \newcommand{\Vdot}{\dot{V}}

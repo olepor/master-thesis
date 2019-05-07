@@ -1,13 +1,13 @@
 \section{The RRT algorithm}
 \label{sec:rrt-algorithm-intro}
 
-The \ac{RRT} algorithm~\cite[LaValle]{article} is a tree based algorithm which,
-starting at the intial configuration of the system, grows it's branches into the
-unexplored parts of the state space through some suitable choice of distance
-metric and sampling distribution for the problem at hand. The expansion is
-divided up into three general steps, whereas the first is randomly, through some
+The \ac{RRT} algorithm is a tree based algorithm which, starting at the intial
+configuration of the system, grows it's branches into the unexplored parts of
+the state space through some suitable choice of distance metric and sampling
+distribution for the problem at hand~\cite{article}. The expansion is divided up
+into three general steps, whereas the first is randomly, through some
 probability distribution, choosing a configuration from the state space for
-which the algorithm will try and expand towards. Secondly the algorithm finds
+which the algorithm will try and expand towards. Secondly, the algorithm finds
 the node in the tree which is closest to the sample in the sense of some chosen
 distance metric. Thirdly, it tries to connect the sample with the nearest node
 in the tree through some predetermined expansion operator. If a connection can
@@ -17,14 +17,14 @@ between the two states. If the sampling distribution is uniform, then the tree
 is known to have the attribute that the probability of expanding from an
 existing node in the tree is proportional the the \textit{Voronoi region} of
 that node, and as the largest Voronoi regions belong to the states on the leaves
-of the tree. As the Voronoi regions divides a plane according to the
+of the tree. Since the Voronoi regions divides a plane according to the
 \textit{nearest neighbour rule}, each point is associated with the region of the
-plane closest to
-it~\cite{aurenhammerVoronoiDiagramsSurvey1991}~\cref{fig:voronoi-diagram}. This
+plane closest to it, as can be seen in
+\cref{fig:voronoi-diagram}~\cite{aurenhammerVoronoiDiagramsSurvey1991}. This
 means that the tree will quickly expand into unexplored parts of the state
-space, as can be seen in~\cref{fig:rrt-expansion,fig:rrt-voronoi}~\cite{Lav06},
-which is what makes the \ac{RRT} algorithm good at solving a wide variety of
-planning problems, especially ones with a high dimensional state space.
+space, as can be seen in~\cref{fig:rrt-expansion,fig:rrt-voronoi}, which is what
+makes the \ac{RRT} algorithm good at solving a wide variety of planning
+problems, especially ones with a high dimensional state space~\cite{Lav06}.
 
 \begin{figure}
   \centering \input{figures/rrt/rrt-pseudo.tex}
@@ -79,7 +79,7 @@ figure~\cref{fig:rrt-voronoi}.
 The \ac{RRT} algorithm is a discrete sampling based algorithm, noticeable for
 its ability to handle large state-spaces. This stems from the algorithm's
 ability to avoid the \textit{curse of dimensionality}, which means that it does
-not suffer the same computational penalty with scaling the state space, as is
+not suffer the same computational penalty with scaling the state space, that is
 hampering a lot of motion planning algorithms~\cite{Lav06}. Still, even though
 the \ac{RRT} algorithm is sampling based, it will, as time goes to infinity
 achieve probabilistic completeness in the state-space. Which means that it will
@@ -96,10 +96,9 @@ algorithm is given enough time.
   \label{fig:rrt-voronoi}
 \end{figure}
 
-\begin{figure}
-  \input{figures/rrt/pathplanning.tex}
-\end{figure}
-
+% \begin{figure}
+%   \input{figures/rrt/pathplanning.tex}
+% \end{figure}
 
 \subsection{RRT's with motion primitives as extension operators}
 
@@ -118,13 +117,13 @@ employed to search the state-space. For systems with few control inputs, random
 control inputs can be sampled. The downside is that this usually produces
 non-smooth motions. Instead, predefined motion primitives with known behaviour
 can be sampled, which will produce a smoother path, while also reducing the
-complexity of the planning task~\cite{vonasekGlobalMotionPlanning2013}, and if
-shown on a humanoid robot in~\cite{hauserUsingMotionPrimitives2008}. A simple
-basis of motion primitives for a dynamical model can therefore be 'turn-left',
-'go-straight', or 'turn-right'. By chaining these basic smooth motion primitves
-together a smooth path from the intial- to the goal-state can be found. A figure
-displaying a tree built up from the three motion primitives can be seen
-in~\cref{fig:motion-primitive-tree}.
+complexity of the planning
+task~\cite{vonasekGlobalMotionPlanning2013,hauserUsingMotionPrimitives2008}. A
+simple basis of motion primitives for a dynamical model can therefore be
+'turn-left', 'go-straight', or 'turn-right'. By chaining these basic smooth
+motion primitves together a smooth path from the intial- to the goal-state can
+be found. A figure displaying a tree built up from the three motion primitives
+can be seen in~\cref{fig:motion-primitive-tree}.
 
 \begin{figure}
   \centering
@@ -135,11 +134,11 @@ in~\cref{fig:motion-primitive-tree}.
   \label{fig:motion-primitive-tree}
 \end{figure}
 
-Thus in essence robust motion primitives are beneficial as they seperate the
+In essence, robust motion primitives are beneficial as they seperate the
 dynamics from the planner, enabling the planner to reason about what actions to
 take, and not in what manner they should be executed. This observation is the
 basis of the \rrtfunnel{}, which employs funnels as the robust motion primitives
-and hence as the extension operators for the tree the planner employs, enabling
-the \ac{RRT} part of the \rrtfunnel{} algorithm to remain oblivious to
+as the extension operators for the tree the planner builds, enabling the
+\ac{RRT} part of the \rrtfunnel{} algorithm to remain oblivious to
 uncertainties, and hence greatly simplifying the planning problem.
 

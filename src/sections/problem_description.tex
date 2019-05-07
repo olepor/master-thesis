@@ -21,9 +21,9 @@ good at avoiding local extrema.
 \subsection{Scientific contributions of this thesis}
 
 The contribution of this thesis is the combination of the \ac{RRT} motion
-planning algorithm with the guaranteed safe traversal provided by the funnel
-framework. These \textit{finite time reachable sets} are then employed as robust
-motion primitives to the \ac{RRT} motion planner, letting it create a tree of
-safe maneuvers as it searches for a path to the goal, all the while guaranteeing
-safe traversal for the nonlinear dynamical model even in the face of
-uncertainty.
+planning algorithm with the guaranteed safe traversal provided by the \ac{SOS}
+programming framework. The \textit{finite time reachable sets} produced by the
+\ac{SOS} program are then employed as robust motion primitives to the \ac{RRT}
+motion planner, letting it create a tree of safe maneuvers as it searches for a
+path to the goal, all the while guaranteeing safe traversal for a nonlinear
+dynamical model -- even in the face of uncertainty.
