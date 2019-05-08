@@ -17,10 +17,10 @@
 
 
 %% Fonts and typography
-% \RequirePackage{lmodern}           % Latin Modern
-% \renewcommand{\sfdefault}{phv}     % Helvetica
-% \RequirePackage[scaled]{beramono}  % Bera Mono (Bitstream Vera Sans Mono)
-\RequirePackage{libertine}
+\RequirePackage{lmodern}           % Latin Modern
+\renewcommand{\sfdefault}{phv}     % Helvetica
+\RequirePackage[scaled]{beramono}  % Bera Mono (Bitstream Vera Sans Mono)
+% \RequirePackage{libertine}
 \usepackage[mathcal]{eucal} %  load a different calligraphic alphabet, Euler
                             %  Script, and change \mathcal to use Zapf's font
 \RequirePackage[final]{microtype}  % Improved typography
@@ -29,6 +29,7 @@
 \setlist[enumerate]{font = \upshape, before = \leavevmode}
 \setlist[description]{font = \bfseries\sffamily, before = \leavevmode}
 \RequirePackage{siunitx}           % Typesetting units
+% \sisetup{prefixes-as-symbols=false} % Not working -_-
 \RequirePackage{lettrine}          % Big letters at the start of a paragraph.
 \RequirePackage{listings}          % Typesetting code
 \lstset
@@ -285,7 +286,7 @@
 \newcommand{\matr}[1]{#1}          % pure math version
 %\newcommand{\matr}[1]{\bm{#1}}     % ISO complying version
 \else % Vectorize defined.
-\newcommand{\vect}[1]{\mathsf{\mathbf{#1}}}
+\newcommand{\vect}[1]{{\mathbf{\mathsf{#1}}}}
 \renewcommand{\a}{\mathbf{a}}
 \renewcommand{\b}{\mathbf{b}}
 \renewcommand{\c}{\mathbf{c}}
