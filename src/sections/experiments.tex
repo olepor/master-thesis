@@ -2,16 +2,17 @@
 \label{chp:experiments}
 
 The \rrtfunnel{} algorithm developed this far will now be tested in a simulation
-experiment where a simple unicycle model of an airplane will be set to traverse
-a small strip of forest. The simulation environment can be seen in
+experiment where a simple unicycle model of an airplane is set to traverse a
+small strip of forest. The simulation environment can be seen in
 figure~\cref{fig:simulated-forest}, where the airplane starts at one end of the
 obstacle forest, and is set to traverse the strip of forest and reach any
 \((x,y)\) position in a circle of radius five surrounding the endpoint thirty
 five meters ahead.
 
 \begin{figure}
-  \centering \includegraphics[scale=.5]{figures/experiments/simulated-forest}
-  \caption{The experiment environment.}
+  \centering \includegraphics[scale=.5, trim={0cm 6cm 0cm
+    6cm}]{figures/experiments/simulated-forest} \caption{The experiment
+    environment.}
   \label{fig:simulated-forest}
 \end{figure}
 
@@ -21,38 +22,37 @@ The experiment section starts out by generating a random strip of forest for
 which the airplane has to navigate through in \cref{sec:Poisson-Process}. Next
 it expands from the single point model in \cref{eq:model-dynamics} to
 incorporate the actual size of the model in \cref{subsec:deciding-model-size},
-and then shows how to expand the size of the funnels to incorporate the expanded
+and then shows how to expand the size of the funnels to incorporate the airplane
 model in \cref{subsec:expand-funnel}. It then continues to show the initial
 motion primitive set and the \ac{LQR} controller weightings in
-\cref{subsec:initial-motion-primitive,subsec:lqr-cost}. It then shows how a
-\textit{Monte-Carlo} simulation is run in order to make sure that the nonlinear
-system model does stays within the funnels in
-\cref{subsec:check-vehicle-in-funnel}, and shows that the funnel composition
-guarantees are lost due to the data shown in \cref{subsec:funnel-no-composable},
-until finally presenting the results of the \rrtfunnel{} algorithm benchmarked
-against a conservative \ac{RRT} motion planner which does not handle the
-uncertainty that is provided by the cross-wind in \cref{sec:experiments-final}.
+\cref{subsec:initial-motion-primitive,subsec:lqr-cost}. In
+\cref{subsec:check-vehicle-in-funnel} it employs a \textit{Monte-Carlo}
+simulation in order to verify that the nonlinear system model \textit{does}
+stays within the calculated funnels. Later it shows that the funnel composition
+guarantees are lost due to the non-convergence in the y-direction of the funnel
+space in \cref{subsec:funnel-no-composable}, until finally presenting the
+results of the \rrtfunnel{} algorithm benchmarked against a conservative
+\ac{RRT} motion planner which does not handle the uncertainty that is provided
+by the cross-wind in \cref{sec:experiments-final}.
 
 \subsection{Generating the obstacle forest (Poisson processes)}
 \label{sec:Poisson-Process}
 
 In order to generate the obstacle field for the experiments, which is to
 resemble a forest, a \textit{spatial Poisson process} is employed. Poisson
-processes are used to model random configurations of points in
-space~\cite{Kroese_2014}, and hence are well suited for generating a different
-obstacle forest for each simulation run. For the experiments below, a forest
-will be the special case of realizing a spatial Poisson process on \(\R^2\).
+processes are used to model random configurations of points in space, and hence
+are well suited for generating a different obstacle forest for each simulation
+run~\cite{Kroese_2014}. For the experiments below, a forest will be the special
+case of realizing a spatial Poisson process on \(\R^2\).
 
 A Poisson process requires a few key parameters. Firstly, \(\lambda\) is the
-intensity of the spatial process. For these experiments, the intensity will be
-held constant, and the process is therefore homogeneous, as it does not vary
-with the position in space. One interesting configuration could be to vary the
-intensity as the radius from origo, and hence the difficulty in traversing the
-terrain would increase with the distance traveled. However, the constant
-intensity setting was chosen to keep things simple and uniform.
+intensity of the spatial process, deciding the density of the generated forest,
+and hence the difficulty in traversing it. For these experiments, the intensity
+will be held constant for each experiment run, and not vary with points in space
+\ie the process is homogeneous.
 
-The algorithm for realizing a random Poisson measure~\cref{def:Poisson-def} is
-taken from~\cite[Definition~1.1.1][34]{Kroese_2014}.
+The algorithm for realizing a random Poisson measure in \cref{def:Poisson-def}
+is taken from~\cite[Definition~1.1.1][34]{Kroese_2014} and looks like:
 
 \begin{definition}{Generating a Poisson random measure}
   \label{def:Poisson-def}
@@ -74,21 +74,22 @@ For the experiments the set \(E\) will be a square defined as
 \]
 the density of the generated forest \(\lambda\) will be set to
 \[
-  \lambda = 0.1
+  \lambda = 0.1,\, 0.2,\, 0.3
 \]
 of which the resultant forest on a \(20 \times 20\) grid can be seen in
 figure~\cref{fig:poisson009}.
 
 \begin{figure}
-  \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/poisson009}
+  \begin{subfigure}[b]{0.5\textwidth} \includegraphics[width=\textwidth,
+      trim={0cm 6cm 0cm 5cm}]{figures/experiments/poisson009}
     \caption{The resultant forest generated by a spatial Poisson process with
       intensity \(\lambda = 0.1\)}
     \label{fig:poisson009}
   \end{subfigure}%
   \;
   \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/poisson09}
+    \includegraphics[width=\textwidth, trim={0cm 6cm 0cm
+      5cm}]{figures/experiments/poisson09}
     \caption{The resultant forest generated by a spatial Poisson process with
       intensity \(\lambda = 0.9\)}
     \label{fig:poisson09}
@@ -98,23 +99,22 @@ figure~\cref{fig:poisson009}.
 \subsection{Deciding upon the size of the airplane model and the obstacles}
 \label{subsec:deciding-model-size}
 
-The funnels generated thus far is created from a point model of the airplane,
+The funnels generated thus far are created from a point model of the airplane,
 and its dynamics. If the grid that the simulations are run on are set to have an
 increment of a meter, then the funnels from the basic set are given a velocity
-of \([v(t)] = \si{m.s^{-1}}\), \([\theta] = \si{\radian\per\second}\), and
-\([\dot{\theta}] = \si{\radian\per\second\per\second}\), where \([\cdot]\) is
-the unit operator. The size of the airplane is arbitrary, and can be chosen
-freely, but if it is imagined as a radio controlled aircraft, with a speed of
-\(10\si{m.s^{-1}}\), then a size of \(10 \times 20 \si{\centi\metre} \) keeps
-everything within the realm of a normal radio controlled aircraft and its
-capabilities. The mass is not relevant for our first order dynamics, but still
-the airplane is assigned a mass of \(1 \si{\kilo}\), so that the translation of
-the model dynamics is not irrelevant. A figure of the airplane can be seen in
-\cref{fig:radio-vehicle}.
+of \([v(t)] = \si{m.s^{-1}}\), \([\theta] = \si{\radian}\), and \([\dot{\theta}]
+= \si{\radian\per\second}\), where \([\cdot]\) is the unit operator. The size of
+the airplane is arbitrary, and can be chosen freely, but if it is imagined as a
+radio controlled aircraft, with a speed of \(10\si{m.s^{-1}}\), then a size of
+\(10 \times 20 \si{\centi\metre} \) keeps everything within the realm of a
+normal radio controlled aircraft and its capabilities. The mass is not relevant
+for our first order dynamics, but still the airplane is assigned a mass of \(1
+\si{\kilo}\), so that the translation of the model dynamics is not irrelevant. A
+figure of the airplane can be seen in \cref{fig:radio-vehicle}.
 
 \begin{figure}
-  \centering \includegraphics[trim={5cm 5cm 5cm 5cm},
-  width=\textwidth]{figures/experiments/radio-vehicle-model}
+  \centering
+  \includegraphics[width=\textwidth, clip={3cm 3cm 3cm 3cm}]{figures/experiments/radio-vehicle-model}
   \caption{The airplane employed in the simulation experiments.}
   \label{fig:radio-vehicle}
 \end{figure}
@@ -124,13 +124,12 @@ the model dynamics is not irrelevant. A figure of the airplane can be seen in
 \label{subsec:expand-funnel}
 
 The size of the airplane in the original model is a single point, and as such,
-the airplane model with a size is not accounted for in the funnels prior to
-running the simulations. Therefore the funnels have to be expanded in order for
-them to accommodate the necessary robustness guarantees that are expected from
-the algorithm. However, the size of the airplane only affects the size of the
-funnel ellipsis projected down into the xy-plane. Therefore first getting the
-projected size of the funnel, where \(P \colon \R^4 \rightarrow \R^2\) is a
-projection map with a projection matrix
+the expanded airplane model is not accounted for in the funnels. Therefore the
+funnels have to be expanded in order for them to accommodate the necessary
+robustness guarantees that are expected from the algorithm. However, the size of
+the airplane only affects the size of the funnel ellipsis projected down into
+the xy-plane. Therefore first getting the projected size of the funnel, where
+\(P \colon \R^4 \rightarrow \R^2\) is a projection map with a projection matrix
 \[
   P =
   \begin{bmatrix}
@@ -147,7 +146,7 @@ and
   S_{k}^{(p)} = {\left( PS_{k}^{-1}P^T \right)}^{-1}
 \]
 and \(\mathcal{E}_{p}\) is the projected set of the ellipsoid projected down
-into the xy-plane~\cite{majumdarFunnelLibrariesRealtime2017}. In general an
+into the xy-plane as is seen in \cref{subsec:xy-cost-function}. In general an
 ellipse centered at the origin is a linear transformation of the unit
 circle~\cite{lay2005linear}. Exploiting this fact, expanding the radius of the
 circle to encompass the airplane model. Also taking into account that the matrix
@@ -156,15 +155,16 @@ factorized~\cite{lay2005linear}. The expanded ellipsis (which now contains all
 the possible states of the airplane model) is:
 
 \begin{align*}
-  S_{k}^{\mathcal{P}} &= R^{T}R \\
+  S_{k}^{(\mathcal{P})} &= R^{T}R \\
   \vect{x} &= R^{-1}\vect{y} \\
   \mathcal{C} &= \set{\vect{y} \in \R^2 \mid \vect{y}^{T}\vect{y} \leq 1 + r_{airplane}} \\
   \mathcal{E}_{exp} &= \set{R^{-1}\vect{y} \mid \vect{y} \in \mathcal{C}} \\
 \end{align*}
 where \(\mathcal{E}_{exp}\) is the ellipsoid which contains the volume of the
-airplane for all verified states in the funnel. A picture of the initial funnel
-and the funnel expanded around the airplane model can be seen in
-figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
+airplane for all verified states in the funnel, and \(r_{airplane}\) is the
+widest part of the model at hand, which in this case is the wingspan. A picture
+of the initial funnel and the funnel expanded around the airplane model can be
+seen in figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 
 \begin{figure}
   \centering \includegraphics[clip, trim=6cm 8cm 6cm 8cm,
@@ -199,11 +199,12 @@ figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 The basis set of motion primitives should be small, yet cover enough of the
 finer movements of the airplane so that the motion of the airplane can be near
 continuous when composed together. Thus in order to generate a `dense' set of
-motion primitives the~\cref{alg:initial-motion-primitives-generation} is
-employed to generate points along the arch of a circle with \(N\) different
-radii.
+motion primitives \cref{alg:initial-motion-primitives-generation} is employed in
+order to generate points along the arc of a circle with \(N\) different radii as
+the initial points for the trajectory generator described in
+\cref{subsec:generating-the-trajectories}.
 
-\begin{algorithm}[H]
+\begin{algorithm}
   \caption{Generating the initial motion primitives}
   \label{alg:initial-motion-primitives-generation}
   \DontPrintSemicolon \SetAlgoNoLine
@@ -223,49 +224,49 @@ radii.
       \(\theta_{ki} = i*\theta_{stepsize}\) \; \(\mathbf{X} \leftarrow (r, \pm
       \theta_{ki})\) \; }\; }\;
 \end{algorithm}
-The initial trajectories employed in the experiments can be seen
-in~\cref{fig:intial-trajectories-exp}, and the projected funnels overlaid a
-sample in~\cref{fig:sample-funnel-overlay}.
+
+The initial trajectories employed in the experiments can be seen in
+\cref{fig:intial-trajectories-exp}, and the projected funnels overlaid a sample
+in \cref{fig:sample-funnel-overlay}.
 
 \begin{figure}
-  \centering
-  \includegraphics[scale=.5]{figures/experiments/initial-trajectories}
+  \centering \includegraphics[scale=.5, trim={0cm 7cm 0cm
+    7cm}]{figures/experiments/initial-trajectories}
   \caption{The initial trajectories used in the \rrtfunnel{} algorithm.}
   \label{fig:intial-trajectories-exp}
 \end{figure}
 
 \begin{figure}
-  \centering
-  \includegraphics[scale=.5]{figures/experiments/sample-funnel-overlay}
-  \caption{Three funnels from the initial trajectories with the projected
-    funnels overlaid.}
+  \centering \includegraphics[scale=.5, trim={2cm 6cm 2cm
+    6cm}]{figures/experiments/sample-funnel-overlay} \caption{Three funnels from
+    the initial trajectories with the projected funnels overlaid.}
   \label{fig:sample-funnel-overlay}
 \end{figure}
 
 \subsection{LQR cost matrices}
 \label{subsec:lqr-cost}
 
-Although the focus of this thesis is not on fine-tuning the controller, some
-amount of effort has to go into getting the cost parameters acceptable, so that
-the funnels actually converge. In general the strategy is penalizing the
-airplane's distance from the nominal path in \((x,y,\theta)\), and not caring for
-the energy expended by the control input. Thus path divergence is penalized
-hard, and input divergence is not.
+Although the focus of this thesis is not on fine-tuning the \ac{LQR}-controller,
+some amount of effort has to go into getting the cost parameters acceptable, so
+that the funnels do converge. In general the strategy is penalizing the
+airplane's distance from the nominal path in \((x,y,\theta)\), and be more
+lenient with the energy expended by the control input. Thus path divergence is
+penalized hard, and input divergence is not.
 
 More specifically the cost matrices employed are
 \begin{align*}
   R &= 0.01 \\
   Q &= \begin{bmatrix}
-    40 & 0 & 0 & 0 \\
-    0 & 40 & 0 & 0 \\
-    0 & 0 & 4 & 0 \\
+    40 & 0 & 0  \\
+    0 & 40 & 0  \\
+    0 & 0 & 4   \\
   \end{bmatrix}
   \\
   Q_{f} &=
           \begin{bmatrix}
-            1 & 0 & 0 & 0 \\
-            0 & 1.5 & 0 & 0 \\
-            0 & 0 & 1 & 0 \\
+            1 & 0 & 0   \\
+            0 & 1.5 & 0  \\
+            0 & 0 & 1   \\
           \end{bmatrix}
 \end{align*}
 where the control input is only penalized \(\frac{1}{10}\)th of the other
@@ -276,9 +277,10 @@ variables.
 \label{subsec:check-vehicle-in-funnel}
 
 \begin{figure}
-  \centering \includegraphics[scale=.5]{figures/experiments/airplane-in-funnel}
-  \caption{A figure of the airplane in the funnel projected down on the xy-plane
-    during a simulation run.}
+  \centering \includegraphics[scale=.5, trim={2cm 6cm 2cm
+    6cm}]{figures/experiments/airplane-in-funnel} \caption{A figure of the
+    airplane in the funnel projected down on the xy-plane during a simulation
+    run.}
 \end{figure}
 
 During the execution of the \rrtfunnel{} algorithm the planner keeps track of
@@ -300,7 +302,7 @@ simulation run can be seen in \cref{fig:lyapunov-values}.
 \subsection{Show the funnel inlets and outlets from the funnel computations}
 \label{subsec:funnel-no-composable}
 
-Unfortunately, the funnels do not compose, and the composition checking of the
+Unfortunately, the funnels do not compose, and the composition testing of the
 algorithm has to be left out. This is because the controller has no influence on
 the speed of the airplane, and hence there is no way to make the system converge
 in the direction of speed as exemplified in the~\cref{fig:funnel-conv}. The

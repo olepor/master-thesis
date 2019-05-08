@@ -17,10 +17,10 @@
 
 
 %% Fonts and typography
-\RequirePackage{lmodern}           % Latin Modern
-\renewcommand{\sfdefault}{phv}     % Helvetica
-\RequirePackage[scaled]{beramono}  % Bera Mono (Bitstream Vera Sans Mono)
-% \RequirePackage{libertine}
+% \RequirePackage{lmodern}           % Latin Modern
+% \renewcommand{\sfdefault}{phv}     % Helvetica
+% \RequirePackage[scaled]{beramono}  % Bera Mono (Bitstream Vera Sans Mono)
+\RequirePackage{libertine}
 \usepackage[mathcal]{eucal} %  load a different calligraphic alphabet, Euler
                             %  Script, and change \mathcal to use Zapf's font
 \RequirePackage[final]{microtype}  % Improved typography
@@ -338,4 +338,10 @@
 % Optimization problem definitions
 \DeclareMathOperator{\vol}{vol}
 
+% save the meaning of \includegraphics
+\LetLtxMacro\latexincludegraphics\includegraphics
+
+% pass the image to \shadowbox
+\renewcommand{\includegraphics}[2][]{%
+  \fbox{\latexincludegraphics[#1]{#2}}} % Shadowbox mby?
 \endinput

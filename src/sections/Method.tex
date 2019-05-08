@@ -582,7 +582,7 @@ the composability of two funnels can be checked through the \ac{SOS} program
   & \text{s.t. } && \rho_2(0) - V_2(0,\vect{x}) - L(\vect{x})\left( \rho_1(T_1) - V_1(T_1,\vect{x}) \right) \text{ is SOS} \nonumber \\ 
   &&& L(\vect{x}) \text{ is SOS} \nonumber
 \end{align}
-and is implemented in \textsc{sostolls}~\cite{sostools} and \matlab{} in
+and is implemented in \textsc{sostools}~\cite{sostools} and \matlab{} in
 \cref{sec:funnel-composability-program-sos}. A picture of funnels composed
 together into a tree can be seen in~\cref{fig:funnel-composition-tree}.
 \begin{figure}
@@ -770,24 +770,23 @@ to quickly expand deep into the search-space, and then later progress towards a
 finer sampling, which is valuable as it avoids local minima. Two, the \ac{RRT}
 algorithm is easily extensible to larger state spaces, and thus adding to the
 generality of the \rrtfunnel{} algorithm, such that it can be adapted to fit a
-wide range of dynamical systems, as well that it has only three main components
-that needs to be in place in order for successful path planning to happen in an
-arbitrary configuration space. This is beneficial as most of the complexity
-accompanied with the planning problem (like uncertainty and controller
-calculations) has already been handled by the \ac{SOS} framework, and hence the
-\ac{RRT} algorithm need only concern itself with stacking one robust motion
-primitive after the other without any concern for the complexities mentioned
-above.
+wide range of dynamical systems, while at the same time it has only three main
+components that needs to be in place in order for successful path planning to
+happen in an arbitrary configuration space. This is beneficial as most of the
+complexity accompanied with the planning problem (like uncertainty and
+controller calculations) has already been handled by the \ac{SOS} framework, and
+hence the \ac{RRT} algorithm need only concern itself with stacking one robust
+motion primitive after the other without any concern for the complexities
+mentioned above.
 
 \subsection{Uniform sampling in \(SE(2)\)}
 
-As mentioned in \nameref{sec:rrt-algorithm-intro}, the \ac{RRT} algorithm needs
-uniform sampling of the state space in order for it to function optimally, as
-over- or under-sampling certain parts of the state space can lead to poor
-performance. Therefore one needs to be careful when sampling from a
-configuration space with non Euclidean
-topology~\cite{kuffnerEffectiveSamplingDistance2004}, as the sampling is not
-necessarily uniform.
+As mentioned in \nameref{sec:rrt-algorithm-intro} section, the \ac{RRT}
+algorithm needs uniform sampling of the state space in order for it to operate
+optimally, as over- or under-sampling certain parts of the state space can lead
+to poor performance. Therefore one needs to be careful when sampling from a
+configuration space with non Euclidean topology, as the sampling is not
+necessarily uniform~\cite{kuffnerEffectiveSamplingDistance2004}.
 
 If sampling from a configuration space which is formed strictly from Cartesian
 products of the form \(X = X_1\times X_2\times \cdots \times X_n\), and each
@@ -799,19 +798,21 @@ does not form a uniform sample product, as the \(pdf\) function will have a
 higher probability density away from the origin, as the outer circles will
 contain a bigger area. For the model~\cref{eq:model-dynamics} which moves in
 \(x,y,\theta\) the samples can be generated uniformly on the topological
-cylinder through~\cite{kuffnerEffectiveSamplingDistance2004}:
+cylinder through:
 \[
   (x,y,\theta) = (\mathnormal{X}, \mathnormal{Y}, \mathnormal{\Theta})
 \]
 where \((\mathnormal{X}, \mathnormal{Y}, \mathnormal{\Theta})\) are a random
-variables in the interval \([0,1)\). Where the \(\mathnormal{X}\) and
-\(\mathnormal{Y}\) variables can simply be scaled by the range of the world
-space, but also the \(\mathnormal{\Theta}\) can be scaled appropriately since
-for \(SO(2)\), the rotations parameterized on \([0,1]\setminus\sim\) (where
-\(\setminus\sim\) means that 0 and 1 are the same) can be multiplied by a fixed
-constant, such as for \(2\pi\) which means that sampling will be uniform in the
-configuration space of the robot from a simple Cartesian product of uniform
-random variables~\cite{Lav06}.
+variables in the interval \([0,1)\)~\cite{kuffnerEffectiveSamplingDistance2004}.
+The \(\mathnormal{X}\) and \(\mathnormal{Y}\) variables can simply be scaled by
+the range of the world space, but also the \(\mathnormal{\Theta}\) can be scaled
+appropriately since for \(SO(2)\), the rotations parameterized on
+\([0,1]\setminus\sim\) (where \(\setminus\sim\) means that 0 and 1 are the same)
+can be multiplied by a fixed constant, such as \(2\pi\). This then means that
+the sampling will be uniform in the configuration space of the robot, as long as
+the sampling space consists of a simple Cartesian product of uniform random
+variables, which the sampling space for \cref{eq:model-dynamics}
+is~\cite{Lav06}.
 
 \subsection{Distance in configuration space}
 
@@ -819,7 +820,7 @@ Introducing a function which measures distance between two points in
 configuration space introduces a metric space on the underlying configuration
 space \((\modelconfigurationspace{},\rho)\), where \(\rho\) is a distance
 function. Finding a good distance function for the metric space at hand is a
-hard problem. In general the ideal metric would have been the actual
+hard problem. In general the ideal metric function is the actual
 \textit{cost-to-go} function for the system at hand. However calculating the
 actual cost-to-go is equivalent to solving the original motion planning problem,
 and is hence not viable~\cite{pengchengReducingMetricSensitivity2001}.
@@ -827,17 +828,17 @@ and is hence not viable~\cite{pengchengReducingMetricSensitivity2001}.
 So, in order for the \rrtfunnel{} algorithm to efficiently explore the state
 space it must have a good measure of distance between different poses in space,
 without actually solving the planning problem anew. For a problem in the
-Cartesian plane it is common to use the Euclidean distance, however, this is not
-a good distance metric for non-holonomic ariplanes, as it does not incorporate
-the possible constraints of the system function, and has little bearing on the
-actual cost-to-go of the system~\cite{parkFeedbackMotionPlanning2015}. In fact,
-for sampling based planners such as the \ac{RRT}, the configuration space is
-only sufficiently explored in the case where the distance function reflects the
-true cost-to-go function~\cite{pengchengReducingMetricSensitivity2001}. Hence,
-all other metrics will be a compromise of complexity and time vs efficiency.
+Cartesian plane it is common to use the Euclidean distance. However, this is not
+a good distance metric for non-holonomic systems, as it does not incorporate the
+constraints of the system function, and has little bearing on the actual
+cost-to-go of the system~\cite{parkFeedbackMotionPlanning2015}. In fact, for
+sampling based planners such as the \ac{RRT}, the configuration space is only
+sufficiently explored in the case where the distance function reflects the true
+cost-to-go function~\cite{pengchengReducingMetricSensitivity2001}. Hence, all
+other metrics will be a compromise of complexity and time vs efficiency.
 
-Normally the \ac{RRT} algorithm splits the extension part into two sections. One
-for identifying the closest node in the tree, and second one for the closest
+Normally the \ac{RRT} algorithm splits the extension part into two parts. One
+for identifying the closest node in the tree, and a second for the closest
 extension that can be added onto the tree itself. Here a different distance
 metric can be employed in each step. To reflect on the difficulty of creating a
 general distance metric function have a look at the unicycle model
@@ -850,16 +851,16 @@ model, the airplane has to move far in order to reach the sought configuration.
 
 The \rrtfunnel{} algorithm will use the same metric for both the closest node
 and the extend operation on the funnel graph. The metric chosen is a modified
-Euclidean metric which weights the angle \((\theta)\) depending on how close the
-airplane is to the final configuration and is defined as
+Euclidean metric which weights the angle \(\theta\) depending on how close the
+airplane is to the final configuration, and is defined as
 \[
   \rho(\vect{x}_{1}, \vect{x}_{2}) = w_{1}\norm{\mathnormal{X_{1}} -
     \mathnormal{X_{2}}} + w_{2}f(\theta_1,\theta_2)
 \]
 and taken from~\cite{kuffnerEffectiveSamplingDistance2004}, where
 \(\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}}\) is the standard Euclidean
-metric, and \(f\) is a function, giving the distance between headings, and the
-rotations and distance is scaled relative to the translation distance.
+metric, \(f\) is a function giving the distance between headings. The rotations
+and distance is then scaled relative to the translation distance.
 
 \begin{figure}
   \centering
@@ -880,10 +881,10 @@ Even though the \rrtfunnel{} algorithm can work just fine with a collection of
 funnels, and simply brute-force all funnels at the planning stage, it is helpful
 to associate some kind of structure with the collection. Therefore the funnels
 will be organized into a graph structure \(\mathcal{F}\) where each funnel is an
-edge in the graph, and the inlets and the outlets are vertices. The funnels also
-need information about which funnels that they are composable with, as they may
-not all be composable with each other, hence the graph is not necessarily
-complete.
+edge in the graph, and the inlets and the outlets are vertices. The planner
+needs information about which funnels that are composable, as they may not all
+be composable with each other, implying that the resultant graph is not
+necessarily complete.
 
 \begin{figure}
   \centering
@@ -896,14 +897,14 @@ complete.
     \includegraphics[trim={5cm 5cm 5cm 5cm},
     width=\textwidth]{figures/method/funnel-sampled}
     \caption{The verified trajectory ellipsis overlaid at the sample times.}
+    \label{fig:funnel-straight-sampled}
   \end{subfigure}
 \end{figure}
 
-Composition of funnels is checked in the same way as in
-\cref{def:funnel-composition}, and a \ac{SOS}-program which implements the
-algorithm can be found in ~\cref{sec:funnel-composability-program-sos}, finally
-the composability graph for all the funnels can be built
-using~\cref{alg:create-funnel-graph}.
+Composition of funnels is verified using \cref{def:funnel-composition}, and the
+composability graph is built using \cref{alg:create-funnel-graph}. A
+\ac{SOS}-program which implements the algorithm can be found in
+\cref{sec:funnel-composability-program-sos}.
 
 \begin{algorithm}
   \caption{Check funnel composability}
@@ -925,16 +926,6 @@ using~\cref{alg:create-funnel-graph}.
   }
 \end{algorithm}
 
-\subsection{Special maneuvers}
-
-The algorithm incorporates room for two special maneuvers.
-
-\subsubsection{The identity funnel for starting the simulation fresh}
-
-The identity funnel is an empty placeholder for the start node of the graph,
-that does no transformations on the model at all, and thus can be seen as the
-identity element in the funnel space, or rather, the identity funnel.
-
 \subsubsection{Emergency maneuver}
 
 If the airplane is to leave the verified funnel at execution time -- this could
@@ -945,22 +936,23 @@ at hand -- such as a sudden stop for a vehicle, or idling at one place for a
 quad-copter. This will then be the last motion primitive that the planner
 executes.
 
-\subsection{Collision checking}
+\subsection{Collision detection}
 
-TODO
+Collision detection is done creating a convex hull incorporating all the
+ellipsis projected down into the xy-plane, and is what can be seen as the grey
+area in \cref{fig:funnel-straight-sampled}. Then, with \matlab's polynomial
+toolbox, collision detection is done through the \textit{intersect} function for
+polynomials, since the obstacles are also represented as polynomials.
 
 \subsection{The \rrtfunnel{} algorithm}
 
-With the framework finished, it is time to introduce the formulation of the
-\rrtfunnel{} algorithm itself. The \rrtfunnel{} algorithm is a modified \ac{RRT}
-algorithm which employs the precomputed funnels as motion primitives for its
-expansion operator, and pseudocode for its definition can be found
-in~\cref{alg:rrtfunnel}.
+With the basic framework finished, it is time to introduce the formulation of
+the \rrtfunnel{} algorithm itself. The \rrtfunnel{} algorithm is a modified
+\ac{RRT} algorithm which employs the precomputed funnels as motion primitives
+for its expansion operator, and pseudocode for its definition can be found in
+\cref{alg:rrtfunnel}.
 
-
-The \rrtfunnel{} algorithm is defined as
-
-\begin{algorithm}[H]
+\begin{algorithm}
   \caption{\rrtfunnel{} algorithm}
   \label{alg:rrtfunnel}
   \DontPrintSemicolon
@@ -996,7 +988,7 @@ The \rrtfunnel{} algorithm is defined as
 \subsection{summary}
 
 In this chapter the \rrtfunnel{} algorithm has been developed through the means
-of merging motion primitives created with the direct-collocation method, in
+of merging motion primitives, created with the direct-collocation method, in
 order for optimal paths to be generated from one point in the configuration
 space to another. Next \ac{SOS}-programming and the theory of Lyapunov functions
 is utilized to verify the robust regions of convergence for each trajectory
@@ -1010,7 +1002,7 @@ as the motion primitives to the global \ac{RRT} motion planner, which uses these
 funnels to compose a tree of motion primitives through the configuration space,
 and hence safe traversal can be made, given that the funnels abide by the
 composition \cref{def:funnel-composition}. The latest sections are focused on
-tuning and improving the distance metric and the sampling of \ac{RRT} algorithm.
-Putting this together then results in the \rrtfunnel{} algorithm, and is the
-result of this thesis, whose performance will be put to the test in the
-\cref{chp:experiments}.
+tuning and improving the distance metric and the sampling of the \ac{RRT}
+algorithm. Drawing all this together results in the \rrtfunnel{} algorithm, and
+is the result of this thesis, the performance of which, will be put to the test
+in the \cref{chp:experiments}.
