@@ -1,22 +1,22 @@
-\section{The thesis problem description}
+\section{Problem Description}
 
 Current motion planning algorithms do not in the general case handle the problem
 of uncertainty during planning. This is not optimal, in that all real-world
-motion planning problems have to handle uncertainties. Therefore, develop a
-motion planning algorithm that is robust to uncertainty, and verify the safe
-traversal of the algorithm through simulation.
+motion planning problems have to handle uncertainties. Develop a motion planning
+algorithm that is robust to uncertainty, and verify the safe traversal of the
+algorithm through simulation.
 
-\subsection{What has been done by others}
+% \subsection{What has been done by others}
 
-The two main parts of the \rrtfunnel{} algorithm is the funnel generation
-framework through \ac{SOS} programming. Although this is used in a lot of
-different research, the strand that this thesis is based upon is a series of
-papers~\cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,majumdarRobustOnlineMotion2013,majumdarFunnelLibrariesRealtime2017,ahmadi2014dsos}
-with the main focus being on \cite{majumdarFunnelLibrariesRealtime2017}. The
-second part is based on~\textcite{article} and the \ac{RRT} motion planning
-algorithm, which is a simple algorithm that seeks to build a random tree that
-quickly expands deeply into the state space, and due to its random nature is
-good at avoiding local extrema.
+% The two main parts of the \rrtfunnel{} algorithm is the funnel generation
+% framework through \ac{SOS} programming. Although this is used in a lot of
+% different research, the strand that this thesis is based upon is a series of
+% papers~\cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,majumdarRobustOnlineMotion2013,majumdarFunnelLibrariesRealtime2017,ahmadi2014dsos}
+% with the main focus being on \cite{majumdarFunnelLibrariesRealtime2017}. The
+% second part is based on~\textcite{article} and the \ac{RRT} motion planning
+% algorithm, which is a simple algorithm that seeks to build a random tree that
+% quickly expands deeply into the state space, and due to its random nature is
+% good at avoiding local extrema.
 
 \subsection{Scientific contributions of this thesis}
 
@@ -27,3 +27,44 @@ programming framework. The \textit{finite time reachable sets} produced by the
 motion planner, letting it create a tree of safe maneuvers as it searches for a
 path to the goal, all the while guaranteeing safe traversal for a nonlinear
 dynamical model -- even in the face of uncertainty.
+
+
+\section{Outline}
+
+The rest of the thesis is organized as follows:
+\begin{description}
+\item[\cref{chp:survey-of-papers}] provides a survey of current motion planning
+  research focused on handling uncertainty in the environment, the system state
+  and the surrounding environment, as well as some more in depth on the funnel
+  theory employed in this thesis.
+    
+\item[\cref{chp:preliminaries}] provides some introductory theory, first to
+  motion planning as a general topic, then introduces the funnel generation
+  theory through \ac{SOS} programming, and then develops the basic theory needed
+  for understanding the inner workings of the \ac{RRT} algorithm.
+    
+\item[\cref{chp:method}] develops the \rrtfunnel{} algorithm through two parts.
+  Firstly it develops robust motion primitives through the \ac{SOS} programming
+  framework. Then it develops the needed heuristics and sampling distribution
+  for the \ac{RRT} motion planner and then incorporates the funnels from the
+  first part as the extension operators to the tree that the algorithm builds
+  through the configuration space.
+    
+\item[\cref{chp:experiments}] contains the description of how to create and
+  setup the experiment environment and the benchmark planner that is used in
+  comparing the performance of the \rrtfunnel{} algorithm. The results follow
+  right after.
+    
+\item[\cref{chp:discussion}] gives a discussion of the results and a pointer to
+  further work on the problem.
+
+\item[\cref{sec:first-app}] gives a basic introduction to the theory of \ac{SOS}
+  verification of dynamical systems.
+
+\item[\cref{AppendixB}] contains some code examples from the code for the
+  implementation of the \rrtfunnel{} algorithm. The rest of which can be found
+  in~\cite{MasterThesisCode2019}.
+
+\end{description}
+
+

@@ -1,27 +1,27 @@
 \chapter{Further work}
 
 \begin{itemize}
-  \item The funnels can be made continous once again, in order to regain
-    exactness. The computational time is not really of huge concern when the
-    funnels are computed off-line, and huge computational resources can be
-    thrown at the problem once the development phase is done.
-  \item The RRT algorithm can be modified in any number of ways.
-    * Grow it backwards from the goal, instead of from the origin.
-    * This can further be exanded for 
 
-  \item Try any other discrete motion planning technique, such as Grid-based
-    planner. Any of the heuristic planners such as A*, D* etc.
+\item The funnels computations can be made continous in order to regain a
+  tighter approximation of the funnel. The computational time, altough it would
+  grow significanlty, is not of concern as long as the funnels are computed
+  off-line.
 
-  \item There is plenty of symmetry that goes unused in the thesis. As an
-    example, there is nothing really seperating a left turn from a right turn,
-    yet they are different motion primitives in the basis set.
+\item Increase the sophistication of the \ac{RRT} algorithm\ie through growing a
+  bi-directional planning tree.
+  
+\item Any other discrete motion planning technique can be employed for the
+  global planner, such as A*, D* etc.
 
-  \item Bi-Directional planning tree.
+\item Extend the algorithm to exploit the symmetry of the dynamical system at
+  hand. As an example, there is nothing really seperating a left turn from a
+  right turn, yet they are different motion primitives in the basis set.
 
-  \item At least in the case of funnels without uncertainty, every sub-level set
-    of a funnel is a funnel, and as such, the whole funnel can be shrunk to fit
-    inside smaller openings. Research to what extent this is possible with
-    uncertain funnels.
+\item At least in the case of funnels without uncertainty, every sub-level set
+  of a funnel is a funnel, and as such, the whole funnel can be shrunk to fit
+  inside smaller openings. Research to what extent this is possible with
+  uncertain funnels, as in this case, every sub-level set is not necessarily
+  invariant.
 
   \item An on-line hybrid implementation where funnels are generated, and stored
     as they have been generated and then reused would be interesting.
@@ -33,18 +33,14 @@
   \item The funnels can be locally shifted in the case of a collision, as the
     subset test may allow for some wiggle-room.
 
-  \item The RRT algorithm could probably be expanded to handle anytime
-    (re-planning) in the original graph.
+  \item The RRT algorithm can be expanded to handle anytime (re-planning) in the
+    original graph.
 
   \item It would be interesting to see the funnels overlaid the optimal Dubin's paths.
 
   \item Maybe implement some sort of informed sampling.
 
-  \item Add an abort maneuver to the \rrtfunnel{} algorithm, so that if the
-    system leaves the funnel, execute a loiter or abort maneuver. Eg. for a
-    vehicle. Stop!
-
-  \item  Custom sampling heuristics, like only sampling in the proximity of the
-    basin of attraction of the tree would be interesting.
+  \item Custom sampling heuristics, like only sampling in the proximity of the
+    basin of attraction of the tree.
 
 \end{itemize}

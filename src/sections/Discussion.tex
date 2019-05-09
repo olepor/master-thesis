@@ -1,57 +1,90 @@
 \chapter{Discussion}
 \label{chp:discussion}
 
-Although the motion primitives of the \rrtfunnel{} algorithm makes for a smooth
-and robust traversal of the state-space, it is not in general probabilisticly
-complete, as there are configurations that it cannot reach due to the discrete
-nature of the motion primitives. This problem can be, and is solved
-in~\cite{vonasekGlobalMotionPlanning2013}, through the addition of a randomly
-sampled control input, in addition to the randomly sampled motion primitives.
-This approach was not exploited for the \rrtfunnel{} algorithm as it would
-remove the robustness guarantee that come with the funnel motion primitives.
+This thesis has developed the \rrtfunnel{} motion planning algorithm for
+providing provably robust motion planning in known environments with bounded
+uncertainty for nonlinear dynamical systems. The planner solved these problems
+through isolating the uncertainty for a nonlinear system into provably
+\textit{robust motion primitives} that are guaranteed to provide safe traversal,
+through the overaching planning environment through the guarantees provided by
+the \ac{SOS} programming framework. These motion primitives were then employed
+by a global \ac{RRT} motion planner in order to compose a safe path through the
+planning environment. The algorithm does not offer any optimality guarantees
+involved with the traversal, however.
 
-The algorithm does take into account uncertainty in both pose and
-predictability, but not the surrounding environment.
 
-The algorithm takes only kinematic constraints, and as such is severly limited
-in that some plans might not be executable on an actual airplane which is
-subject to actuator constraints, forces and torques. Actuator constraints could
-be enveloped in the current implementation
-however~\cite{majumdarFunnelLibrariesRealtime2017}.
+The strength of the algorithm is that through separating the uncertainty
+handling into an off-line pre-computation phase, the global motion planner does
+not need to be significantly more complex than if it had not reasoned about
+uncertainty at all. In fact, to some degree it can remain completely oblivious
+to the overarching problem difficulty of uncertainties for a complex nonlinear
+system. In fact once the motion primitives have been calculated and verified
+off-line, they might as well be employed in any global motion planner able to
+handle discrete motion primitives.
 
-The implementation in this thesis leveraged the discrete sampling of points in
-order to generate funnels around these discrete points. However, a continuous
-approach might have been better suited, as the time for generating the funnels
-off-line are not important for the algorithm at runtime. It did save a lot of
-time in prototyping though.
 
-The algorithm could in theory leverage the symmetries in the dynamics, and hold
-a much sparser funnel library, and then simply mirror them at runtime, then the
-mirror of another funnel is needed - say a left turn instead of a right, but
-this implementation has to be considered more as a proof of concept than a
-fine-tuned lean and mean implementation ready for use of a proper airplane.
+Note that the funnel is an outer reachable set for the problem at hand, which
+means that it is an approximation. Therefore, since the Lyapunov function
+employed is quadratic it will always be symmetric around the trajector verified.
+This means that even though the real nonlinear system dynamics can have a tight
+reachable set on one side of the trajector, the symmetry of the quadratic
+Lyapunov function might lead the funnel to be too conservative on one side of
+the trajector. Also, the verified funnels are verified discretely and hence are
+only valid up to the numeric tolerances of the platform it is computed on, and
+the precision of the solver employed.
 
-In general not every sub-level set of the uncertain funnel is invariant, however
-some investigations into this could significantly reduce the size of the funnel
-through choosing an invariant sub-level set of the funnel in the cases where a
-passage is narrow.
 
-The difficulty of the traversed obstacle course could be significantly increased
-with a few modifications to the \rrtfunnel{} algorithm. For one, every time
-sample can be a node in the graph, and not simply the inlet's and outlet's of
-the funnels. This would increase the resolution at which the algorithm operates
-significantly, hence enabling the difficulty to be raised.
+The algorithm was verified through simulations in a virtual forest for a simple
+airplane model. These experiments showed that the \rrtfunnel{} algorithm is
+significantly more robust than an algorithm which does not handle uncertainties
+explicitly, but employs some conservative heuristics, such as maximizing the
+distance to the closest obstacle in order to avoid a collision during execution
+of the plan.
 
-The verified funnels are verified discretely and hence are only valid up to the
-numeric tolerances of the platform it is computed on, and the precision of the
-solver employed.
 
-The reachable set is an outer approximation for the problem at hand, and since
-the Lyapunov function employed is quadratic it will always be symmetric around
-an axis for the system. This means that even though the system can be pretty
-tight on one side of a trajector, the symmetry might lead the set to be way too
-big on the other, as a result of the quadratics involved.
+Although the \rrtfunnel{} motion planning algorithm does provide safe traversal
+of the configuration space, there are some downsides to the algorithm that
+should be noted/improved:
+\begin{itemize}
 
-The \rrtfunnel{} algorithm does provide safe guaranteed passage through an
-environment, however it does not offer any optimality guarantees involved with
-the traversal. This might be an interesting topic for further research however.
+\item Even though the choice of using motion primitives for the \rrtfunnel{}
+  algorithm makes for a smooth and robust traversal of the state-space, it is
+  not in general probabilisticly complete, as there are configurations that it
+  cannot reach due to the discrete nature of the motion primitives. This problem
+  can be, and is solved in~\cite{vonasekGlobalMotionPlanning2013}, through the
+  addition of a randomly sampled control input, in addition to the randomly
+  sampled motion primitives. This approach was not exploited for the
+  \rrtfunnel{} algorithm as it would remove the robustness guarantee that come
+  with the funnel motion primitives.
+
+\item The algorithm takes only kinematic constraints, and as such is severely
+  limited in that some plans might not be executable on an actual airplane which
+  is subject to actuator constraints, forces and torques. Actuator constraints
+  could be enveloped in the current implementation however,
+  (see~\cite[sec.4.3.3]{majumdarFunnelLibrariesRealtime2017}).
+
+\item The implementation in this thesis leveraged the discrete sampling of
+  points in order to generate funnels around these discrete points. However, a
+  continuous approach might have been better suited, as the time for generating
+  the funnels off-line are not important for the algorithm at runtime.
+
+\end{itemize}
+
+There are multiple ways of improving the algorithm at hand available, an outline
+of a few are:
+
+\begin{itemize}
+
+  \item In general not every sub-level set of the uncertain funnel is invariant,
+  however some investigations into this could significantly reduce the size of
+  the funnel through choosing an invariant sub-level set of the funnel in the
+  cases where a passage is narrow.
+
+\item The algorithm could exploit symmetries in the dynamics, and simply mirror
+  a motion primitive if needed. Hence a sparser motion primitive library could
+  be employed.
+
+\end{itemize}
+
+
+

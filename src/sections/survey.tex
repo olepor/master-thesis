@@ -2,11 +2,10 @@
 \label{chp:survey-of-papers}
 
 \section{Focus}
-Following is a survey of motion planning techniques incorporating uncertainty
-with a focus on their application to unmanned ground vehicles (UGVs). First
-described is the relevant sources of uncertainty in UGV motion planning, and
+Following is a survey of motion planning techniques incorporating uncertainty.
+First described is the relevant sources of uncertainty in motion planning, and
 then the relevant techniques that have been applied to solve them in the
-literature. In general uncertainty in UGV planning can be related to three
+literature. In general uncertainty in motion planning can be related to three
 sources~\cite{lavalleFrameworkMotionPlanning1995}:
 \begin{enumerate}
 \item Uncertainty in predictability.
@@ -46,16 +45,16 @@ shown effective on large belief-spaces in~\cite{Veness_2011}.
 
 \section{Uncertainty in Environment}
 If the robot has imperfect or non-existent a-priori maps, or noisy sensory data,
-complete deterministic knowledge of the environment is impossible. For an UGV in
-an unknown environment, being able to have the situational awareness to avoid
-collisions while adhering to the global planning requirements, despite
-unpredicted obstacles appearing, is essential. Thus environment sensing and
-mapping and re-planning in real-time is required. This is referred to in the
-literature as planning in partially unknown environments. One solution to this
-problem is through incremental graph-search algorithms, as shown
-in~\cite{Stentz_1997}, where the \textsl{D*} algorithm is described as a method
-for optimal and efficient re-planning in partially unknown environments. Then
-\textit{Stentz}, a year later published the \textit{Focused D*}
+complete deterministic knowledge of the environment is impossible. For an
+dynamical system in an unknown environment, being able to have the situational
+awareness to avoid collisions while adhering to the global planning
+requirements, despite unpredicted obstacles appearing, is essential. Thus
+environment sensing and mapping and re-planning in real-time is required. This
+is referred to in the literature as planning in partially unknown environments.
+One solution to this problem is through incremental graph-search algorithms, as
+shown in~\cite{Stentz_1997}, where the \textsl{D*} algorithm is described as a
+method for optimal and efficient re-planning in partially unknown environments.
+Then \textit{Stentz}, a year later published the \textit{Focused D*}
 algorithm~\cite{Stentz:1995:FDA:1643031.1643113}, which incorporates heuristics
 to reduce the total time taken for re-planning. Still,\textit{D*} is
 computationally heavy, and algorithms have been created to improve on the
@@ -74,7 +73,7 @@ in~\cite{likhachevAnytimeSearchDynamic2008}. Another commonly used technique in
 dealing with large state-spaces is sampling, and a popular approach to sampling,
 is the \textit{Rapidly Exploring Random Tree} (RRT), which has shown itself
 useful in dealing with high dimensional state-spaces. Several RRT-tweaks and
-etensions have been proposed over the years, where a good comparison of
+extensions have been proposed over the years, where a good comparison of
 different versions of RRT (RRT*, RRT*-smart), can be found
 in~\cite{noreenComparisonRRTRRT2016}. In order to deal with uncertainty, the
 \textit{Particle-RRT} (pRRT) is proposed as an extension of the common RRT
@@ -122,7 +121,7 @@ mapping and planning is \textit{Chance constrained programming } as shown by
 Vitus et.\ al~\cite{vitusHierarchicalMethodStochastic2012}. Here it is shown
 that incorporating real-time sensing into the model, which updates the
 probability a link in a graph will be traversable depending on how well it has
-been sensed, is beneficial to succesful operation in an unknown environment.
+been sensed, is beneficial to successful operation in an unknown environment.
 Then a method is developed for balancing exploration and apriori knowledge of
 the environment, in the face of uncertainties in the map. The method is also
 employed experimentally on a quad-copter for proof of real-time applicability.
@@ -153,7 +152,7 @@ in~\cite{djekouneSensorBasedNavigation2009}. This is useful in that a perfect
 map of the environment may not be available. Worse even, the environment may
 have changed, as nature is not static. Trees fall over, and floods move ground,
 and create hindrances that might not be seen from a map. Not knowing where a
-hindrance might lie, or whether one is located outside the sight of the onboard
+hindrance might lie, or whether one is located outside the sight of the on-board
 sensors.
 
 \section{Uncertainty in Pose}
@@ -165,8 +164,8 @@ to the POMDP model, which we already know has a very high complexity. Navigating
 a robot with uncertain pose, in rough terrain is investigated
 in~\cite{haitMotionPlanningRough1996}, where robustness in control is ensured by
 imposing the validity of a configuration domain around the planned trajectory,
-through the notion of a safe neighbourhood. Here a configuration is only
-considered safe, if all it's neighbourhood configurations are also safe. It also
+through the notion of a safe neighborhood. Here a configuration is only
+considered safe, if all it's neighborhood configurations are also safe. It also
 links position uncertainty with uncertainty in the map elevation model. Another
 paper building on the traversal of rough terrain method given previously
 is~\cite{iagnemmaRapidPhysicsbasedRoughterrain1999}. It also gives a nice
@@ -176,9 +175,9 @@ overview of how to incorporate uncertainty into the path-planning algorithm.
 
 It is similar in spirit to~\cite{tedrakeLQRtreesFeedbackMotion2009} where a tree
 of \ac{LQR}-controllers is created, in order to safely take a dynamical system
-from one intial state to a final state. The difference however is that in this
+from one initial state to a final state. The difference however is that in this
 thesis the funnels are computed off-line, and are employed as motion primitives
-to a \ac{RRT}-planner, in addition the \ac{LQR}-trees algoritm plans backwards,
+to a \ac{RRT}-planner, in addition the \ac{LQR}-trees algorithm plans backwards,
 while this implementation plans forwards in time. The funnel generation is also
 slightly different, as the funnels in this thesis, which is based off of the
 formulation in~\cite{majumdarFunnelLibrariesRealtime2017} also seeks to limit

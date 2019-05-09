@@ -237,10 +237,10 @@ However, for the funnels in this thesis, the initial condition set will be given
 by the hyperellipsoid
 \begin{align}
   \mathcal{X}_0 &= \set{\vect{x} \in \R^2 \mid \vect{x}^{T} Q \vect{x}} \\
-   Q &= \begin{bmatrix}
-      2 & 0 & 0 \\
-      0 & 2 & 0 \\
-      0 & 0 & 4
+  Q &= \begin{bmatrix}
+    2 & 0 & 0 \\
+    0 & 2 & 0 \\
+    0 & 0 & 4
   \end{bmatrix}
 \end{align}
 which means that the funnel will have a diameter of one half, and the \(\theta\)
@@ -408,8 +408,8 @@ The system dynamics and funnel generation theory presented this far has not been
 able to handle any system uncertainty, which is vital to the safe execution of
 the \rrtfunnel{} algorithm. However, the basic formulations presented do have
 all the necessary formulations present, and adding uncertainty is equivalent to
-adding another constraint to the optimization
-problem \cref{eq:sufficient-conditions}.
+adding another constraint to the optimization problem
+\cref{eq:sufficient-conditions}.
 
 Following are the changes to the formulation of the \ac{SOS} optimization
 condition \cref{eq:funnelsufficient} so that a funnel takes into account a
@@ -549,6 +549,7 @@ to be modified slightly in order to take into account the translation along the
 cyclic coordinates of the system. Hence the definition used
 is~\cite[definition~3,sec~5]{majumdarFunnelLibrariesRealtime2017} which states
 \begin{definition}
+  \label{def:invarant-funnel-composition}
   An ordered pair \(F_1,F_2\) of funnels \(F_1 \colon [0,T_1] \rightarrow
   \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
   is \textit{sequentially composable modulo invariance} if there exists a shift
@@ -587,9 +588,9 @@ and is implemented in \textsc{sostools}~\cite{sostools} and \matlab{} in
 together into a tree can be seen in~\cref{fig:funnel-composition-tree}.
 \begin{figure}
   \centering \includegraphics[scale=.5, trim={0cm 7cm 0cm
-      7cm}]{figures/method/funnel-tree}  \caption{Pictured: A tree of funnels
-    built by the \rrtfunnel{} algorithm, showing how longer motion primitives
-    are built up from primitives in the basis set.}
+    7cm}]{figures/method/funnel-tree} \caption{Pictured: A tree of funnels built
+    by the \rrtfunnel{} algorithm, showing how longer motion primitives are
+    built up from primitives in the basis set.}
   \label{fig:funnel-composition-tree}
 \end{figure}
 
@@ -612,13 +613,16 @@ robust to uncertainty given the uncertainty and dynamical assumptions made.
 
 \begin{figure}
   \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm 4cm}]{figures/method/FunnelSimnew4}
+    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
+      4cm}]{figures/method/FunnelSimnew4}
   \end{subfigure}
   \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm 4cm}]{figures/method/FunnelSimnew1}
+    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
+      4cm}]{figures/method/FunnelSimnew1}
   \end{subfigure}
   \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm 4cm}]{figures/method/FunnelSimnew5}
+    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
+      4cm}]{figures/method/FunnelSimnew5}
   \end{subfigure}
   \caption{The simulated non-polynomial system trajectories (green), overlaid
     with the outer approximation that is the funnel returned by the \ac{SOS}
