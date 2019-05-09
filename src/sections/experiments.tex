@@ -238,35 +238,6 @@ projected funnels overlaid a sample in \cref{fig:sample-funnel-overlay}.
   \label{fig:sample-funnel-overlay}
 \end{figure}
 
-\subsection{LQR cost matrices}
-\label{subsec:lqr-cost}
-
-Although the focus of this thesis is not on fine-tuning the \ac{LQR}-controller,
-some amount of effort has to go into getting the cost parameters acceptable, so
-that the funnels do converge. In general the strategy is penalizing the
-airplane's distance from the nominal path in \((x,y,\theta)\), and be more
-lenient with the energy expended by the control input. Thus path divergence is
-penalized hard, and input divergence is not.
-
-More specifically the cost matrices employed are
-\begin{align*}
-  R &= 0.01 \\
-  Q &= \begin{bmatrix}
-    40 & 0 & 0  \\
-    0 & 40 & 0  \\
-    0 & 0 & 4   \\
-  \end{bmatrix}
-  \\
-  Q_{f} &=
-          \begin{bmatrix}
-            1 & 0 & 0   \\
-            0 & 1.5 & 0  \\
-            0 & 0 & 1   \\
-          \end{bmatrix}
-\end{align*}
-where the control input is only penalized \(\frac{1}{10}\)th of the other
-variables.
-
 \subsection{Making sure that the airplane stays within the funnels during
   execution}
 \label{subsec:check-vehicle-in-funnel}
