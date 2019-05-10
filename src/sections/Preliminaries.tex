@@ -109,8 +109,8 @@ example ignoring the final heading of the airplane. Mathematically the initial
 and goal sets is defined as
 \begin{align*}
   \mathcal{X}_0 &= \set{ \vect{x} \in \modelconfigurationspace{} \mid g_i(\vect{x}) \leq a_i,
-                  \, \forall i = 1,\ldots N_j} \\
-  \mathcal{X}_{end} &= \set{ \vect{x} \in \modelconfigurationspace{} \mid g_i(\vect{x}) \leq
+                  \, \forall i = 1,\ldots N_j}, \\
+  \mathcal{X}_{\textit{end}} &= \set{ \vect{x} \in \modelconfigurationspace{} \mid g_i(\vect{x}) \leq
                       a_i, \, \forall i = 1,\ldots N_k}
 \end{align*}
 which defines the initial and final states as subsets of the configuration space
@@ -140,9 +140,9 @@ as the continuous case for the world and robot model, only all points are
 discrete in time \(t_k\) for some \(k\). Therefore, let \(\mathcal{X}\) be the
 discrete state space, and \(\mathcal{U}(\vect{x}_k)\) be the set of actions
 available at each point \(\vect{x}_k \in \mathcal{X}\). Then the state
-transition equation can now written as:
+transition equation can now written as
 \[
-  \vect{x}_{k+1} = f(\vect{x}_k, \vect{u}_k)
+  \vect{x}_{k+1} = f(\vect{x}_k, \vect{u}_k) \; .
 \]
 
 \subsubsection{Representation of the plan}
@@ -176,7 +176,7 @@ k\) is not given, the model turns into
 \[
   X_{k+1} = \set{ \vect{x}_{k+1} \in X \mid \exists \vect{w}_k \in
     W(\vect{x}_k,\vect{u}_k) \text{ such that } \vect{x}_{k+1} =
-    f(\vect{x}_k,\vect{u}_k,\vect{w}_k)}.
+    f(\vect{x}_k,\vect{u}_k,\vect{w}_k)} \; .
 \] 
 
 \subsection{Reachable sets}
@@ -285,8 +285,8 @@ the control input. Assume that an open loop nominal trajectory \(\vect{x}_0
 coordinate frame
 \begin{align}
   \label{eq:system-error-dynamics}
-  \bar{\vect{x}}(t) &= \big( \vect{x} - \vect{x}_0 \big)(t) \\
-  \bar{\vect{u}}(t) &= \big(\vect{u} - \vect{u}_0 \big)(t) \; .
+  \bar{\vect{x}}(t) &= ( \vect{x} - \vect{x}_0 )(t) \\
+  \bar{\vect{u}}(t) &= (\vect{u} - \vect{u}_0 )(t) \; .
 \end{align}
 Then, transforming \cref{eq:dynamicalsystem} to the new coordinate frame one
 obtains
@@ -303,7 +303,7 @@ framework can only verify polynomials. Therefore, through the use of a
 used), the control input can be eliminated from the dynamical equation, giving
 \begin{equation}
   \label{eq:dynamicclosedloop}
-  \dot{\bar{\vect{x}}} = f_{cl}\big( t,\bar{\vect{x}}(t) \big).
+  \dot{\bar{\vect{x}}} = f_{cl}\big( t,\bar{\vect{x}}(t) \big) \; .
 \end{equation}
 However, the dynamical system may still not be polynomial, which is a necessary
 condition in order for this to be verified using \ac{SOS} programming.
@@ -327,7 +327,7 @@ A funnel is defined by \citeauthor{majumdarFunnelLibrariesRealtime2017} in
 \begin{definition}
   \label{def:funnel}
   A funnel associated with a closed-loop dynamical system \(\dot{\bar{\vect{x}}}
-  = f_{cl}\big( t,\vect{x}(t) \big) \) is a map \(F \colon [0,T] \rightarrow
+  = f_{\textit{cl}}\big( t,\vect{x}(t) \big) \) is a map \(F \colon [0,T] \rightarrow
   \mathcal{P}(\R^n)\), from the time interval \([0,T]\) to the power set (i.e.,
   the set of subsets) of \(\R^n\) so that the sets \(F(t)\) satisfy the
   condition~\cref{eq:reachableset}.
@@ -364,9 +364,9 @@ optimization problem
 
 \begin{align}
   \label{eq:funneloptimizationproblem}
-  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol \big( F(t) \big) \, dt \\
+  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol\big( F(t) \big) \, dt \\
   &\text{subject to} && V(t,\bar{\vect{x}}) = \rho (t) \implies \dot{V}(t,\bar{\vect{x}}) < \rho (t) \, \forall t \in [0,T] \nonumber \\
-  && &\mathcal{X}_0 \subset F(0,\bar{\vect{x}}) \nonumber
+  && &\mathcal{X}_0 \subset F(0,\bar{\vect{x}}) \; . \nonumber
 \end{align} 
 
 \begin{figure}
@@ -431,7 +431,7 @@ function~\cref{eq:funneloptimizationproblem}. This is done by
 cost function by first discretizing the problem and replacing the integral with
 a finite sum
 \begin{equation}
-  \int_{0}^{T} \vol \big( F(t) \big) \, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol \big( F(t_{k}) \big) \; . \label{eq:discrete-costfunction}
+  \int_{0}^{T} \vol\big( F(t) \big) \, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol\big( F(t_{k}) \big) \; . \label{eq:discrete-costfunction}
 \end{equation}
 Since the Lyapunov function \(V(t,\bar{\vect{x}})\) in this thesis is quadratic,
 it can be written as
@@ -449,7 +449,7 @@ where \( \mathcal{E} ( t_{k} ) \) is an ellipsoid containing the reachable set
 \( F ( t_{k} ) \) at time \( t_{k} \). This containment constraint can be
 equivalently expressed as
 \begin{equation}
-  V ( t_{k}, \bar{\vect{x}} ) \leq \rho(t_{k})  \implies {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} \leq 1 \;.
+  V ( t_{k}, \bar{\vect{x}} ) \leq \rho(t_{k})  \implies {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} \leq 1 \; .
   \label{eq:discrete-containment-constraint}
 \end{equation}
 Which when expressed using \ac{SOS} constraints gives
@@ -464,33 +464,42 @@ optimization problem
 %
 { % Mini environment scope
   \newcommand{\E}{\mathcal{E}} \renewcommand{\x}{\bar{x}}
-  \begin{mini*}[2]
+  \begin{mini!}[2]
     { \substack { V, \rho, L, L_t,
         \\
         L_{0, i}, S_{k}, L_{\E, k} } }
-    { \sum_{k = 1}^{N} \vol(\E(t_{k})) =
-      \sum_{k = 1}^{N} \vol \p{\set{\vect{x} \mid \vect{x}^T \matr{S}_k \vect{x}
-          \le 1}} } {} {}
+    { \sum_{k = 1}^{N} \vol \bigl( \E(t_{k}) \bigr) =
+      \sum_{k = 1}^{N} \vol \bigl( \set{\vect{x} \mid \vect{x}^{T} \matr{S}_{k} \vect{x}
+        \le 1} \bigr) }
+    {}
+    {}
     \addConstraint {
         \dot{\rho}(t) -
       \dot{V}(t,\vect{x}) - L(t,\vect{x}) \bigl( { V(t,\vect{x}) - \rho(t) }
-      \bigr) }{}{}
-      \addConstraint{- L_t (t,\vect{x}) \bigl(  {t \p*{T - t}} \bigr)}{}
+      \bigr) \nonumber }
+    {}
+    {}
+    \addConstraint{- L_t (t,\vect{x}) \bigl(  {t \p*{T - t}} \bigr) \nonumber}
+    {}
     {\text{ is SOS}}
     \addConstraint {\rho(0) - V(0, \vect{x}) - \sum_i^{N} L_{0,
-        i}(\vect{x}) g_{0, i}(\vect{x})}{}%
+        i}(\vect{x}) g_{0, i}(\vect{x}) \nonumber }
+    {}%
     {\text{ is SOS}}
     \addConstraint { 1 - \vect{x}^T \matr{S}_k \vect{x} -
-      L_{\E, k}(\vect{x}) \bigl(  {\rho(t_k) - V(t_k, \vect{x})} \bigr) }{}%
+      L_{\E, k}(\vect{x}) \bigl(  {\rho(t_k) - V(t_k, \vect{x})} \bigr) \nonumber }
+    {}%
     {\text{ is SOS}}
-    \addConstraint {S_k}%
+    \addConstraint {S_k \nonumber}%
     {\succeq 0}%
     {\quad \forall k \in \set{1, \ldots, N}}
-    \addConstraint {L_t (t, \vect{x}),\, L_{0,i}(\vect{x}),\, L_{\mathcal{E},k}(\vect{x})}%
+    \addConstraint {L_t (t, \vect{x}),\, L_{0,i}(\vect{x}),\,
+      L_{\mathcal{E},k}(\vect{x}) \nonumber }%
     {\qquad\text{ are SOS}}%
-    {\quad \forall i \in \set{1, \ldots, N_0},} \addConstraint{}{}{\quad \forall
+    {\quad \forall i \in \set{1, \ldots, N_0},}
+    \addConstraint{\nonumber}{}{\quad \forall
       k \in \set{1, \ldots, N}\;.}
-  \end{mini*}
+  \end{mini!}
 } % End optimization problem scope.
 which is the finite dimensional optimization problem needed in order to search
 for a Lyapunov function candidate.
@@ -512,29 +521,30 @@ and
 \textcite{majumdarFunnelLibrariesRealtime2017} arrives at
 \cref{alg:funnelalgorithm} for computing the funnels.
 
-\begin{algorithm}
+\begin{algorithm}[p]
   \caption{Funnel computation}
   \label{alg:funnelalgorithm}
   \DontPrintSemicolon \SetAlgoNoLine
 
   \KwIn{\(V\) and \(\rho\)} \KwOut{Funnel}
 
-  \(cost_{prev} = \infty\)\; converged = false \; \While{\(!\; converged\)}{
+  \(\textrm{cost}_{\textit{prev}} = \infty\)\; converged = false \; \While{\(!\; \textrm{converged}\)}{
     Optimization problem 1: \;
     \begin{align*}
-      \underset{\substack{L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
+      \underset{\substack{L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) & \\    
       \text{subject to } & V \text{ and } \rho \text{ constant.}& \\
     \end{align*}\;
     Optimization problem 2: \;
     \begin{align*}
-      \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
+      \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) & \\    
       \text{subject to } & L \text{ and } L_{\mathcal{E},k} \text{ constant.}& \\
     \end{align*}\;
-    cost = \(\sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))\) \;
-    \If{\(\frac{cost_{prev} - cost}{cost_{prev}} < \epsilon\)} {
+    cost = \(\sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) \) \;
+    \If{\(\frac{\textrm{cost}_{\textit{prev}} -
+        \textrm{cost}}{\textrm{cost}_{\textit{prev}}} < \epsilon \) } {
       converged = true
     }\;
-    \(cost_{prev} = cost\)\;
+    \(\textrm{cost}_{\textit{prev}} = \textrm{cost}\)\;
   }\;
 \end{algorithm}
 
@@ -549,27 +559,39 @@ acceptable approximations, where exactness can be regained through increasing
 the sampling rate~\cite{Tobenkin_2011}. If \(t_{k} \in [0,T]\), where \(k \in
 \set{1,\ldots,N}\), the optimization equations become:
 
-\begin{mini}
+\begin{mini*}[2]
   {\substack{V_{k}, \rho, L_{k},\\ L_{0,i}, S_{k},
-      L_{\mathcal{E},k}}} % Optimization variables
-  {\sum_{k=1}^{N}\vol(\mathcal{E}(t_{k})) = \sum_{k=1}^{N} \vol\left(
+      L_{\mathcal{E},k}} } % Optimization variables
+  {\sum_{k=1}^{N}\vol(\mathcal{E} \bigl(t_{k}) \bigr) = \sum_{k=1}^{N} \vol\left(
       \set{\bar{x} \mid {\bar{x}}^{T} S_{k} \bar{x} \leq 1}
     \right)} % Optimization function
   {\label{optidef:discrete}} % Label optimization problem
   {} % Optimization result
   % Constraints
   \addConstraint{\dot{\rho}(t_{k}) - \dot{V}_{k}(\bar{\vect{x}}) -
-    L_{k}(\bar{\vect{x}}) \left( V_{k}(\bar{\vect{x}}) - \rho(t_{k}) \right)}
+    L_{k}(\bar{\vect{x}}) \bigl( V_{k}(\bar{\vect{x}}) - \rho(t_{k}) \bigr)}
   {\qquad} {\forall k \in \set{1,\ldots,N}} \addConstraint{\rho(t_{1}) -
-    V_{1}(\bar{\vect{x}}) - \sum_{i}^{N_{0}} L_{0,i}g_{0,i}(\bar{\vect{x}})} {\,
-    \text{is SOS}} {} %
+    V_{1}(\bar{\vect{x}}) - \sum_{i}^{N_{0}} L_{0,i}g_{0,i}(\bar{\vect{x}})}
+  {}
+  {\, \text{is SOS}} %
   \addConstraint{1 - {\bar{\vect{x}}}^{T} S_{k} \bar{\vect{x}} -
-    L_{\mathcal{E,k}} \left( \rho(t_{k}) - V_{k}(\bar{\vect{x}}) \right)} {\,
-    \text{is SOS}\;} {\forall k \in \set{1,\ldots,N}} %
-  \addConstraint{S_{k} \succeq 0} {} {\forall k \in \set{1,\ldots,N}} %
-  \addConstraint{L_k(\bar{\vect{x}}),\,L_{0,i}(\bar{\vect{x}}), L_{\mathcal{E},k}} {\, \text{are SOS}}
-  {\; \forall i,k \in \set{1,\ldots,N}} %
-\end{mini}
+    L_{\mathcal{E},k} \bigl( \rho(t_{k}) - V_{k}(\bar{\vect{x}}) \bigr) }
+  {}
+  {\, \text{is SOS},}
+  \addConstraint{}
+  {}
+  {\forall k \in \set{1,\ldots,N}} %
+  \addConstraint{S_{k} \succeq 0}
+  {}
+  {\forall k \in \set{1,\ldots,N}} %
+  \addConstraint{L_k(\bar{\vect{x}}),\,L_{0,i}(\bar{\vect{x}}),
+    L_{\mathcal{E},k}}
+  {\qquad \text{are SOS}}
+  {\forall i \in \set{1,\ldots,N_0} ,} %
+  \addConstraint{}
+  {}
+  {\forall k \in \set{1,\ldots,N} \; .}
+\end{mini*}
 
 \subsection{Funnel composition}
 
@@ -601,8 +623,8 @@ is an equivalent condition to~\cref{eq:funnel-subset}, and which can be checked
 through the following \ac{SOS} program
 \begin{align*}
   \text{Find } \; &L(\bar{x}) \\
-  \text{s.t} \; &\rho_2(0) - V_2(0,\bar{\vect{x}}) - L(\bar{\vect{x}})
-                  \left( \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \right).
+  \text{s.t} \; &\rho_2(0) - V_2( 0,\bar{\vect{x}}) - L(\bar{\vect{x}})
+                  \bigl( \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \bigr) \; .
 \end{align*}
 
 However in
@@ -622,10 +644,10 @@ where \(p(\vect{x})\) is the \ac{SOS} polynomial that is to be verified. In this
 case \(p(\vect{x})\) is \(V_2(0,\bar{\vect{x}})\). Thus in order to impose the
 implication define
 \[
-  q(\vect{x}) = V_2(0,\bar{\vect{x}}) - \rho_2(0) - L(\bar{\vect{x}}) \left(
-    \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \right)
+  q(\vect{x}) = V_2(0,\bar{\vect{x}}) - \rho_2(0) - L(\bar{\vect{x}}) \bigl(
+    \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \bigr)
 \]
-where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) needs to be SOS polynomials.
+where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) need to be SOS polynomials.
 
 \begin{example}
 
@@ -638,7 +660,7 @@ where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) needs to be SOS polynomials.
   \[
     \beta = \set{\vect{x} \in \R^2 \mid \norm{\vect{x}} \leq 1}
   \]
-  using the Manhattan metric. then the implication
+  using the Manhattan metric. Then the implication
   \[
     \vect{x} \in \beta \implies p(\vect{x}) \geq 0
   \]

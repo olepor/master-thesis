@@ -32,11 +32,13 @@
 % \sisetup{prefixes-as-symbols=false} % Not working -_-
 \RequirePackage{lettrine}          % Big letters at the start of a paragraph.
 \RequirePackage{listings}          % Typesetting code
-\lstset
-{
-    basicstyle = \ttfamily\footnotesize,
+\lstset{
+    basicstyle       = \ttfamily\footnotesize,
+    commentstyle     = \color{gray},
+    stringstyle      = \itshape,
     showstringspaces = false,
-    frame = tb
+    frame            = tb,
+    language         = matlab
 }
 \RequirePackage[obeyspaces,
                 spaces,
@@ -174,7 +176,8 @@
 
 %% Lower level sections
 \setsecheadstyle{\Large\bfseries\sffamily\raggedright}
-\setsubsecheadstyle{\large\bfseries\sffamily\raggedright}
+\setsubsecheadstyle{\large\bfseries\boldmath\sffamily\raggedright}
+% \setsubsecheadstyle{\large\bfseries\sffamily\raggedright}
 \setsubsubsecheadstyle{\normalsize\bfseries\sffamily\raggedright}
 \setparaheadstyle{\normalsize\bfseries\sffamily\raggedright}
 \setsubparaheadstyle{\normalsize\bfseries\sffamily\raggedright}
@@ -322,7 +325,7 @@
 \newcommand{\modelobstacle}{\ensuremath{\mathcal{O}}}
 \newcommand{\modelactionspace}{U}
 \newcommand{\modelconfigurationspace}{\ensuremath{\mathcal{C}}}
-\newcommand{\modelconfigurationspacesub}[1]{\ensuremath{\mathcal{C}_{#1}}}
+\newcommand{\modelconfigurationspacesub}[1]{\ensuremath{\mathcal{C}_{\textit{#1}}}}
 \newcommand{\modelconfigurationspacefree}{\modelconfigurationspacesub{free}}
 \newcommand{\modelconfigurationspaceobst}{\modelconfigurationspacesub{obst}}
 \newcommand{\funnel}{\textit{Funnel}}
