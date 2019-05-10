@@ -13,7 +13,7 @@ all: setup
 	# @cd tests/thesis/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
 	@cp .latexmkrc ./tests/thesis/src
 	@cp zot.bib  ./tests/thesis/src
-	@cd tests/thesis/src && latexmk -output-directory=build -cd -bibtex -pdf -gg -silent main.tex
+	@cd tests/thesis/src && latexmk -output-directory=build -cd -bibtex -pdf -gg main.tex
 	@open tests/thesis/src/build/main.pdf
 
 .Phony: setup
@@ -28,12 +28,13 @@ file: setup
 section: src/sections/$(section).tex
 	@echo "Building the section $(section)"
 	@mkdir -p tests/$(section)/build
+	@rm -rf tests/$(section)
 	@cp -r src/ tests/$(section)/
 	@mv tests/$(section)/main.tex tests/$(section)/maintemplate.tex
 	@tests/scripts/createIncludeOnly $(section) tests/$(section)/maintemplate.tex
 	# @cd tests/$(section)/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
 	@cp zot.bib ./tests/$(section)/
-	@cd tests/$(section)/ && latexmk --output-directory=./build -cd -bibtex- -pdf  ./main.tex
+	@cd tests/$(section)/ && latexmk --output-directory=./build -cd -bibtex- -pdf -gg  ./main.tex
 	@open tests/$(section)/build/main.pdf
 
 

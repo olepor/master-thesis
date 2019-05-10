@@ -57,8 +57,8 @@ through a rigid body transformation on the robot model
 
 However, the robot is more than a set of points in the world space. For example
 a simple model of an airplane needs to know its heading as well. This
-information will be referred to as the configuration space of the robot
-(\modelconfigurationspace). For a simple airplane model this can be encoded in a
+information will be referred to as the configuration space of the robot,
+\modelconfigurationspace. For a simple airplane model this can be encoded in a
 simple three dimensional vector holding the \(x\), \(y\), and \(\theta\)
 parameters, like so
 \[
@@ -174,7 +174,7 @@ step \(k\), then the state transition transition is modeled as~\cite{Lav06}
 As the uncertain actions are not available beforehand, that is -- \(\vect{w}_
 k\) is not given, the model turns into
 \[
-  X_{k+1} = \set{ \vect{x}_{k+1} \in X \mid \exists w_k \in
+  X_{k+1} = \set{ \vect{x}_{k+1} \in X \mid \exists \vect{w}_k \in
     W(\vect{x}_k,\vect{u}_k) \text{ such that } \vect{x}_{k+1} =
     f(\vect{x}_k,\vect{u}_k,\vect{w}_k)}.
 \] 
@@ -256,12 +256,12 @@ heading of the aircraft, looks like~\cref{fig:monte-carlo-sim}.
 \end{figure}
 
 In the literature, the term \textit{funnel} first appears in
-\cite{masonMechanicsManipulation1985}, but is later employed in a lot of
+\textcite{masonMechanicsManipulation1985}, but is later employed in a lot of
 research. The funnel definitions in this thesis is taken from a series of
-articles on funnels \cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,
+articles on funnels~\cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,
   majumdarRobustOnlineMotion2013,
   majumdarFunnelLibrariesRealtime2017,ahmadi2014dsos}, with the main focus being
-on \cite{majumdarFunnelLibrariesRealtime2017}.
+on \textcite{majumdarFunnelLibrariesRealtime2017}.
 
 \subsection{Computing funnels}
 
@@ -270,33 +270,29 @@ following sections. Given a trajectory, the goal is to compute a robust
 invariant set around the trajectory that will `guarantee' that the planner is
 free from collisions during execution of the obtained motion plan. This robustly
 invariant set is parameterized through Lyapunov function candidates, that, in
-this case, will be based upon an \ac{LQR} controller for the system. The
-following presentations is based on~\cite{Tobenkin_2011,
-  tedrakeLQRtreesFeedbackMotion2009, majumdarRobustOnlineMotion2013}, but mainly
-follow the formulations, and syntax
-from~\cite{majumdarFunnelLibrariesRealtime2017}.
+this case, will be based upon an \ac{LQR} controller for the system.
 
 In order to compute funnels, a model of the dynamics for the system is required.
 Thus, given the nonlinear dynamical system
 \begin{equation}
   \label{eq:dynamicalsystem}
-  \dot{\vect{x}} = f(\vect{x}(t), \vect{u}(t))
+  \dot{\vect{x}} = f\big(\vect{x}(t), \vect{u}(t) \big)
 \end{equation}
 with \(\vect{x}(t)\) the state of the system at time \(t\) and \(\vect{u}(t)\)
-the control input. Assume that an open loop nominal trajectory \(\x_0 \colon
+the control input. Assume that an open loop nominal trajectory \(\vect{x}_0 \colon
 [0,T] \rightarrow \R^n\) with control input \(\vect{u}_0 \colon [0,T]
 \rightarrow \R^n\) is given, and define a change of coordinates into the error
 coordinate frame
 \begin{align}
   \label{eq:system-error-dynamics}
-  \bar{\vect{x}}(t) &= (\vect{x} - \vect{x}_0)(t) \\
-  \bar{\vect{u}}(t) &= (\vect{u} - \vect{u}_0)(t).
+  \bar{\vect{x}}(t) &= \big( \vect{x} - \vect{x}_0 \big)(t) \\
+  \bar{\vect{u}}(t) &= \big(\vect{u} - \vect{u}_0 \big)(t).
 \end{align}
 Then, transforming \cref{eq:dynamicalsystem} to the new coordinate frame one
 obtains
 \begin{equation}
   \label{eq:dynamicalsystem-coordinatechange}
-  \dot{\bar{\vect{x}}} = \dot{\vect{x}} - \dot{\vect{x}}_0 = f(\vect{x}_0(t) + \bar{\vect{x}}(t), \vect{u}_0(t) + \bar{\vect{u}}(t)) - \dot{\vect{x}}_0(t)
+  \dot{\bar{\vect{x}}} = \dot{\vect{x}} - \dot{\vect{x}}_0 = f\big( \vect{x}_0(t) + \bar{\vect{x}}(t), \vect{u}_0(t) + \bar{\vect{u}}(t) \big) - \dot{\vect{x}}_0(t)
 \end{equation}
 
 In order to compute a parameterized reachable set through \ac{SOS} programming
@@ -307,7 +303,7 @@ framework can only verify polynomials. Therefore, through the use of a
 used), the control input can be eliminated from the dynamical equation, giving
 \begin{equation}
   \label{eq:dynamicclosedloop}
-  \dot{\bar{\vect{x}}} = f_{cl}(t,\bar{\vect{x}}(t)).
+  \dot{\bar{\vect{x}}} = f_{cl}\big( t,\bar{\vect{x}}(t) \big).
 \end{equation}
 However, the dynamical system may still not be polynomial, which is a necessary
 condition in order for this to be verified using \ac{SOS} programming.
@@ -330,20 +326,20 @@ A funnel is defined by \citeauthor{majumdarFunnelLibrariesRealtime2017} in
 \cite{majumdarFunnelLibrariesRealtime2017} as
 \begin{definition}
   \label{def:funnel}
-  A funnel associated with a closed-loop dynamical system
-  \(\dot{\bar{\vect{x}}} = f_{cl}(t,\vect{x}(t))\) is a map \(F \colon [0,T]
-  \rightarrow \mathcal{P}(\R^n)\), from the time interval \([0,T]\) to the power
-  set (i.e., the set of subsets) of \(\R^n\) so that the sets \(F(t)\) satisfy
-  the condition~\cref{eq:reachableset}.
+  A funnel associated with a closed-loop dynamical system \(\dot{\bar{\vect{x}}}
+  = f_{cl}\big( t,\vect{x}(t) \big) \) is a map \(F \colon [0,T] \rightarrow
+  \mathcal{P}(\R^n)\), from the time interval \([0,T]\) to the power set (i.e.,
+  the set of subsets) of \(\R^n\) so that the sets \(F(t)\) satisfy the
+  condition~\cref{eq:reachableset}.
 \end{definition}
 
 Next, the reachable set is parameterized through the use of Lyapunov functions,
 which yields
 \begin{equation}
-  F(t) = \set{\bar{\vect{x}}(t) \mid V(t, \bar{\vect{x}}(t) \leq \rho (t))}
+  F(t) = \set{\bar{\vect{x}}(t) \mid V \big(t, \bar{\vect{x}}(t) \leq \rho (t) \big)}
 \end{equation}
 where \(\rho (t) \colon [0,T] \rightarrow \R^+\), is a function which limits the
-size of the reachable set, and \(V(t,\bar{x}(t))\) is a Lyapunov function \(V
+size of the reachable set, and \(V \big(t,\bar{x}(t) \big)\) is a Lyapunov function \(V
 \colon [0,T] \times \R^n \rightarrow \R^+\).
 
 Then, by setting \(\mathcal{X}_0 \subset F(0,\bar{\vect{x}})\), one can derive
@@ -368,7 +364,7 @@ optimization problem~\cite{majumdarFunnelLibrariesRealtime2017}
 
 \begin{align}
   \label{eq:funneloptimizationproblem}
-  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol(F(t))\, dt \\
+  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol \big( F(t) \big) \, dt \\
   &\text{subject to} && V(t,\bar{\vect{x}}) = \rho (t) \implies \dot{V}(t,\bar{\vect{x}}) < \rho (t) \, \forall t \in [0,T] \nonumber \\
   && &\mathcal{X}_0 \subset F(0,\bar{\vect{x}}) \nonumber
 \end{align} 
@@ -415,11 +411,16 @@ and
 which, if these functions are both polynomial, is now in the form of a \ac{SOS}
 optimization problem. Then through the use of the~\nameref{sec:s-procedure} one
 arrives at the equations
+\begin{subequations}
 \begin{align}
-  &\dot{\rho}(t) - \dot{V}(t,\bar{\vect{x}}) - L(t,\bar{\vect{x}})\left( V(t,\bar{\vect{x}}) - \rho(t) \right) - L_{t}(t,\bar{\vect{x}})\left( t\left( T - t \right) \right)  && \text{is SOS}& \label{eq:sufficient-conditions}\\
-  & \rho(0) - V(0,\bar{\vect{x}}) - \sum_{i}^{N_{0}} L_{0,i}(\bar{\vect{x}})g_{0,i}(\bar{\vect{x}}) && \text{is SOS}& \nonumber \\
-  & L(t, \bar{\vect{x}}), \, L_{t}(\bar{\vect{x}}), \, L_{0,i}(\bar{\vect{x}}) \; &&\text{are SOS}, \, \forall i \in \set{1,\ldots,N_{0}} \nonumber
+  \dot{\rho}(t) - \dot{V}(t,\bar{\vect{x}}) - L(t,\bar{\vect{x}}) \big( V(t,\bar{\vect{x}}) - \rho(t) \big)& \nonumber \\
+                                            - L_{t}(t,\bar{\vect{x}})\big( t\left( T - t \right) \big)&   \label{eq:sufficient-conditions}
+  &\text{is SOS}&  \\
+  \rho(0) - V(0,\bar{\vect{x}}) - \sum_{i}^{N_{0}} L_{0,i}(\bar{\vect{x}})g_{0,i}(\bar{\vect{x}})&  &\text{is SOS}&  \\
+  L(t, \bar{\vect{x}}), \, L_{t}(\bar{\vect{x}}), \, L_{0,i}(\bar{\vect{x}})& &\text{are SOS}&, \nonumber \\
+  &&\forall i \in \set{1,\ldots,N_{0}}& \nonumber
 \end{align} 
+\end{subequations}
 where \(L\), \(L_{t}\), and \(L_{0,i}\) are multiplier polynomials~(see
 \labelcref{sec:s-procedure}).
 
@@ -430,7 +431,7 @@ function~\cref{eq:funneloptimizationproblem}. This is done by
 cost function by first discretizing the problem and replacing the integral with
 a finite sum
 \begin{equation}
-  \int_{0}^{T} \vol(F(t))\, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol(F(t_{k})) \label{eq:discrete-costfunction}.
+  \int_{0}^{T} \vol \big( F(t) \big) \, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol \big( F(t_{k}) \big) \label{eq:discrete-costfunction}.
 \end{equation}
 Since the Lyapunov function \(V(t,\bar{\vect{x}})\) in this thesis is quadratic,
 it can be written as
@@ -453,8 +454,8 @@ equivalently expressed as
 \end{equation}
 Which when expressed using \ac{SOS} constraints gives
 \begin{align}
-  1 - {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} - L_{\mathcal{E},k}(\bar{\vect{x}})\left( \rho(t_{k}) - V(t_{k}, \bar{\vect{x}}) \right)  \qquad \text{is SOS}& \\
-  L_{\mathcal{E},k}(\bar{\vect{x}}) \qquad \text{is SOS.}& \nonumber
+  1 - {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} - L_{\mathcal{E},k}(\bar{\vect{x}}) \big( \rho(t_{k}) - V(t_{k}, \bar{\vect{x}}) \big)  \qquad \text{is SOS}& \\
+  L_{\mathcal{E},k}(\bar{\vect{x}}) \qquad \text{is SOS}& \;. \nonumber
 \end{align}
 %
 Then combining the cost function~\cref{eq:discrete-costfunction} with the
@@ -463,22 +464,30 @@ optimization problem
 %
 { % Mini environment scope
   \newcommand{\E}{\mathcal{E}} \renewcommand{\x}{\bar{x}}
-  \begin{mini*}[1]
+  \begin{mini*}[2]
     { \substack { V, \rho, L, L_t,
         \\
-        L_{0, i}, S_{k}, L_{\E, k} } } { \sum_{k = 1}^{N} \vol(\E(t_{k})) =
+        L_{0, i}, S_{k}, L_{\E, k} } }
+    { \sum_{k = 1}^{N} \vol(\E(t_{k})) =
       \sum_{k = 1}^{N} \vol \p{\set{\vect{x} \mid \vect{x}^T \matr{S}_k \vect{x}
-          \le 1}} } {} {} \addConstraint { \dot{\rho}(t) -
-      \dot{V}(t,\vect{x}) - L(t,\vect{x}) \sqb*{ V(t,\vect{x}) - \rho(t) } - L_t
-      (t,\vect{x}) \sqb*{t \p*{T - t}} }%
-    {\text{ is SOS}} \addConstraint {\rho(0) - V(0, \vect{x}) - \sum_i^N L_{0,
-        i}(\vect{x}) g_{0, i}(\x)}%
-    {\text{ is SOS}} \addConstraint { 1 - \vect{x}^T \matr{S}_k \vect{x} -
-      L_{\E, k}(\vect{x}) \sqb*{\rho(t_k) - V(t_k, \vect{x})} }%
-    {\text{ is SOS}} \addConstraint {S_k}%
+          \le 1}} } {} {}
+    \addConstraint { \begin{aligned}
+        \dot{\rho}(t) -
+      \dot{V}(t,\vect{x}) &- L(t,\vect{x}) \bigl( { V(t,\vect{x}) - \rho(t) }
+      \bigr) \\  &
+      - L_t (t,\vect{x}) \bigl(  {t \p*{T - t}} \bigr)
+    \end{aligned}}%
+    {\text{ is SOS}}
+    \addConstraint {\rho(0) - V(0, \vect{x}) - \sum_i^{N} L_{0,
+        i}(\vect{x}) g_{0, i}(\vect{x})}%
+    {\text{ is SOS}}
+    \addConstraint { 1 - \vect{x}^T \matr{S}_k \vect{x} -
+      L_{\E, k}(\vect{x}) \bigl(  {\rho(t_k) - V(t_k, \vect{x})} \bigr) }%
+    {\text{ is SOS}}
+    \addConstraint {S_k}%
     {\succeq 0}%
     {\quad \forall k \in \set{1, \ldots, N}} \addConstraint {L_t (t,
-      \vect{x}),\, L_{0,i}(\vect{x})}%
+      \vect{x}),\, L_{0,i}(\vect{x}),\, L_{\mathcal{E},k}(\vect{x})}%
     {\text{ are SOS}}%
     {\quad \forall i \in \set{1, \ldots, N_0}} \addConstraint{}{}{\quad \forall
       k \in \set{1, \ldots, N}.}
