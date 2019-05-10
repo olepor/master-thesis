@@ -621,11 +621,11 @@ Thus
 \end{equation}
 is an equivalent condition to~\cref{eq:funnel-subset}, and which can be checked
 through the following \ac{SOS} program
-\begin{align*}
-  \text{Find } \; &L(\bar{x}) \\
-  \text{s.t} \; &\rho_2(0) - V_2( 0,\bar{\vect{x}}) - L(\bar{\vect{x}})
-                  \bigl( \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \bigr) \; .
-\end{align*}
+\begin{align}
+  \text{Find } \; &L(\bar{x})  \\
+  \text{s.t.} \; &\rho_2(0) - V_2( 0,\bar{\vect{x}}) - L(\bar{\vect{x}})
+                  \bigl( \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \bigr) \; . \nonumber
+\end{align}
 
 However in
 \citeauthor{majumdarFunnelLibrariesRealtime2017}~\cite{majumdarFunnelLibrariesRealtime2017},
@@ -673,15 +673,15 @@ where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) need to be SOS polynomials.
   the parameterization of the square with sides of length two. What needs to be
   shown is that \(p(x)\) is positive on the set \(\beta\). Through the
   \nameref{sec:s-procedure} this can be written as the search for a nonnegative
-  polynomial \(L_{ineq,i}(\vect{x})\) such that \(p(\vect{x}) \geq
-  L_{ineq,i}(\vect{x})g(\vect{x}) \). Thus
+  polynomial \(L_{\textit{ineq},i}(\vect{x})\) such that \(p(\vect{x}) \geq
+  L_{\textit{ineq},i}(\vect{x})g(\vect{x}) \). Thus
   \[
     q(\vect{x}) = p(\vect{x}) -
-    \sum_{i=1}^{2}L_{ineq,i}(\vect{x})g_{ineq,i}(\vect{x})
+    \sum_{i=1}^{2}L_{\textit{ineq},i}(\vect{x})g_{\textit{ineq},i}(\vect{x})
   \]
-  is required to be a \ac{SOS} polynomial, along with \(L_{ineq,i}\). From this
-  it is seen that when a point satisfies \(g_{ineq,i}\) (i.e., when \(\vect{x} \in
-  \beta\)) the term \( - \sum_{i=1}^{2}L_{ineq,i}(\vect{x})g_{ineq,i}(\vect{x})\)
+  is required to be a \ac{SOS} polynomial, along with \(L_{\textit{ineq},i}\). From this
+  it is seen that when a point satisfies \(g_{\textit{ineq},i}\) (i.e., when \(\vect{x} \in
+  \beta\)) the term \( - \sum_{i=1}^{2}L_{\textit{ineq},i}(\vect{x})g_{\textit{ineq},i}(\vect{x})\)
   is negative, and hence \(p(x)\) must be nonnegative, which gives the desired
   implication.
 
@@ -710,7 +710,7 @@ generalized velocities. If the Lagrangian does not contain the \(q_j\) then
 form
 \[
   \left( \frac{d}{dt} \right) \left( \frac{\partial \mathcal{L}}{\partial
-      \dot{q_j}} \right) = \mathrm{const}
+      \dot{q_j}} \right) = \mathrm{const} \; .
 \]
 This means that any \(q_j\) fulfilling the above criteria can be freely moved
 around in the state-space, yet yield the same dynamical solution of the system.
