@@ -278,21 +278,21 @@ Thus, given the nonlinear dynamical system
   \label{eq:dynamicalsystem}
   \dot{\vect{x}} = f\big(\vect{x}(t), \vect{u}(t) \big)
 \end{equation}
-with \(\vect{x}(t)\) the state of the system at time \(t\) and \(\vect{u}(t)\)
-the control input. Assume that an open loop nominal trajectory \(\vect{x}_0 \colon
-[0,T] \rightarrow \R^n\) with control input \(\vect{u}_0 \colon [0,T]
+with \(\vect{x}(t)\) the state of the system at time \(t\), and \(\vect{u}(t)\)
+the control input. Assume that an open loop nominal trajectory \(\vect{x}_0
+\colon [0,T] \rightarrow \R^n\) with control input \(\vect{u}_0 \colon [0,T]
 \rightarrow \R^n\) is given, and define a change of coordinates into the error
 coordinate frame
 \begin{align}
   \label{eq:system-error-dynamics}
   \bar{\vect{x}}(t) &= \big( \vect{x} - \vect{x}_0 \big)(t) \\
-  \bar{\vect{u}}(t) &= \big(\vect{u} - \vect{u}_0 \big)(t).
+  \bar{\vect{u}}(t) &= \big(\vect{u} - \vect{u}_0 \big)(t) \; .
 \end{align}
 Then, transforming \cref{eq:dynamicalsystem} to the new coordinate frame one
 obtains
 \begin{equation}
   \label{eq:dynamicalsystem-coordinatechange}
-  \dot{\bar{\vect{x}}} = \dot{\vect{x}} - \dot{\vect{x}}_0 = f\big( \vect{x}_0(t) + \bar{\vect{x}}(t), \vect{u}_0(t) + \bar{\vect{u}}(t) \big) - \dot{\vect{x}}_0(t)
+  \dot{\bar{\vect{x}}} = \dot{\vect{x}} - \dot{\vect{x}}_0 = f\big( \vect{x}_0(t) + \bar{\vect{x}}(t), \vect{u}_0(t) + \bar{\vect{u}}(t) \big) - \dot{\vect{x}}_0(t) \; .
 \end{equation}
 
 In order to compute a parameterized reachable set through \ac{SOS} programming
@@ -360,7 +360,7 @@ that satisfies~\cref{eq:funnelsufficient}, and is a valid funnel in the sense of
 ~\cref{def:funnel}. In order for efficient planning to take place, the motion
 primitives, meaning the size of the funnels, should be as small as possible, and
 it is therefore that the size of the funnels is minimized using the following
-optimization problem~\cite{majumdarFunnelLibrariesRealtime2017}
+optimization problem
 
 \begin{align}
   \label{eq:funneloptimizationproblem}
@@ -431,7 +431,7 @@ function~\cref{eq:funneloptimizationproblem}. This is done by
 cost function by first discretizing the problem and replacing the integral with
 a finite sum
 \begin{equation}
-  \int_{0}^{T} \vol \big( F(t) \big) \, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol \big( F(t_{k}) \big) \label{eq:discrete-costfunction}.
+  \int_{0}^{T} \vol \big( F(t) \big) \, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol \big( F(t_{k}) \big) \; . \label{eq:discrete-costfunction}
 \end{equation}
 Since the Lyapunov function \(V(t,\bar{\vect{x}})\) in this thesis is quadratic,
 it can be written as
@@ -449,7 +449,7 @@ where \( \mathcal{E} ( t_{k} ) \) is an ellipsoid containing the reachable set
 \( F ( t_{k} ) \) at time \( t_{k} \). This containment constraint can be
 equivalently expressed as
 \begin{equation}
-  V ( t_{k}, \bar{\vect{x}} ) \leq \rho(t_{k})  \implies {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} \leq 1.
+  V ( t_{k}, \bar{\vect{x}} ) \leq \rho(t_{k})  \implies {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} \leq 1 \;.
   \label{eq:discrete-containment-constraint}
 \end{equation}
 Which when expressed using \ac{SOS} constraints gives
@@ -471,26 +471,25 @@ optimization problem
     { \sum_{k = 1}^{N} \vol(\E(t_{k})) =
       \sum_{k = 1}^{N} \vol \p{\set{\vect{x} \mid \vect{x}^T \matr{S}_k \vect{x}
           \le 1}} } {} {}
-    \addConstraint { \begin{aligned}
+    \addConstraint {
         \dot{\rho}(t) -
-      \dot{V}(t,\vect{x}) &- L(t,\vect{x}) \bigl( { V(t,\vect{x}) - \rho(t) }
-      \bigr) \\  &
-      - L_t (t,\vect{x}) \bigl(  {t \p*{T - t}} \bigr)
-    \end{aligned}}%
+      \dot{V}(t,\vect{x}) - L(t,\vect{x}) \bigl( { V(t,\vect{x}) - \rho(t) }
+      \bigr) }{}{}
+      \addConstraint{- L_t (t,\vect{x}) \bigl(  {t \p*{T - t}} \bigr)}{}
     {\text{ is SOS}}
     \addConstraint {\rho(0) - V(0, \vect{x}) - \sum_i^{N} L_{0,
-        i}(\vect{x}) g_{0, i}(\vect{x})}%
+        i}(\vect{x}) g_{0, i}(\vect{x})}{}%
     {\text{ is SOS}}
     \addConstraint { 1 - \vect{x}^T \matr{S}_k \vect{x} -
-      L_{\E, k}(\vect{x}) \bigl(  {\rho(t_k) - V(t_k, \vect{x})} \bigr) }%
+      L_{\E, k}(\vect{x}) \bigl(  {\rho(t_k) - V(t_k, \vect{x})} \bigr) }{}%
     {\text{ is SOS}}
     \addConstraint {S_k}%
     {\succeq 0}%
-    {\quad \forall k \in \set{1, \ldots, N}} \addConstraint {L_t (t,
-      \vect{x}),\, L_{0,i}(\vect{x}),\, L_{\mathcal{E},k}(\vect{x})}%
-    {\text{ are SOS}}%
-    {\quad \forall i \in \set{1, \ldots, N_0}} \addConstraint{}{}{\quad \forall
-      k \in \set{1, \ldots, N}.}
+    {\quad \forall k \in \set{1, \ldots, N}}
+    \addConstraint {L_t (t, \vect{x}),\, L_{0,i}(\vect{x}),\, L_{\mathcal{E},k}(\vect{x})}%
+    {\qquad\text{ are SOS}}%
+    {\quad \forall i \in \set{1, \ldots, N_0},} \addConstraint{}{}{\quad \forall
+      k \in \set{1, \ldots, N}\;.}
   \end{mini*}
 } % End optimization problem scope.
 which is the finite dimensional optimization problem needed in order to search
@@ -510,8 +509,8 @@ and
 \[
   \left( V,\rho,L_{0,i},\matr{S}_{k} \right)
 \]
-\citeauthor{majumdarFunnelLibrariesRealtime2017}~\cite{majumdarFunnelLibrariesRealtime2017}
-arrives at the \cref{alg:funnelalgorithm} for funnel computation:
+\textcite{majumdarFunnelLibrariesRealtime2017} arrives at
+\cref{alg:funnelalgorithm} for computing the funnels.
 
 \begin{algorithm}
   \caption{Funnel computation}
