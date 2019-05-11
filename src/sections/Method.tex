@@ -377,23 +377,25 @@ environment, as summarized in \cref{alg:funnelalgorithm-extended}
 
   \KwIn{\(V\) and \(\rho\)} \KwOut{Funnel}
 
-  \(cost_{prev} = \infty\)\; converged = false \; \While{\(! \; converged\)}{
-    Optimization problem 1: \;
+  \(cost_{prev} = \infty\)\; converged = false \; \While{\(\neg \; converged\)}{
+    \;
+    Optimization problem 1:
     \begin{align*}
-      \underset{\substack{\bar{u}_f,L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
+      \underset{\substack{\bar{u}_f,L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) & \\    
       \text{subject to } & V \text{ and } \rho \text{ constant.}& \\
-    \end{align*}\;
-    Optimization problem 2: \;
+    \end{align*}
+    Optimization problem 2:
     \begin{align*}
-      \underset{\substack{\bar{u}}_f,\rho,L_{t},L_{0,i},S_{k}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
+      \underset{\substack{\bar{u}}_f,\rho,L_{t},L_{0,i},S_{k}}{\inf}&  \sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) & \\    
       \text{subject to } & (V,L,L_{\mathcal{E},k}) \text{ constant.}& \\
-    \end{align*}\;
-    Optimization problem 3: \;
+    \end{align*}
+    Optimization problem 3:
     \begin{align*}
-      \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))& \\    
+      \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) & \\    
       \text{subject to } & (L,L_{\mathcal{E},k},\bar{u}_f) \text{ constant.}& \\
-    \end{align*}\;
-    cost = \(\sum_{k=1}^{N} \vol(\mathcal{E}(t_{k}))\) \;
+    \end{align*}
+    cost = \(\sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) \) \;
+    \;
     \If{\(\frac{cost_{prev} - cost}{cost_{prev}} < \epsilon\)} {
       converged = true
     }\;
@@ -420,7 +422,7 @@ to be added to the system dynamics
 equation~\cite{majumdarRobustOnlineMotion2013}. This is done through adding an
 uncertainty term \(w\)
 \begin{equation}
-  \dot{\bar{\vect{x}}} = f_{cl}(t, \bar{\vect{x}}(t), w(t)).
+  \dot{\bar{\vect{x}}} = f_{\mathit{cl}}(t, \bar{\vect{x}}(t), w(t)).
 \end{equation}
 Which in this thesis is an additive uncertainty so that
 \cref{eq:model-dynamics-cl} turns into
@@ -452,7 +454,7 @@ sufficient condition~\cref{eq:funnelsufficient} turns into
 \end{equation}
 The Lyapunov function derivative then becomes
 \begin{equation}
-  \dot{V}(t,\bar{\vect{x}}, w) = \frac{\partial V(t,\bar{\vect{x}})}{\partial \vect{x}} f_{cl}(t,\bar{\vect{x}},w) + \frac{\partial V(t,\bar{\vect{x}})}{\partial t},
+  \dot{V}(t,\bar{\vect{x}}, w) = \frac{\partial V(t,\bar{\vect{x}})}{\partial \vect{x}} f_{\mathit{cl}}(t,\bar{\vect{x}},w) + \frac{\partial V(t,\bar{\vect{x}})}{\partial t},
 \end{equation}
 and the optimization condition \cref{eq:sufficient-conditions} turns into
 \begin{align}
@@ -863,7 +865,7 @@ Euclidean metric which weights the angle \(\theta\) depending on how close the
 airplane is to the final configuration, and is defined as
 \[
   \rho(\vect{x}_{1}, \vect{x}_{2}) = w_{1}\norm{\mathnormal{X_{1}} -
-    \mathnormal{X_{2}}} + w_{2}f(\theta_1,\theta_2)
+    \mathnormal{X_{2}}} + w_{2}f(\theta_1,\theta_2) ,
 \]
 and taken from~\cite{kuffnerEffectiveSamplingDistance2004}, where
 \(\norm{\mathnormal{X_{1}} - \mathnormal{X_{2}}}\) is the standard Euclidean
@@ -982,14 +984,14 @@ for its expansion operator, and pseudocode for its definition can be found in
 
   \TestUncertainFunnels{} \; \BuildComposabilityMatrix{}
 
-  \(\mathcal{G}.init(q_0)\) \For{\(i \leftarrow 1\) \KwTo \(k\)}{ \(q_{rand}
-    \leftarrow \) \RandConf{} \; \(q_{near} \leftarrow \)
-    \NearestVertex{\(q_{rand}, \mathcal{G}\)}\; \(q_{new} \leftarrow \)
-    \Extend{\(q_{near}, q_{rand} \)}\; \If{\(q_{new} \in
+  \(\mathcal{G}.\mathnormal{init}(q_0)\) \For{\(i \leftarrow 1\) \KwTo \(k\)}{ \(q_{\mathit{rand}}
+    \leftarrow \) \RandConf{} \; \(q_{\mathit{near}} \leftarrow \)
+    \NearestVertex{\(q_{\mathit{rand}}, \mathcal{G}\)}\; \(q_{\mathit{new}} \leftarrow \)
+    \Extend{\(q_{\mathit{near}}, q_{\mathit{rand}} \)}\; \If{\(q_{\mathit{new}} \in
       \modelconfigurationspacefree{} \) } {
-      \(\mathcal{G}\).\AddVertex{\(q_{new}\)}\;
-      \(\mathcal{G}\).\AddEdge{\(q_{near}, q_{new}\)} \; \If{\(q_{new} \in
-        \mathcal{X}_{goal}\)}{ return \ExtractBranch{\(\mathcal{G}\)} \; } } }
+      \(\mathcal{G}\).\AddVertex{\(q_{\mathit{new}}\)}\;
+      \(\mathcal{G}\).\AddEdge{\(q_{\mathit{near}}, q_{\mathit{new}}\)} \; \If{\(q_{\mathit{new}} \in
+        \mathcal{X}_{\mathit{goal}}\)}{ return \ExtractBranch{\(\mathcal{G}\)} \; } } }
 \end{algorithm}
 
 
