@@ -56,7 +56,7 @@ is taken from~\cite[Definition~1.1.1][34]{Kroese_2014} and looks like:
 \begin{definition}{Generating a Poisson random measure}
   \label{def:Poisson-def}
   \begin{enumerate}
-  \item Generate a Poisson random variable \(N \sim Poi(\mu(E))\).
+  \item Generate a Poisson random variable \(N \sim \poi \bigl( \mu(E) \bigr) \).
   \item Draw \(X_1,X_2,\ldots,X_N \sim g\), where \(g(\vect{x}) =
     \lambda(\vect{x})/ \mu(E)\).
   \end{enumerate}
@@ -65,7 +65,7 @@ where \(E\) is the set over which the points should be generated, and the
 \textit{pdf} \(g(x_1, x_2) = \lambda(\vect{x})/\mu(E)\). Finally, \(\mu(E)\) is
 defined as
 \[
-  \mu(E) = \int_{E} \lambda(\vect{x})\, \mathrm{d} \vect{x}.
+  \mu(E) = \int_{E} \lambda(\vect{x})\, \mathrm{d} \vect{x} \mathEoS
 \]
 
 For the experiments the set \(E\) will be a square defined as
@@ -98,14 +98,14 @@ The funnels generated thus far are created from a point model of the airplane,
 and its dynamics. If the grid that the simulations are run on are set to have an
 increment of a meter, then the funnels from the basic set are given a velocity
 of \([v(t)] = \si{m.s^{-1}}\), \([\theta] = \si{\radian}\), and \([\dot{\theta}]
-= \si{\radian\per\second}\), where \([\cdot]\) is the unit operator. The size of
-the airplane is arbitrary, and can be chosen freely, but if it is imagined as a
-radio controlled aircraft, with a speed of \(10\si{m.s^{-1}}\), then a size of
-\(10 \times 20 \si{\centi\metre} \) keeps everything within the realm of a
-normal radio controlled aircraft and its capabilities. The mass is not relevant
-for our first order dynamics, but still the airplane is assigned a mass of \(1
-\si{\kilo}\), so that the translation of the model dynamics is not irrelevant. A
-figure of the airplane can be seen in \cref{fig:radio-vehicle}.
+= \si{\radian\per\second}\), where \( [\, \cdot \,] \) is the unit operator. The
+size of the airplane is arbitrary, and can be chosen freely, but if it is
+imagined as a radio controlled aircraft, with a speed of \(10\si{m.s^{-1}}\),
+then a size of \(10 \times 20 \si{\centi\metre} \) keeps everything within the
+realm of a normal radio controlled aircraft and its capabilities. The mass is
+not relevant for our first order dynamics, but still the airplane is assigned a
+mass of \(1 \si{\kilo}\), so that the translation of the model dynamics is not
+irrelevant. A figure of the airplane can be seen in \cref{fig:radio-vehicle}.
 
 \begin{figure}
   \centering
@@ -153,13 +153,14 @@ the possible states of the airplane model) is:
   S_{k}^{(\mathcal{P})} &= R^{T}R \\
   \vect{x} &= R^{-1}\vect{y} \\
   \mathcal{C} &= \set{\vect{y} \in \R^2 \mid \vect{y}^{T}\vect{y} \leq 1 + r_{airplane}} \\
-  \mathcal{E}_{exp} &= \set{R^{-1}\vect{y} \mid \vect{y} \in \mathcal{C}} \\
+  \mathcal{E}_{\mathit{exp}} &= \set{R^{-1}\vect{y} \mid \vect{y} \in \mathcal{C}} \\
 \end{align*}
-where \(\mathcal{E}_{exp}\) is the ellipsoid which contains the volume of the
-airplane for all verified states in the funnel, and \(r_{airplane}\) is the
-widest part of the model at hand, which in this case is the wingspan. A picture
-of the initial funnel and the funnel expanded around the airplane model can be
-seen in figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
+where \(\mathcal{E}_{\mathit{exp}}\) is the ellipsoid which contains the volume
+of the airplane for all verified states in the funnel, and
+\(r_{\mathit{airplane}}\) is the widest part of the model at hand, which in this
+case is the wingspan. A picture of the initial funnel and the funnel expanded
+around the airplane model can be seen in
+figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 
 \begin{figure}
   \centering \includegraphics[scale=.7]{figures/method/expanded-funnel}
@@ -312,7 +313,7 @@ using the same motion primitive set as the \rrtfunnel{} algorithm, with the same
 does not take uncertainty into account, and instead maximizes the distance to
 the nearest obstacle as the extension operator \ie{}
 \begin{equation}
-  \max_{i}\min_{t,j}(\vect{x}_{i}(t), o_{j})
+  \max_{i}\min_{t,j} \bigl( \vect{x}_{i}(t), o_{j} \bigr)
 \end{equation}
 where \(x_{i}(t) \in \mathcal{T}\), is a trajectory from the basic motion
 primitive set, and \(o_{j} \in \modelobstacle{}\) is an obstacle in the
