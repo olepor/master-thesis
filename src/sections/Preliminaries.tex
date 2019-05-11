@@ -49,7 +49,7 @@ body, which can be seen as yet another inhabitant of the world space.
 Next the robot needs to be able to move around in the world space. This is done
 through a rigid body transformation on the robot model
 \[
-  h : \modelrobot\ \rightarrow \modelworld
+  h \colon \modelrobot\ \rightarrow \modelworld
 \]
 
 
@@ -110,7 +110,7 @@ and goal sets is defined as
 \begin{align*}
   \mathcal{X}_0 &= \set{ \vect{x} \in \modelconfigurationspace{} \mid g_i(\vect{x}) \leq a_i,
                   \, \forall i = 1,\ldots N_j}, \\
-  \mathcal{X}_{\textit{end}} &= \set{ \vect{x} \in \modelconfigurationspace{} \mid g_i(\vect{x}) \leq
+  \mathcal{X}_{\mathit{end}} &= \set{ \vect{x} \in \modelconfigurationspace{} \mid g_i(\vect{x}) \leq
                       a_i, \, \forall i = 1,\ldots N_k}
 \end{align*}
 which defines the initial and final states as subsets of the configuration space
@@ -124,7 +124,7 @@ directions as it please under an affine transformation. This representation does
 not encompass the dynamics a system might have, which constrains the direction
 and speed in which a model can move. In the case of a first order model (i.e.,
 it does not take accelerations into account) the constraints are represented as
-a differential equation of the form:
+a differential equation of the form
 \[
   \dot{\vect{x}} = f(\vect{x},\vect{u})
 \]
@@ -142,7 +142,7 @@ discrete state space, and \(\mathcal{U}(\vect{x}_k)\) be the set of actions
 available at each point \(\vect{x}_k \in \mathcal{X}\). Then the state
 transition equation can now written as
 \[
-  \vect{x}_{k+1} = f(\vect{x}_k, \vect{u}_k) \; .
+  \vect{x}_{k+1} = f(\vect{x}_k, \vect{u}_k) \mathEoS
 \]
 
 \subsubsection{Representation of the plan}
@@ -176,7 +176,7 @@ k\) is not given, the model turns into
 \[
   X_{k+1} = \set{ \vect{x}_{k+1} \in X \mid \exists \vect{w}_k \in
     W(\vect{x}_k,\vect{u}_k) \text{ such that } \vect{x}_{k+1} =
-    f(\vect{x}_k,\vect{u}_k,\vect{w}_k)} \; .
+    f(\vect{x}_k,\vect{u}_k,\vect{w}_k)} \mathEoS
 \] 
 
 \subsection{Reachable sets}
@@ -286,13 +286,13 @@ coordinate frame
 \begin{align}
   \label{eq:system-error-dynamics}
   \bar{\vect{x}}(t) &= ( \vect{x} - \vect{x}_0 )(t) \\
-  \bar{\vect{u}}(t) &= (\vect{u} - \vect{u}_0 )(t) \; .
+  \bar{\vect{u}}(t) &= (\vect{u} - \vect{u}_0 )(t) \mathEoS
 \end{align}
 Then, transforming \cref{eq:dynamicalsystem} to the new coordinate frame one
 obtains
 \begin{equation}
   \label{eq:dynamicalsystem-coordinatechange}
-  \dot{\bar{\vect{x}}} = \dot{\vect{x}} - \dot{\vect{x}}_0 = f\big( \vect{x}_0(t) + \bar{\vect{x}}(t), \vect{u}_0(t) + \bar{\vect{u}}(t) \big) - \dot{\vect{x}}_0(t) \; .
+  \dot{\bar{\vect{x}}} = \dot{\vect{x}} - \dot{\vect{x}}_0 = f\big( \vect{x}_0(t) + \bar{\vect{x}}(t), \vect{u}_0(t) + \bar{\vect{u}}(t) \big) - \dot{\vect{x}}_0(t) \mathEoS
 \end{equation}
 
 In order to compute a parameterized reachable set through \ac{SOS} programming
@@ -303,7 +303,7 @@ framework can only verify polynomials. Therefore, through the use of a
 used), the control input can be eliminated from the dynamical equation, giving
 \begin{equation}
   \label{eq:dynamicclosedloop}
-  \dot{\bar{\vect{x}}} = f_{cl}\big( t,\bar{\vect{x}}(t) \big) \; .
+  \dot{\bar{\vect{x}}} = f_{cl}\big( t,\bar{\vect{x}}(t) \big) \mathEoS
 \end{equation}
 However, the dynamical system may still not be polynomial, which is a necessary
 condition in order for this to be verified using \ac{SOS} programming.
@@ -366,12 +366,14 @@ optimization problem
   \label{eq:funneloptimizationproblem}
   &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol\big( F(t) \big) \, dt \\
   &\text{subject to} && V(t,\bar{\vect{x}}) = \rho (t) \implies \dot{V}(t,\bar{\vect{x}}) < \rho (t) \, \forall t \in [0,T] \nonumber \\
-  && &\mathcal{X}_0 \subset F(0,\bar{\vect{x}}) \; . \nonumber
+  && &\mathcal{X}_0 \subset F(0,\bar{\vect{x}}) \mathEoS \nonumber
 \end{align} 
 
 \begin{figure}
-  \centering
-  \includegraphics[scale=.7]{figures/experiments/lyapunov_visualization}
+  % \centering
+  % \includegraphics[scale=.7]{figures/experiments/lyapunov_visualization}
+  \centering { \fontsize{16pt}{16pt}\selectfont \def\svgwidth{\textwidth}
+    \import{figures/experiments/}{lyapunov_visualization.pdf_tex} }
   \caption{A visualization of the Lyapunov function along a trajectory, where
     the center of the Lyapunov function moves along the trajectory with time
     \(t\).}
@@ -431,7 +433,7 @@ function~\cref{eq:funneloptimizationproblem}. This is done by
 cost function by first discretizing the problem and replacing the integral with
 a finite sum
 \begin{equation}
-  \int_{0}^{T} \vol\big( F(t) \big) \, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol\big( F(t_{k}) \big) \; . \label{eq:discrete-costfunction}
+  \int_{0}^{T} \vol\big( F(t) \big) \, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol\big( F(t_{k}) \big) \mathEoS \label{eq:discrete-costfunction}
 \end{equation}
 Since the Lyapunov function \(V(t,\bar{\vect{x}})\) in this thesis is quadratic,
 it can be written as
@@ -449,13 +451,13 @@ where \( \mathcal{E} ( t_{k} ) \) is an ellipsoid containing the reachable set
 \( F ( t_{k} ) \) at time \( t_{k} \). This containment constraint can be
 equivalently expressed as
 \begin{equation}
-  V ( t_{k}, \bar{\vect{x}} ) \leq \rho(t_{k})  \implies {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} \leq 1 \; .
+  V ( t_{k}, \bar{\vect{x}} ) \leq \rho(t_{k})  \implies {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} \leq 1 \mathEoS
   \label{eq:discrete-containment-constraint}
 \end{equation}
 Which when expressed using \ac{SOS} constraints gives
 \begin{align}
   1 - {\bar{\vect{x}}}^{T}\matr{S}_{k}\bar{\vect{x}} - L_{\mathcal{E},k}(\bar{\vect{x}}) \big( \rho(t_{k}) - V(t_{k}, \bar{\vect{x}}) \big)  \qquad \text{is SOS}& \\
-  L_{\mathcal{E},k}(\bar{\vect{x}}) \qquad \text{is SOS}& \;. \nonumber
+  L_{\mathcal{E},k}(\bar{\vect{x}}) \qquad \text{is SOS}& \mathEoS \nonumber
 \end{align}
 %
 Then combining the cost function~\cref{eq:discrete-costfunction} with the
@@ -498,7 +500,7 @@ optimization problem
     {\qquad\text{ are SOS}}%
     {\quad \forall i \in \set{1, \ldots, N_0},}
     \addConstraint{\nonumber}{}{\quad \forall
-      k \in \set{1, \ldots, N}\;.}
+      k \in \set{1, \ldots, N} \mathEoS }
   \end{mini!}
 } % End optimization problem scope.
 which is the finite dimensional optimization problem needed in order to search
@@ -528,7 +530,7 @@ and
 
   \KwIn{\(V\) and \(\rho\)} \KwOut{Funnel}
 
-  \(\textrm{cost}_{\textit{prev}} = \infty\)\; converged = false \; \While{\(!\; \textrm{converged}\)}{
+  \(\textrm{cost}_{\mathit{prev}} = \infty\)\; converged = false \; \While{\(!\; \textrm{converged}\)}{
     Optimization problem 1: \;
     \begin{align*}
       \underset{\substack{L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) & \\    
@@ -540,11 +542,11 @@ and
       \text{subject to } & L \text{ and } L_{\mathcal{E},k} \text{ constant.}& \\
     \end{align*}\;
     cost = \(\sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) \) \;
-    \If{\(\frac{\textrm{cost}_{\textit{prev}} -
-        \textrm{cost}}{\textrm{cost}_{\textit{prev}}} < \epsilon \) } {
+    \If{\(\frac{\textrm{cost}_{\mathit{prev}} -
+        \textrm{cost}}{\textrm{cost}_{\mathit{prev}}} < \epsilon \) } {
       converged = true
     }\;
-    \(\textrm{cost}_{\textit{prev}} = \textrm{cost}\)\;
+    \(\textrm{cost}_{\mathit{prev}} = \textrm{cost}\)\;
   }\;
 \end{algorithm}
 
@@ -590,7 +592,7 @@ the sampling rate~\cite{Tobenkin_2011}. If \(t_{k} \in [0,T]\), where \(k \in
   {\forall i \in \set{1,\ldots,N_0} ,} %
   \addConstraint{}
   {}
-  {\forall k \in \set{1,\ldots,N} \; .}
+  {\forall k \in \set{1,\ldots,N} \mathEoS}
 \end{mini*}
 
 \subsection{Funnel composition}
@@ -624,7 +626,7 @@ through the following \ac{SOS} program
 \begin{align}
   \text{Find } \; &L(\bar{x})  \\
   \text{s.t.} \; &\rho_2(0) - V_2( 0,\bar{\vect{x}}) - L(\bar{\vect{x}})
-                  \bigl( \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \bigr) \; . \nonumber
+                  \bigl( \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \bigr) \mathEoS \nonumber
 \end{align}
 
 However in
@@ -710,9 +712,153 @@ generalized velocities. If the Lagrangian does not contain the \(q_j\) then
 form
 \[
   \left( \frac{d}{dt} \right) \left( \frac{\partial \mathcal{L}}{\partial
-      \dot{q_j}} \right) = \mathrm{const} \; .
+      \dot{q_j}} \right) = \mathrm{const} \mathEoS
 \]
 This means that any \(q_j\) fulfilling the above criteria can be freely moved
 around in the state-space, yet yield the same dynamical solution of the system.
+
+\section{The RRT algorithm}
+\label{sec:rrt-algorithm-intro}
+
+The \ac{RRT} algorithm is a tree based algorithm which, starting at the intial
+configuration of the system, grows it's branches into the unexplored parts of
+the state space through some suitable choice of distance metric and sampling
+distribution for the problem at hand~\cite{article}. The expansion is divided up
+into three general steps, whereas the first is randomly, through some
+probability distribution, choosing a configuration from the state space for
+which the algorithm will try and expand towards. Secondly, the algorithm finds
+the node in the tree which is closest to the sample in the sense of some chosen
+distance metric. Thirdly, it tries to connect the sample with the nearest node
+in the tree through some predetermined expansion operator. If a connection can
+be made -- meaning that it is collision free, and satisfies the constraints of
+the dynamic model -- then a new node is added to the tree, and a vertice is made
+between the two states. If the sampling distribution is uniform, then the tree
+is known to have the attribute that the probability of expanding from an
+existing node in the tree is proportional the the \textit{Voronoi region} of
+that node, and as the largest Voronoi regions belong to the states on the leaves
+of the tree. Since the Voronoi regions divides a plane according to the
+\textit{nearest neighbour rule}, each point is associated with the region of the
+plane closest to it, as can be seen in
+\cref{fig:voronoi-diagram}~\cite{aurenhammerVoronoiDiagramsSurvey1991}. This
+means that the tree will quickly expand into unexplored parts of the state
+space, as can be seen in~\cref{fig:rrt-expansion,fig:rrt-voronoi}, which is what
+makes the \ac{RRT} algorithm good at solving a wide variety of planning
+problems, especially ones with a high dimensional state space~\cite{Lav06}.
+
+\begin{figure}
+  \centering \input{figures/rrt/rrt-pseudo.tex}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{minipage}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{plainRRT10}
+    \caption{RRT-tree after 10 iterations.}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{plainRRT50}
+    \caption{RRT-tree after 50 iterations.}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{plainRRT100}
+    \caption{RRT-tree after 100 iterations.}
+  \end{minipage}
+  \newline % Start the new line of plainRRT10.
+  \begin{minipage}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{plainRRT500}
+    \caption{RRT-tree after 500 iterations.}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{plainRRT1000}
+    \caption{RRT-tree after 1000 iterations.}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{plainRRT10000}
+    \caption{RRT-tree after 10000 iterations.}
+  \end{minipage}
+  \caption{Pictured: The \ac{RRT} algorithm quickly expanding deep into the
+    state-space, then later, exploring the finer parts, until the exploration is
+    complete.}
+  \label{fig:rrt-expansion}
+\end{figure}
+
+
+\begin{figure}
+  \centering \includegraphics[scale=.3]{figures/rrt/voronoi-diagram}
+  \caption{Pictured: The Voronoi regions for a collection of points in the
+    plane, using the standard Euclidean metric.}
+  \label{fig:voronoi-diagram}
+\end{figure}
+
+When inspecting the Voronoi regions of a \ac{RRT} tree, it is apparent that the
+leaf nodes will have the largest Voronoi regions, and thus also the largest
+probability for getting expanded, as can be seen in
+figure~\cref{fig:rrt-voronoi}.
+
+The \ac{RRT} algorithm is a discrete sampling based algorithm, noticeable for
+its ability to handle large state-spaces. This stems from the algorithm's
+ability to avoid the \textit{curse of dimensionality}, which means that it does
+not suffer the same computational penalty with scaling the state space, that is
+hampering a lot of motion planning algorithms~\cite{Lav06}. Still, even though
+the \ac{RRT} algorithm is sampling based, it will, as time goes to infinity
+achieve probabilistic completeness in the state-space. Which means that it will
+cover the whole state space with the tree if given infinite time. Thus one can
+expect the \ac{RRT} algorithm to find a solution, if one exists and the
+algorithm is given enough time.
+
+\begin{figure}
+  \centering \frame{\includegraphics[clip, trim=5cm 9cm 5cm 9cm,
+    scale=.5]{figures/rrt/rrtvoronoi}}
+  \caption{Pictured: The voronoi regions for each node in a simple RRT tree,
+    which shows how the voronoi bias will lead the algorithm towards unexplored
+    areas quickly.}
+  \label{fig:rrt-voronoi}
+\end{figure}
+
+% \begin{figure}
+%   \input{figures/rrt/pathplanning.tex}
+% \end{figure}
+
+\subsection{RRT's with motion primitives as extension operators}
+
+There are multiple ways in which an \ac{RRT} algorithm can expand its planning
+tree, with two main categories. One is where the extension, and the resulting
+motions are calculated on the fly, and the other is where motions are computed
+beforehand, and the planner chooses the most appropriate motion for which to
+expand its tree. The \rrtfunnel{} algorithm falls into the latter category, and
+as such the next section will build the basic theory for motion primitives in
+motion planning.
+
+\subsection{Motion Primitives}
+
+The performance of the \ac{RRT} algorithm is dependent upon the control inputs
+employed to search the state-space. For systems with few control inputs, random
+control inputs can be sampled. The downside is that this usually produces
+non-smooth motions. Instead, predefined motion primitives with known behaviour
+can be sampled, which will produce a smoother path, while also reducing the
+complexity of the planning
+task~\cite{vonasekGlobalMotionPlanning2013,hauserUsingMotionPrimitives2008}. A
+simple basis of motion primitives for a dynamical model can therefore be
+'turn-left', 'go-straight', or 'turn-right'. By chaining these basic smooth
+motion primitves together a smooth path from the intial- to the goal-state can
+be found. A figure displaying a tree built up from the three motion primitives
+can be seen in~\cref{fig:motion-primitive-tree}.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=1]{figures/preliminaries/motion-primitive-tree}
+  \caption{A simple motion primitive tree from the
+    paper~\cite{vonasekHighlevelMotionPlanning2015}, displayinga a tree built
+    from the composition of a left, right and a straight motion primitive.}
+  \label{fig:motion-primitive-tree}
+\end{figure}
+
+In essence, robust motion primitives are beneficial as they seperate the
+dynamics from the planner, enabling the planner to reason about what actions to
+take, and not in what manner they should be executed. This observation is the
+basis of the \rrtfunnel{}, which employs funnels as the robust motion primitives
+as the extension operators for the tree the planner builds, enabling the
+\ac{RRT} part of the \rrtfunnel{} algorithm to remain oblivious to
+uncertainties, and hence greatly simplifying the planning problem.
 
 
