@@ -39,7 +39,7 @@ plane, and is defined as:
 \]
 In a real world planning problem not all parts of the world space is traversable
 by the robot. As an example, in a forest, tree-trunks, branches, and other
-inhabitants of the forest's vegetation will be untraversable for a robot, and
+inhabitants of the forest's vegetation will be UN-traversable for a robot, and
 hence these obstacles needs to be modeled. As obstacles inhabit the world space,
 they will be modeled as subsets of the world space, the same goes for the robot
 body, \(\modelrobot{}\), which can be seen as yet another inhabitant of the
@@ -139,7 +139,7 @@ control.
 \subsection{Discrete motion planning}
 
 As mentioned in the introduction, motion planning problems are in general
-NP-hard. One way of making the problem more tractable is to discretisize the
+NP-hard. One way of making the problem more tractable is to discretize the
 problem. The discrete motion planning problem employs all the same definitions
 as the continuous case for the world and robot model, only all points are
 discrete in time \(t_k\) for some \(k\). Therefore, let \(\mathcal{X}\) be the
@@ -307,7 +307,7 @@ In order to compute a parameterized reachable set through \ac{SOS} programming
 the system~\cref{eq:dynamicalsystem-coordinatechange} needs to be polynomial,
 and parameterized by \(\vect{x}\) and \(t\) polynomially, since the \ac{SOS}
 framework can only verify polynomials. Therefore, through the use of a
-\ac{TV-LQR} controller (altough any controller providing a \ac{CLF} can be
+\ac{TV-LQR} controller (although any controller providing a \ac{CLF} can be
 used), the control input can be eliminated from the dynamical equation, giving
 \begin{equation}
   \label{eq:dynamicclosedloop}
@@ -436,7 +436,7 @@ where \(L\), \(L_{t}\), and \(L_{0,i}\) are multiplier polynomials~(see
 The goal is to make the parameterization of the reachable set as small as
 possible, and therefore minimizing the cost function in
 \cref{eq:funneloptimizationproblem}. This is done by \textcite{Tobenkin_2011}
-through approximating the cost function by first discretizing the problem and
+through approximating the cost function by first discretizeing the problem and
 replacing the integral with a finite sum
 \begin{equation}
   \int_{0}^{T} \vol\big( F(t) \big) \, \mathrm{d}t \rightarrow \sum_{k=1}^{N} \vol\big( F(t_{k}) \big) \mathEoS \label{eq:discrete-costfunction}
@@ -511,7 +511,7 @@ following optimization problem:
   \end{mini!}
 } % End optimization problem scope.
 This is the finite dimensional optimization problem that is needed in order to
-search for a Lyapunov function candidate that parametrizes the reachable set for
+search for a Lyapunov function candidate that parameterizes the reachable set for
 the dynamical system at hand.
 
 However, this optimization problem is not in general convex , as the first
@@ -607,7 +607,7 @@ the sampling rate~\cite{Tobenkin_2011}. If \(t_{k} \in [0,T]\), where \(k \in
 which is the same optimization problem as in
 \cref{opt:time-dependent-optimization-problem}, but with the explicit time
 dependency removed from the equations. This leads to vastly greater performance
-in computing the funnels, but the parametrization of the funnels will be
+in computing the funnels, but the parameterization of the funnels will be
 slightly larger, as exactness is lost~\cite{Tobenkin_2011}.
 
 \subsection{Funnel composition}
@@ -737,7 +737,7 @@ around in the state-space, yet yield the same dynamical solution of the system.
 \section{The RRT algorithm}
 \label{sec:rrt-algorithm-intro}
 
-The \ac{RRT} algorithm is a tree based algorithm which, starting at the intial
+The \ac{RRT} algorithm is a tree based algorithm which, starting at the initial
 configuration of the system, grows it's branches into the unexplored parts of
 the state space through some suitable choice of distance metric and sampling
 distribution for the problem at hand~\cite{article}. The expansion is divided up
@@ -748,13 +748,13 @@ the node in the tree which is closest to the sample in the sense of some chosen
 distance metric. Thirdly, it tries to connect the sample with the nearest node
 in the tree through some predetermined expansion operator. If a connection can
 be made -- meaning that it is collision free, and satisfies the constraints of
-the dynamic model -- then a new node is added to the tree, and a vertice is made
+the dynamic model -- then a new node is added to the tree, and a vertex is made
 between the two states. If the sampling distribution is uniform, then the tree
 is known to have the attribute that the probability of expanding from an
 existing node in the tree is proportional the the \textit{Voronoi region} of
 that node, and as the largest Voronoi regions belong to the states on the leaves
 of the tree. Since the Voronoi regions divides a plane according to the
-\textit{nearest neighbour rule}, each point is associated with the region of the
+\textit{nearest neighbor rule}, each point is associated with the region of the
 plane closest to it, as can be seen in
 \cref{fig:voronoi-diagram}~\cite{aurenhammerVoronoiDiagramsSurvey1991}. This
 means that the tree will quickly expand into unexplored parts of the state
@@ -825,8 +825,8 @@ algorithm is given enough time.
 \begin{figure}
   \centering \frame{\includegraphics[clip, trim=5cm 9cm 5cm 9cm,
     scale=.5]{figures/rrt/rrtvoronoi}}
-  \caption{Pictured: The voronoi regions for each node in a simple RRT tree,
-    which shows how the voronoi bias will lead the algorithm towards unexplored
+  \caption{Pictured: The Voronoi regions for each node in a simple RRT tree,
+    which shows how the Voronoi bias will lead the algorithm towards unexplored
     areas quickly.}
   \label{fig:rrt-voronoi}
 \end{figure}
@@ -850,13 +850,13 @@ motion planning.
 The performance of the \ac{RRT} algorithm is dependent upon the control inputs
 employed to search the state-space. For systems with few control inputs, random
 control inputs can be sampled. The downside is that this usually produces
-non-smooth motions. Instead, predefined motion primitives with known behaviour
+non-smooth motions. Instead, predefined motion primitives with known behavior
 can be sampled, which will produce a smoother path, while also reducing the
 complexity of the planning
 task~\cite{vonasekGlobalMotionPlanning2013,hauserUsingMotionPrimitives2008}. A
 simple basis of motion primitives for a dynamical model can therefore be
 'turn-left', 'go-straight', or 'turn-right'. By chaining these basic smooth
-motion primitves together a smooth path from the intial- to the goal-state can
+motion primitives together a smooth path from the initial- to the goal-state can
 be found. A figure displaying a tree built up from the three motion primitives
 can be seen in~\cref{fig:motion-primitive-tree}.
 
@@ -869,7 +869,7 @@ can be seen in~\cref{fig:motion-primitive-tree}.
   \label{fig:motion-primitive-tree}
 \end{figure}
 
-In essence, robust motion primitives are beneficial as they seperate the
+In essence, robust motion primitives are beneficial as they separate the
 dynamics from the planner, enabling the planner to reason about what actions to
 take, and not in what manner they should be executed. This observation is the
 basis of the \rrtfunnel{}, which employs funnels as the robust motion primitives
