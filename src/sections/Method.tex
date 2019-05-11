@@ -24,8 +24,8 @@ The outline of the chapter is as follows: first it introduces the generation of
 the trajectories in \cref{subsec:generating-the-trajectories}, then moves on to
 making the model \cref{eq:model-dynamics} independent of the system input using
 a \ac{TV-LQR}-controller. Thus when \eqref{eq:model-dynamics} can be written as
-\( \dot{\bar{\vect{x}}} = f_{cl}(t,\vect{x}) \) thanks to the controller
-removing the explicit dependency on \(u\), the initial funnels with no
+\( \dot{\bar{\vect{x}}} = f_{\mathit{cl}}(t,\vect{x}) \) thanks to the controller
+removing the explicit dependency on \(\vect{u}\), the initial funnels with no
 uncertainty will be generated from the polynomial dynamics following a third
 degree Taylor expansion surrounding the initial trajectory, which is explored in
 \cref{subsec:generating-funnels}. Then later in \cref{subsec:xy-cost-function},
@@ -61,7 +61,8 @@ calculations. This thesis employs the simple unicycle model from
     -v \sin(\theta) \\
     v \cos(\theta) \\
     u \\
-  \end{bmatrix},
+  \end{bmatrix}
+  ,
 \end{equation}
 which is a first-order unicycle model with constant speed of
 \(v=10\)\si{m.s^{-1}}. A picture of the model can be found in
