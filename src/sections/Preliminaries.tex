@@ -169,7 +169,7 @@ space model is expanded to include \(\mathcal{W}\) as the space of uncertain
 actions, and \(\vect{w}_k\) is the action applied by an uncertain source at time
 step \(k\), then the state transition transition is modeled as~\cite{Lav06}
 \[
-  \vect{x}_{k+1} = f(\vect{x}_k,\vect{u}_k,\vect{w}_k)
+  \vect{x}_{k+1} = f(\vect{x}_k,\vect{u}_k,\vect{w}_k) \mathEoS
 \]
 As the uncertain actions are not available beforehand, that is -- \(\vect{w}_
 k\) is not given, the model turns into
@@ -364,7 +364,7 @@ optimization problem
 
 \begin{align}
   \label{eq:funneloptimizationproblem}
-  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol\big( F(t) \big) \, dt \\
+  &\underset{V,\rho}{\text{inf}} \; &&\int_{0}^{T} \vol\big( F(t) \big) \, \mathrm{d}t \\
   &\text{subject to} && V(t,\bar{\vect{x}}) = \rho (t) \implies \dot{V}(t,\bar{\vect{x}}) < \rho (t) \, \forall t \in [0,T] \nonumber \\
   && &\mathcal{X}_0 \subset F(0,\bar{\vect{x}}) \mathEoS \nonumber
 \end{align} 
@@ -531,22 +531,23 @@ and
   \KwIn{\(V\) and \(\rho\)} \KwOut{Funnel}
 
   \(\textrm{cost}_{\mathit{prev}} = \infty\)\; converged = false \; \While{\(!\; \textrm{converged}\)}{
-    Optimization problem 1: \;
+    \;
+    Optimization problem 1:
     \begin{align*}
       \underset{\substack{L,L_{t},L_{0,i},S_{k},L_{}}}{\inf}&  \sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) & \\    
       \text{subject to } & V \text{ and } \rho \text{ constant.}& \\
-    \end{align*}\;
-    Optimization problem 2: \;
+    \end{align*}
+    Optimization problem 2:
     \begin{align*}
       \underset{\substack{V,\rho, L_{t},L_{0,i},S_{k}}}{\inf}&  \sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) & \\    
       \text{subject to } & L \text{ and } L_{\mathcal{E},k} \text{ constant.}& \\
-    \end{align*}\;
+    \end{align*}
     cost = \(\sum_{k=1}^{N} \vol \bigl( \mathcal{E}(t_{k}) \bigr) \) \;
-    \If{\(\frac{\textrm{cost}_{\mathit{prev}} -
-        \textrm{cost}}{\textrm{cost}_{\mathit{prev}}} < \epsilon \) } {
+    \If{\(\frac{\mathrm{cost}_{\mathit{prev}} -
+        \mathrm{cost}}{\mathrm{cost}_{\mathit{prev}}} < \epsilon \) } {
       converged = true
     }\;
-    \(\textrm{cost}_{\mathit{prev}} = \textrm{cost}\)\;
+    \(\mathrm{cost}_{\mathit{prev}} = \mathrm{cost}\)\;
   }\;
 \end{algorithm}
 
@@ -675,15 +676,15 @@ where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) need to be SOS polynomials.
   the parameterization of the square with sides of length two. What needs to be
   shown is that \(p(x)\) is positive on the set \(\beta\). Through the
   \nameref{sec:s-procedure} this can be written as the search for a nonnegative
-  polynomial \(L_{\textit{ineq},i}(\vect{x})\) such that \(p(\vect{x}) \geq
-  L_{\textit{ineq},i}(\vect{x})g(\vect{x}) \). Thus
+  polynomial \(L_{\mathit{ineq},i}(\vect{x})\) such that \(p(\vect{x}) \geq
+  L_{\mathit{ineq},i}(\vect{x})g(\vect{x}) \). Thus
   \[
     q(\vect{x}) = p(\vect{x}) -
-    \sum_{i=1}^{2}L_{\textit{ineq},i}(\vect{x})g_{\textit{ineq},i}(\vect{x})
+    \sum_{i=1}^{2}L_{\mathit{ineq},i}(\vect{x})g_{\mathit{ineq},i}(\vect{x})
   \]
-  is required to be a \ac{SOS} polynomial, along with \(L_{\textit{ineq},i}\). From this
-  it is seen that when a point satisfies \(g_{\textit{ineq},i}\) (i.e., when \(\vect{x} \in
-  \beta\)) the term \( - \sum_{i=1}^{2}L_{\textit{ineq},i}(\vect{x})g_{\textit{ineq},i}(\vect{x})\)
+  is required to be a \ac{SOS} polynomial, along with \(L_{\mathit{ineq},i}\). From this
+  it is seen that when a point satisfies \(g_{\mathit{ineq},i}\) (i.e., when \(\vect{x} \in
+  \beta\)) the term \( - \sum_{i=1}^{2}L_{\mathit{ineq},i}(\vect{x})g_{\mathit{ineq},i}(\vect{x})\)
   is negative, and hence \(p(x)\) must be nonnegative, which gives the desired
   implication.
 
