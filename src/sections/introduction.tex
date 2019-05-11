@@ -1,7 +1,7 @@
 \chapter{Introduction}
 \label{sec:intro}
 
-\begin{figure}[h]
+\begin{figure}
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-no-funnel}
     \caption{The airplane is deviating from the nominal trajectory due to the
@@ -29,7 +29,7 @@ shown in \cref{fig:motion-planning-uncertainty}. Over the last couple of decades
 a lot of research has gone into handling uncertainty in planning, an overview of
 which can be found in \cref{chp:survey-of-papers}.
 
-\begin{figure}[h]
+\begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{figures/experiments/aggressive-maneuver}
   \caption{A planner that is guaranteed to not collide might as well go straight
@@ -92,8 +92,8 @@ to create a plan, and hence build one long motion primitive through the
 overarching environment. With the motion primitives being robust to uncertainty,
 these plans are in theory guaranteed to be collision-free. The reason the theory
 employed here does not necessarily apply to the real world is that most noise is
-not bounded in the real world, and hence may break the basic assumption made;
-that it is.
+not bounded in the real world, and hence assumptions made may not be correct.
+
 
 The \ac{RRT} algorithm can handle large state spaces and differential
 constraints. However, it is not able to directly reason about uncertainty and
