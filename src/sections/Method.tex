@@ -104,17 +104,17 @@ in~\cref{fig:initial-trajectories}, and consists of a left-turn, a
 straight-forward, and a right-turn motion primitive.
 
 \begin{figure}
-  \begin{minipage}[b]{0.3\textwidth}
+  \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
     width=\textwidth]{figures/method/left-trajector}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.3\textwidth}
+  \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
     width=\textwidth]{figures/method/straight-trajector}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.3\textwidth}
+  \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
     width=\textwidth]{figures/method/right-trajector}
   \end{minipage}
@@ -156,19 +156,19 @@ which when employed on the linearization of the system error dynamics (see
 \end{equation} 
 gives an initial candidate Lyapunov function
 \begin{equation}
-  V(t,\bar{\vect{x}}) = {\bar{\vect{x}}}^{T} \matr{S}_{i}\bar{\vect{x}}.
+  V(t,\bar{\vect{x}}) = {\bar{\vect{x}}}^{T} \matr{S}_{i}\bar{\vect{x}} ,
 \end{equation}
-where \(S_{i}\) is a solution of the \textit{Ricatti} \cref{eq:ricatti}
+where \(S_{i}\) is a solution of the \textit{Ricatti} equation
 \begin{equation}
   \label{eq:ricatti}
   - \dot{\matr{S}}(t) = \matr{A}^{T} \matr{S}(t) +\matr{S}(t) \matr{A} - \left( \matr{S}(t) \matr{B} + \matr{N} \right) \matr{R}^{-1}\left( \matr{B}^{T} \matr{S}(t) + \matr{N}^{T} \right) + \matr{Q}
 \end{equation} 
-associated with the \ac{LQR} controller, the feedback is gained from
+associated with the \ac{LQR} controller. The feedback is gained from
 \[
-  \matr{K}(t) = \matr{R}^{-1}\left( \matr{B} \matr{S}(t) + \matr{N}^T \right),
+  \matr{K}(t) = \matr{R}^{-1} \left( \matr{B} \matr{S}(t) + \matr{N}^T \right),
 \]
 and enables the system dynamics \cref{eq:model-dynamics} to be written
-\(f_{cl}(t,\vect{x})\) by direct substitution of \(\vect{u}\), like
+\(f_{\mathit{cl}}(t,\vect{x})\) by direct substitution of \(\vect{u}\), like
 \begin{equation}
   \label{eq:model-dynamics-cl}
   \vect{x} =
@@ -179,7 +179,7 @@ and enables the system dynamics \cref{eq:model-dynamics} to be written
     -v \sin(\theta) \\
     v \cos(\theta) \\
     -K\vect{x} \\
-  \end{bmatrix}.
+  \end{bmatrix} \mathEoS
 \end{equation}
 
 \subsection{Generating the funnels around the trajectories}
@@ -242,7 +242,7 @@ by the hyperellipsoid
     2 & 0 & 0 \\
     0 & 2 & 0 \\
     0 & 0 & 4
-  \end{bmatrix}
+  \end{bmatrix},
 \end{align}
 which means that the funnel will have a diameter of one half, and the \(\theta\)
 inlet will be wider closer to the center of the funnel, which is beneficial, as
@@ -273,15 +273,15 @@ size of the xy-ellipsoid~\cite{majumdarRobustOnlineMotion2013}..
 
 Therefore in order to minimize the actual size of the funnel where the physical
 airplane can move in the world space, the cost function has to be modified.
-Given a projection map \(\pi : \R^n \rightarrow \R^{n_p}\), the ellipsoid of
-interest is
+Given a projection map \(\pi \colon \R^n \rightarrow \R^{n_p}\), the ellipsoid
+of interest is
 \[
-  \mathcal{E} = \set{\bar{\vect{x}} \in \R^n |
+  \mathcal{E} = \set{\bar{\vect{x}} \in \R^n \mid
     \bar{\vect{x}}^TS_{k}\bar{\vect{x}} \leq 1}
 \]
 with the projected ellipsoid
 \[
-  \pi(\mathcal{E}) = \set{\bar{\vect{x}} \in \R^n |
+  \pi(\mathcal{E}) = \set{\bar{\vect{x}} \in \R^n \mid
     \bar{\vect{x}}^TS^{(p)}_{k}\bar{\vect{x}} \leq 1}
 \]
 and
@@ -291,19 +291,19 @@ and
 where \(P\) is an \(n\times n_p\) projection matrix.
 
 Since minimizing the volume of the ellipsoid \(\pi(\mathcal{E})\) using a
-\ac{SDP} relies on maximizing the determinant of \(\matr{S}_k\), and \(det(
+\ac{SDP} relies on maximizing the determinant of \(\matr{S}_k\), and \(\deter(
 \matr{S}_k)\) is a nonlinear function of \(S_k\), the function has to be
 linearized in order for it to be handled by the \ac{SOS} framework.
 \citeauthor{majumdarFunnelLibrariesRealtime2017}~\cite{majumdarFunnelLibrariesRealtime2017}
-solves this by linearizing \(det(\matr{S}_k)\) at the solution of \(\matr{S}_k\)
+solves this by linearizing \(\deter(\matr{S}_k)\) at the solution of \(\matr{S}_k\)
 from the previous iteration, and maximizes this linearization instead. In the
 end this translates to
 \[
-  \mathnormal{lin}\p{det\p{ \matr{S}_k}} = Tr\p{ \matr{P}^T\p{ \matr{P}
-      \matr{S}_{k,0}^{-1} \matr{P}^T}^{-1} \matr{P} \matr{S}_{k,0}^{-1}
-    \matr{S}_k \matr{S}_{k,0}^{-1}}
+  \lin \bigl( \deter \p{ \matr{S}_k} \bigr) = \Tr \bigl( \matr{P}^{T}{\p{ \matr{P}
+      \matr{S}_{k,0}^{-1} \matr{P}^T}}^{-1} \matr{P} {\matr{S}_{k,0}}^{-1}
+    \matr{S}_k {\matr{S}_{k,0}}^{-1} \bigr)
 \]
-where \( \matr{S}_{k,0}\) is the nominal value for the linearization, and \(Tr\)
+where \( \matr{S}_{k,0}\) is the nominal value for the linearization, and \(\Tr\)
 is the trace of the matrix.
 
 \subsection{Searching for a controller which minimizes the size of the funnel}
