@@ -327,7 +327,7 @@ Firstly the system needs to be control affine\ie it can be written on the form:
 so that the control policy can be parameterized as a polynomial
 \(\bar{\vect{u}}_f(t,\bar{\vect{x}})\), and the system dynamics written as:
 \begin{equation}
-  \dot{\bar{\vect{x}}} = f(\vect{x}_0(t) + \bar{\vect{x}}(t)) + g(\vect{x}(t))\left[ \vect{u}_0(t) + \bar{\vect{u}}_f(t,\bar{\vect{x}}) \right] - \bar{\vect{x}}_0
+  \dot{\bar{\vect{x}}} = f(\vect{x}_0(t) + \bar{\vect{x}}(t)) + g(\vect{x}(t))\left[ \vect{u}_0(t) + \bar{\vect{u}}_f(t,\bar{\vect{x}}) \right] - \bar{\vect{x}}_0 \mathEoS
 \end{equation}
 Which \cref{eq:model-dynamics} is, since:
 \begin{equation}
@@ -344,7 +344,7 @@ Which \cref{eq:model-dynamics} is, since:
     0 \\
     1 \\
   \end{bmatrix}
-  \vect{u}(t).
+  \vect{u}(t) \mathEoS
 \end{equation}
 Then the feedback controller can be optimized by adding the coefficients of the
 polynomial \(\vect{u}_f(t,\bar{\vect{x}})\) to the set of decision variables in
@@ -358,7 +358,7 @@ bilinear in the decision variables \(V\) and \(\bar{\vect{u}}_f\)
 \end{equation}
 Thus in order to minimize the cost function a search is done in the variables
 \[
-  (\bar{u}_f,\rho,L_t,L_{0,i},S_k)
+  (\bar{\vect{u}}_f,\rho,L_t,L_{0,i},S_k)
 \]
 while keeping
 \[
@@ -436,7 +436,7 @@ Which in this thesis is an additive uncertainty so that
     w(t) \\
     0 \\
     0
-  \end{bmatrix}.
+  \end{bmatrix} \mathEoS
 \end{equation}
 Then the requirement~\cref{eq:reachableset} is slightly modified so that
 \begin{equation}
@@ -448,18 +448,18 @@ where \(F(t)\) is the new reachable set for the uncertain system. Thus the
 sufficient condition~\cref{eq:funnelsufficient} turns into
 \begin{equation}
   \label{eq:funneluncertain-sufficient}
-  V(t,\bar{\vect{x}}) = \rho(t) \implies \dot{V}(t,\bar{\vect{x}},w) < \dot{\rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W}.
+  V(t,\bar{\vect{x}}) = \rho(t) \implies \dot{V}(t,\bar{\vect{x}},w) < \dot{\rho}(t), \, \forall t \in [0,T], \, \forall w(t) \in \mathcal{W} \mathEoS
 \end{equation}
 The Lyapunov function derivative then becomes
 \begin{equation}
   \dot{V}(t,\bar{\vect{x}}, w) = \frac{\partial V(t,\bar{\vect{x}})}{\partial \vect{x}} f_{cl}(t,\bar{\vect{x}},w) + \frac{\partial V(t,\bar{\vect{x}})}{\partial t},
 \end{equation}
-and the optimization condition~\cref{eq:sufficient-conditions} turns into
+and the optimization condition \cref{eq:sufficient-conditions} turns into
 \begin{align}
   \label{eq:optimizationconditionuncertain}
-  \dot{\rho}(t) - \dot{V}(t,\bar{\vect{x}},w) - L(t,\bar{\vect{x}},w) \left[ V(t,\bar{\vect{x}}) - \rho(t) \right] - L_{t}(t,\bar{\vect{x}},w)\left[ t\left( T - t \right) \right]  & \nonumber \\
+  \dot{\rho}(t) - \dot{V}(t,\bar{\vect{x}},w) - L(t,\bar{\vect{x}},w) \bigl( V(t,\bar{\vect{x}}) - \rho(t) \bigr) - L_{t}(t,\bar{\vect{x}},w) \bigl( t\left( T - t \right) \bigr)  & \nonumber \\
   - \sum_{j=1}^{N_{w}} L_{w,j}(t,\bar{\vect{x}},w)g_{w,j}(w) \quad \text{is SOS} &  \\
-  \left( L, L_t, L_{w,j} \right) (t,\bar{\vect{x}},w) \qquad \text{is SOS}, \; \forall j = 1,\ldots,N_w \nonumber
+  \left( L, L_t, L_{w,j} \right) (t,\bar{\vect{x}},w) \qquad \text{are SOS}, \; \forall j = 1,\ldots,N_w \mathEoS \nonumber
 \end{align}
 A figure of a straight funnel motion primitive calculated with uncertainties by
 the \ac{SOS} solver from the code in \cref{sec:sos-program-implementation} can
@@ -506,26 +506,29 @@ x,y,\theta\). Now any funnel in the base set can be shifted freely around in the
 cyclic coordinates of the system without changing the solution to the system
 dynamic equation, and thus create an infinite set of funnels in the state space
 for the planner to work with. Through the partitioning of coordinates into
-cyclic- and non-cyclic coordinates of the form \(\vect{x} = [x_c\, x_{nc}]\),
-the state dynamics \cref{eq:model-dynamics} only depends on the cyclic
-coordinates of the system. Thus, a trajectory of the form \(t \rightarrow
-(x(t),u(t))\) which solves \(\dot{\vect{x}} = f(\vect{x}(t),u(t))\) can then be
-transformed through a shift \(\Psi_c\) along the cyclic coordinates of the
-system to yield a valid solution of the form
+cyclic- and non-cyclic coordinates of the form \(\vect{x} = \left[ x_c\; x_{nc}
+\right]^{T }\), the state dynamics \cref{eq:model-dynamics} only depends on the
+cyclic coordinates of the system. Thus, a trajectory of the form \(t \rightarrow
+\bigl( \vect{x}(t), \vect{u}(t) \bigr) \) which solves \(\dot{\vect{x}} = f
+\bigl(\vect{x}(t), \vect{u}(t) \bigl) \) can then be transformed through a shift
+\(\Psi_{c}\) along the cyclic coordinates of the system to yield a valid
+solution of the form
 \[
-  t \rightarrow (\Psi_{x}(\vect{x}(t)), u(t))
+  t \rightarrow \bigl( \Psi_{x}(\vect{x}(t)), \vect{u}(t) \bigr)
 \]
 where the transform \(\Psi\) is given by
 \[
-  \Psi([\vect{x}_c, \vect{x}_{nc}]) =
+  \Psi \bigl( \begin{bmatrix}
+    \vect{x}_{c}  \\ \vect{x}_{\mathit{nc}} 
+  \end{bmatrix}
+  \bigr) =
   \begin{cases}
-    \vect{x}_c \rightarrow \hat{\vect{x}}_{c} \\
-    \vect{x}_{nc} \rightarrow \vect{x}_{nc} \\
-  \end{cases}.
+    \vect{x}_{c} \rightarrow \hat{\vect{x}}_{c} \\
+    \vect{x}_{\mathit{nc}} \rightarrow \vect{x}_{\mathit{nc}} \mathEoS
+  \end{cases}
 \]
-However, since \(\mathnormal{dim}(\vect{x}) = \mathnormal{dim}(\vect{x}_c) \),
-for the~\cref{eq:model-dynamics}, it is not necessary to handle the non-cyclic
-case.
+However, since \( \dim (\vect{x}) = \dim(\vect{x}_{c}) \), for
+the~\cref{eq:model-dynamics}, it is not necessary to handle the non-cyclic case.
 
 \subsection{Sequential funnel composition}
 \label{sec:composable-funnels}
@@ -555,7 +558,7 @@ is~\cite[definition~3,sec~5]{majumdarFunnelLibrariesRealtime2017} which states
   \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
   is \textit{sequentially composable modulo invariance} if there exists a shift
   along cyclic coordinates such that \(F_{1}(T_1) \subset
-  \Psi_{c}\left(F_2(0)\right)\)
+  \Psi_{c}\bigl(F_2(0)\bigr) \)
 \end{definition}
 In layman's terms this means that if a funnel \(F_2\) can be shifted along
 cyclic coordinates to stack up against the outlet of funnel \(F_2\) so that they
@@ -613,15 +616,15 @@ within the funnels used in the planner, and the trajectories can be seen as
 robust to uncertainty given the uncertainty and dynamical assumptions made.
 
 \begin{figure}
-  \begin{subfigure}[b]{0.3\textwidth}
+  \begin{subfigure}[c]{0.3\textwidth}
     \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
       4cm}]{figures/method/FunnelSimnew4}
   \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}
+  \begin{subfigure}[c]{0.3\textwidth}
     \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
       4cm}]{figures/method/FunnelSimnew1}
   \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}
+  \begin{subfigure}[c]{0.3\textwidth}
     \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
       4cm}]{figures/method/FunnelSimnew5}
   \end{subfigure}
