@@ -21,11 +21,11 @@
 
   \(\mathcal{G}.init(q_{0})\)
   \For{\(i \leftarrow 1\) \KwTo \(k\)}{
-    \(q_{\textit{rand}} \leftarrow \) \RandConf{} \;
-    \(q_{\textit{near}} \leftarrow \) \NearestVertex{\(q_{\textit{rand}}, \mathcal{G}\)}\;
-    \(q_{\textit{new}} \leftarrow \) \NewConfig{\(q_{\textit{near}}, q_{\textit{rand}} \)}\;
-    \(\mathcal{G}\).\AddVertex{\(q_{\textit{new}}\)}\;
-    \(\mathcal{G}\).\AddEdge{\(q_{\textit{near}}, q_{\textit{new}}\)} \;
+    \(q_{\mathit{rand}} \leftarrow \) \RandConf{} \;
+    \(q_{\mathit{near}} \leftarrow \) \NearestVertex{\(q_{\mathit{rand}}, \mathcal{G}\)}\;
+    \(q_{\mathit{new}} \leftarrow \) \NewConfig{\(q_{\mathit{near}}, q_{\mathit{rand}} \)}\;
+    \(\mathcal{G}\).\AddVertex{\(q_{\mathit{new}}\)}\;
+    \(\mathcal{G}\).\AddEdge{\(q_{\mathit{near}}, q_{\mathit{new}}\)} \;
   }
 
 \end{algorithm}
