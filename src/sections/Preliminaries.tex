@@ -205,7 +205,7 @@ in~\cref{fig:reachable-set-dubin}.
 
 \begin{figure}
   \centering \input{figures/preliminaries/dubinsreachability.tex}
-  \caption{The reachable set for a dubins car model after some time \(T\).}
+  \caption[The reachable set for a Dubin's airplane model]{The reachable set for a Dubins airplane model after some time \(T\).}
   \label{fig:reachable-set-dubin}
 \end{figure}
 
@@ -258,7 +258,7 @@ heading of the aircraft, looks like~\cref{fig:monte-carlo-sim}.
 
 \begin{figure}
   \centering \includegraphics[scale=.6]{figures/preliminaries/montecarlofunnel}
-  \caption{The simulation of N paths starting from a random point in the
+  \caption[Monte-Carlo simulation of the funnel for the \ac{LQR}-controller]{The simulation of N paths starting from a random point in the
     interval \(\sqb{-.5,.5}\), and controlled with a LQR controller.}
   \label{fig:monte-carlo-sim}
 \end{figure}
@@ -381,7 +381,7 @@ optimization problem
   % \includegraphics[scale=.7]{figures/experiments/lyapunov_visualization}
   \centering { \fontsize{16pt}{16pt}\selectfont \def\svgwidth{\textwidth}
     \import{figures/experiments/}{lyapunov_visualization.pdf_tex} }
-  \caption{A visualization of the Lyapunov function along a trajectory, where
+  \caption[A converging funnel parameterized through a Lyapunov function]{A visualization of the Lyapunov function along a trajectory, where
     the center of the Lyapunov function moves along the trajectory with time
     \(t\).}
 \end{figure}
@@ -773,26 +773,26 @@ problems, especially ones with a high dimensional state space~\cite{Lav06}.
   \end{minipage}
   \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[width=.95\textwidth]{plainRRT50}
-    \subcaption{RRT-tree after \(50\) iterations.}
+    \subcaption{\(50\) iterations.}
   \end{minipage}
   \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[width=.95\textwidth]{plainRRT100}
-    \subcaption{RRT-tree after \(100\) iterations.}
+    \subcaption{\(100\) iterations.}
   \end{minipage}
   \newline % Start the new line of plainRRT10.
   \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[width=.95\textwidth]{plainRRT500}
-    \subcaption{RRT-tree after \(500\) iterations.}
+    \subcaption{\(500\) iterations.}
   \end{minipage}
   \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[width=.95\textwidth]{plainRRT1000}
-    \subcaption{RRT-tree after \(1000\) iterations.}
+    \subcaption{\(1000\) iterations.}
   \end{minipage}
   \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[trim={2cm 1cm 2cm 1cm}, clip, width=.95\textwidth]{plainRRT10000}
-    \subcaption{RRT-tree after \(10.000\) iterations.}
+    \subcaption{\(10.000\) iterations.}
   \end{minipage}
-  \caption{Pictured: The \ac{RRT} algorithm quickly expanding deep into the
+  \caption[The rapid expansion of the \ac{RRT} motion planning algorithm]{The \ac{RRT} algorithm quickly expanding deep into the
     state-space, then later, exploring the finer parts, until the exploration is
     complete.}
   \label{fig:rrt-expansion}
@@ -801,7 +801,7 @@ problems, especially ones with a high dimensional state space~\cite{Lav06}.
 
 \begin{figure}
   \centering \includegraphics[scale=.3]{figures/rrt/voronoi-diagram}
-  \caption{Pictured: The Voronoi regions for a collection of points in the
+  \caption[The Voronoi regions for a collection of points in the plane]{The Voronoi regions for a collection of points in the
     plane, using the standard Euclidean metric.}
   \label{fig:voronoi-diagram}
 \end{figure}
@@ -825,7 +825,7 @@ algorithm is given enough time.
 \begin{figure}
   \centering \frame{\includegraphics[clip, trim=5cm 9cm 5cm 9cm,
     scale=.5]{figures/rrt/rrtvoronoi}}
-  \caption{Pictured: The Voronoi regions for each node in a simple RRT tree,
+  \caption[The Voronoi regions for the nodes in a \ac{RRT} tree]{The Voronoi regions for each node in a simple RRT tree,
     which shows how the Voronoi bias will lead the algorithm towards unexplored
     areas quickly.}
   \label{fig:rrt-voronoi}
@@ -861,7 +861,7 @@ can be seen in~\cref{fig:motion-primitive-tree}.
 \begin{figure}
   \centering
   \includegraphics[scale=1]{figures/preliminaries/motion-primitive-tree}
-  \caption{A simple motion primitive tree from the paper
+  \caption[A simple motion primitive tree]{A simple motion primitive tree from the paper
     \textcite{vonasekHighlevelMotionPlanning2015}, displaying a tree built from
     the composition of a left, right and a forward motion primitive.}
   \label{fig:motion-primitive-tree}

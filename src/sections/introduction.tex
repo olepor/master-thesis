@@ -12,7 +12,7 @@
     \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-funnel}
     \caption{The reachable set given the cross-wind pictured.}
   \end{subfigure}
-  \caption{Not taking uncertainty into account can lead to collisions when the
+  \caption[Airplane model in a crosswind]{Not taking uncertainty into account can lead to collisions when the
     actual trajectory diverges from the nominal one.}
   \label{fig:motion-planning-uncertainty}
 \end{figure}
@@ -32,9 +32,9 @@ which can be found in \cref{chp:survey-of-papers}.
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{figures/experiments/aggressive-maneuver}
-  \caption{A planner that is guaranteed to not collide might as well go straight
-    through the opening in the forest, instead of the long way around an
-    obstacle.}
+  \caption[Advantages of explicitly reasoning about uncertainty]{A planner that
+    is guaranteed to not collide might as well go straight through the opening
+    in the forest, instead of the long way around an obstacle.}
   \label{fig:aggressive-maneuver}
 \end{figure}
 
@@ -107,7 +107,7 @@ contained in the motion primitives employed as branches in the planning tree.
 \begin{figure}
   \centering
   \includegraphics[scale=.1]{figures/experiments/experiment-airplane-strip}
-  \caption{A cartoon of the experiment setup, showing how the \rrtfunnel{}
+  \caption[The experiment setup visualized]{A cartoon of the experiment setup, showing how the \rrtfunnel{}
     algorithm builds a tree of funnels to find a safe path through a strip of
     forest.}
   \label{fig:experiments-cartoon}

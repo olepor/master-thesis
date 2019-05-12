@@ -70,7 +70,7 @@ which is a first-order unicycle model with constant speed of
 \begin{figure}
   \centering { \fontsize{16pt}{16pt}\selectfont \def\svgwidth{1.333in}
     \import{figures/method/}{unicycle-model.pdf_tex} }
-  \caption{The unicycle model of a airplane.}
+  \caption{The unicycle model of an airplane.}
   \label{fig:second-order-unicycle}
 \end{figure}
 Although this is the only model used in this thesis, the framework and the code
@@ -118,7 +118,7 @@ straight-forward, and a right-turn motion primitive.
     \includegraphics[trim={5cm 5cm 5cm 5cm},
     width=\textwidth]{figures/method/right-trajector}
   \end{minipage}
-  \caption{Three motion primitives for the \rrtfunnel{} algorithm, one straight,
+  \caption[Three motion primitives for the \rrtfunnel{} algorithm]{Three motion primitives for the \rrtfunnel{} algorithm, one straight,
     one left, and one right turn.}
   \label{fig:initial-trajectories}
 \end{figure}
@@ -229,7 +229,7 @@ primitive can be found in~\cref{fig:visualized-lyapunov}.
 \begin{figure}
   \centering \includegraphics[trim={3cm 7cm 3cm 7cm},
   scale=.6]{figures/rrtfunnel/straight-funnel-lyapunov-3d}
-  \caption{A visualization of the Lyapunov function values around a straight
+  \caption[The Lyapunov function visualized around a straight trajector]{A visualization of the Lyapunov function values around a straight
     motion primitive.}
   \label{fig:visualized-lyapunov}
 \end{figure}
@@ -469,7 +469,7 @@ be seen in \cref{fig:funnel-calculation-visuals}.
 \begin{figure}
   \centering \includegraphics[scale=.5, trim={0cm 6cm 0cm
     6cm}]{figures/method/funnel-calculation-visuals}
-  \caption{A funnel calculated around a straight motion trajector. Shown is the
+  \caption[A funnel calculated around a straight trajector]{A funnel calculated around a straight motion trajector. Shown is the
     value of \(\rho(t)\), and \(\sum \rho(t_k)\) as it is incrementally improved
     by the numerical solver. The bottom figures are the funnel projected down in
     the xy-plane. Left the ellipsoids are overlaid on top of each other, and on
@@ -573,7 +573,7 @@ known, and the composability is therefore straight forward to compute.
 
 \begin{figure}
   \centering {\includegraphics[scale=.2]{figures/method/funnel-composition}}
-  \caption{Two funnels that can be successfully composed, as the outlet of the
+  \caption[Two composable funnels]{Two funnels that can be successfully composed, as the outlet of the
     first one is fully contained in the inlet of the second.}
   \label{fig:two-funnels-composed}
 \end{figure}
@@ -593,9 +593,10 @@ and is implemented in \textsc{sostools}~\cite{sostools} and \matlab{} in
 together into a tree can be seen in~\cref{fig:funnel-composition-tree}.
 \begin{figure}
   \centering \includegraphics[scale=.5, trim={0cm 7cm 0cm
-    7cm}]{figures/method/funnel-tree} \caption{Pictured: A tree of funnels built
-    by the \rrtfunnel{} algorithm, showing how longer motion primitives are
-    built up from primitives in the basis set.}
+    7cm}]{figures/method/funnel-tree} \caption[A tree of funnels built by the
+  \rrtfunnel{} algorithm]{A tree of funnels built by the \rrtfunnel{} algorithm,
+    showing how longer motion primitives are built up from primitives in the
+    basis set.}
   \label{fig:funnel-composition-tree}
 \end{figure}
 
@@ -629,7 +630,7 @@ robust to uncertainty given the uncertainty and dynamical assumptions made.
     \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
       4cm}]{figures/method/FunnelSimnew5}
   \end{subfigure}
-  \caption{The simulated non-polynomial system trajectories (green), overlaid
+  \caption[A visualization of the simulated and the calculated reachable set]{The simulated non-polynomial system trajectories (green), overlaid
     with the outer approximation that is the funnel returned by the \ac{SOS}
     calculation (grey) for three trajectories from the trajectory library
     \(\mathcal{T}\).}
@@ -762,7 +763,7 @@ robust to uncertainty given the uncertainty and dynamical assumptions made.
       \end{subfigure}%
     \end{subfigure}%
   }
-  \caption{The figures on the left show that the funnel approximation is a lot
+  \caption[The calculated funnel overlaid the results of a Monte-Carlo simulation]{The figures on the left show that the funnel approximation is a lot
     tighter to the 'real' funnel in the x-y plane, than it is in the \(\theta\)
     domain, which is to be expected, considering the cost function given to the
     procedure.}
@@ -874,7 +875,7 @@ and distance is then scaled relative to the translation distance.
 \begin{figure}
   \centering
   \includegraphics[scale=.2,angle=-90]{figures/rrtfunnel/non-holonomic-vehicle-euclidean-weakness}
-  \caption{Consider two poses \(p_0\) and \(p_1\). Although \(p_1\) is nearer
+  \caption[Distance metrics for non-holonomic vehicles]{Consider two poses \(p_0\) and \(p_1\). Although \(p_1\) is nearer
     the robot in Euclidean distance it is harder to get to due to differential
     constraints. In this paper, we propose a directed distance function
     applicable to unicycle type models, that properly reflects the true
