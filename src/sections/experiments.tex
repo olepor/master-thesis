@@ -18,21 +18,21 @@ five meters ahead.
 
 \section{Testing the \rrtfunnel{} Algorithm}
 
-The experiment section starts out by generating a random strip of forest for
-which the airplane has to navigate through in \cref{sec:Poisson-Process}. Next
-it expands from the single point model in \cref{eq:model-dynamics} to
-incorporate the actual size of the model in \cref{subsec:deciding-model-size},
-and then shows how to expand the size of the funnels to incorporate the airplane
-model in \cref{subsec:expand-funnel}. It then continues to show the initial
-motion primitive set in \cref{subsec:initial-motion-primitive}. In
-\cref{subsec:check-vehicle-in-funnel} it employs a \textit{Monte-Carlo}
-simulation in order to verify that the nonlinear system model \textit{does}
-stays within the calculated funnels. Later it shows that the funnel composition
-guarantees are lost due to the non-convergence in the y-direction of the funnel
-space in \cref{subsec:funnel-no-composable}, until finally presenting the
-results of the \rrtfunnel{} algorithm benchmarked against a conservative
-\ac{RRT} motion planner which does not handle the uncertainty that is provided
-by the cross-wind in \cref{sec:experiments-final}.
+The experiment section starts out in \cref{sec:Poisson-Process} by generating a
+random strip of forest for the airplane has to navigate through. Next it expands
+from the single point model in \cref{eq:model-dynamics} to incorporate the
+actual size of the model in \cref{subsec:deciding-model-size}, and then shows
+how to expand the size of the funnels to incorporate the airplane model in
+\cref{subsec:expand-funnel}. It then continues to show the initial motion
+primitive set in \cref{subsec:initial-motion-primitive}. In
+\cref{subsec:check-vehicle-in-funnel} a \textit{Monte-Carlo} simulation is
+employed in order to verify that the nonlinear system model stays within the
+calculated funnels. Later it shows that the funnel composition guarantees are
+lost due to the non-convergence in the y-direction of the funnel space in
+\cref{subsec:funnel-no-composable}, until finally presenting the results of the
+\rrtfunnel{} algorithm benchmarked against a conservative \ac{RRT} motion
+planner which does not handle the uncertainty that is provided by the cross-wind
+in \cref{sec:experiments-final}.
 
 \subsection{The Obstacle Forest}
 \label{sec:Poisson-Process}
@@ -51,8 +51,7 @@ will be held constant for each experiment run, and not vary with points in space
 \ie the process is homogeneous.
 
 The algorithm for realizing a random Poisson measure in \cref{def:Poisson-def}
-is taken from~\cite[Definition~1.1.1][34]{Kroese_2014} and looks like:
-
+is~\cite[Definition~1.1.1]{Kroese_2014}
 \begin{definition}{Generating a Poisson random measure}
   \label{def:Poisson-def}
   \begin{enumerate}
@@ -62,7 +61,7 @@ is taken from~\cite[Definition~1.1.1][34]{Kroese_2014} and looks like:
   \end{enumerate}
 \end{definition}
 where \(E\) is the set over which the points should be generated, and the
-\textit{pdf} \(g(x_1, x_2) = \lambda(\vect{x})/\mu(E)\). Finally, \(\mu(E)\) is
+\textit{probability distribution function} \(g(x_1, x_2) = \lambda(\vect{x})/\mu(E)\). Finally, \(\mu(E)\) is
 defined as
 \[
   \mu(E) = \int_{E} \lambda(\vect{x})\, \mathrm{d} \vect{x} \mathEoS
@@ -89,6 +88,8 @@ figure~\cref{fig:poisson009}.
       intensity \(\lambda = 0.9\)}
     \label{fig:poisson09}
   \end{subfigure}
+  \caption[Two random forests generated with a spatial Poisson process]{Two
+    random forests generated with a spatial Poisson process in \(\R^{2}\).}
 \end{figure}
 
 \subsection{The Size of the Airplane and the Obstacles Models}
@@ -96,7 +97,7 @@ figure~\cref{fig:poisson009}.
 
 The funnels generated thus far are created from a point model of the airplane,
 and its dynamics. If the grid that the simulations are run on are set to have an
-increment of a meter, then the funnels from the basic set are given a velocity
+unit size of one meter, then the funnels from the basic set are given a velocity
 of \([v(t)] = \si{m.s^{-1}}\), \([\theta] = \si{\radian}\), and \([\dot{\theta}]
 = \si{\radian\per\second}\), where \( [\, \cdot \,] \) is the unit operator. The
 size of the airplane is arbitrary, and can be chosen freely, but if it is
@@ -104,7 +105,7 @@ imagined as a radio controlled aircraft, with a speed of \(10\si{m.s^{-1}}\),
 then a size of \(10 \times 20 \si{\centi\metre} \) keeps everything within the
 realm of a normal radio controlled aircraft and its capabilities. The mass is
 not relevant for our first order dynamics, but still the airplane is assigned a
-mass of \(1 \si{\kilo}\), so that the translation of the model dynamics is not
+mass of \(1 \textit{kilo}\), so that the translation of the model dynamics is not
 irrelevant. A figure of the airplane can be seen in \cref{fig:radio-vehicle}.
 
 \begin{figure}
@@ -133,18 +134,18 @@ the xy-plane. Therefore first getting the projected size of the funnel, where
 such that for the projected ellipsoid
 \[
   \mathcal{E}_{p} = \set{\bar{\vect{x}} \in \R^{2} \mid
-    {\bar{\vect{x}}}^{T}S_{k}^{(p)}\bar{\vect{x}} \leq 1}
+    {\bar{\vect{x}}}^{T}S_{k}^{(p)}\bar{\vect{x}} \leq 1},
 \]
-and
+with \(S_{k}^{(p)}\) given by
 \[
-  S_{k}^{(p)} = {\left( PS_{k}^{-1}P^T \right)}^{-1}
+  S_{k}^{(p)} = {\left( PS_{k}^{-1}P^T \right)}^{-1},
 \]
-and \(\mathcal{E}_{p}\) is the projected set of the ellipsoid projected down
-into the xy-plane as is seen in \cref{subsec:xy-cost-function}. In general an
-ellipse centered at the origin is a linear transformation of the unit
-circle~\cite{lay2005linear}. Exploiting this fact, expanding the radius of the
-circle to encompass the airplane model. Also taking into account that the matrix
-\(S_{k}\) is \textit{Positive semidefinite}, and hence can be Cholezky
+where \(\mathcal{E}_{p}\) is the projected set of the ellipsoid in the xy-plane
+as is seen in \cref{subsec:xy-cost-function}. In general an ellipse centered at
+the origin is a linear transformation of the unit circle~\cite{lay2005linear}.
+Exploiting this fact, expanding the radius of the circle to encompass the
+airplane model. Also taking into account that the matrix \(S_{k}\) is
+\textit{Positive semidefinite}, and hence can be Cholezky
 factorized~\cite{lay2005linear}. The expanded ellipsis (which now contains all
 the possible states of the airplane model) is:
 
@@ -213,9 +214,9 @@ projected funnels overlaid a sample in \cref{fig:sample-funnel-overlay}.
   \(\theta_{0} = \pi\) \;
 
   \For{\(r_{k+1} = r_{k} + s\)}{ \(\theta_{j} = \frac{\theta{0}}{2r}\) \;
-    \(\theta_{stepsize} = \frac{\theta{j}}{(n-1)/2}\) \; \(\mathbf{X} \leftarrow
+    \(\theta_{stepsize} = \frac{\theta{j}}{(n-1)/2}\) \; \(\mathbf{X} =
     (r_{k+1}, \theta=0)\) \; \For{\(i = 1 \) \KwTo \(\frac{n-1}{2}\)}{
-      \(\theta_{ki} = i*\theta_{stepsize}\) \; \(\mathbf{X} \leftarrow (r, \pm
+      \(\theta_{ki} = i*\theta_{stepsize}\) \; \(\mathbf{X} = (r, \pm
       \theta_{ki})\) \; }\; }\;
 \end{algorithm}
 
@@ -244,12 +245,12 @@ projected funnels overlaid a sample in \cref{fig:sample-funnel-overlay}.
 \end{figure}
 
 During the execution of the \rrtfunnel{} algorithm the planner keeps track of
-the whether or not the model has left the funnel during execution, and aborts
-the simulation with the emergency maneuver if the airplane happens to leave one
-of the funnels at runtime. This happens if the value of the Lyapunov function is
-larger than one. This will be counted in the experiments as a collision on the
-part of the \rrtfunnel{} algorithm. A plot of the Lyapunov values for a
-simulation run can be seen in \cref{fig:lyapunov-values}.
+whether the model has left the funnel during execution, and aborts the
+simulation with the emergency maneuver if the airplane leaves one of the funnels
+at runtime. This happens if the value of the Lyapunov function is larger than
+one. This will be counted in the experiments as a collision on the part of the
+\rrtfunnel{} algorithm. A plot of the Lyapunov values for a simulation run can
+be seen in \cref{fig:lyapunov-values}.
 
 \begin{figure}
   \centering
@@ -363,7 +364,9 @@ the test setup from above, bar plots of which can be found in
     % 69.69 \\
     \bottomrule
   \end{tabular}
-  \caption{The experiment results.}
+  \caption[The experiment results]{Each column in the table is the algorithms tested with different
+    forest densities, and shows the number of crashes that occured for each
+    algorithm over the course of a hundred trial runs.}
   \label{table:result-table}
 \end{table}
 
