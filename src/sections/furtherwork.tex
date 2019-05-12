@@ -10,24 +10,10 @@ to the \rrtfunnel{} motion planning algorithm.
   grow significanlty, is not of concern as long as the funnels are computed
   off-line.
 
-\item Increase the sophistication of the \ac{RRT} algorithm\ie through growing a
-  bi-directional planning tree.
-  
-\item Any other discrete motion planning technique can be employed for the
-  global planner, such as A*, D* etc.
-
 \item Extend the algorithm to exploit the symmetry of the dynamical system at
   hand. As an example, there is nothing really seperating a left turn from a
   right turn, yet they are different motion primitives in the basis set.
 
-\item At least in the case of funnels without uncertainty, every sub-level set
-  of a funnel is a funnel, and as such, the whole funnel can be shrunk to fit
-  inside smaller openings. Research to what extent this is possible with
-  uncertain funnels, as in this case, every sub-level set is not necessarily
-  invariant.
-
-  \item An on-line hybrid implementation where funnels are generated, and stored
-    as they have been generated and then reused would be interesting.
 
   \item  Investigate what is the smartest way of choosing endpoints for the
     funnels generated. What structure makes the most sense? Covers the most

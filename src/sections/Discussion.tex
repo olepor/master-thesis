@@ -1,24 +1,14 @@
 \chapter{Discussion}
 \label{chp:discussion}
 
-This thesis has developed the \rrtfunnel{} motion planning algorithm for
-providing robust motion planning in known environments with bounded uncertainty
-for nonlinear dynamical systems. The planner solved these problems through
-isolating the uncertainty for a nonlinear system into provably \textit{robust
-  motion primitives} that are guaranteed to provide safe traversal, through the
-overaching planning environment through the guarantees provided by the \ac{SOS}
-programming framework. These motion primitives were then employed by a global
-\ac{RRT} motion planner in order to compose a safe path through the planning
-environment.
-
 The strength of the algorithm is that through separating the uncertainty
-handling into an off-line pre-computation phase, the global motion planner does
-not need to be significantly more complex than if it had not reasoned about
-uncertainty at all. To some degree it can remain completely oblivious to the
-overarching problem difficulty of uncertainties for a complex nonlinear system.
-In fact once the motion primitives have been calculated and verified off-line,
-they might as well be employed in any global motion planner able to handle
-discrete motion primitives.
+handling into an off-line pre-computation phase. Therefore, the global motion
+planner does not need to be significantly more complex than if it had not
+reasoned about uncertainty. To some degree it can remain completely oblivious to
+the overarching problem difficulty of uncertainties for a complex nonlinear
+system. In fact once the motion primitives have been calculated and verified
+off-line, they might as well be employed in any global motion planner able to
+handle discrete motion primitives.
 
 
 Note that the funnel is an outer reachable set for the problem at hand, which
@@ -49,8 +39,8 @@ should be noted/improved:
   algorithm makes for a smooth and robust traversal of the state-space, it is
   not in general probabilisticly complete, as there are configurations that it
   cannot reach due to the discrete nature of the motion primitives. This problem
-  can be, and is solved in~\cite{vonasekGlobalMotionPlanning2013}, through the
-  addition of a randomly sampled control input, in addition to the randomly
+  can be, and is solved by \textcite{vonasekGlobalMotionPlanning2013}, through
+  the addition of a randomly sampled control input, in addition to the randomly
   sampled motion primitives. This approach was not exploited for the
   \rrtfunnel{} algorithm as it would remove the robustness guarantee that come
   with the funnel motion primitives.
@@ -58,7 +48,7 @@ should be noted/improved:
 \item The algorithm takes only kinematic constraints, and as such is limited in
   that some plans might not be executable on an actual airplane which is subject
   to actuator constraints, forces and torques. Actuator constraints could be
-  enveloped in the current implementation however,
+  enveloped in the current implementation
   (see~\cite[sec.4.3.3]{majumdarFunnelLibrariesRealtime2017}).
 
 \item The implementation in this thesis leveraged the discrete sampling of
