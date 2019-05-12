@@ -22,14 +22,6 @@ only valid up to the numeric tolerances of the platform it is computed on, and
 the precision of the solver employed.
 
 
-The algorithm was verified through simulations in a virtual forest for a simple
-airplane model. These experiments showed that the \rrtfunnel{} algorithm is
-significantly more robust than an algorithm which does not handle uncertainties
-explicitly, but employs some conservative heuristics, such as maximizing the
-distance to the closest obstacle in order to avoid a collision during execution
-of the plan.
-
-
 Although the \rrtfunnel{} motion planning algorithm does provide safe traversal
 of the configuration space, there are some downsides to the algorithm that
 should be noted/improved:

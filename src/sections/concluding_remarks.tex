@@ -13,6 +13,16 @@ programming framework. These motion primitives were then employed by a global
 \ac{RRT} motion planner in order to compose a safe path through the planning
 environment.
 
+\section{Conclusion}
+
+The algorithm was verified through simulations in a virtual forest for a simple
+airplane model. These experiments showed that the \rrtfunnel{} algorithm is
+significantly more robust than an algorithm which does not handle uncertainties
+explicitly, but employs some conservative heuristics, such as maximizing the
+distance to the closest obstacle in order to avoid a collision during execution
+of the plan.
+
+
 \section{Future Work}
 
 \subsection{The Global Motion Planner}
