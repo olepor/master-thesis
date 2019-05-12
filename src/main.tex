@@ -6,7 +6,7 @@
   final]{memoir} % showtrimxs, % twoside
 \usepackage{style}      % Custom style
 \usepackage[FYS,5,master,print]{mnfrontpage} % TODO - add the option "bound" before printing!
-% \usepackage{duoforside}
+\usepackage{duomasterforside}
                 
 \title{Robust Motion Planning}
 \author{Ole Petter Orhagen}
@@ -38,6 +38,13 @@
     % \begin{titlingpage} % Memoir specific
     %   \duo@page@iv
     % \end{titlingpage}
+    \duoforside[program={Elektronikk og Datateknologi},
+    dept={Department of Physics},
+    option={Difficult Computations},
+    % image={Oslo_University.jpg},
+    printer={Reprosentralen, University of Oslo},
+    short]
+
     \frontmatter        % Folios in Roman numerals, unnumbered chapters.
 
     \include{sections/nomenclature}
