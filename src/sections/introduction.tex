@@ -61,7 +61,7 @@ different dynamical model. Handling uncertainties in the environment is
 currently not possible with the current approach. The algorithm is built up
 through two main parts.
 
-\subparagraph{} One is the calculation of \textit{robust motion primitives},
+\subparagraph{i)} One is the calculation of \textit{robust motion primitives},
 which allows the global motion planner (a regular \ac{RRT} algorithm) to remain
 completely oblivious to these difficulties, and hence act as though there were
 no uncertainties during the planning stage. This means that a lot of the
@@ -81,7 +81,7 @@ the states that the system can evolve to in a given time frame from a set of
 initial conditions and a bounded uncertainty term.
 
 
-\subparagraph{} Second the aforementioned funnels are then employed as
+\subparagraph{ii)} Second the aforementioned funnels are then employed as
 \textit{motion primitives} for the global \ac{RRT} motion planning algorithm.
 This means that they all encode a discrete action. For the dynamical system in
 this thesis, which is a simple unicycle model, this means that the motion

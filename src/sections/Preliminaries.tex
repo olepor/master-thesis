@@ -20,7 +20,7 @@ an on-line algorithm can be simulated by running an offline algorithm repeatedly
 for short intervals of time. However, this comes with the drawback, that no
 guarantee can be made for completing the task at hand \cite{Lav06}.
 
-\section{The mathematical framework}
+\section{The Mathematical Framework}
 
 In order to build, model and reason about a motion planning problem, certain
 nomenclature and definitions need to be standardized. A mathematical model of
@@ -136,7 +136,7 @@ differential equation of the form
 where \(\vect{x}\) is the configuration, and \(\vect{u}\) is the system input
 control.
 
-\subsection{Discrete motion planning}
+\subsection{Discrete Motion Planning}
 
 As mentioned in the introduction, motion planning problems are in general
 NP-hard. One way of making the problem more tractable is to discretize the
@@ -151,7 +151,7 @@ transition equation can now written as
 \]
 where \(\vect{u}_k\) is the action that is applied at time \(t_k\).
 
-\subsubsection{Representing the plan}
+\subsubsection{Trajectories}
 
 The plan that the motion planner makes for a robot in the configuration space is
 represented as a trajectory. A trajectory is a path with an additional time
@@ -186,7 +186,7 @@ k\) is not given, the model turns into
     f(\vect{x}_k,\vect{u}_k,\vect{w}_k)} \mathEoS
 \] 
 
-\subsection{Reachable sets}
+\subsection{Reachable Sets}
 \label{subsec:reachable-set}
 
 Of particular interest to the \rrtfunnel{} algorithm is the reachable set. A
@@ -209,7 +209,7 @@ in~\cref{fig:reachable-set-dubin}.
   \label{fig:reachable-set-dubin}
 \end{figure}
 
-\subsection{Motion primitives}
+\subsection{Motion Primitives}
 
 The backbone of the \rrtfunnel{} algorithm is the composition of robust motion
 primitives in order to construct a path from the initial, to the target
@@ -271,7 +271,7 @@ articles on funnels~\cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,
   majumdarFunnelLibrariesRealtime2017,ahmadi2014dsos}, with the main focus being
 on \textcite{majumdarFunnelLibrariesRealtime2017}.
 
-\subsection{Computing funnels}
+\subsection{Computing Funnels}
 
 The funnel computations will be based on the \ac{SOS} theory developed in the
 following sections. Given a trajectory, the goal is to compute a robust
@@ -387,7 +387,7 @@ optimization problem
 \end{figure}
 
 
-\subsection{Formulating the optimization problem as a SOS program}
+\subsection{Formulating the Optimization Problem}
 
 The optimization problem in~\cref{eq:funneloptimizationproblem} would prove
 impossible to solve efficiently had it not been for advances in mathematical
@@ -560,7 +560,7 @@ and
   }\;
 \end{algorithm}
 
-\subsection{Approximation via time-sampling}
+\subsection{Approximation via Time-Sampling}
 
 It is often the case that the nominal trajectory \(x_{0} \colon [0,T]
 \rightarrow \R^n\) is difficult to approximate with a low degree polynomial in
@@ -610,7 +610,7 @@ dependency removed from the equations. This leads to vastly greater performance
 in computing the funnels, but the parameterization of the funnels will be
 slightly larger, as exactness is lost~\cite{Tobenkin_2011}.
 
-\subsection{Funnel composition}
+\subsection{Funnel Composition}
 
 In order for two funnels being able to together create one longer motion
 primitive, from two or more smaller, the funnels in use must be composable. In
@@ -715,7 +715,7 @@ where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) need to be SOS polynomials.
   \(\sqrt{2}\) as expected.
 \end{example}
 
-\subsection{Cyclic coordinates and Lagrangian dynamics}
+\subsection{Cyclic Coordinates and Lagrangian Dynamics}
 \label{subsec:cyclic-coordinates}
 
 In order to move funnels around the world space, the dynamics of the system must
@@ -734,7 +734,7 @@ form
 This means that any \(q_j\) fulfilling the above criteria can be freely moved
 around in the state-space, yet yield the same dynamical solution of the system.
 
-\section{The RRT algorithm}
+\section{The RRT Algorithm}
 \label{sec:rrt-algorithm-intro}
 
 The \ac{RRT} algorithm is a tree based algorithm which, starting at the initial
@@ -835,7 +835,7 @@ algorithm is given enough time.
 %   \input{figures/rrt/pathplanning.tex}
 % \end{figure}
 
-\subsection{RRT's with motion primitives as extension operators}
+\subsection{RRT's and Motion Primitives}
 
 There are multiple ways in which an \ac{RRT} algorithm can expand its planning
 tree, with two main categories. One is where the extension, and the resulting
@@ -844,8 +844,6 @@ beforehand, and the planner chooses the most appropriate motion for which to
 expand its tree. The \rrtfunnel{} algorithm falls into the latter category, and
 as such the next section will build the basic theory for motion primitives in
 motion planning.
-
-\subsection{Motion Primitives}
 
 The performance of the \ac{RRT} algorithm is dependent upon the control inputs
 employed to search the state-space. For systems with few control inputs, random

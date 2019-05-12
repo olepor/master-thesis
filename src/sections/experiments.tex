@@ -16,7 +16,7 @@ five meters ahead.
   \label{fig:simulated-forest}
 \end{figure}
 
-\section{Testing the \rrtfunnel{} algorithm}
+\section{Testing the \rrtfunnel{} Algorithm}
 
 The experiment section starts out by generating a random strip of forest for
 which the airplane has to navigate through in \cref{sec:Poisson-Process}. Next
@@ -34,7 +34,7 @@ results of the \rrtfunnel{} algorithm benchmarked against a conservative
 \ac{RRT} motion planner which does not handle the uncertainty that is provided
 by the cross-wind in \cref{sec:experiments-final}.
 
-\subsection{Generating the obstacle forest}
+\subsection{The Obstacle Forest}
 \label{sec:Poisson-Process}
 
 In order to generate the obstacle field for the experiments, which is to
@@ -91,7 +91,7 @@ figure~\cref{fig:poisson009}.
   \end{subfigure}
 \end{figure}
 
-\subsection{Deciding upon the size of the airplane model and the obstacles}
+\subsection{The Size of the Airplane and the Obstacles Models}
 \label{subsec:deciding-model-size}
 
 The funnels generated thus far are created from a point model of the airplane,
@@ -114,7 +114,7 @@ irrelevant. A figure of the airplane can be seen in \cref{fig:radio-vehicle}.
   \label{fig:radio-vehicle}
 \end{figure}
 
-\subsection{Expanding funnels}
+\subsection{Expanding Funnels to Incorporate the Expanded Airplane Model}
 \label{subsec:expand-funnel}
 
 The size of the airplane in the original model is a single point, and as such,
@@ -185,7 +185,7 @@ figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
   \label{fig:expanded-and-unexpanded}
 \end{figure}
 
-\subsection{The initial motion primitive set}
+\subsection{The Initial Motion Primitive Set}
 \label{subsec:initial-motion-primitive}
 
 The basis set of motion primitives should be small, yet cover enough of the
@@ -233,8 +233,7 @@ projected funnels overlaid a sample in \cref{fig:sample-funnel-overlay}.
   \label{fig:sample-funnel-overlay}
 \end{figure}
 
-\subsection{Making sure that the airplane stays within the funnels during
-  execution}
+\subsection{Continuous Verification of Invariance}
 \label{subsec:check-vehicle-in-funnel}
 
 \begin{figure}
@@ -260,7 +259,7 @@ simulation run can be seen in \cref{fig:lyapunov-values}.
   \label{fig:lyapunov-values}
 \end{figure}
 
-\subsection{Funnel composition}
+\subsection{Funnel Composition}
 \label{subsec:funnel-no-composable}
 
 In accordance with \cref{sec:composable-funnels}, the funnels robustness

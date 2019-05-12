@@ -8,7 +8,7 @@ point. All the following sections are based on the lecture notes from
 \cite{tedrakeUnderactuatedRoboticsAlgorithms2019}, and are adapted slightly for
 presentation in this thesis.
 
-\section{Fundamental theory}
+\section{Fundamental Theory}
 
 \subsection{Lyapunov Functions}
 
@@ -44,7 +44,7 @@ this means that a solution starting out in the vicinity of the equilibrium
 \(\delta\), will remain close \(\epsilon\) to it. Also note that this must be
 true for any \(\epsilon\) one may choose.
 
-\subsection{Lyapunov's second method for stability}
+\subsection{Lyapunov's Second Method for Stability}
 
 \textit{Lyapunov's} second method (also referred to as \textit{Lyapunov's}
 direct method) for stability makes use of the \textit{Lyapunov} function \(V\).
@@ -59,7 +59,7 @@ a point of equilibrium at \(\vect{x} = 0\). Consider a function \(V(\vect{x})
 Then \(V(\vect{x})\) is called a \textit{Lyapunov function} candidate and the
 system is stable in the sense of Lyapunov.
 
-\subsection{LaSalle's invariance principle}
+\subsection{LaSalle's Invariance Principle}
 \label{subsec:LaSalle's invariance principle}
 
 \textit{LaSalle}'s invariance principle formalizes the convergence of a
@@ -78,7 +78,7 @@ where \(\dot{V}(\vect{x}) = 0\). Where an \textit{invariant set},
 that once you enter the region of invariance, you never leave; which will be
 important for calculating funnels.
 
-\subsection{Lyapunov analysis with convex optimization}
+\subsection{Lyapunov Analysis with Convex Optimization}
 \label{subsec:Lyapunov analysis with convex optimization}
 
 One of the primary limitations in Lyapunov analysis is that it is potentially
@@ -98,7 +98,7 @@ rigorously checks these conditions \textit{for all \(x\)}, without the need for
 dense sampling. This enables searching for \textit{Lyapunov functions} in an
 infinite function space.
 
-\subsection{Lyapunov analysis for linear systems}
+\subsection{Lyapunov Analysis for Linear Systems}
 \label{subsec:Lyapunov analysis for linear systems}
 
 \begin{theorem}
@@ -124,7 +124,7 @@ solution to the matrix Lyapunov equation
 \end{equation}
 for any \(Q = Q^{T} \geqslant 0\).
 
-\subsection{The connection between Lyapunov analysis and convex optimization}
+\subsection{Lyapunov Analysis and Convex Optimization}
 
 The first connection between Lyapunov analysis and convex optimization can be
 found through \ac{SDP}-programming. In fact, the Lyapunov conditions for a
@@ -132,7 +132,7 @@ linear system can be formulated in the form of a \ac{SDP} problem - which is a
 form of convex optimization. For any problem formulated as an \ac{SDP} there
 exists an efficient -- and optimal -- solution, barring numerical difficulties.
 
-\subsubsection{Semidefinite programming}
+\subsubsection{Semidefinite Programming}
 
 \begin{figure}
   \centering
@@ -230,7 +230,7 @@ functions we can find and verify, versus the \textit{best} Lyapunov function for
 the problem at hand, as there is no guarantee that a \ac{SOS}-Lyapunov function
 will be the optimal candidate~\cite{parilloStructuredSemidefinitePrograms}.
 
-\subsection{SOS programming}
+\subsection{SOS Programming}
 
 The procedure used to search the space of all positive Lyapunov functions which
 can be written as a sum of squares is called \ac{SOS} programming.
@@ -267,7 +267,7 @@ thesis. The great benefit of \ac{SOS} programming is that it enables the
 solution of problems which can be formulated having positivity constraints of
 the kind \(f(\vect{x}) \geq 0\).
 
-\subsubsection{A simple \ac{SOS} polynomial}
+\subsubsection{A Simple \ac{SOS} Polynomial}
 \[
   p = 2 - 8x + 17x^2
 \]
@@ -288,7 +288,7 @@ s{(\vect{x})}^{T}Qs(\vect{x})\). Which \(p\) is since,
 \]
 is a \acl{PSD} matrix.
 
-\subsection{Lyapunov analysis using SOS programming}
+\subsection{Lyapunov Analysis Using SOS Programming}
 
 With the link shown between positive polynomials and \ac{SOS} programming, it is
 time to start looking at the link between Lyapunov functions and SOS
@@ -306,7 +306,7 @@ formulated as:
 and because this is a convex optimization problem, the solver will return a
 solution if one exists.
 
-\subsubsection{Example -- The damped simple pendulum}
+\subsubsection{Example -- The Damped Simple Pendulum}
 
 As a simple example where a search for a polynomial Lyapunov function can be
 performed is the \textit{simple pendulum} example. The dynamics of the pendulum
@@ -360,14 +360,14 @@ which is a standard method for proving non-negativity of polynomials on
 semi-algebraic sets called the \textit{S-procedure} (See
 \cref{sec:s-procedure}).
 
-\subsubsection{Why the solution is necessary, but not sufficient}
+% \subsubsection{Why the solution is necessary, but not sufficient}
 
-There are a few details that keeps this program from proving that every
-sub-level set of \(V\) is an invariant set of \(f\). First, polynomial systems
-are not guaranteed to be verified using polynomial Lyapunov functions, no matter
-the degree of the polynomial, and here the search is over a fixed degree
-Lyapunov as well. Secondly, even though a polynomial Lyapunov function does
-exist as a solution for the system, it might not be \ac{SOS} decomposable.
+% There are a few details that keeps this program from proving that every
+% sub-level set of \(V\) is an invariant set of \(f\). First, polynomial systems
+% are not guaranteed to be verified using polynomial Lyapunov functions, no matter
+% the degree of the polynomial, and here the search is over a fixed degree
+% Lyapunov as well. Secondly, even though a polynomial Lyapunov function does
+% exist as a solution for the system, it might not be \ac{SOS} decomposable.
 
 \subsection{S-Procedure}
 \label{sec:s-procedure}
@@ -392,7 +392,7 @@ which can be imposed by the following SOS constraints
 where the multiplier polynomials \(L_{eq}\) and \(L_{ineq}\) are similar to
 Lagrange multipliers in constrained optimization.
 
-\subsection{Estimating regions of attraction using Lyapunov functions}
+\subsection{Estimating Regions of Attraction Using Lyapunov Functions}
 
 The fact that \textit{every sub-level set} of a Lyapunov function is also an
 \textit{invariant} set enables the use of sub-level sets of a Lyapunov function
@@ -420,7 +420,7 @@ as approximations of the region of attraction for a nonlinear system.
   \(\mathcal{G}\) is inside the region of attraction of this fixed point.
 \end{theorem}
 
-\subsubsection{Estimating the region of attraction for a one-dimensional system}
+\subsubsection{Estimating the Region of Attraction for a One-Dimensional System}
 \label{subsec:Estimating the region of attraction for a one-dimensional system}
 
 \begin{figure}
@@ -456,7 +456,7 @@ which shows that it fulfills all the Lyapunov function criteria. Since
 \in \left( -1, 1 \right)\) is inside the region of attraction for the nonlinear
 system. In fact it is the entire region of attraction in this case.
 
-\subsection{Common Lyapunov functions for uncertain systems}
+\subsection{Common Lyapunov Functions for Uncertain Systems}
 
 \begin{figure}
   \centering
@@ -577,7 +577,7 @@ examples looks like
   \label{fig:sos-program-additive}
 \end{figure}
 
-\subsubsection{Robust set-invariance}
+\subsubsection{Robust Set-Invariance}
 
 A sub-level set of the Lyapunov function is, in comparison with the system
 without uncertainties, not guaranteed that every sub-level set of the Lyapunov

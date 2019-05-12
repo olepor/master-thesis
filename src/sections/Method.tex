@@ -43,7 +43,7 @@ them in the \ac{RRT} planning algorithm developed in \cref{sec:RRT}, which
 further explores the sampling and distance metric employed in the on-line
 planning stage of the algorithm.
 
-\section{Generating robust motion primitives}
+\section{Generating Robust Motion Primitives}
 \label{sec:generating-robust-motion-primitives}
 
 In order to create a basic set of funnels as the robust motion primitives for
@@ -76,7 +76,7 @@ which is a first-order unicycle model with constant speed of
 Although this is the only model used in this thesis, the framework and the code
 is easily adapted into accommodating a different and more complicated model.
 
-\subsubsection{Generating the trajectories}
+\subsubsection{Generating Trajectories}
 \label{subsec:generating-the-trajectories}
 
 The robust motion primitives are \textit{finite regions of time variance} around
@@ -123,7 +123,7 @@ straight-forward, and a right-turn motion primitive.
   \label{fig:initial-trajectories}
 \end{figure}
 
-\subsubsection{Initializing the funnel calculations}
+\subsubsection{Initializing the Funnel Calculations}
 \label{subsec:initializing-tvlqr}
 
 The funnel calculation algorithm has to be initialized with a candidate Lyapunov
@@ -182,7 +182,7 @@ and enables the system dynamics \cref{eq:model-dynamics} to be written
   \end{bmatrix} \mathEoS
 \end{equation}
 
-\subsection{Generating the funnels around the trajectories}
+\subsection{Generating Funnels Around Trajectories}
 \label{subsec:generating-funnels}
 
 With the nominal trajectories, and the initial Lyapunov functions ready, the
@@ -248,8 +248,7 @@ which means that the funnel will have a diameter of one half, and the \(\theta\)
 inlet will be wider closer to the center of the funnel, which is beneficial, as
 this is where most of the paths in the experiment setup is expected to enter.
 
-\subsection{Minimizing the volume of the funnel projected down into the
-  xy-plane}
+\subsection{Minimizing the Projected Volume of the Funnel}
 \label{subsec:xy-cost-function}
 
 In the \rrtfunnel{} algorithm, the size of the of the hyper-ellipsoid which
@@ -306,7 +305,7 @@ end this translates to
 where \( \matr{S}_{k,0}\) is the nominal value for the linearization, and \(\Tr\)
 is the trace of the matrix.
 
-\subsection{Searching for a controller which minimizes the size of the funnel}
+\subsection{Formulate the Optimization of the \ac{LQR}-Controller}
 \label{subsec:searching-for-a-controller}
 
 With the non-optimal feedback controller given to the funnel calculation
@@ -404,7 +403,7 @@ environment, as summarized in \cref{alg:funnelalgorithm-extended}
 \end{algorithm}
 
 
-\subsection{Adding uncertainty to the funnel calculation}
+\subsection{Formulate the Uncertainty Constraints}
 \label{sec:adding-uncertainty}
 
 The system dynamics and funnel generation theory presented this far has not been
@@ -479,7 +478,7 @@ be seen in \cref{fig:funnel-calculation-visuals}.
   \label{fig:funnel-calculation-visuals}
 \end{figure}
 
-\subsection{Shifting funnels and invariance}
+\subsection{Funnel Transformations and Invariance}
 \label{subsec:shifting-funnels}
 
 Now that the funnels are able to be calculated for a basic set of motion
@@ -532,7 +531,7 @@ where the transform \(\Psi\) is given by
 However, since \( \dim (\vect{x}) = \dim(\vect{x}_{c}) \), for
 the~\cref{eq:model-dynamics}, it is not necessary to handle the non-cyclic case.
 
-\subsection{Sequential funnel composition}
+\subsection{Sequential Funnel Composition}
 \label{sec:composable-funnels}
 
 Now that funnels can be shifted freely around the configuration space along the
@@ -600,7 +599,7 @@ together into a tree can be seen in~\cref{fig:funnel-composition-tree}.
   \label{fig:funnel-composition-tree}
 \end{figure}
 
-\subsection{Checking the conservativeness of the funnel calculated}
+\subsection{Invariance of the Funnels Calculated}
 
 The funnels generated are \textit{outer approximations} of time reachable sets
 for the system at hand~\cite{majumdarFunnelLibrariesRealtime2017}. This means
@@ -789,7 +788,7 @@ hence the \ac{RRT} algorithm need only concern itself with stacking one robust
 motion primitive after the other without any concern for the complexities
 mentioned above.
 
-\subsection{Uniform sampling in \(SE(2)\)}
+\subsection{Uniform Sampling in \(SE(2)\)}
 
 As mentioned in \nameref{sec:rrt-algorithm-intro} section, the \ac{RRT}
 algorithm needs uniform sampling of the state space in order for it to operate
@@ -824,7 +823,7 @@ the sampling space consists of a simple Cartesian product of uniform random
 variables, which the sampling space for \cref{eq:model-dynamics}
 is~\cite{Lav06}.
 
-\subsection{Distance in configuration space}
+\subsection{Distance in Configuration Space}
 
 Introducing a function which measures distance between two points in
 configuration space introduces a metric space on the underlying configuration
@@ -885,7 +884,7 @@ and distance is then scaled relative to the translation distance.
 \end{figure}
 
 
-\subsection{Funnel-Graph}
+\subsection{The Funnel-Graph}
 
 Even though the \rrtfunnel{} algorithm can work just fine with a collection of
 funnels, and simply brute-force all funnels at the planning stage, it is helpful
@@ -936,7 +935,7 @@ composability graph is built using \cref{alg:create-funnel-graph}. A
   }
 \end{algorithm}
 
-\subsubsection{Emergency maneuver}
+\subsubsection{Emergency Maneuver}
 
 If the airplane is to leave the verified funnel at execution time -- this could
 happen for any number of reasons, such as unmodelled uncertainties -- the plane
@@ -946,7 +945,7 @@ at hand -- such as a sudden stop for a vehicle, or idling at one place for a
 quad-copter. This will then be the last motion primitive that the planner
 executes.
 
-\subsection{Collision detection}
+\subsection{Collision Detection}
 
 Collision detection is done creating a convex hull incorporating all the
 ellipsis projected down into the xy-plane, and is what can be seen as the grey
@@ -954,7 +953,7 @@ area in \cref{fig:funnel-straight-sampled}. Then, with \matlab's polynomial
 toolbox, collision detection is done through the \textit{intersect} function for
 polynomials, since the obstacles are also represented as polynomials.
 
-\subsection{The \rrtfunnel{} algorithm}
+\subsection{The \rrtfunnel{} Algorithm}
 
 With the basic framework finished, it is time to introduce the formulation of
 the \rrtfunnel{} algorithm itself. The \rrtfunnel{} algorithm is a modified
@@ -995,7 +994,7 @@ for its expansion operator, and pseudocode for its definition can be found in
 \end{algorithm}
 
 
-\subsection{summary}
+\subsection{Summary}
 
 In this chapter the \rrtfunnel{} algorithm has been developed through the means
 of merging motion primitives, created with the direct-collocation method, in
