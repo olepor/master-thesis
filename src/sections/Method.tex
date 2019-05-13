@@ -101,17 +101,17 @@ straight-forward, and a right-turn motion primitive.
 \begin{figure}
   \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
-    width=\textwidth]{figures/method/left-trajector}
+    width=.85\textwidth]{figures/method/left-trajector}
   \end{minipage}
   \hfill
   \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
-    width=\textwidth]{figures/method/straight-trajector}
+    width=.85\textwidth]{figures/method/straight-trajector}
   \end{minipage}
   \hfill
   \begin{minipage}[c]{0.3\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
-    width=\textwidth]{figures/method/right-trajector}
+    width=.85\textwidth]{figures/method/right-trajector}
   \end{minipage}
   \caption[Three motion primitives for the \rrtfunnel{} algorithm]{Three motion primitives for the \rrtfunnel{} algorithm, one straight,
     one left, and one right turn.}
@@ -561,7 +561,7 @@ transformation is already known, and the composability is therefore straight
 forward to compute.
 
 \begin{figure}
-  \centering {\includegraphics[scale=.2]{figures/method/funnel-composition}}
+  \centering {\includegraphics[width=.8\textwidth]{figures/method/funnel-composition}}
   \caption[Two composable funnels]{Two funnels that can be successfully composed, as the outlet of the
     first one is fully contained in the inlet of the second.}
   \label{fig:two-funnels-composed}
@@ -611,15 +611,15 @@ given the uncertainty and dynamical assumptions made.
 
 \begin{figure}
   \begin{subfigure}[c]{0.3\textwidth}
-    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
+    \includegraphics[width=.95\textwidth, trim={0cm 4cm 0cm
       4cm}]{figures/method/FunnelSimnew4}
   \end{subfigure}
   \begin{subfigure}[c]{0.3\textwidth}
-    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
+    \includegraphics[width=.95\textwidth, trim={0cm 4cm 0cm
       4cm}]{figures/method/FunnelSimnew1}
   \end{subfigure}
   \begin{subfigure}[c]{0.3\textwidth}
-    \includegraphics[width=\textwidth, trim={0cm 4cm 0cm
+    \includegraphics[width=.95\textwidth, trim={0cm 4cm 0cm
       4cm}]{figures/method/FunnelSimnew5}
   \end{subfigure}
   \caption[A visualization of the simulated and the calculated reachable set]{The simulated non-polynomial system trajectories (green), overlaid
@@ -633,7 +633,7 @@ given the uncertainty and dynamical assumptions made.
   % Regular xy-funnel
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[trim={0cm 6cm 0cm 6cm},
-    width=\textwidth]{figures/method/FunnelSim1}
+    width=.95\textwidth]{figures/method/FunnelSim1}
     \caption{Comparison of the \ac{SOS} funnel in the xy-plane with the
       simulated non-polynomial system overlaid in green, generated from
       \(10.000\) Monte-Carlo simulations.}
@@ -644,7 +644,7 @@ given the uncertainty and dynamical assumptions made.
   \begin{subfigure}{0.5\textwidth}
     % y-theta funnel
     \includegraphics[trim={0cm 6cm 0cm 6cm},
-    width=\textwidth]{figures/method/FunnelSimythetafunnel}
+    width=.95\textwidth]{figures/method/FunnelSimythetafunnel}
     \caption{Comparison of the \ac{SOS} funnel in the \(\theta\)-y plane, with
       the simulated non-polynomial system overlaid in green, generated from
       \(10.000\) Monte-Carlo simulations.}
@@ -889,15 +889,14 @@ be composable with each other, implying that the resultant graph is not
 necessarily complete.
 
 \begin{figure}
-  \centering
   \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
-    width=\textwidth]{figures/method/trajectory-sampled}
+    width=.95\textwidth]{figures/method/trajectory-sampled}
     \caption{Trajectory sampled 21 times.\newline}
   \end{subfigure}%
   \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[trim={5cm 5cm 5cm 5cm},
-    width=\textwidth]{figures/method/funnel-sampled}
+    width=.95\textwidth]{figures/method/funnel-sampled}
     \caption{The verified trajectory ellipsis overlaid at the sample times.}
   \end{subfigure}
   \caption[A funnel overlaid a trajector]{The calculated reachable set overlaid

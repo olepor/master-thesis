@@ -2,15 +2,15 @@
 \label{sec:intro}
 
 \begin{figure}
-  \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-no-funnel}
+  \centering
+  \begin{subfigure}{0.4\textwidth}
+    \includegraphics[width=.95\textwidth]{figures/experiments/experiment-setup-no-funnel}
     \caption{The airplane is deviating from the nominal trajectory due to the
       cross-wind.}
-  \end{subfigure}%
-  \;
-  \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figures/experiments/experiment-setup-funnel}
-    \caption{The reachable set given the cross-wind pictured.}
+  \end{subfigure}
+  \begin{subfigure}{0.4\textwidth}
+    \includegraphics[width=.95\textwidth]{figures/experiments/experiment-setup-funnel}
+    \caption{The reachable set given the cross-wind pictured.\newline}
   \end{subfigure}
   \caption[Airplane model in a crosswind]{Not taking uncertainty into account can lead to collisions when the
     actual trajectory diverges from the nominal one.}
@@ -106,7 +106,7 @@ contained in the motion primitives employed as branches in the planning tree.
 
 \begin{figure}
   \centering
-  \includegraphics[scale=.1]{figures/experiments/experiment-airplane-strip}
+  \includegraphics[width=.8\textwidth, height=6cm]{figures/experiments/experiment-airplane-strip}
   \caption[The experiment setup visualized]{A cartoon of the experiment setup, showing how the \rrtfunnel{}
     algorithm builds a tree of funnels to find a safe path through a strip of
     forest.}
