@@ -66,6 +66,7 @@
 
 
 %% Graphics
+\RequirePackage{color}
 \RequirePackage[dvipsnames,
                 svgnames,
                 cmyk]{xcolor}     % Pre-defined colors
@@ -135,7 +136,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MEMOIR SETTINGS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 %% Title page
 \pretitle{\begin{center}\huge\sffamily\bfseries}
 
@@ -155,23 +155,81 @@
 %% Part
 \renewcommand*{\printparttitle}[1]
 {
-    \hrule\vskip\onelineskip
+    % \hrule\vskip\onelineskip
     \centering\parttitlefont #1
-    \vskip\onelineskip\hrule
+    % \vskip\onelineskip\hrule
 }
 \renewcommand*{\afterpartskip}{\par}
 \renewcommand*{\parttitlefont}{\Huge\bfseries\sffamily}
-\renewcommand*{\partnamefont}{\normalfont\huge\bfseries\MakeUppercase}
+\renewcommand*{\partnamefont}{\Huge\huge\bfseries\MakeUppercase}
 
 
-%% Chapter
-\chapterstyle{demo2}
-\renewcommand*{\printchaptername}
-{
-    \centering\chapnamefont\MakeUppercase{\@chapapp}
+\newlength{\numberheight}
+\newlength{\barlength}
+\makechapterstyle{myveelo}{%
+  \setlength{\afterchapskip}{40pt}
+  \setlength{\numberheight}{50pt}
+\definecolor{ared}{rgb}{.647,.129,.149}
+\renewcommand*{\colorchapnum}{\color{ared}}
+\renewcommand*{\colorchaptitle}{\color{ared}}
+  \renewcommand*{\chapterheadstart}{\vspace*{0pt}}
+  \renewcommand*{\afterchapternum}{\par\nobreak\vskip 25pt}
+  \renewcommand*{\chapnamefont}{\normalfont\LARGE\flushright}
+  \renewcommand*{\chapnumfont}{\normalfont\HUGE}
+  \renewcommand*{\chaptitlefont}{\normalfont\HUGE\bfseries\flushright}
+  \renewcommand*{\printchaptername}{%
+    \chapnamefont\MakeUppercase{\@chapapp}}
+  \renewcommand*{\chapternamenum}{}
+  \setlength{\beforechapskip}{18mm}
+  \setlength{\midchapskip}{\paperwidth}
+  \addtolength{\midchapskip}{-\textwidth}
+  \addtolength{\midchapskip}{-\spinemargin}
+  \renewcommand*{\printchapternum}{%
+    \makebox[0pt][l]{\hspace{.8em}%
+      \resizebox{!}{\numberheight}{\chapnumfont \colorchapnum\thechapter}%
+      \hspace{.8em}%
+      \rule{\midchapskip}{\beforechapskip}%
+    }}%
+  \makeoddfoot{plain}{}{}{\thepage}} % end mydemo2
+
+\makechapterstyle{mydemo2}{%
+  \renewcommand*{\chapnumfont}{\normalfont\HUGE\itshape}
+   \renewcommand*{\printchaptername}{\centering}
+   \renewcommand*{\printchapternum}{\chapnumfont
+      \ifanappendix \thechapter \else \numtoName{\c@chapter}\fi}
+   \renewcommand*{\chaptitlefont}{\normalfont\Huge\sffamily}
+   \renewcommand*{\printchaptertitle}[1]{%
+     \vskip\onelineskip \centering \chaptitlefont ##1}
+   \renewcommand*{\afterchaptertitle}{%
+     \vskip\onelineskip \hrule\vskip \afterchapskip}
+   \setlength{\beforechapskip}{3\baselineskip}
+   \renewcommand*{\printchapternonum}{%
+     \vphantom{\chapnumfont One}
+     \afterchapternum%
+     \vskip\topskip}
+   \setlength{\beforechapskip}{2\onelineskip}
+ }% end{demo2}
+
+\chapterstyle{mydemo2}
+% \renewcommand*{\printchaptername}
+% {
+%     \centering\chapnamefont\MakeUppercase{\@chapapp}
+% }
+% \renewcommand*{\printchapternum}{\chapnumfont\thechapter\space}
+% \renewcommand*{\chaptitlefont}{\Huge\bfseries\sffamily\center}
+
+\renewcommand*{\printpartname}{} % Do not write Part before roman numeral on the
+                                % part page.
+
+\makechapterstyle{mysection}{%
+   \renewcommand*{\printchaptername}{\HUGE\thechapter}
+   \renewcommand*{\chapternamenum}{}
+   \renewcommand*{\chapnumfont}{\chaptitlefont}
+   \renewcommand*{\printchapternum}{\chapnumfont \space}
+   \renewcommand*{\afterchapternum}{}
 }
-\renewcommand*{\printchapternum}{\chapnumfont\thechapter\space}
-\renewcommand*{\chaptitlefont}{\Huge\bfseries\sffamily\center}
+
+
 
 
 %% Lower level sections
