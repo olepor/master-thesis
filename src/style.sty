@@ -170,7 +170,10 @@
   \setlength{\afterchapskip}{40pt}
   \setlength{\numberheight}{50pt}
 \definecolor{ared}{rgb}{.647,.129,.149}
-\renewcommand*{\colorchapnum}{\color{ared}}
+\definecolor{ogrey}{rgb}{.128,.128,.128}
+\definecolor{olightgrey}{rgb}{.211,.211,.211}
+\definecolor{ogainsboro}{rgb}{.220,.220,.220}
+\renewcommand*{\colorchapnum}{\color{ogainsboro}}
 \renewcommand*{\colorchaptitle}{\color{ared}}
   \renewcommand*{\chapterheadstart}{\vspace*{0pt}}
   \renewcommand*{\afterchapternum}{\par\nobreak\vskip 25pt}
@@ -190,7 +193,7 @@
       \hspace{.8em}%
       \rule{\midchapskip}{\beforechapskip}%
     }}%
-  \makeoddfoot{plain}{}{}{\thepage}} % end mydemo2
+  \makeoddfoot{plain}{}{}{\thepage}} % end myveelo
 
 \makechapterstyle{mydemo2}{%
   \renewcommand*{\chapnumfont}{\normalfont\HUGE\itshape}
