@@ -911,8 +911,9 @@ necessarily complete.
 
 Composition of funnels is verified using \cref{def:invarant-funnel-composition},
 and the composability graph is built using \cref{alg:create-funnel-graph} on
-page~\pageref{alg:create-funnel-graph}. A \ac{SOS}-program which implements the composition
-algorithm can be found in \cref{sec:funnel-composability-program-sos}.
+page~\pageref{alg:create-funnel-graph}. A \ac{SOS}-program which implements the
+composition algorithm can be found in
+\cref{sec:funnel-composability-program-sos}.
 
 \begin{algorithm}
   \caption{Check funnel composability}
@@ -938,19 +939,21 @@ algorithm can be found in \cref{sec:funnel-composability-program-sos}.
 
 If the airplane is to leave the verified funnel at execution time -- this could
 happen for any number of reasons, such as unmodelled uncertainties -- the plane
-should execute the emergency maneuver, which in this case is loiter loop. In
+should execute the emergency maneuver, which in this case is a loiter loop. In
 general an emergency maneuver can be any sort of 'safe' maneuver for the model
 at hand -- such as a sudden stop for a vehicle, or idling at one place for a
 quad-copter. This will then be the last motion primitive that the planner
-executes.
+executes, and the planner will come to a halt, as the robustness guarantees have
+been lost.
 
 \subsection{Collision Detection}
 
 Collision detection is done creating a convex hull incorporating all the
 ellipsis projected down into the xy-plane, and is what can be seen as the grey
 area in \cref{fig:funnel-straight-sampled}. Then, with \matlab's polynomial
-toolbox, collision detection is done through the \textit{intersect} function for
-polynomials, since the obstacles are also represented as polynomials.
+toolbox, collision detection is made through the \textit{intersect} function for
+polynomials, a
+
 
 \subsection{The \rrtfunnel{} Algorithm}
 
@@ -958,7 +961,7 @@ With the basic framework finished, it is time to introduce the formulation of
 the \rrtfunnel{} algorithm itself. The \rrtfunnel{} algorithm is a modified
 \ac{RRT} algorithm which employs the precomputed funnels as motion primitives
 for its expansion operator, and pseudocode for its definition can be found in
-\cref{alg:rrtfunnel}.
+\cref{alg:rrtfunnel} on page~\pageref{alg:rrtfunnel}.
 
 \begin{algorithm}
   \caption{\rrtfunnel{} algorithm}
@@ -1000,17 +1003,17 @@ of merging motion primitives, created with the direct-collocation method, in
 order for optimal paths to be generated from one point in the configuration
 space to another. Next \ac{SOS}-programming and the theory of Lyapunov functions
 is utilized to verify the robust regions of convergence for each trajectory
-generated. Then the one-level set of the Lyapunov function generated from the
-\ac{SOS} framework is taken as a tight outer approximation to the actual
-reachable set of the dynamical system at sample points along the generated
-trajectories. Given that the Lyapunov function searched for is quadratic, these
-regions will be hyper-ellipsoids of dimension three, and therefore symmetric
-along the trajectories they verify. These regions of invariance are then given
-as the motion primitives to the global \ac{RRT} motion planner, which uses these
-funnels to compose a tree of motion primitives through the configuration space,
-and hence safe traversal can be made, given that the funnels abide by the
-composition \cref{def:funnel-composition}. The latest sections are focused on
-tuning and improving the distance metric and the sampling of the \ac{RRT}
-algorithm. Drawing all this together results in the \rrtfunnel{} algorithm, and
-is the result of this thesis, the performance of which, will be put to the test
-in the \cref{chp:experiments}.
+generated. Then the one-level subset of the Lyapunov function generated from the
+\ac{SOS} framework is used as a tight outer approximation of the actual
+reachable set of the dynamical system at discrete sample points along the
+nominal trajectories. Given that the Lyapunov function searched for is
+quadratic, these regions will be hyper-ellipsoids of dimension three, and
+therefore symmetric along the trajectories they verify. These regions of
+invariance are then given as motion primitives to the global \ac{RRT} motion
+planner, which uses these funnels to compose a tree of motion primitives through
+the configuration space, and hence safe traversal can be made, given that the
+funnels abide by the composition \cref{def:funnel-composition}. The latest
+sections are focused on tuning and improving the distance metric and the
+sampling distribution for the \ac{RRT} algorithm. All this taken together
+results in the \rrtfunnel{} algorithm, and is the result of this thesis, the
+performance of which, will be put to the test in the \cref{chp:experiments}.
