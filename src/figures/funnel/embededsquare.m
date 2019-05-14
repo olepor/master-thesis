@@ -15,12 +15,13 @@ g = [1-x; 1+x;1-y; 1+y];
 [s3,c3] = polynomial([x y],2);
 [s4,c4] = polynomial([x y],2);
 
-% Apply the positivstellensatz and try to find coefficients
-% of the multiplier polynomials.
+% Apply the positivstellensatz (S-procedure) and try to
+% find coefficients of the multiplier polynomials.
 F = [sos(p - [s1 s2 s3 s4]*g), sos(s1), sos(s2), sos(s3), sos(s4)];
 
 [sol,v,Q,res] = solvesos(F,[],[],[c1;c2;c3;c4])
 
+% Check for successful decomposition
 if sol.problem ~= 0
     disp('Sum-of-squares decomposition not possible!');
     return;
@@ -29,6 +30,5 @@ else
     h = sosd(F);
     sdisplay(h)
 
-    % Check for successful decomposition
     clean(p-h'*h,1e-6)
 end

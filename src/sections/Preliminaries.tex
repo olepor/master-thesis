@@ -8,9 +8,9 @@ overarching planning environment, usually referred to as the world space. Thus a
 motion planner can be seen as a machine which given an input: a world space, and
 initial and goal states, produces a sequence of actions to move the robot from
 its initial to the desired goal configuration. Generally, planners can be
-separated into complete and non-complete planners, where being a complete
+separated into the complete and non-complete categories, where being a complete
 planner means that given enough time, all motion planning problems are solvable,
-only the solution is NP-Hard, a non-complete planner makes no such
+only the solution is NP-Hard, while a non-complete planner makes no such
 guarantees~\cite{Lav06}. Thus feasible solutions will have to make a compromise.
 A lot of planners in use today are probabilistically complete, meaning that they
 converge to a optimal solution given infinite time. There is a difference
@@ -24,10 +24,10 @@ guarantee can be made for completing the task at hand \cite{Lav06}.
 
 In order to build, model and reason about a motion planning problem, certain
 nomenclature and definitions need to be standardized. A mathematical model of
-the world, and the robot and its dynamics is necessary for clearly and precisely
-reasoning about the problem at hand. Therefore the following sections creates
-the mathematical definitions which is needed to create, understand and interpret
-the following chapters.
+the world, and the robot and its dynamics are necessary for clearly and
+precisely reasoning about the problem at hand. Therefore the following sections
+create the mathematical definitions which is needed to create, understand and
+interpret the following chapters.
 
 \subsection{The Robot and World Model}
 
@@ -39,16 +39,16 @@ plane, and is defined as:
 \]
 In a real world planning problem not all parts of the world space is traversable
 by the robot. As an example, in a forest, tree-trunks, branches, and other
-inhabitants of the forest's vegetation will be UN-traversable for a robot, and
-hence these obstacles needs to be modeled. As obstacles inhabit the world space,
-they will be modeled as subsets of the world space, the same goes for the robot
+inhabitants of the forest's vegetation will be untraversable for a robot, and
+hence these obstacles need to be modeled. Obstacles inhabit the world space,
+they will be modeled as subsets of the world space. The same goes for the robot
 body, \(\modelrobot{}\), which can be seen as yet another inhabitant of the
-world space, \ie
+world space \ie
 \[
-  \modelrobot,\, \modelobstacle \subset \modelworld
+  \modelrobot,\, \modelobstacle \subset \modelworld \mathEoS
 \]
 Next the robot needs to be able to move around in the world space. This is done
-through a rigid body transformation on the robot model
+through a rigid body transformation \(h\) on the robot model
 \[
   h \colon \modelrobot\ \rightarrow \modelworld \mathEoS
 \]
@@ -57,8 +57,8 @@ through a rigid body transformation on the robot model
 \subsubsection{Configuration Space}
 
 However, the robot is more than a set of points in the world space. For example
-a simple model of an airplane needs to know its heading as well. This
-information will be referred to as the configuration space of the robot,
+a simple model of an airplane needs to know its heading. This information will
+be referred to as the configuration space of the robot,
 \modelconfigurationspace. For a simple airplane model this can be encoded in a
 simple three dimensional vector holding the \(x\), \(y\), and \(\theta\)
 parameters, so that
@@ -96,14 +96,14 @@ of the robot~\cite{Lav06}.
 A planning problem needs to have an initial condition, and a goal state or a set
 of states in the configuration space. Since both the initial, and goal states
 can be sets of states, it is not necessarily required to arrive exactly at the
-target point. Rather it can arrive at some region close to it, while, for
-example ignoring the final heading of the airplane. Mathematically the initial
-and goal sets is defined as
+target point. Rather it can arrive at some region nearby, while, for example
+ignoring the final heading of the airplane. Mathematically the initial and goal
+sets is defined as
 \begin{align*}
   \mathcal{X}_0 &= \set{ \vect{x} \in \modelconfigurationspace{} \mid g_i(\vect{x}) \leq a_i,
                   \, \forall i = 1,\ldots N_j}, \\
   \mathcal{X}_{\mathit{end}} &= \set{ \vect{x} \in \modelconfigurationspace{} \mid g_i(\vect{x}) \leq
-                      a_i, \, \forall i = 1,\ldots N_k}
+                      a_i, \, \forall i = 1,\ldots N_k},
 \end{align*}
 which defines the initial and final states as subsets of the configuration space
 bounded by inequality constraints, such that the initial and goal states are
@@ -113,10 +113,10 @@ semi-algebraic sets.
 \subsection{Action Space}
 
 Now that the static parts of the planning problem has been defined, the next
-problem is to control the movement of the robot model, which is where the
-\textit{action space}, \(\modelactionspace{}\), comes in. The action space is
-the set of inputs that can be applied at any given state the robot is in. Thus
-one can model the action space as a function of the robot's state
+problem is to control the movement of the robot model. This is done in the
+\textit{action space}, \(\modelactionspace{}\). The action space is the set of
+inputs that can be applied at any given state the robot is in. Thus one can
+model the action space as a function of the robot's state
 \[
   \modelactionspace(\vect{x}) = \set{\vect{u} \in \modelactionspace \mid
     \modelactionspace(\vect{x}) \neq \emptyset } \mathEoS
@@ -125,7 +125,7 @@ one can model the action space as a function of the robot's state
 \subsection{Dynamics}
 
 The model of the robot has so far been unconstrained and free to move in all
-directions under an affine transformation. This representation does not
+directions under an affine transformation. However, this representation does not
 encompass the dynamics a system might have, which constrains the direction and
 speed in which a model can move. In the case of a first order model (i.e., it
 does not take accelerations into account) the constraints are represented as a
@@ -157,24 +157,22 @@ The plan that the motion planner makes for a robot in the configuration space is
 represented as a trajectory. A trajectory is a path with an additional time
 parameter, so that the path through configuration space is now time dependent.
 This is represented as a function \(\phi(\alpha) \colon [0,1] \rightarrow
-\mathcal{C}\), where \(\mathcal{C}\) is the configuration space of the airplane.
-The time parameter added to the path, makes the plan a time-parameterized
-function of the kind \(\pi(t) \colon [0,T] \rightarrow \mathcal{C}\), where
-\(T\) is the planning horizon (i.e., the end-time).
+\mathcal{C}\). The time parameter added to the path, makes the plan a
+time-parameterized function of the kind \(\pi(t) \colon [0,T] \rightarrow
+\mathcal{C}\), where \(T\) is the planning horizon (i.e., the end-time).
 
 \subsection{Planning Under Uncertainty}
 
-As all real life motion planning problems are faced with some level of
-uncertainty the exact system state is never exactly known. Therefore planning
-under uncertainty is done in what~\citeauthor{Lav06} refers to as the belief
-space, which is a description of the state space using probability
-distributions. The belief space is a general structure for working with plans
-under conditions of uncertainty. Thus planning can be done in the same way that
-it is in a normal state space, albeit in a higher dimension. If the discrete
-state space model is expanded to include \(\mathcal{W}\) as the space of
-uncertain actions, and \(\vect{w}_k\) is the action applied by an uncertain
-source at time step \(k\), then the state transition transition is modeled
-as~\cite{Lav06}
+All real life motion planning problems are faced with uncertainty. Hence the
+exact system state is never exactly known. Therefore planning under uncertainty
+is done in what~\citeauthor{Lav06} refers to as the belief space, which is a
+description of the state space using probability distributions. The belief space
+is a general structure for working with plans under conditions of uncertainty.
+Thus planning can be done in the same way that it is in a normal state space,
+albeit in a higher dimension. If the discrete state space model is expanded to
+include \(\mathcal{W}\) as the space of uncertain actions, and \(\vect{w}_k\) is
+the action applied by an uncertain source at time step \(k\), then the state
+transition transition is modeled as
 \[
   \vect{x}_{k+1} = f(\vect{x}_k,\vect{u}_k,\vect{w}_k) \mathEoS
 \]
@@ -199,9 +197,9 @@ airplane not necessarily being able to reach all the states in the state-space
 from a given starting point -- at least not given a time-frame. This idea is
 important as it leads to the funnel definitions that makes up the backbone of
 this thesis. As an example, the reachable set for the \textit{Dubins airplane}
-\eqref{eq:model-dynamics} (which is a simple airplane model, with a constant
-velocity and a control on the heading of the airplane) is visualized
-in~\cref{fig:reachable-set-dubin}.
+\eqref{eq:model-dynamics} on~\pageref{eq:model-dynamics} (which is a simple
+airplane model, with a constant velocity and a control on the heading of the
+airplane) is visualized in~\cref{fig:reachable-set-dubin}.
 
 \begin{figure}
   \centering \input{figures/preliminaries/dubinsreachability.tex}
@@ -216,27 +214,26 @@ primitives in order to construct a path from the initial, to the target
 configuration. A motion primitive is a constant action applied over fixed time
 interval. It is one or more actions collected into one discrete action. As an
 example, the action the \textit{Dubin's airplane} employs is steering the angle
-of the nose. Setting the angle to a constant over a time interval can be a
-motion primitive, however, it is more easily thought of as a collection of
-actions over time, which embodies one bigger, more abstract action. For the car
-this could be \textit{go straight}, \textit{turn left}, etc. When composed
-together, a collection of actions can be thought of as one simple action, like
-first go straight and then turn left. The robustness signifies that it is robust
-in the face of uncertainty, meaning that, if the uncertainty encountered is
-within the bounds of the model, the motion primitives will be able accomplish
-their task even in the face of this disturbance. This guarantee is developed in
-\cref{sec:funnels}.
+the airplane is heading. Setting the angle to a constant over a time interval
+can be a motion primitive, however, it is more easily thought of as a collection
+of actions over time, which embodies one bigger, more abstract action. For the
+airplane this could be \textit{go straight}, \textit{turn left}, etc. When
+composed together, a collection of actions can be thought of as one simple
+action, like first go straight and then turn left. The robustness signifies that
+it is robust in the face of uncertainty, meaning that, if the uncertainty
+encountered is within the bounds of the model, the motion primitives will be
+able accomplish their task even in the face of this disturbance. 
 
 \section{Funnels}
 \label{sec:funnels}
 
 The uncertainty guarantees in this thesis is made through creating
-\textit{funnels}, which are the parameterization of the \textit{finite time
+\textit{funnels}. Funnels are the parameterization of the \textit{finite time
   reachable sets} for the dynamical system at hand. The following sections will
-introduce and develop the theory needed in order to understand the \ac{SOS}
-framework that lies at the bottom of the mathematical verification of these
-reachable sets. For the curious reader, a more basic introduction can be found
-in \cref{sec:first-app}.
+introduce and develop the theory needed to understand the \ac{SOS} framework
+that lies at the bottom of the mathematical verification of these reachable
+sets. For the curious reader, a more basic introduction can be found in
+\cref{sec:first-app}.
 
 A \textit{funnel} is a parameterization of the reachable set of a dynamical
 system. This means that a Funnel holds all the states the dynamical system can
@@ -254,7 +251,7 @@ created through \textit{Monte-Carlo} simulation, where the funnel would be the
 set of all the paths traversed by the dynamical system at hand. For the simple
 airplane model \cref{eq:model-dynamics}, a Monte-Carlo simulation of nine
 starting points along the y-axis, along with a simple \ac{LQR} controller on the
-heading of the aircraft, looks like~\cref{fig:monte-carlo-sim}.
+heading of the aircraft, can be seen in \cref{fig:monte-carlo-sim}.
 
 \begin{figure}
   \centering \includegraphics[scale=.6]{figures/preliminaries/montecarlofunnel}
@@ -263,7 +260,7 @@ heading of the aircraft, looks like~\cref{fig:monte-carlo-sim}.
   \label{fig:monte-carlo-sim}
 \end{figure}
 
-In the literature, the term \textit{funnel} first appears in
+In the literature, the term funnel first appears in
 \textcite{masonMechanicsManipulation1985}, but is later employed in a lot of
 research. The funnel definitions in this thesis is taken from a series of
 articles on funnels~\cite{Tobenkin_2011,tedrakeLQRtreesFeedbackMotion2009,
@@ -274,11 +271,11 @@ on \textcite{majumdarFunnelLibrariesRealtime2017}.
 \subsection{Computing Funnels}
 
 The funnel computations will be based on the \ac{SOS} theory developed in the
-following sections. Given a trajectory, the goal is to compute a robust
-invariant set around the trajectory that will guarantee that the planner is free
-from collisions during execution of the obtained motion plan. This robustly
-invariant set is parameterized through Lyapunov function candidates, that, in
-this case, will be based upon an \ac{LQR} controller for the system.
+following sections. When given a nominal trajectory, the goal is to compute a
+robust invariant set around this trajectory that will guarantee that the planner
+is free from collisions during execution of the obtained motion plan. This
+robustly invariant set is parameterized through Lyapunov function candidates,
+that, in this case, will be based upon an \ac{LQR} controller for the system.
 
 In order to compute funnels, a model of the dynamics for the system is required.
 Thus, given the nonlinear dynamical system
@@ -306,18 +303,19 @@ obtains
 In order to compute a parameterized reachable set through \ac{SOS} programming
 the system~\cref{eq:dynamicalsystem-coordinatechange} needs to be polynomial,
 and parameterized by \(\vect{x}\) and \(t\) polynomially, since the \ac{SOS}
-framework can only verify polynomials. Therefore, through the use of a
-\ac{TV-LQR} controller (although any controller providing a \ac{CLF} can be
-used), the control input can be eliminated from the dynamical equation, giving
+framework can only verify polynomial inequalities. Therefore, through the use of
+a \ac{TV-LQR} (although any controller providing a \ac{CLF} can be used), the
+control input can be eliminated from the dynamical equation, giving
 \begin{equation}
   \label{eq:dynamicclosedloop}
   \dot{\bar{\vect{x}}} = f_{cl}\big( t,\bar{\vect{x}}(t) \big) \mathEoS
 \end{equation}
 However, the dynamical system may still not be polynomial, which is a necessary
-condition in order for this to be verified using \ac{SOS} programming.
-Therefore, by expanding the system \cref{eq:dynamicclosedloop} around the
-nominal trajectory \(\vect{x}_0\), the system is Taylor expanded to some
-suitable degree high enough to capture the nonlinearities of the system.
+condition in order for the system to be verified using \ac{SOS} programming.
+Therefore, by expanding the system in \cref{eq:dynamicclosedloop} around the
+nominal trajectory \(\vect{x}_0\), through a Taylor polynomial of some degree
+\(N\), the resulting polynomial should be able to capture the nonlinearities of
+the system.
 
 The goal is to parameterize a \textit{tight outer approximation} of the set of
 states the system may transition into during the time interval \([0,T]\). Given
@@ -330,14 +328,14 @@ in at time \(t\), then
 where \(\mathcal{X}_0\) is the initial condition set, and \(F(t) \subset \R^n\)
 is the finite time funnel for the system.
 
-A funnel is defined by \textcite{majumdarFunnelLibrariesRealtime2017} as
 \begin{definition}
   \label{def:funnel}
   A funnel associated with a closed-loop dynamical system \(\dot{\bar{\vect{x}}}
   = f_{\mathit{cl}}\big( t,\vect{x}(t) \big) \) is a map \(F \colon [0,T]
   \rightarrow \mathcal{P}(\R^n)\), from the time interval \([0,T]\) to the power
   set (i.e., the set of subsets) of \(\R^n\) so that the sets \(F(t)\) satisfy
-  the condition~\cref{eq:reachableset}.
+  the
+  condition~\cref{eq:reachableset}~\cite{majumdarFunnelLibrariesRealtime2017}.
 \end{definition}
 
 Next, the reachable set is parameterized through the use of Lyapunov functions,
@@ -345,20 +343,20 @@ which yields
 \begin{equation}
   F(t) = \set{\bar{\vect{x}}(t) \mid V \big(t, \bar{\vect{x}}(t) \leq \rho (t) \big)},
 \end{equation}
-where \(\rho (t) \colon [0,T] \rightarrow \R^+\), is a function which limits the
-size of the reachable set, and \(V \big(t,\bar{x}(t) \big)\) is a Lyapunov function \(V
-\colon [0,T] \times \R^n \rightarrow \R^+\).
+where \(\rho (t) \colon [0,T] \rightarrow \R^+\), is an upper bound which limits
+the size of the reachable set, and \(V \big(t,\bar{x}(t) \big)\) is a Lyapunov
+function \(V \colon [0,T] \times \R^n \rightarrow \R^+\).
 
 Then, by setting \(\mathcal{X}_0 \subset F(0,\bar{\vect{x}})\), one can derive
 the sufficient condition~\cref{eq:reachableset} for containing the reachable set
 in the Lyapunov function parameterization
 \begin{equation}
   \label{eq:funnelsufficient}
-  V(t,\bar{\vect{x}}) = \rho(t) \implies \dot{V}(t,\bar{\vect{x}}) < \dot{\rho}(t), \, \forall t \in [0,T],
+  V(t,\bar{\vect{x}}) = \rho(t) \implies \dot{V}(t,\bar{\vect{x}}) < \dot{\rho}(t), \, \forall t \in [0,T], 
 \end{equation}
 with \(\dot{V}(t,\bar{\vect{x}})\) computed as
 \begin{equation}
-  \dot{V}(t,\bar{\vect{x}}) = \frac{\partial V(t,\bar{\vect{x}})}{\partial \vect{x}} f_{cl}(t,\bar{\vect{x}}) + \frac{\partial V(t,\bar{\vect{x}})}{\partial t} \mathEoS
+  \dot{V}(t,\bar{\vect{x}}) = \frac{\partial V(t,\bar{\vect{x}})}{\partial \vect{x}} f_{\mathit{cl}}(t,\bar{\vect{x}}) + \frac{\partial V(t,\bar{\vect{x}})}{\partial t} \mathEoS
 \end{equation}
 
 Currently there are no limitations on the functions \(V\) and \(\rho\), and
@@ -372,7 +370,7 @@ optimization problem
 \begin{align}
   \label{eq:funneloptimizationproblem}
   &\underset{V,\rho}{\text{infimum}} \; &&\int_{0}^{T} \vol\big( F(t) \big) \, \mathrm{d}t \\
-  &\text{subject to} && V(t,\bar{\vect{x}}) = \rho (t) \implies \dot{V}(t,\bar{\vect{x}}) < \rho (t) \, \forall t \in [0,T] \nonumber \\
+  &\text{subject to} && V(t,\bar{\vect{x}}) = \rho (t) \implies \dot{V}(t,\bar{\vect{x}}) < \rho (t) \, \forall t \in [0,T] \label{eq:funnel-optimization-subject-to} \\
   && &\mathcal{X}_0 \subset F(0,\bar{\vect{x}}) \mathEoS \nonumber
 \end{align} 
 
@@ -387,51 +385,53 @@ optimization problem
 \end{figure}
 
 
-\subsection{Formulating the Optimization Problem}
+\subsection{Formulating the Optimization Problem as a SOS Program}
 
-The optimization problem in~\cref{eq:funneloptimizationproblem} would prove
+The optimization problem in \cref{eq:funneloptimizationproblem} would not be
 impossible to solve efficiently had it not been for advances in mathematical
 convex numerical optimization by
 \citeauthor{parilloStructuredSemidefinitePrograms}~\cite{parilloStructuredSemidefinitePrograms},
 as in general the problem involves searching over an infinite function space.
-While the general optimization problem of searching through the infinite
-function space is not amenable to efficient numerical computation, the problem
-can be made computationally feasible through the use of a \ac{SOS} programming
+While the general optimization problem of searching through an infinite function
+space is not amenable to efficient numerical computation, the problem can be
+made computationally feasible through the use of a \ac{SOS} programming
 approach~\cite{tedrakeLQRtreesFeedbackMotion2009}.
 
 Thus in order to make the problem amenable to a \ac{SOS} program, there are a
-few requirements that needs to be met by the problem formulation. Firstly the
+few requirements that need to be met by the problem formulation. Firstly the
 initial condition set needs to be a \textit{semi-algebraic set}, (i.e.,
-parameterized by polynomial inequalities)
+parameterized by polynomial inequalities) so that
 %
 \begin{equation}
+  \label{eq:initial-condition-set-parameterized}
   \mathcal{X}_0 = \set{\bar{\vect{x}} \in \R^n \mid g_{o,i}(\bar{\vect{x}}) \geq 0, \, i = 1,\ldots,N_0},
 \end{equation}
 %
-then rewriting \cref{eq:funneloptimizationproblem} in terms of positivity and
-equality constraints yields
+is the initial condition set. Then rewriting \cref{eq:funnelsufficient} in terms
+of positivity and equality constraints yields
 \begin{equation}
   V(t,\bar{\vect{x}}) = \rho(t) \implies \dot{\rho}(t) - \dot{V}(t,\bar{\vect{x}}) > 0,
 \end{equation}
-and
+and the initial condition set \eqref{eq:initial-condition-set-parameterized} is
+rewritten
 \begin{equation}
   g_{0,i}(\bar{\vect{x}}) \geq 0 \, \forall i \in \set{1,\ldots,N_0} \implies \rho(0) - V(0,\bar{\vect{x}}) \geq 0 \mathEoS
 \end{equation}
 Which, if these functions are both polynomial, is now in the form of a \ac{SOS}
 optimization problem. Then through the use of the \nameref{sec:s-procedure} one
-arrives at the equations
+can write the optimization problem~\eqref{eq:funneloptimizationproblem} as
 \begin{subequations}
 \begin{align}
   \dot{\rho}(t) - \dot{V}(t,\bar{\vect{x}}) - L(t,\bar{\vect{x}}) \big( V(t,\bar{\vect{x}}) - \rho(t) \big)& \nonumber \\
                                             - L_{t}(t,\bar{\vect{x}})\big( t\left( T - t \right) \big)&   \label{eq:sufficient-conditions}
   &\text{is SOS}&  \\
-  \rho(0) - V(0,\bar{\vect{x}}) - \sum_{i}^{N_{0}} L_{0,i}(\bar{\vect{x}})g_{0,i}(\bar{\vect{x}})&  &\text{is SOS}&  \\
+  \rho(0) - V(0,\bar{\vect{x}}) - \sum_{i}^{N_{0}} L_{0,i}(\bar{\vect{x}})g_{0,i}(\bar{\vect{x}})&  &\text{is SOS}& \label{eq:sufficient-conditions-2} \\
   L(t, \bar{\vect{x}}), \, L_{t}(\bar{\vect{x}}), \, L_{0,i}(\bar{\vect{x}})& &\text{are SOS}&, \nonumber \\
   &&\forall i \in \set{1,\ldots,N_{0}},& \nonumber
 \end{align} 
 \end{subequations}
 where \(L\), \(L_{t}\), and \(L_{0,i}\) are multiplier polynomials~(see
-\labelcref{sec:s-procedure}).
+\cref{sec:s-procedure}).
 
 The goal is to make the parameterization of the reachable set as small as
 possible, and therefore minimizing the cost function in
@@ -449,8 +449,8 @@ it can be written as
 where \(\succeq 0\) means that the matrix is positive semi-definite. Since the
 set \(F(t_{k})\) is now an ellipsoid in which the volume can be minimized
 through maximizing the determinant of \(S_{k}\), which in turn can be
-transformed into a \ac{SDP} problem. If an upper bound on the cost
-function \cref{eq:discrete-costfunction} is introduced as
+transformed into a \acl{SDP} problem (see \cref{subsec:sdp}). If an upper bound
+on the cost function \cref{eq:discrete-costfunction} is introduced as
 \begin{equation}
   \mathcal{E} (t_{k}) = \set{\bar{\vect{x}} \in \R^n \mid {\bar{\vect{x}}}^{T}S_{k}\bar{\vect{x}} \leq 1, \, S_{k} \succeq 0},
 \end{equation}
@@ -468,7 +468,8 @@ Which when expressed using \ac{SOS} constraints gives
 \end{align}
 %
 Then combining the cost function~\eqref{eq:discrete-costfunction} with the
-constraints~\eqref{eq:discrete-containment-constraint}, one arrives at the
+constraints~\eqref{eq:discrete-containment-constraint} and
+\cref{eq:sufficient-conditions,eq:sufficient-conditions-2}, one arrives at the
 following optimization problem:
 %
 { % Mini environment scope
@@ -488,7 +489,7 @@ following optimization problem:
       \bigr) \nonumber }
     {}
     {}
-    \addConstraint{- L_t (t,\vect{x}) \bigl(  {t \p*{T - t}} \bigr) \nonumber}
+    \addConstraint{- L_t (t,\vect{x}) \bigl(  {t \p*{T - t}} \bigr) }
     {}
     {\text{ is SOS}}
     \addConstraint {\rho(0) - V(0, \vect{x}) - \sum_i^{N} L_{0,
@@ -502,7 +503,7 @@ following optimization problem:
     \addConstraint {S_k \nonumber}%
     {\succeq 0}%
     {\quad \forall k \in \set{1, \ldots, N}}
-    \addConstraint {L_t (t, \vect{x}),\, L_{0,i}(\vect{x}),\,
+    \addConstraint {L(t,\vect{x}), L_t (t, \vect{x}),\, L_{0,i}(\vect{x}),\,
       L_{\mathcal{E},k}(\vect{x}) \nonumber }%
     {\qquad\text{ are SOS}}%
     {\quad \forall i \in \set{1, \ldots, N_0},}
@@ -510,26 +511,21 @@ following optimization problem:
       k \in \set{1, \ldots, N} \mathEoS }
   \end{mini!}
 } % End optimization problem scope.
-This is the finite dimensional optimization problem that is needed in order to
-search for a Lyapunov function candidate that parameterizes the reachable set for
-the dynamical system at hand.
+This is the continuous finite dimensional optimization problem that is needed in
+order to search for a Lyapunov function candidate that parameterizes the
+reachable set for the dynamical system at hand.
 
-However, this optimization problem is not in general convex , as the first
+However, this optimization problem is not in general convex, as the first
 constraints are \textit{bilinear} in the decision variables, since \(L\) and
 \(V\) are multiplied together. However, the problem can be solved, although not
 optimally, if \(V\) and \(\rho\) are held fixed, while the other decision
 variables are free. Likewise, fixing \(L\) and \(L_{\mathcal{E},k}\), creates
 another \ac{SOS} optimization program. Therefore shifting between the two sets
-of decision variables
-\[
-  \left( L,L_{t},L_{0,i},L_{\mathcal{E},k} \right)
-\]
-and
-\[
-  \left( V,\rho,L_{0,i},\matr{S}_{k} \right)
-\]
+of decision variables \(\left( L,L_{t},L_{0,i},L_{\mathcal{E},k} \right) \) and
+\(\left( V,\rho,L_{0,i},\matr{S}_{k} \right) \)
 \textcite{majumdarFunnelLibrariesRealtime2017} arrives at
-\cref{alg:funnelalgorithm} for computing the funnels.
+\cref{alg:funnelalgorithm} on~\pageref{alg:funnelalgorithm} for computing
+funnels.
 
 \begin{algorithm}[p]
   \caption{Funnel computation}
@@ -565,12 +561,13 @@ and
 
 It is often the case that the nominal trajectory \(x_{0} \colon [0,T]
 \rightarrow \R^n\) is difficult to approximate with a low degree polynomial in
-time~\cite{majumdarFunnelLibrariesRealtime2017}. As this can cause funnel
-computation to take a lot of time, approximating the polynomial discretely
-helps, but exactness will be lost, however the resulting funnels are shown to be
-acceptable approximations, where exactness can be regained through increasing
-the sampling rate~\cite{Tobenkin_2011}. If \(t_{k} \in [0,T]\), where \(k \in
-\set{1,\ldots,N}\), the optimization equations become:
+time~\cite{majumdarFunnelLibrariesRealtime2017}. This can cause funnel
+computation to take a lot of time, therefore approximating the polynomial
+discretely speeds up the calculation, at the cost of exactness. However the
+resulting funnels are shown to be acceptable approximations, where exactness can
+be regained through increasing the sampling rate~\cite{Tobenkin_2011}. If
+\(t_{k} \in [0,T]\), where \(k \in \set{1,\ldots,N}\), the optimization
+\cref{opt:time-dependent-optimization-problem} become:
 
 \begin{mini*}[2]
   {\substack{V_{k}, \rho, L_{k},\\ L_{0,i}, S_{k},
@@ -605,20 +602,20 @@ the sampling rate~\cite{Tobenkin_2011}. If \(t_{k} \in [0,T]\), where \(k \in
   {}
   {\forall k \in \set{1,\ldots,N} \mathEoS}
 \end{mini*}
-which is the same optimization problem as in
-\cref{opt:time-dependent-optimization-problem}, but with the explicit time
+This is the same optimization problem as in
+\cref{opt:time-dependent-optimization-problem}, but with the continuous time
 dependency removed from the equations. This leads to vastly greater performance
 in computing the funnels, but the parameterization of the funnels will be
 slightly larger, as exactness is lost~\cite{Tobenkin_2011}.
 
 \subsection{Funnel Composition}
 
-In order for two funnels being able to together create one longer motion
-primitive, from two or more smaller, the funnels in use must be composable. In
-order for two \funnel's to be composable, the outlet of one \funnel{} needs to
-be completely contained within the inlet of the other. This means that if
-\(\mathcal{F}_1 = F_1(T)\) is the outlet of \funnel{} \(F_1\), and
-\(\mathcal{F}_2 = F_2(0)\) is the inlet of \(F_2\), then
+In order for two funnels to create one extended motion primitive from multiple
+smaller primitives, the funnels in use must be composable. In order for two
+funnels to be composable, the outlet of one funnel needs to be completely
+contained within the inlet of the other. This means that if \(\mathcal{F}_1 =
+F_1(T)\) is the outlet of funnel \(F_1\), and \(\mathcal{F}_2 = F_2(0)\) is the
+inlet of \(F_2\), then
 \begin{equation}
   \label{eq:funnel-subset}
   \mathcal{F}_1 \subseteq \mathcal{F}_2
@@ -630,36 +627,40 @@ is required in order for the funnels to be composable.
   \mathcal{P}(\R^n)\) and \(F_2 \colon [0,T_2] \rightarrow \mathcal{P}(\R^n)\)
   is sequentially composable if \(F_1(T) \subseteq F_2(0)\).
 \end{definition}
-Thus
+Because the implication
 \begin{equation}
   V_1(T_1,\bar{\vect{x}}) \leq \rho_1(T_1) \implies V_2(0,\bar{\vect{x}}) \leq
   \rho_2(0)
 \end{equation}
-is an equivalent condition to \cref{eq:funnel-subset}, and can be checked
-through the following \ac{SOS} program
+is an equivalent condition to \cref{eq:funnel-subset}, and because it can be
+checked through the following \ac{SOS} program
 \begin{align}
   \text{Find } \; &L(\bar{x})  \\
   \text{s.t.} \; &\rho_2(0) - V_2( 0,\bar{\vect{x}}) - L(\bar{\vect{x}})
                   \bigl( \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \bigr) \qquad \text{is SOS} \mathEoS \nonumber
 \end{align}
-Which is a simple search for existence, and hence no cost function is needed.
+Hence funnel composition can be checked in the same way that the funnels are
+generated -- through a \ac{SOS} program. Also note that the above program is a
+simple search for existence, and hence no cost function is needed.
 
 However in
 \citeauthor{majumdarFunnelLibrariesRealtime2017}~\cite{majumdarFunnelLibrariesRealtime2017},
 the program is stated simply, and it can be helpful to take a look at the
-derivation in order to gain a feel of the implementation of a \ac{SOS} program.
+derivation in order to gain a feel for the implementation of a \ac{SOS} program.
 
-The \nameref{sec:s-procedure} enables us to limit our search to a semi-algebraic
-set. In this case, that set is \(\mathcal{F}_2 = \set{\vect{x} \in \R^n \mid
-  V_2(0,\bar{\vect{x}}) \leq \rho_2(0)}\), any \(\vect{x}\) that is not in this
-set does not concern us, which is why employing the \textit{S-Procedure} is
-valid. In more general terms this can be written
+The \nameref{sec:s-procedure} enables the search to be limited to a
+semi-algebraic set. In this case, that set is \(\mathcal{F}_2 = \set{\vect{x}
+  \in \R^n \mid V_2(0,\bar{\vect{x}}) \leq \rho_2(0)}\), and any \(\vect{x}\)
+that is not in this set is therefore not of importance, which is why employing
+the \textit{S-Procedure} is valid for limiting a search to a set. In more
+general terms this can be written
 \begin{equation}
+  \label{eq:example-s-procedure-implication}
   \vect{x} \in \mathcal{F}_2 \implies p(\vect{x}) \geq 0,
 \end{equation}
 where \(p(\vect{x})\) is the \ac{SOS} polynomial that is to be verified. In this
 case \(p(\vect{x})\) is \(V_2(0,\bar{\vect{x}})\). Thus in order to impose the
-implication define
+implication~\eqref{eq:example-s-procedure-implication} define
 \begin{equation}
   q(\vect{x}) = V_2(0,\bar{\vect{x}}) - \rho_2(0) - L(\bar{\vect{x}}) \bigl(
     \rho_1(T_1) - V_1(T_1,\bar{\vect{x}}) \bigr),
@@ -668,46 +669,47 @@ where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) need to be SOS polynomials.
 
 \begin{example}
 
-  As a simple example let's have a look at embedding a square within a circle.
-  For good measure let's give the circle a radius of \(\sqrt{2}+\epsilon\), and
-  the square a radius of \(1\), and center them both at the origin in the
-  Euclidean plane.
-
-  Starting with defining the set \(\beta\)
+  As a simple example, look at embedding a square within a circle. Give the
+  circle a radius of \(\sqrt{2}+\epsilon\), and the square sides of \(1\), and
+  center them both at the origin in the Euclidean plane. Then define the
+  set
   \begin{equation}
     \label{eq:beta-orig}
-    \beta = \set{\vect{x} \in \R^2 \mid \norm{\vect{x}} \leq 1}
+    \beta = \set{\vect{x} \in \R^2 \mid \norm{\vect{x}} \leq 1},
   \end{equation} 
   using the Manhattan metric. Then the implication
   \begin{equation}
-    \vect{x} \in \beta \implies p(\vect{x}) \geq 0
+    \vect{x} \in \beta \implies p(\vect{x}) \geq 0,
   \end{equation}
-  is what is needed in order to write this into a \ac{SOS} program by employing
-  the \nameref{sec:s-procedure}. Then \eqref{eq:beta-orig} can be rewritten into
-  having a positivity constraint of the form
+  is needed in order to write this into a \ac{SOS} program through the use of
+  the \nameref{sec:s-procedure}. Then \eqref{eq:beta-orig} can be parameterized
+  by a positivity constraint
   \begin{align}
-    \beta &= \set{\vect{x} \in \R^2 \mid 1 \pm \vect{x} \geq 0 } \\
+    \beta &= \set{\vect{x} \in \R^2 \mid 1 \pm \vect{x} \geq 0 }, \\
     p(\vect{x}) &= r^2 - x^2 - y^2
   \end{align}
   where \(p(\vect{x})\) is the parameterization of the circle, and \(\beta\) is
   the parameterization of the square with sides of length two. What needs to be
   shown is that \(p(x)\) is positive on the set \(\beta\). Through the
   \nameref{sec:s-procedure} this can be written as the search for a nonnegative
-  polynomial \(L_{\mathit{ineq},i}(\vect{x})\) such that \(p(\vect{x}) \geq
-  L_{\mathit{ineq},i}(\vect{x})g(\vect{x}) \). Thus
+  polynomial \(L_{\mathit{\mathit{ineq}},i}(\vect{x})\) such that \(p(\vect{x}) \geq
+  L_{\mathit{\mathit{ineq}},i}(\vect{x})g(\vect{x}) \). Thus
   \begin{equation}
     q(\vect{x}) = p(\vect{x}) -
-    \sum_{i=1}^{2}L_{\mathit{ineq},i}(\vect{x})g_{\mathit{ineq},i}(\vect{x})
+    \sum_{i=1}^{2}L_{\mathit{\mathit{ineq}},i}(\vect{x})g_{\mathit{\mathit{ineq}},i}(\vect{x}) \geq 0 \forall x \in \beta,
   \end{equation} 
-  is required to be a \ac{SOS} polynomial, along with \(L_{\mathit{ineq},i}\). From this
-  it is seen that when a point satisfies \(g_{\mathit{ineq},i}\) (i.e., when \(\vect{x} \in
-  \beta\)) the term \( - \sum_{i=1}^{2}L_{\mathit{ineq},i}(\vect{x})g_{\mathit{ineq},i}(\vect{x})\)
-  is negative, and hence \(p(x)\) must be nonnegative, which gives the desired
-  implication.
+  is required for \(q(\vect{x})\) to be a \ac{SOS} polynomial. From this it is
+  seen that when a point satisfies \(g_{\mathit{\mathit{ineq}},i}\) (i.e., when
+  \(\vect{x} \in \beta\)) the term \( -
+  \sum_{i=1}^{2}L_{\mathit{\mathit{ineq}},i}(\vect{x})g_{\mathit{\mathit{ineq}},i}(\vect{x})\)
+  is negative, and hence \(p(x)\) must be nonnegative for \(q(\vect{x})\) to be
+  positive. Meaning that \(x \wedge y\) is less than \(r\) on the set \(\beta\).
+  Therefore all the points in \(\beta\) are within the bound of the circle, and
+  is what verifies the desired implication.
 
   Solving this problem can be done using any of a number of \ac{SOS} modeling
-  software. This example will rely on \textsc{Yalmip}~\cite{Lofberg2004} and its
-  \ac{SOS} programming functionality \cite{Lofberg2009} for \matlab.
+  software tools. This example relies on \textsc{Yalmip}~\cite{Lofberg2004} and
+  its \ac{SOS} programming functionality for \matlab~\cite{Lofberg2009} .
 
 
   \lstinputlisting{figures/funnel/embededsquare.m}
@@ -722,15 +724,14 @@ where \(q(\vect{x})\) and \(L(\bar{\vect{x}})\) need to be SOS polynomials.
 In order to move funnels around the world space, the dynamics of the system must
 not change along the coordinates at which the system is manipulated. This can be
 achieved through the theory of cyclic and non-cyclic coordinates, stemming from
-the Lagrangian dynamics of the system. Therefore, given the Lagrangian
-\(\mathcal{L}(q_i, \dot{q_i}, t)\) of a dynamical system, where the \(q_i\) are
-the generalized coordinates of the system, and \(\dot{q_i}\) are the
-generalized velocities. If the Lagrangian does not contain the \(q_j\) then
-\(q_j\) is a cyclic coordinate of the system, and the j-th Lagrangian has the
-form
+Lagrangian dynamics. Therefore, given the Lagrangian \(\mathcal{L}(q_i,
+\dot{q_i}, t)\) of a dynamical system, where the \(q_i\) are the generalized
+coordinates of the system, and \(\dot{q_i}\) are the generalized velocities. If
+the Lagrangian does not contain the \(q_j\) then \(q_j\) is a cyclic coordinate
+of the system, and the j-th Lagrangian has the form
 \[
   \left( \frac{d}{dt} \right) \left( \frac{\partial \mathcal{L}}{\partial
-      \dot{q_j}} \right) = \mathrm{const} \mathEoS
+      \dot{q_j}} \right) = \mathrm{constant} \mathEoS
 \]
 This means that any \(q_j\) fulfilling the above criteria can be freely moved
 around in the state-space, yet yield the same dynamical solution of the system.
@@ -739,13 +740,13 @@ around in the state-space, yet yield the same dynamical solution of the system.
 \label{sec:rrt-algorithm-intro}
 
 The \ac{RRT} algorithm is a tree based algorithm which, starting at the initial
-configuration of the system, grows it's branches into the unexplored parts of
-the state space through some suitable choice of distance metric and sampling
+configuration of the system, grows its branches into the unexplored parts of the
+state space through some suitable choice of distance metric and sampling
 distribution for the problem at hand~\cite{article}. The expansion is divided up
 into three general steps, whereas the first is randomly, through some
-probability distribution, choosing a configuration from the state space for
-which the algorithm will try and expand towards. Secondly, the algorithm finds
-the node in the tree which is closest to the sample in the sense of some chosen
+probability distribution, picks a configuration from the state space for which
+the algorithm will try and expand towards. Secondly, the algorithm finds the
+node in the tree which is closest to the sample in the sense of some chosen
 distance metric. Thirdly, it tries to connect the sample with the nearest node
 in the tree through some predetermined expansion operator. If a connection can
 be made -- meaning that it is collision free, and satisfies the constraints of
@@ -754,9 +755,10 @@ between the two states. If the sampling distribution is uniform, then the tree
 is known to have the attribute that the probability of expanding from an
 existing node in the tree is proportional the the \textit{Voronoi region} of
 that node, and as the largest Voronoi regions belong to the states on the leaves
-of the tree. Since the Voronoi regions divides a plane according to the
-\textit{nearest neighbor rule}, each point is associated with the region of the
-plane closest to it, as can be seen in
+of the tree, the tree will most likely be expanded towards the unexplored parts
+of the configuration space. A Voronoi regions divides a plane according to the
+\textit{nearest neighbor rule}, where each point is associated with the region
+of the plane closest to it, as can be seen in
 \cref{fig:voronoi-diagram}~\cite{aurenhammerVoronoiDiagramsSurvey1991}. This
 means that the tree will quickly expand into unexplored parts of the state
 space, as can be seen in~\cref{fig:rrt-expansion,fig:rrt-voronoi}, which is what
@@ -793,9 +795,9 @@ problems, especially ones with a high dimensional state space~\cite{Lav06}.
     \includegraphics[trim={2cm 1cm 2cm 1cm}, clip, width=.9\textwidth]{plainRRT10000}
     \subcaption{\(10.000\) iterations.}
   \end{minipage}
-  \caption[The rapid expansion of the \ac{RRT} motion planning algorithm]{The \ac{RRT} algorithm quickly expanding deep into the
-    state-space, then later, exploring the finer parts, until the exploration is
-    complete.}
+  \caption[The rapid expansion of the \ac{RRT} motion planning algorithm]{The
+    \ac{RRT} algorithm quickly expanding deep into the state-space, then later,
+    explores the finer parts, until the exploration is complete.}
   \label{fig:rrt-expansion}
 \end{figure}
 
@@ -807,7 +809,7 @@ problems, especially ones with a high dimensional state space~\cite{Lav06}.
   \label{fig:voronoi-diagram}
 \end{figure}
 
-When inspecting the Voronoi regions of a \ac{RRT} tree, it is apparent that the
+When inspecting the Voronoi regions of a \acl{RRT} tree it is apparent that the
 leaf nodes will have the largest Voronoi regions, and thus also the largest
 probability for getting expanded, as can be seen in
 figure~\cref{fig:rrt-voronoi}.
@@ -815,17 +817,17 @@ figure~\cref{fig:rrt-voronoi}.
 The \ac{RRT} algorithm is a discrete sampling based algorithm, noticeable for
 its ability to handle large state-spaces. This stems from the algorithm's
 ability to avoid the \textit{curse of dimensionality}, which means that it does
-not suffer the same computational penalty with scaling the state space, that is
-hampering a lot of motion planning algorithms~\cite{Lav06}. Still, even though
-the \ac{RRT} algorithm is sampling based, it will, as time goes to infinity
-achieve probabilistic completeness in the state-space. Which means that it will
-cover the whole state space with the tree if given infinite time. Thus one can
-expect the \ac{RRT} algorithm to find a solution, if one exists and the
+not suffer the same computational penalty with scaling of the state space, that
+is hampering a lot of other motion planning algorithms~\cite{Lav06}. Still, even
+though the \ac{RRT} algorithm is sampling based, it will, as time goes to
+infinity achieve probabilistic completeness in the state-space. Which means that
+it will cover the whole state space with the tree if given infinite time. Thus
+one can expect the \ac{RRT} algorithm to find a solution, if one exists and the
 algorithm is given enough time.
 
 \begin{figure}
   \centering \frame{\includegraphics[clip, trim=5cm 9cm 5cm 9cm,
-    scale=.5]{figures/rrt/rrtvoronoi}}
+    scale=.6]{figures/rrt/rrtvoronoi}}
   \caption[The Voronoi regions for the nodes in a \ac{RRT} tree]{The Voronoi regions for each node in a simple RRT tree,
     which shows how the Voronoi bias will lead the algorithm towards unexplored
     areas quickly.}
@@ -839,25 +841,26 @@ algorithm is given enough time.
 \subsection{RRT's and Motion Primitives}
 
 There are multiple ways in which an \ac{RRT} algorithm can expand its planning
-tree, with two main categories. One is where the extension, and the resulting
-motions are calculated on the fly, and the other is where motions are computed
-beforehand, and the planner chooses the most appropriate motion for which to
+tree. The expansion itself is usually divided into two steps. One is on-line,
+where the extension, and the resulting motions are calculated on the fly. While
+the other is off-line, and is where motions are computed beforehand, and the
+planner chooses the most appropriate motion from a set of motion from which to
 expand its tree. The \rrtfunnel{} algorithm falls into the latter category, and
 as such the next section will build the basic theory for motion primitives in
 motion planning.
 
 The performance of the \ac{RRT} algorithm is dependent upon the control inputs
 employed to search the state-space. For systems with few control inputs, random
-control inputs can be sampled. The downside is that this usually produces
-non-smooth motions. Instead, predefined motion primitives with known behavior
-can be sampled, which will produce a smoother path, while also reducing the
-complexity of the planning
-task~\cite{vonasekGlobalMotionPlanning2013,hauserUsingMotionPrimitives2008}. A
-simple basis of motion primitives for a dynamical model can therefore be
-'turn-left', 'go-straight', or 'turn-right'. By chaining these basic smooth
-motion primitives together a smooth path from the initial- to the goal-state can
-be found. A figure displaying a tree built up from the three motion primitives
-can be seen in~\cref{fig:motion-primitive-tree}.
+control inputs can be sampled~\cite{hauserUsingMotionPrimitives2008}. The
+downside is that this usually produces non-smooth motions. Instead, predefined
+motion primitives with known behavior can be sampled, which will produce a
+smoother path, while also reducing the complexity of the planning
+task~\cite{vonasekGlobalMotionPlanning2013}. A simple basis of motion primitives
+for a dynamical model can therefore be 'turn-left', 'go-straight', or
+'turn-right'. By chaining these basic smooth motion primitives together a smooth
+path from the initial- to the goal-state can be found. A figure displaying how a
+tree is built up from these three motion primitives can be seen
+in~\cref{fig:motion-primitive-tree}.
 
 \begin{figure}
   \centering
@@ -869,11 +872,12 @@ can be seen in~\cref{fig:motion-primitive-tree}.
 \end{figure}
 
 In essence, robust motion primitives are beneficial as they separate the
-dynamics from the planner, enabling the planner to reason about what actions to
-take, and not in what manner they should be executed. This observation is the
-basis of the \rrtfunnel{}, which employs funnels as the robust motion primitives
-as the extension operators for the tree the planner builds, enabling the
-\ac{RRT} part of the \rrtfunnel{} algorithm to remain oblivious to
-uncertainties, and hence greatly simplifying the planning problem.
+dynamics from the global planner, enabling the planner to reason about what
+actions to take, and not in what manner they should be executed. This
+observation is the basis of the \rrtfunnel{}, which employs funnels as the
+robust motion primitives as the extension operators for the tree the planner
+builds, enabling the \ac{RRT} part of the \rrtfunnel{} algorithm to remain
+oblivious to uncertainties, and hence greatly simplify the planning problem,
+while maintaining robustness.
 
 
