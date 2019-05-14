@@ -13,7 +13,7 @@ all: setup
 	# @cd tests/thesis/ && pdflatex -output-directory="build" -halt-on-error ./main.tex
 	@cp .latexmkrc ./tests/thesis/src
 	@cp zot.bib  ./tests/thesis/src
-	@cd tests/thesis/src && latexmk -output-directory=build -cd -bibtex -pdf -gg -silent main.tex
+	@cd tests/thesis/src && latexmk -output-directory=build -cd -bibtex -pdf -gg main.tex
 	@open tests/thesis/src/build/main.pdf
 
 .Phony: setup
