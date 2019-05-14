@@ -4,7 +4,7 @@
 The \rrtfunnel{} algorithm developed this far will now be tested in a simulation
 experiment where a simple unicycle model of an airplane is set to traverse a
 small strip of forest. The simulation environment can be seen in
-figure~\cref{fig:simulated-forest}, where the airplane starts at one end of the
+\cref{fig:simulated-forest}, where the airplane starts at one end of the
 obstacle forest, and is set to traverse the strip of forest and reach any
 \((x,y)\) position in a circle of radius five surrounding the endpoint thirty
 five meters ahead.
@@ -37,10 +37,10 @@ in \cref{sec:experiments-final}.
 \subsection{The Obstacle Forest}
 \label{sec:Poisson-Process}
 
-In order to generate the obstacle field for the experiments, which is to
-resemble a forest, a \textit{spatial Poisson process} is employed. Poisson
-processes are used to model random configurations of points in space, and hence
-are well suited for generating a different obstacle forest for each simulation
+In order to generate the obstacle field, which is to resemble a forest, a
+\textit{spatial Poisson process} is employed. Poisson processes are used to
+model random configurations of points in space, and hence are well suited for
+generating a different obstacle forest for each simulation
 run~\cite{Kroese_2014}. For the experiments below, a forest will be the special
 case of realizing a spatial Poisson process on \(\R^2\).
 
@@ -50,8 +50,6 @@ and hence the difficulty in traversing it. For these experiments, the intensity
 will be held constant for each experiment run, and not vary with points in space
 \ie the process is homogeneous.
 
-The algorithm for realizing a random Poisson measure in \cref{def:Poisson-def}
-is~\cite[Definition~1.1.1]{Kroese_2014}
 \begin{definition}{Generating a Poisson random measure}
   \label{def:Poisson-def}
   \begin{enumerate}
@@ -60,19 +58,16 @@ is~\cite[Definition~1.1.1]{Kroese_2014}
     \lambda(\vect{x})/ \mu(E)\).
   \end{enumerate}
 \end{definition}
-where \(E\) is the set over which the points should be generated, and the
-\textit{probability distribution function} \(g(x_1, x_2) = \lambda(\vect{x})/\mu(E)\). Finally, \(\mu(E)\) is
-defined as
+Here \(E\) is the set over which the points should be generated, and the
+\textit{probability distribution function} \(g(x_1, x_2) =
+\lambda(\vect{x})/\mu(E)\)~\cite[Definition~1.1.1]{Kroese_2014}. Finally,
+\(\mu(E)\) is defined as
 \[
   \mu(E) = \int_{E} \lambda(\vect{x})\, \mathrm{d} \vect{x} \mathEoS
 \]
-
-For the experiments the set \(E\) will be a square defined as
-\[
-  E = {[-\alpha, \alpha]}^2
-\]
-of which the resultant forest on a \(20 \times 20\) grid can be seen in
-figure~\cref{fig:poisson009}.
+For the experiments the set \(E\) will be a square defined as \(E =
+{[-\alpha, \alpha]}^2 \) of which the resultant forest on a \(20 \times 20\)
+grid can be seen in figure~\cref{fig:poisson009}.
 
 \begin{figure}
   \begin{subfigure}[c]{0.5\textwidth}
@@ -88,7 +83,7 @@ figure~\cref{fig:poisson009}.
     \label{fig:poisson09}
   \end{subfigure}
   \caption[Two random forests generated with a spatial Poisson process]{Two
-    random forests generated with a spatial Poisson process in \(\R^{2}\).}
+    random forests generated with a spatial Poisson process on \(\R^{2}\).}
 \end{figure}
 
 \subsection{The Size of the Airplane and the Obstacles Models}
@@ -114,51 +109,46 @@ irrelevant. A figure of the airplane can be seen in \cref{fig:radio-vehicle}.
   \label{fig:radio-vehicle}
 \end{figure}
 
-\subsection{Expanding Funnels to Incorporate the Expanded Airplane Model}
+\subsection{Expanding the Funnels around the Airplane Model}
 \label{subsec:expand-funnel}
 
 The size of the airplane in the original model is a single point, and as such,
-the expanded airplane model is not accounted for in the funnels. Therefore the
-funnels have to be expanded in order for them to accommodate the necessary
-robustness guarantees that are expected from the algorithm. However, the size of
-the airplane only affects the size of the funnel ellipsis projected down into
-the xy-plane. Therefore first getting the projected size of the funnel, where
-\(P \colon \R^4 \rightarrow \R^2\) is a projection map with a projection matrix
-\[
-  P =
-  \begin{bmatrix}
-    I_{2 \times 2} & {0}_{2 \times 2} \\
-  \end{bmatrix}
-\]
-such that for the projected ellipsoid
-\[
+the expanded airplane model is not accounted for in the current funnels.
+Therefore the funnels have to be expanded in order for them to accommodate the
+necessary robustness guarantees that are expected from the algorithm. However,
+the size of the airplane only affects the size of the funnel ellipsis projected
+down into the xy-plane. Therefore, first extract the projected size of the
+funnel, through a projection map: \(P \colon \R^4 \rightarrow \R^2\), where \(P
+= \begin{bmatrix} I_{2 \times 2} & {0}_{2 \times 2} \\ \end{bmatrix} \) such
+that for the projected ellipsoid
+\(
   \mathcal{E}_{p} = \set{\bar{\vect{x}} \in \R^{2} \mid
     {\bar{\vect{x}}}^{T}S_{k}^{(p)}\bar{\vect{x}} \leq 1},
-\]
+\)
 with \(S_{k}^{(p)}\) given by
-\[
+\(
   S_{k}^{(p)} = {\left( PS_{k}^{-1}P^T \right)}^{-1},
-\]
-where \(\mathcal{E}_{p}\) is the projected set of the ellipsoid in the xy-plane
+\)
+is the set containing the funnel projected down into the xy-plane. Here
+\(\mathcal{E}_{p}\) is the projected set of the ellipsoid in the xy-plane
 as is seen in \cref{subsec:xy-cost-function}. In general an ellipse centered at
 the origin is a linear transformation of the unit circle~\cite{lay2005linear}.
-Exploiting this fact, expanding the radius of the circle to encompass the
-airplane model. Also taking into account that the matrix \(S_{k}\) is
+Exploiting this fact, the funnel ellipsoids can be expanded to encompass the
+airplane model. Take note that the matrix \(S_{k}\) is
 \textit{Positive semidefinite}, and hence can be Cholezky
-factorized~\cite{lay2005linear}. The expanded ellipsis (which now contains all
-the possible states of the airplane model) is:
-
+factorized~\cite{lay2005linear}. Then expanded ellipsis (which now contains all
+the possible states of the airplane model) is given by:
 \begin{align*}
   S_{k}^{(\mathcal{P})} &= R^{T}R \\
   \vect{x} &= R^{-1}\vect{y} \\
-  \mathcal{C} &= \set{\vect{y} \in \R^2 \mid \vect{y}^{T}\vect{y} \leq 1 + r_{airplane}} \\
+  \mathcal{C} &= \set{\vect{y} \in \R^2 \mid \vect{y}^{T}\vect{y} \leq 1 + r_{a}} \\
   \mathcal{E}_{\mathit{exp}} &= \set{R^{-1}\vect{y} \mid \vect{y} \in \mathcal{C}} \\
 \end{align*}
-where \(\mathcal{E}_{\mathit{exp}}\) is the ellipsoid which contains the volume
-of the airplane for all verified states in the funnel, and
-\(r_{\mathit{airplane}}\) is the widest part of the model at hand, which in this
-case is the wingspan. A picture of the initial funnel and the funnel expanded
-around the airplane model can be seen in
+where \(\mathcal{E}_{\mathit{exp}}\) are the ellipsoids which contains the
+volume of the airplane for all verified states in the funnel, and
+\(r_{\mathit{a}}\) is the widest part of the model at hand, which in this case
+is the wingspan. A picture of the initial funnel and the funnel expanded around
+the airplane model can be seen in
 figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 
 \begin{figure}
@@ -189,7 +179,7 @@ figure~\cref{fig:expanded-funnel,fig:expanded-and-unexpanded}.
 
 The basis set of motion primitives should be small, yet cover enough of the
 finer movements of the airplane so that the motion of the airplane can be near
-continuous when composed together. Thus in order to generate a `dense' set of
+continuous when composed together. Thus in order to generate a dense set of
 motion primitives \cref{alg:initial-motion-primitives-generation} is employed in
 order to generate points along the arc of a circle with \(N\) different radii as
 the initial points for the trajectory generator described in
@@ -263,7 +253,7 @@ be seen in \cref{fig:lyapunov-values}.
 \label{subsec:funnel-no-composable}
 
 In accordance with \cref{sec:composable-funnels}, the funnels robustness
-guarantees of the system are only conserved if the funnels are composable as per
+guarantees are only conserved if the funnels are composable as per
 \cref{def:invarant-funnel-composition}. Unfortunately, the funnels do not
 compose as per this definition in the experiments run, and the composition
 testing of the algorithm has to be left out. Thus the experiments are run with a
@@ -335,7 +325,7 @@ uncertainty should become evident.
 Before the experiments are run, all individual funnels in the base set are run
 with a hundred simulations runs from random starting positions in its inlet, to
 check if the invariant holds, and that the airplane stays within the funnel at
-all times. Uncertainty is added in terms of additive noise with \(w =
+all times. Uncertainty is added in terms of an additive noise with \(w =
 -0.3\)\si{m.s^{-1}} in the world x-direction.
 
 In Table~\ref{table:result-table} are the results from a hundred test-runs with
