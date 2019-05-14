@@ -4,11 +4,11 @@
 \section{Summary}
 
 This thesis has developed the \rrtfunnel{} motion planning algorithm for
-providing robust motion planning in known environments with bounded uncertainty
-for nonlinear dynamical systems. The planner solved these problems through
+providing robust motion planning in known environments for nonlinear dynamical
+systems with bounded uncertainty. The planner solved these problems through
 isolating the uncertainty for a nonlinear system into provably \textit{robust
-  motion primitives} that are guaranteed to provide safe traversal, through the
-overaching planning environment through the guarantees provided by the \ac{SOS}
+  motion primitives} that are guaranteed to provide safe traversal through the
+overaching planning environment with the guarantees provided by the \ac{SOS}
 programming framework. These motion primitives were then employed by a global
 \ac{RRT} motion planner in order to compose a safe path through the planning
 environment.
@@ -48,7 +48,7 @@ funnel, following from the definition of the Lyapunov function. As such, the who
 openings. Research to what extent this is possible with uncertain funnels, as in
 this case, every sub-level set is not necessarily invariant.
 
-\subsection{Move Funnel Generation On-Line}
+\subsection{Move the Funnel Generation On-Line}
 
 For now, the computational complexity of generating funnels on-line is too high
 with the current computational resources, and the formulations applied. However,
