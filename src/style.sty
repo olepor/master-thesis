@@ -202,9 +202,9 @@
       \ifanappendix \thechapter \else \numtoName{\c@chapter}\fi}
    \renewcommand*{\chaptitlefont}{\normalfont\Huge\sffamily}
    \renewcommand*{\printchaptertitle}[1]{%
-     \vskip\onelineskip \centering \chaptitlefont ##1}
+     \vskip\onelineskip \centering \bfseries\chaptitlefont ##1}
    \renewcommand*{\afterchaptertitle}{%
-     \vskip\onelineskip \hrule\vskip \afterchapskip}
+     \vskip\onelineskip \vskip \afterchapskip}
    \setlength{\beforechapskip}{3\baselineskip}
    \renewcommand*{\printchapternonum}{%
      \vphantom{\chapnumfont One}
