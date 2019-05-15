@@ -565,14 +565,13 @@ resulting funnels are shown to be acceptable approximations, where exactness can
 be regained through increasing the sampling rate~\cite{Tobenkin_2011}. If
 \(t_{k} \in [0,T]\), where \(k \in \set{1,\ldots,N}\), the optimization
 \cref{opt:time-dependent-optimization-problem} become:
-
-\begin{mini*}[2]
+\begin{mini!}[2]
   {\substack{V_{k}, \rho, L_{k},\\ L_{0,i}, S_{k},
       L_{\mathcal{E},k}} } % Optimization variables
   {\sum_{k=1}^{N}\vol(\mathcal{E} \bigl(t_{k}) \bigr) = \sum_{k=1}^{N} \vol\left(
       \set{\bar{x} \mid {\bar{x}}^{T} S_{k} \bar{x} \leq 1}
     \right)} % Optimization function
-  {\label{optidef:discrete}} % Label optimization problem
+  {\label{opt:discrete}} % Label optimization problem
   {} % Optimization result
   % Constraints
   \addConstraint{\dot{\rho}(t_{k}) - \dot{V}_{k}(\bar{\vect{x}}) -
@@ -587,18 +586,18 @@ be regained through increasing the sampling rate~\cite{Tobenkin_2011}. If
   {\, \text{is SOS},}
   \addConstraint{}
   {}
-  {\forall k \in \set{1,\ldots,N}} %
+  {\forall k \in \set{1,\ldots,N} \nonumber} %
   \addConstraint{S_{k} \succeq 0}
   {}
-  {\forall k \in \set{1,\ldots,N}} %
+  {\forall k \in \set{1,\ldots,N} \nonumber} %
   \addConstraint{L_k(\bar{\vect{x}}),\,L_{0,i}(\bar{\vect{x}}),
     L_{\mathcal{E},k}}
-  {\qquad \text{are SOS}}
-  {\forall i \in \set{1,\ldots,N_0} ,} %
+  {\qquad \text{are SOS} \nonumber}
+  {\forall i \in \set{1,\ldots,N_0} , \nonumber} %
   \addConstraint{}
   {}
-  {\forall k \in \set{1,\ldots,N} \mathEoS}
-\end{mini*}
+  {\forall k \in \set{1,\ldots,N} \mathEoS \nonumber}
+\end{mini!}
 This is the same optimization problem as in
 \cref{opt:time-dependent-optimization-problem}, but with the continuous time
 dependency removed from the equations. This leads to vastly greater performance
