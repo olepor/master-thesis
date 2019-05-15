@@ -15,12 +15,16 @@ environment.
 
 \section{Conclusion}
 
-The algorithm was verified through simulations in a virtual forest for a simple
-airplane model. These experiments showed that the \rrtfunnel{} algorithm is
-significantly more robust than an algorithm which does not handle uncertainties
-explicitly, but employs some conservative heuristics, such as maximizing the
-distance to the closest obstacle in order to avoid a collision during execution
-of the plan.
+In conclusion the reachable sets calculated through the \ac{SOS} programming
+framework was shown to provide safe traversal through the parametrization of an
+outer approximation for the reachable set of the nonlinear dynamical system at
+hand. The algorithm was verified through simulations in a virtual forest for a
+simple airplane model. These experiments showed that the \rrtfunnel{} algorithm
+is significantly more robust than an algorithm which does not handle
+uncertainties explicitly, but employs some conservative heuristics, such as
+maximizing the distance to the closest obstacle in order to avoid a collision
+during execution of the plan. In fact, the \rrtfunnel{} algorithm did not
+collide once.
 
 
 \section{Future Work}

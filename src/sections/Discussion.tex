@@ -1,15 +1,15 @@
 \chapter{Discussion}
 \label{chp:discussion}
 
-Even though the robustness guarantees were lost in the experiments section, due
-to the planner not handling multiple controller inputs, the \rrtfunnel{}
-algorithm did not cause the airplane to collide a single time over the run of
-\(300\) simulation runs. This was in starch contrast to the benchmark planner,
-which did not handle uncertainty at all, and instead relied on avoiding the
-obstacles by as big a margin as possible. Therefore, not only was the
-\rrtfunnel{} planner able to provide significantly safer traversal of the
-experiment environment, but it could also provide more direct traversal, as the
-distance to the trees did not matter.
+In this thesis it is shown that the formulation of the search for a Lyapunov
+function to parameterize the reachable set for an uncertain dynamical system
+does indeed provide a tight outer approximation of the true reachable set for
+the system. This reachable set surrounding a basis of trajectories is referred
+to as funnels, and does provide safe traversal from the initial condition set of
+the funnel to the outlet. These funnels are then used as motion primitives by
+the global \ac{RRT} motion planner. The combination of the reachable sets as
+robust motion primitives with a discrete \ac{RRT} motion planner is what is
+referred to as the \rrtfunnel{} algorithm.
 
 The strength of the algorithm lies in that it can separate handling of the
 uncertainty into an off-line pre-computation phase. Therefore, the global motion
@@ -20,7 +20,7 @@ system. In fact once the motion primitives have been calculated and verified
 off-line, they might as well be employed in any global motion planner able to
 handle discrete motion primitives.
 
-The funnels were shown through Monte-Carlo simulation to provide outer
+The funnels were shown through Monte-Carlo simulation to provide true outer
 approximations of the reachable set for the dynamical system. Note that since
 the Lyapunov function employed is quadratic it will always be symmetric around
 the trajector verified. This means that even though the real nonlinear system
@@ -31,8 +31,18 @@ verified discretely and hence are only valid up to the numeric tolerances of the
 platform it is computed on, and the precision of the solver employed. Still, the
 funnels generated can be said to be tight.
 
-The algorithm does have some weaknesses also. The choice of using motion
-primitives calculated off-line will in general not make the planner
+Even though the robustness guarantees were lost in the experiments section, due
+to the planner not handling multiple controller inputs, the \rrtfunnel{}
+algorithm did not cause the airplane to collide a single time over the run of
+\(300\) simulation runs. This was in starch contrast to the benchmark planner,
+which did not handle uncertainty at all, and instead relied on avoiding the
+obstacles by as big a margin as possible. Therefore, not only was the
+\rrtfunnel{} planner able to provide significantly safer traversal of the
+experiment environment, but it could also provide more direct traversal, as the
+distance to the trees did not matter.
+
+The algorithm does however have some potential for improvement. The choice of
+using motion primitives calculated off-line will in general not make the planner
 probabilisticly complete, and as such, one is not guaranteed to find a solution
 given infinite time. A guarantee that regular \ac{RRT}'s do provide.
 
