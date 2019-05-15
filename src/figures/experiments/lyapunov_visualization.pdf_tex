@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{461.28710358bp}%
+    \setlength{\unitlength}{487.62563059bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,10 +48,10 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.3501014)%
+  \begin{picture}(1,0.35148188)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{lyapunov_visualization.pdf}}%
-    \put(-0.0000012,0.35447023){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.21340174\unitlength}\raggedright \(x(t)\)\end{minipage}}}%
-    \put(0.08195419,0.31209516){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.52969364\unitlength}\raggedright \(V\bigl( t_{1}, x(t_{1})\bigr) \)\end{minipage}}}%
-    \put(0.42763832,0.13154166){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.67831263\unitlength}\raggedright \( V \bigl( t_{2}, x(t_{2}) \bigr) \)\end{minipage}}}%
+    \put(0.47492683,0.1199902){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.58039087\unitlength}\raggedright $ V\bigl( t_{2}, x(t_{2}) \bigr) $\end{minipage}}}%
+    \put(0.14507737,0.29768842){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.70476039\unitlength}\raggedright $ V \bigl( t_{1}, x(t_{1}) \bigr) $\end{minipage}}}%
+    \put(-0.00272403,0.35558315){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.2739733\unitlength}\raggedright $ x(t) $\end{minipage}}}%
   \end{picture}%
 \endgroup%
