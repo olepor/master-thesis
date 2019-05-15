@@ -5,12 +5,11 @@
 Following is a survey of motion planning techniques that can handle uncertainty.
 First described is the relevant sources of uncertainty in motion planning, and
 then the relevant techniques that have been applied to solve them in the
-literature. In general uncertainty in motion planning can be related to three
+literature. In general uncertainty in motion planning can be related to two
 sources~\cite{lavalleFrameworkMotionPlanning1995}:
 \begin{enumerate}
 \item Uncertainty in predictability.
 \item Uncertainty in environment.
-\item Uncertainty in pose.
 \end{enumerate}
 
 \section{Uncertainty in Predictability}
@@ -155,20 +154,6 @@ even, the environment may have changed, as nature is not static. Trees fall
 over, and floods move ground, and create hindrances that might not be seen from
 a map. Not knowing where a hindrance might lie, or whether one is located
 outside the sight of the on-board sensors.
-
-\section{Uncertainty in Pose}
-
-Navigating a robot with uncertain pose, in rough terrain is investigated by
-\citeauthor{haitMotionPlanningRough1996}, where robustness in control is ensured
-by imposing the validity of a configuration domain around the planned
-trajectory, through the notion of a safe
-neighborhood~\cite{haitMotionPlanningRough1996}. Here a configuration is only
-considered safe, if all its neighborhood configurations are also safe. It also
-links positional uncertainty with uncertainty in the map elevation model.
-Another paper building on the traversal of rough terrain method given previously
-is \citeauthor{iagnemmaRapidPhysicsbasedRoughterrain1999}. It also gives a nice
-overview of how to incorporate uncertainty into the path-planning
-algorithm~\cite{iagnemmaRapidPhysicsbasedRoughterrain1999}.
 
 \section{Funnels}
 

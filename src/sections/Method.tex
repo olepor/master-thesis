@@ -411,7 +411,7 @@ bounded uncertainty term of the form \(\mathcal{W} = \set{ w(t) \in R^d \mid
 uncertainty has to be added to the system dynamics \cref{eq:model-dynamics}.
 This is done through adding an uncertainty term \(w\)
 \begin{equation}
-  \dot{\bar{\vect{x}}} = f_{\mathit{cl}}(t, \bar{\vect{x}}(t), w(t)).
+  \dot{\bar{\vect{x}}} = f_{\mathit{cl}}(t, \bar{\vect{x}}(t), w(t)) \mathEoS
 \end{equation}
 Which in this thesis is an additive uncertainty so that
 \cref{eq:model-dynamics-cl} turns into
@@ -433,7 +433,7 @@ Then the requirement~\eqref{eq:reachableset} is slightly modified so that
 \begin{equation}
   \label{eq:uncertain-reachableset}
   \bar{\vect{x}}(0) \in \mathcal{X} \implies \bar{\vect{x}}(t) \in F(t),\, \forall t \in
-  [0,T], \, \forall w \colon [0,T] \rightarrow \mathcal{W}
+  [0,T], \, \forall w \colon [0,T] \rightarrow \mathcal{W},
 \end{equation} 
 where \(F(t)\) is the new formulation for reachable set of the uncertain system.
 Thus the sufficient condition in \cref{eq:funnelsufficient} turns into

@@ -11,30 +11,26 @@
 This thesis develops the \rrtfunnel{} algorithm, which is a provably robust
 feedback motion planner for nonlinear dynamical systems in the face of bounded
 uncertainties. This is done through the mathematical theory of convex
-optimization in order to search for Lyapunov functions which verify the
-regions of stability for the smooth nonlinear system at hand. These verified
-regions of stability is then employed as motion primitives for a global
-\ac{RRT} motion planning algorithm.
+optimization in order to search for Lyapunov functions which verify the regions
+of stability for the smooth nonlinear system at hand. These regions of stability
+are then employed as motion primitives for a global \ac{RRT} motion planning
+algorithm.
 
-More specifically, the \ac{SOS} programming theory is used to verify the
-regions of the configuration space surrounding a base set of trajectories that
-are guaranteed to give safe traversal of the planning environment.
+More specifically, \ac{SOS} programming theory is used to verify the regions of
+the configuration space surrounding a base set of trajectories that are
+guaranteed to give safe traversal of the planning environment.
 
 The verified trajectories are then employed as local motion primitives, each
-with its own, locally valid \ac{LQR} controller, which are then combined into
-a tree of controllers by the \ac{RRT} motion planner. With each controller
-having a verified region of the state space, these verified regions of
-traversal are referred to as 'funnels', and are combined together, giving a
-certificate of safe traversal. If the given funnels can be combined into a
-path from the initial state to the goal state, the plan is guaranteed to be
-collision free.
+with its own, locally valid \ac{LQR} controller, which are then composed into a
+tree of controllers by the \ac{RRT} motion planner. With each controller having
+a verified region of the state space, these regions of safe traversal are
+referred to as 'funnels', and are combined together, giving a certificate of
+safe traversal.
 
-The safe traversal guarantees of the algorithm is verified by running a first
+The safe traversal guarantees of the algorithm are tested by running a first
 order unicycle model of an airplane through a simulated forest in order to
-verify that the robustness guarantees hold, even in the presence of noise and
-obstacles. This in turn is shown not to hold for a \ac{RRT} algorithm which does
-not reason about disturbances. Therefore the \rrtfunnel{} algorithm
-significantly outperforms algorithms which does not handle uncertainty.
-
+verify that the robustness guarantees hold, even in the presence of positional
+noise and obstacles. This in turn is shown not to hold for an \ac{RRT} algorithm
+which does not reason about disturbances.
 
 % \end{abstract}
