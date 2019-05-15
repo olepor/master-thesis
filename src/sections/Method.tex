@@ -233,7 +233,7 @@ primitive can be found in~\cref{fig:visualized-lyapunov}.
 \end{figure}
 
 However, for the funnels in this thesis, the initial condition set will be given
-by the hyperellipsoid
+by the hyper-ellipsoid
 \begin{align}
   \mathcal{X}_0 &= \set{\vect{x} \in \R^{3} \mid \vect{x}^{T} Q \vect{x}} \\
   Q &= \begin{bmatrix}
@@ -781,7 +781,7 @@ generality of the \rrtfunnel{} algorithm, such that it can be adapted to fit a
 wide range of dynamical systems, while at the same time it has only three main
 components that needs to be in place in order for successful path planning to
 happen in an arbitrary configuration space. Namely, a suitable probability
-distribution to sample from, and a distance metric for the nearest neighbour and
+distribution to sample from, and a distance metric for the nearest neighbor and
 the extension step. The \ac{RRT} algorithm is beneficial as most of the
 complexity accompanied with the planning problem (like uncertainty and
 controller calculations) has already been handled by the \ac{SOS} framework, and
@@ -938,7 +938,7 @@ composition algorithm can be found in
 \subsubsection{Emergency Maneuver}
 
 If the airplane is to leave the verified funnel at execution time -- this could
-happen for any number of reasons, such as unmodelled uncertainties -- the plane
+happen for any number of reasons, such as unmodeled uncertainties -- the plane
 should execute the emergency maneuver, which in this case is a loiter loop. In
 general an emergency maneuver can be any sort of 'safe' maneuver for the model
 at hand -- such as a sudden stop for a vehicle, or idling at one place for a
