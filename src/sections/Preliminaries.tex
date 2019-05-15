@@ -471,9 +471,7 @@ Then combining the cost function~\eqref{eq:discrete-costfunction} with the
 constraints~\eqref{eq:discrete-containment-constraint} and
 \cref{eq:sufficient-conditions,eq:sufficient-conditions-2}, one arrives at the
 following optimization problem:
-%
-{ % Mini environment scope
-  \newcommand{\E}{\mathcal{E}} \renewcommand{\x}{\bar{x}}
+  \newcommand{\E}{\mathcal{E}}
   \begin{mini!}[2]
     { \substack { V, \rho, L, L_t,
         \\
@@ -510,7 +508,6 @@ following optimization problem:
     \addConstraint{\nonumber}{}{\quad \forall
       k \in \set{1, \ldots, N} \mathEoS }
   \end{mini!}
-} % End optimization problem scope.
 This is the continuous finite dimensional optimization problem that is needed in
 order to search for a Lyapunov function candidate that parameterizes the
 reachable set for the dynamical system at hand.
