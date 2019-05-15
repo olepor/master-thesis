@@ -287,11 +287,11 @@ linearized in order for it to be handled by the \ac{SOS} framework.
 solves this by linearizing \(\deter(\matr{S}_k)\) at the solution of
 \(\matr{S}_k\) from the previous iteration, and maximizes this linearization
 instead. In the end this translates to
-\[
+\begin{equation}
   \lin \bigl( \deter \p{ \matr{S}_k} \bigr) = \Tr \bigl( \matr{P}^{T}{\p{ \matr{P}
       \matr{S}_{k,0}^{-1} \matr{P}^T}}^{-1} \matr{P} {\matr{S}_{k,0}}^{-1}
     \matr{S}_k {\matr{S}_{k,0}}^{-1} \bigr),
-\]
+\end{equation} 
 where \( \matr{S}_{k,0}\) is the nominal value for the linearization, and \(\Tr\)
 is the trace of the matrix.
 
