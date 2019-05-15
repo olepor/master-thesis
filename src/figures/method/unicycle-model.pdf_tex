@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{602.48387204bp}%
+    \setlength{\unitlength}{597.45630725bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,10 +48,10 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,1.17975142)%
+  \begin{picture}(1,1.18126484)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{unicycle-model.pdf}}%
-    \put(0.51487424,0.63537921){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.13075942\unitlength}\raggedright $\theta$\end{minipage}}}%
-    \put(0.32790051,0.76613861){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.08309944\unitlength}\raggedright $r$\end{minipage}}}%
+    \put(0.55435589,0.71102393){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.13185975\unitlength}\raggedright $\theta$\end{minipage}}}%
+    \put(0.33065977,0.86547946){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.08379871\unitlength}\raggedright $r$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{unicycle-model.pdf}}%
   \end{picture}%
 \endgroup%
