@@ -11,7 +11,7 @@ obstacles by as big a margin as possible. Therefore, not only was the
 experiment environment, but it could also provide more direct traversal, as the
 distance to the trees did not matter.
 
-The strength of the algorithm lies in that it can seperate handling of the
+The strength of the algorithm lies in that it can separate handling of the
 uncertainty into an off-line pre-computation phase. Therefore, the global motion
 planner does not need to be significantly more complex than if it had not
 reasoned about uncertainty. It can remain completely oblivious to
@@ -32,7 +32,7 @@ platform it is computed on, and the precision of the solver employed. Still, the
 funnels generated can be said to be tight.
 
 The algorithm does have some weaknesses also. The choice of using motion
-primtives calculated off-line will in general not make the planner
+primitives calculated off-line will in general not make the planner
 probabilisticly complete, and as such, one is not guaranteed to find a solution
 given infinite time. A guarantee that regular \ac{RRT}'s do provide.
 
